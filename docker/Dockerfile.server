@@ -1,0 +1,48 @@
+# Stage 1: Build
+FROM node:20-alpine AS builder
+# Берём лёгкий официальный образ Node.js на базе Alpine Linux
+# Это первый stage, называем его "builder" для сборки приложения
+
+WORKDIR /app
+# Устанавливаем рабочую директорию внутри контейнера /app
+# Все последующие команды будут выполняться из этой папки
+
+COPY server/package*.json ./
+# Копируем файлы package.json и package-lock.json (или yarn.lock)
+# Только их на этом этапе, чтобы npm install кешировал зависимости
+
+RUN npm install --frozen-lockfile
+# Устанавливаем все зависимости проекта, включая devDependencies
+# --frozen-lockfile гарантирует точное соответствие package-lock.json
+
+COPY server ./
+# Копируем весь исходный код проекта внутрь контейнера
+# После установки зависимостей, чтобы не пересобирать их каждый раз
+
+RUN npm run build
+# Собираем TypeScript код в JavaScript (dist/)
+# Этот результат будет использоваться в продакшн stage
+
+# Stage 2: Production
+FROM node:20-alpine AS prod
+# Берём чистый образ Node.js для финального продакшн-контейнера
+# Вес меньше, чем если бы мы оставили весь builder stage
+
+WORKDIR /app
+# Опять устанавливаем рабочую директорию в /app
+
+COPY --from=builder /app/dist ./dist
+# Копируем скомпилированный код (JavaScript) из stage builder
+# В папку dist в продакшн контейнере
+
+COPY --from=builder /app/package*.json ./
+# Копируем package.json и package-lock.json для продакшн
+# Это нужно, чтобы npm мог знать зависимости (prod)
+
+COPY --from=builder /app/node_modules ./node_modules
+# Копируем уже установленные зависимости из builder stage
+# Dev-зависимости обычно можно исключить, если используем npm prune --production
+
+CMD ["node", "dist/main.js"]
+# Команда, которая будет выполняться при старте контейнера
+# Запускает Node.js и основной файл приложения
