@@ -4,41 +4,51 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { CountryEntity } from './country.entity';
 
 // РОЛИ Пользователей
 export enum UserRole {
-  USER = 'user',
-  ADMIN = 'admin',
-}
-
-// СТАТУСЫ Пользователей (для деактивации аккков)
-export enum UserStatus {
-  ACTIVE = 'active',
-  DISABLED = 'disabled',
+  USER = 'user', // 1 - обычный пользователь
+  ADMIN = 'admin', // 2 - админ
 }
 
 // ТЕМЫ сайта (настройка пользователя) (светлая/темная/авто)
 export enum UserThemes {
-  LIGHT = 'light',
-  DARK = 'dark',
-  SYSTEM = 'system',
+  LIGHT = 'light', // 1 - светлая
+  DARK = 'dark', // 2 - темная
+  SYSTEM = 'system', // 3 - системная
+}
+
+// ПОДДЕРЖИВАЕМЫЕ ЯЗЫКИ ПОЛЬЗОВАТЕЛЯ
+export enum UserLanguage {
+  EN = 'en',
+  PL = 'pl',
+  RU = 'ru',
+  DE = 'de',
 }
 
 @Entity('users')
 export class UserEntity {
+  // Иденитификатор
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  // Почта
   @Column({ unique: true })
   email: string;
 
+  // Логин
   @Column({ unique: true })
   login: string;
 
+  // Пароль (хеш)
   @Column()
   password: string;
 
+  // Роль
   @Column({
     type: 'enum',
     enum: UserRole,
@@ -46,13 +56,25 @@ export class UserEntity {
   })
   role: UserRole;
 
+  // Статус
+  @Column({ type: 'boolean', default: true })
+  status: boolean; // true = активен, false = деактивирован
+
+  @Column({ nullable: true })
+  phone: string;
+
+  @ManyToOne(() => CountryEntity, { nullable: true })
+  @JoinColumn({ name: 'country_id' })
+  country: CountryEntity;
+
   @Column({
     type: 'enum',
-    enum: UserStatus,
-    default: UserStatus.ACTIVE,
+    enum: UserLanguage,
+    default: UserLanguage.EN, // по умолчанию английский
   })
-  status: UserStatus;
+  language: UserLanguage;
 
+  // Настройка темы
   @Column({
     type: 'enum',
     enum: UserThemes,
@@ -60,9 +82,11 @@ export class UserEntity {
   })
   theme: UserThemes;
 
+  // Дата создания
   @CreateDateColumn()
   createdAt: Date;
 
+  // Дата обновления
   @UpdateDateColumn()
   updatedAt: Date;
 }

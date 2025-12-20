@@ -333,4 +333,10 @@ NODE_ENV=production
 docker compose  --env-file docker/.env  -f docker/docker-compose.yml  up --build -d
 ```
 
+Приостановка из корня репозитория:
+
+```bash
+docker compose -f docker/docker-compose.yml down
+```
+
 ---

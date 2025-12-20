@@ -1,0 +1,1166 @@
+[
+  {
+    "name": "Afghanistan",
+    "abbreviation": "AFG",
+    "phoneCode": 93,
+    "iconPath": "/icons/flags/af.svg"
+  },
+  {
+    "name": "Albania",
+    "abbreviation": "ALB",
+    "phoneCode": 355,
+    "iconPath": "/icons/flags/al.svg"
+  },
+  {
+    "name": "Algeria",
+    "abbreviation": "DZA",
+    "phoneCode": 213,
+    "iconPath": "/icons/flags/dz.svg"
+  },
+  {
+    "name": "Andorra",
+    "abbreviation": "AND",
+    "phoneCode": 376,
+    "iconPath": "/icons/flags/ad.svg"
+  },
+  {
+    "name": "Angola",
+    "abbreviation": "AGO",
+    "phoneCode": 244,
+    "iconPath": "/icons/flags/ao.svg"
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "abbreviation": "ATG",
+    "phoneCode": 268,
+    "iconPath": "/icons/flags/ag.svg"
+  },
+  {
+    "name": "Argentina",
+    "abbreviation": "ARG",
+    "phoneCode": 54,
+    "iconPath": "/icons/flags/ar.svg"
+  },
+  {
+    "name": "Armenia",
+    "abbreviation": "ARM",
+    "phoneCode": 374,
+    "iconPath": "/icons/flags/am.svg"
+  },
+  {
+    "name": "Australia",
+    "abbreviation": "AUS",
+    "phoneCode": 61,
+    "iconPath": "/icons/flags/au.svg"
+  },
+  {
+    "name": "Austria",
+    "abbreviation": "AUT",
+    "phoneCode": 43,
+    "iconPath": "/icons/flags/at.svg"
+  },
+  {
+    "name": "Azerbaijan",
+    "abbreviation": "AZE",
+    "phoneCode": 994,
+    "iconPath": "/icons/flags/az.svg"
+  },
+  {
+    "name": "Bahamas",
+    "abbreviation": "BHS",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/bs.svg"
+  },
+  {
+    "name": "Bahrain",
+    "abbreviation": "BHR",
+    "phoneCode": 973,
+    "iconPath": "/icons/flags/bh.svg"
+  },
+  {
+    "name": "Bangladesh",
+    "abbreviation": "BGD",
+    "phoneCode": 880,
+    "iconPath": "/icons/flags/bd.svg"
+  },
+  {
+    "name": "Barbados",
+    "abbreviation": "BRB",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/bb.svg"
+  },
+  {
+    "name": "Belarus",
+    "abbreviation": "BLR",
+    "phoneCode": 375,
+    "iconPath": "/icons/flags/by.svg"
+  },
+  {
+    "name": "Belgium",
+    "abbreviation": "BEL",
+    "phoneCode": 32,
+    "iconPath": "/icons/flags/be.svg"
+  },
+  {
+    "name": "Belize",
+    "abbreviation": "BLZ",
+    "phoneCode": 501,
+    "iconPath": "/icons/flags/bz.svg"
+  },
+  {
+    "name": "Benin",
+    "abbreviation": "BEN",
+    "phoneCode": 229,
+    "iconPath": "/icons/flags/bj.svg"
+  },
+  {
+    "name": "Bhutan",
+    "abbreviation": "BTN",
+    "phoneCode": 975,
+    "iconPath": "/icons/flags/bt.svg"
+  },
+  {
+    "name": "Bolivia",
+    "abbreviation": "BOL",
+    "phoneCode": 591,
+    "iconPath": "/icons/flags/bo.svg"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "abbreviation": "BIH",
+    "phoneCode": 387,
+    "iconPath": "/icons/flags/ba.svg"
+  },
+  {
+    "name": "Botswana",
+    "abbreviation": "BWA",
+    "phoneCode": 267,
+    "iconPath": "/icons/flags/bw.svg"
+  },
+  {
+    "name": "Brazil",
+    "abbreviation": "BRA",
+    "phoneCode": 55,
+    "iconPath": "/icons/flags/br.svg"
+  },
+  {
+    "name": "Brunei",
+    "abbreviation": "BRN",
+    "phoneCode": 673,
+    "iconPath": "/icons/flags/bn.svg"
+  },
+  {
+    "name": "Bulgaria",
+    "abbreviation": "BGR",
+    "phoneCode": 359,
+    "iconPath": "/icons/flags/bg.svg"
+  },
+  {
+    "name": "Burkina Faso",
+    "abbreviation": "BFA",
+    "phoneCode": 226,
+    "iconPath": "/icons/flags/bf.svg"
+  },
+  {
+    "name": "Burundi",
+    "abbreviation": "BDI",
+    "phoneCode": 257,
+    "iconPath": "/icons/flags/bi.svg"
+  },
+  {
+    "name": "Cambodia",
+    "abbreviation": "KHM",
+    "phoneCode": 855,
+    "iconPath": "/icons/flags/kh.svg"
+  },
+  {
+    "name": "Cameroon",
+    "abbreviation": "CMR",
+    "phoneCode": 237,
+    "iconPath": "/icons/flags/cm.svg"
+  },
+  {
+    "name": "Canada",
+    "abbreviation": "CAN",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/ca.svg"
+  },
+  {
+    "name": "Cape Verde",
+    "abbreviation": "CPV",
+    "phoneCode": 238,
+    "iconPath": "/icons/flags/cv.svg"
+  },
+  {
+    "name": "Central African Republic",
+    "abbreviation": "CAF",
+    "phoneCode": 236,
+    "iconPath": "/icons/flags/cf.svg"
+  },
+  {
+    "name": "Chad",
+    "abbreviation": "TCD",
+    "phoneCode": 235,
+    "iconPath": "/icons/flags/td.svg"
+  },
+  {
+    "name": "Chile",
+    "abbreviation": "CHL",
+    "phoneCode": 56,
+    "iconPath": "/icons/flags/cl.svg"
+  },
+  {
+    "name": "China",
+    "abbreviation": "CHN",
+    "phoneCode": 86,
+    "iconPath": "/icons/flags/cn.svg"
+  },
+  {
+    "name": "Colombia",
+    "abbreviation": "COL",
+    "phoneCode": 57,
+    "iconPath": "/icons/flags/co.svg"
+  },
+  {
+    "name": "Comoros",
+    "abbreviation": "COM",
+    "phoneCode": 269,
+    "iconPath": "/icons/flags/km.svg"
+  },
+  {
+    "name": "Congo",
+    "abbreviation": "COG",
+    "phoneCode": 242,
+    "iconPath": "/icons/flags/cg.svg"
+  },
+  {
+    "name": "Costa Rica",
+    "abbreviation": "CRI",
+    "phoneCode": 506,
+    "iconPath": "/icons/flags/cr.svg"
+  },
+  {
+    "name": "Côte d'Ivoire",
+    "abbreviation": "CIV",
+    "phoneCode": 225,
+    "iconPath": "/icons/flags/ci.svg"
+  },
+  {
+    "name": "Croatia",
+    "abbreviation": "HRV",
+    "phoneCode": 385,
+    "iconPath": "/icons/flags/hr.svg"
+  },
+  {
+    "name": "Cuba",
+    "abbreviation": "CUB",
+    "phoneCode": 53,
+    "iconPath": "/icons/flags/cu.svg"
+  },
+  {
+    "name": "Cyprus",
+    "abbreviation": "CYP",
+    "phoneCode": 357,
+    "iconPath": "/icons/flags/cy.svg"
+  },
+  {
+    "name": "Czech Republic",
+    "abbreviation": "CZE",
+    "phoneCode": 420,
+    "iconPath": "/icons/flags/cz.svg"
+  },
+  {
+    "name": "Denmark",
+    "abbreviation": "DNK",
+    "phoneCode": 45,
+    "iconPath": "/icons/flags/dk.svg"
+  },
+  {
+    "name": "Djibouti",
+    "abbreviation": "DJI",
+    "phoneCode": 253,
+    "iconPath": "/icons/flags/dj.svg"
+  },
+  {
+    "name": "Dominica",
+    "abbreviation": "DMA",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/dm.svg"
+  },
+  {
+    "name": "Dominican Republic",
+    "abbreviation": "DOM",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/do.svg"
+  },
+  {
+    "name": "Ecuador",
+    "abbreviation": "ECU",
+    "phoneCode": 593,
+    "iconPath": "/icons/flags/ec.svg"
+  },
+  {
+    "name": "Egypt",
+    "abbreviation": "EGY",
+    "phoneCode": 20,
+    "iconPath": "/icons/flags/eg.svg"
+  },
+  {
+    "name": "El Salvador",
+    "abbreviation": "SLV",
+    "phoneCode": 503,
+    "iconPath": "/icons/flags/sv.svg"
+  },
+  {
+    "name": "Equatorial Guinea",
+    "abbreviation": "GNQ",
+    "phoneCode": 240,
+    "iconPath": "/icons/flags/gq.svg"
+  },
+  {
+    "name": "Eritrea",
+    "abbreviation": "ERI",
+    "phoneCode": 291,
+    "iconPath": "/icons/flags/er.svg"
+  },
+  {
+    "name": "Estonia",
+    "abbreviation": "EST",
+    "phoneCode": 372,
+    "iconPath": "/icons/flags/ee.svg"
+  },
+  {
+    "name": "Eswatini",
+    "abbreviation": "SWZ",
+    "phoneCode": 268,
+    "iconPath": "/icons/flags/sz.svg"
+  },
+  {
+    "name": "Ethiopia",
+    "abbreviation": "ETH",
+    "phoneCode": 251,
+    "iconPath": "/icons/flags/et.svg"
+  },
+  {
+    "name": "Fiji",
+    "abbreviation": "FJI",
+    "phoneCode": 679,
+    "iconPath": "/icons/flags/fj.svg"
+  },
+  {
+    "name": "Finland",
+    "abbreviation": "FIN",
+    "phoneCode": 358,
+    "iconPath": "/icons/flags/fi.svg"
+  },
+  {
+    "name": "France",
+    "abbreviation": "FRA",
+    "phoneCode": 33,
+    "iconPath": "/icons/flags/fr.svg"
+  },
+  {
+    "name": "Gabon",
+    "abbreviation": "GAB",
+    "phoneCode": 241,
+    "iconPath": "/icons/flags/ga.svg"
+  },
+  {
+    "name": "Gambia",
+    "abbreviation": "GMB",
+    "phoneCode": 220,
+    "iconPath": "/icons/flags/gm.svg"
+  },
+  {
+    "name": "Georgia",
+    "abbreviation": "GEO",
+    "phoneCode": 995,
+    "iconPath": "/icons/flags/ge.svg"
+  },
+  {
+    "name": "Germany",
+    "abbreviation": "DEU",
+    "phoneCode": 49,
+    "iconPath": "/icons/flags/de.svg"
+  },
+  {
+    "name": "Ghana",
+    "abbreviation": "GHA",
+    "phoneCode": 233,
+    "iconPath": "/icons/flags/gh.svg"
+  },
+  {
+    "name": "Greece",
+    "abbreviation": "GRC",
+    "phoneCode": 30,
+    "iconPath": "/icons/flags/gr.svg"
+  },
+  {
+    "name": "Grenada",
+    "abbreviation": "GRD",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/gd.svg"
+  },
+  {
+    "name": "Guatemala",
+    "abbreviation": "GTM",
+    "phoneCode": 502,
+    "iconPath": "/icons/flags/gt.svg"
+  },
+  {
+    "name": "Guinea",
+    "abbreviation": "GIN",
+    "phoneCode": 224,
+    "iconPath": "/icons/flags/gn.svg"
+  },
+  {
+    "name": "Guinea-Bissau",
+    "abbreviation": "GNB",
+    "phoneCode": 245,
+    "iconPath": "/icons/flags/gw.svg"
+  },
+  {
+    "name": "Guyana",
+    "abbreviation": "GUY",
+    "phoneCode": 592,
+    "iconPath": "/icons/flags/gy.svg"
+  },
+  {
+    "name": "Haiti",
+    "abbreviation": "HTI",
+    "phoneCode": 509,
+    "iconPath": "/icons/flags/ht.svg"
+  },
+  {
+    "name": "Honduras",
+    "abbreviation": "HND",
+    "phoneCode": 504,
+    "iconPath": "/icons/flags/hn.svg"
+  },
+  {
+    "name": "Hungary",
+    "abbreviation": "HUN",
+    "phoneCode": 36,
+    "iconPath": "/icons/flags/hu.svg"
+  },
+  {
+    "name": "Iceland",
+    "abbreviation": "ISL",
+    "phoneCode": 354,
+    "iconPath": "/icons/flags/is.svg"
+  },
+  {
+    "name": "India",
+    "abbreviation": "IND",
+    "phoneCode": 91,
+    "iconPath": "/icons/flags/in.svg"
+  },
+  {
+    "name": "Indonesia",
+    "abbreviation": "IDN",
+    "phoneCode": 62,
+    "iconPath": "/icons/flags/id.svg"
+  },
+  {
+    "name": "Iran",
+    "abbreviation": "IRN",
+    "phoneCode": 98,
+    "iconPath": "/icons/flags/ir.svg"
+  },
+  {
+    "name": "Iraq",
+    "abbreviation": "IRQ",
+    "phoneCode": 964,
+    "iconPath": "/icons/flags/iq.svg"
+  },
+  {
+    "name": "Ireland",
+    "abbreviation": "IRL",
+    "phoneCode": 353,
+    "iconPath": "/icons/flags/ie.svg"
+  },
+  {
+    "name": "Israel",
+    "abbreviation": "ISR",
+    "phoneCode": 972,
+    "iconPath": "/icons/flags/il.svg"
+  },
+  {
+    "name": "Italy",
+    "abbreviation": "ITA",
+    "phoneCode": 39,
+    "iconPath": "/icons/flags/it.svg"
+  },
+  {
+    "name": "Jamaica",
+    "abbreviation": "JAM",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/jm.svg"
+  },
+  {
+    "name": "Japan",
+    "abbreviation": "JPN",
+    "phoneCode": 81,
+    "iconPath": "/icons/flags/jp.svg"
+  },
+  {
+    "name": "Jordan",
+    "abbreviation": "JOR",
+    "phoneCode": 962,
+    "iconPath": "/icons/flags/jo.svg"
+  },
+  {
+    "name": "Kazakhstan",
+    "abbreviation": "KAZ",
+    "phoneCode": 7,
+    "iconPath": "/icons/flags/kz.svg"
+  },
+  {
+    "name": "Kenya",
+    "abbreviation": "KEN",
+    "phoneCode": 254,
+    "iconPath": "/icons/flags/ke.svg"
+  },
+  {
+    "name": "Kiribati",
+    "abbreviation": "KIR",
+    "phoneCode": 686,
+    "iconPath": "/icons/flags/ki.svg"
+  },
+  {
+    "name": "Kuwait",
+    "abbreviation": "KWT",
+    "phoneCode": 965,
+    "iconPath": "/icons/flags/kw.svg"
+  },
+  {
+    "name": "Kyrgyzstan",
+    "abbreviation": "KGZ",
+    "phoneCode": 996,
+    "iconPath": "/icons/flags/kg.svg"
+  },
+  {
+    "name": "Laos",
+    "abbreviation": "LAO",
+    "phoneCode": 856,
+    "iconPath": "/icons/flags/la.svg"
+  },
+  {
+    "name": "Latvia",
+    "abbreviation": "LVA",
+    "phoneCode": 371,
+    "iconPath": "/icons/flags/lv.svg"
+  },
+  {
+    "name": "Lebanon",
+    "abbreviation": "LBN",
+    "phoneCode": 961,
+    "iconPath": "/icons/flags/lb.svg"
+  },
+  {
+    "name": "Lesotho",
+    "abbreviation": "LSO",
+    "phoneCode": 266,
+    "iconPath": "/icons/flags/ls.svg"
+  },
+  {
+    "name": "Liberia",
+    "abbreviation": "LBR",
+    "phoneCode": 231,
+    "iconPath": "/icons/flags/lr.svg"
+  },
+  {
+    "name": "Libya",
+    "abbreviation": "LBY",
+    "phoneCode": 218,
+    "iconPath": "/icons/flags/ly.svg"
+  },
+  {
+    "name": "Liechtenstein",
+    "abbreviation": "LIE",
+    "phoneCode": 423,
+    "iconPath": "/icons/flags/li.svg"
+  },
+  {
+    "name": "Lithuania",
+    "abbreviation": "LTU",
+    "phoneCode": 370,
+    "iconPath": "/icons/flags/lt.svg"
+  },
+  {
+    "name": "Luxembourg",
+    "abbreviation": "LUX",
+    "phoneCode": 352,
+    "iconPath": "/icons/flags/lu.svg"
+  },
+  {
+    "name": "Madagascar",
+    "abbreviation": "MDG",
+    "phoneCode": 261,
+    "iconPath": "/icons/flags/mg.svg"
+  },
+  {
+    "name": "Malawi",
+    "abbreviation": "MWI",
+    "phoneCode": 265,
+    "iconPath": "/icons/flags/mw.svg"
+  },
+  {
+    "name": "Malaysia",
+    "abbreviation": "MYS",
+    "phoneCode": 60,
+    "iconPath": "/icons/flags/my.svg"
+  },
+  {
+    "name": "Maldives",
+    "abbreviation": "MDV",
+    "phoneCode": 960,
+    "iconPath": "/icons/flags/mv.svg"
+  },
+  {
+    "name": "Mali",
+    "abbreviation": "MLI",
+    "phoneCode": 223,
+    "iconPath": "/icons/flags/ml.svg"
+  },
+  {
+    "name": "Malta",
+    "abbreviation": "MLT",
+    "phoneCode": 356,
+    "iconPath": "/icons/flags/mt.svg"
+  },
+  {
+    "name": "Marshall Islands",
+    "abbreviation": "MHL",
+    "phoneCode": 692,
+    "iconPath": "/icons/flags/mh.svg"
+  },
+  {
+    "name": "Mauritania",
+    "abbreviation": "MRT",
+    "phoneCode": 222,
+    "iconPath": "/icons/flags/mr.svg"
+  },
+  {
+    "name": "Mauritius",
+    "abbreviation": "MUS",
+    "phoneCode": 230,
+    "iconPath": "/icons/flags/mu.svg"
+  },
+  {
+    "name": "Mexico",
+    "abbreviation": "MEX",
+    "phoneCode": 52,
+    "iconPath": "/icons/flags/mx.svg"
+  },
+  {
+    "name": "Micronesia",
+    "abbreviation": "FSM",
+    "phoneCode": 691,
+    "iconPath": "/icons/flags/fm.svg"
+  },
+  {
+    "name": "Moldova",
+    "abbreviation": "MDA",
+    "phoneCode": 373,
+    "iconPath": "/icons/flags/md.svg"
+  },
+  {
+    "name": "Monaco",
+    "abbreviation": "MCO",
+    "phoneCode": 377,
+    "iconPath": "/icons/flags/mc.svg"
+  },
+  {
+    "name": "Mongolia",
+    "abbreviation": "MNG",
+    "phoneCode": 976,
+    "iconPath": "/icons/flags/mn.svg"
+  },
+  {
+    "name": "Montenegro",
+    "abbreviation": "MNE",
+    "phoneCode": 382,
+    "iconPath": "/icons/flags/me.svg"
+  },
+  {
+    "name": "Morocco",
+    "abbreviation": "MAR",
+    "phoneCode": 212,
+    "iconPath": "/icons/flags/ma.svg"
+  },
+  {
+    "name": "Mozambique",
+    "abbreviation": "MOZ",
+    "phoneCode": 258,
+    "iconPath": "/icons/flags/mz.svg"
+  },
+  {
+    "name": "Myanmar",
+    "abbreviation": "MMR",
+    "phoneCode": 95,
+    "iconPath": "/icons/flags/mm.svg"
+  },
+  {
+    "name": "Namibia",
+    "abbreviation": "NAM",
+    "phoneCode": 264,
+    "iconPath": "/icons/flags/na.svg"
+  },
+  {
+    "name": "Nauru",
+    "abbreviation": "NRU",
+    "phoneCode": 674,
+    "iconPath": "/icons/flags/nr.svg"
+  },
+  {
+    "name": "Nepal",
+    "abbreviation": "NPL",
+    "phoneCode": 977,
+    "iconPath": "/icons/flags/np.svg"
+  },
+  {
+    "name": "Netherlands",
+    "abbreviation": "NLD",
+    "phoneCode": 31,
+    "iconPath": "/icons/flags/nl.svg"
+  },
+  {
+    "name": "New Zealand",
+    "abbreviation": "NZL",
+    "phoneCode": 64,
+    "iconPath": "/icons/flags/nz.svg"
+  },
+  {
+    "name": "Nicaragua",
+    "abbreviation": "NIC",
+    "phoneCode": 505,
+    "iconPath": "/icons/flags/ni.svg"
+  },
+  {
+    "name": "Niger",
+    "abbreviation": "NER",
+    "phoneCode": 227,
+    "iconPath": "/icons/flags/ne.svg"
+  },
+  {
+    "name": "Nigeria",
+    "abbreviation": "NGA",
+    "phoneCode": 234,
+    "iconPath": "/icons/flags/ng.svg"
+  },
+  {
+    "name": "North Korea",
+    "abbreviation": "PRK",
+    "phoneCode": 850,
+    "iconPath": "/icons/flags/kp.svg"
+  },
+  {
+    "name": "North Macedonia",
+    "abbreviation": "MKD",
+    "phoneCode": 389,
+    "iconPath": "/icons/flags/mk.svg"
+  },
+  {
+    "name": "Norway",
+    "abbreviation": "NOR",
+    "phoneCode": 47,
+    "iconPath": "/icons/flags/no.svg"
+  },
+  {
+    "name": "Oman",
+    "abbreviation": "OMN",
+    "phoneCode": 968,
+    "iconPath": "/icons/flags/om.svg"
+  },
+  {
+    "name": "Pakistan",
+    "abbreviation": "PAK",
+    "phoneCode": 92,
+    "iconPath": "/icons/flags/pk.svg"
+  },
+  {
+    "name": "Palau",
+    "abbreviation": "PLW",
+    "phoneCode": 680,
+    "iconPath": "/icons/flags/pw.svg"
+  },
+  {
+    "name": "Palestine",
+    "abbreviation": "PSE",
+    "phoneCode": 970,
+    "iconPath": "/icons/flags/ps.svg"
+  },
+  {
+    "name": "Panama",
+    "abbreviation": "PAN",
+    "phoneCode": 507,
+    "iconPath": "/icons/flags/pa.svg"
+  },
+  {
+    "name": "Papua New Guinea",
+    "abbreviation": "PNG",
+    "phoneCode": 675,
+    "iconPath": "/icons/flags/pg.svg"
+  },
+  {
+    "name": "Paraguay",
+    "abbreviation": "PRY",
+    "phoneCode": 595,
+    "iconPath": "/icons/flags/py.svg"
+  },
+  {
+    "name": "Peru",
+    "abbreviation": "PER",
+    "phoneCode": 51,
+    "iconPath": "/icons/flags/pe.svg"
+  },
+  {
+    "name": "Philippines",
+    "abbreviation": "PHL",
+    "phoneCode": 63,
+    "iconPath": "/icons/flags/ph.svg"
+  },
+  {
+    "name": "Poland",
+    "abbreviation": "POL",
+    "phoneCode": 48,
+    "iconPath": "/icons/flags/pl.svg"
+  },
+  {
+    "name": "Portugal",
+    "abbreviation": "PRT",
+    "phoneCode": 351,
+    "iconPath": "/icons/flags/pt.svg"
+  },
+  {
+    "name": "Qatar",
+    "abbreviation": "QAT",
+    "phoneCode": 974,
+    "iconPath": "/icons/flags/qa.svg"
+  },
+  {
+    "name": "Romania",
+    "abbreviation": "ROU",
+    "phoneCode": 40,
+    "iconPath": "/icons/flags/ro.svg"
+  },
+  {
+    "name": "Russia",
+    "abbreviation": "RUS",
+    "phoneCode": 7,
+    "iconPath": "/icons/flags/ru.svg"
+  },
+  {
+    "name": "Rwanda",
+    "abbreviation": "RWA",
+    "phoneCode": 250,
+    "iconPath": "/icons/flags/rw.svg"
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "abbreviation": "KNA",
+    "phoneCode": 1869,
+    "iconPath": "/icons/flags/kn.svg"
+  },
+  {
+    "name": "Saint Lucia",
+    "abbreviation": "LCA",
+    "phoneCode": 1758,
+    "iconPath": "/icons/flags/lc.svg"
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "abbreviation": "VCT",
+    "phoneCode": 1784,
+    "iconPath": "/icons/flags/vc.svg"
+  },
+  {
+    "name": "Samoa",
+    "abbreviation": "WSM",
+    "phoneCode": 685,
+    "iconPath": "/icons/flags/ws.svg"
+  },
+  {
+    "name": "San Marino",
+    "abbreviation": "SMR",
+    "phoneCode": 378,
+    "iconPath": "/icons/flags/sm.svg"
+  },
+  {
+    "name": "Sao Tome and Principe",
+    "abbreviation": "STP",
+    "phoneCode": 239,
+    "iconPath": "/icons/flags/st.svg"
+  },
+  {
+    "name": "Saudi Arabia",
+    "abbreviation": "SAU",
+    "phoneCode": 966,
+    "iconPath": "/icons/flags/sa.svg"
+  },
+  {
+    "name": "Senegal",
+    "abbreviation": "SEN",
+    "phoneCode": 221,
+    "iconPath": "/icons/flags/sn.svg"
+  },
+  {
+    "name": "Serbia",
+    "abbreviation": "SRB",
+    "phoneCode": 381,
+    "iconPath": "/icons/flags/rs.svg"
+  },
+  {
+    "name": "Seychelles",
+    "abbreviation": "SYC",
+    "phoneCode": 248,
+    "iconPath": "/icons/flags/sc.svg"
+  },
+  {
+    "name": "Sierra Leone",
+    "abbreviation": "SLE",
+    "phoneCode": 232,
+    "iconPath": "/icons/flags/sl.svg"
+  },
+  {
+    "name": "Singapore",
+    "abbreviation": "SGP",
+    "phoneCode": 65,
+    "iconPath": "/icons/flags/sg.svg"
+  },
+  {
+    "name": "Slovakia",
+    "abbreviation": "SVK",
+    "phoneCode": 421,
+    "iconPath": "/icons/flags/sk.svg"
+  },
+  {
+    "name": "Slovenia",
+    "abbreviation": "SVN",
+    "phoneCode": 386,
+    "iconPath": "/icons/flags/si.svg"
+  },
+  {
+    "name": "Solomon Islands",
+    "abbreviation": "SLB",
+    "phoneCode": 677,
+    "iconPath": "/icons/flags/sb.svg"
+  },
+  {
+    "name": "Somalia",
+    "abbreviation": "SOM",
+    "phoneCode": 252,
+    "iconPath": "/icons/flags/so.svg"
+  },
+  {
+    "name": "South Africa",
+    "abbreviation": "ZAF",
+    "phoneCode": 27,
+    "iconPath": "/icons/flags/za.svg"
+  },
+  {
+    "name": "South Korea",
+    "abbreviation": "KOR",
+    "phoneCode": 82,
+    "iconPath": "/icons/flags/kr.svg"
+  },
+  {
+    "name": "South Sudan",
+    "abbreviation": "SSD",
+    "phoneCode": 211,
+    "iconPath": "/icons/flags/ss.svg"
+  },
+  {
+    "name": "Spain",
+    "abbreviation": "ESP",
+    "phoneCode": 34,
+    "iconPath": "/icons/flags/es.svg"
+  },
+  {
+    "name": "Sri Lanka",
+    "abbreviation": "LKA",
+    "phoneCode": 94,
+    "iconPath": "/icons/flags/lk.svg"
+  },
+  {
+    "name": "Sudan",
+    "abbreviation": "SDN",
+    "phoneCode": 249,
+    "iconPath": "/icons/flags/sd.svg"
+  },
+  {
+    "name": "Suriname",
+    "abbreviation": "SUR",
+    "phoneCode": 597,
+    "iconPath": "/icons/flags/sr.svg"
+  },
+  {
+    "name": "Sweden",
+    "abbreviation": "SWE",
+    "phoneCode": 46,
+    "iconPath": "/icons/flags/se.svg"
+  },
+  {
+    "name": "Switzerland",
+    "abbreviation": "CHE",
+    "phoneCode": 41,
+    "iconPath": "/icons/flags/ch.svg"
+  },
+  {
+    "name": "Syria",
+    "abbreviation": "SYR",
+    "phoneCode": 963,
+    "iconPath": "/icons/flags/sy.svg"
+  },
+  {
+    "name": "Tajikistan",
+    "abbreviation": "TJK",
+    "phoneCode": 992,
+    "iconPath": "/icons/flags/tj.svg"
+  },
+  {
+    "name": "Tanzania",
+    "abbreviation": "TZA",
+    "phoneCode": 255,
+    "iconPath": "/icons/flags/tz.svg"
+  },
+  {
+    "name": "Thailand",
+    "abbreviation": "THA",
+    "phoneCode": 66,
+    "iconPath": "/icons/flags/th.svg"
+  },
+  {
+    "name": "Timor-Leste",
+    "abbreviation": "TLS",
+    "phoneCode": 670,
+    "iconPath": "/icons/flags/tl.svg"
+  },
+  {
+    "name": "Togo",
+    "abbreviation": "TGO",
+    "phoneCode": 228,
+    "iconPath": "/icons/flags/tg.svg"
+  },
+  {
+    "name": "Tonga",
+    "abbreviation": "TON",
+    "phoneCode": 676,
+    "iconPath": "/icons/flags/to.svg"
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "abbreviation": "TTO",
+    "phoneCode": 1868,
+    "iconPath": "/icons/flags/tt.svg"
+  },
+  {
+    "name": "Tunisia",
+    "abbreviation": "TUN",
+    "phoneCode": 216,
+    "iconPath": "/icons/flags/tn.svg"
+  },
+  {
+    "name": "Turkey",
+    "abbreviation": "TUR",
+    "phoneCode": 90,
+    "iconPath": "/icons/flags/tr.svg"
+  },
+  {
+    "name": "Turkmenistan",
+    "abbreviation": "TKM",
+    "phoneCode": 993,
+    "iconPath": "/icons/flags/tm.svg"
+  },
+  {
+    "name": "Tuvalu",
+    "abbreviation": "TUV",
+    "phoneCode": 688,
+    "iconPath": "/icons/flags/tv.svg"
+  },
+  {
+    "name": "Uganda",
+    "abbreviation": "UGA",
+    "phoneCode": 256,
+    "iconPath": "/icons/flags/ug.svg"
+  },
+  {
+    "name": "Ukraine",
+    "abbreviation": "UKR",
+    "phoneCode": 380,
+    "iconPath": "/icons/flags/ua.svg"
+  },
+  {
+    "name": "United Arab Emirates",
+    "abbreviation": "ARE",
+    "phoneCode": 971,
+    "iconPath": "/icons/flags/ae.svg"
+  },
+  {
+    "name": "United Kingdom",
+    "abbreviation": "GBR",
+    "phoneCode": 44,
+    "iconPath": "/icons/flags/gb.svg"
+  },
+  {
+    "name": "United States",
+    "abbreviation": "USA",
+    "phoneCode": 1,
+    "iconPath": "/icons/flags/us.svg"
+  },
+  {
+    "name": "Uruguay",
+    "abbreviation": "URY",
+    "phoneCode": 598,
+    "iconPath": "/icons/flags/uy.svg"
+  },
+  {
+    "name": "Uzbekistan",
+    "abbreviation": "UZB",
+    "phoneCode": 998,
+    "iconPath": "/icons/flags/uz.svg"
+  },
+  {
+    "name": "Vanuatu",
+    "abbreviation": "VUT",
+    "phoneCode": 678,
+    "iconPath": "/icons/flags/vu.svg"
+  },
+  {
+    "name": "Vatican City",
+    "abbreviation": "VAT",
+    "phoneCode": 379,
+    "iconPath": "/icons/flags/va.svg"
+  },
+  {
+    "name": "Venezuela",
+    "abbreviation": "VEN",
+    "phoneCode": 58,
+    "iconPath": "/icons/flags/ve.svg"
+  },
+  {
+    "name": "Vietnam",
+    "abbreviation": "VNM",
+    "phoneCode": 84,
+    "iconPath": "/icons/flags/vn.svg"
+  },
+  {
+    "name": "Yemen",
+    "abbreviation": "YEM",
+    "phoneCode": 967,
+    "iconPath": "/icons/flags/ye.svg"
+  },
+  {
+    "name": "Zambia",
+    "abbreviation": "ZMB",
+    "phoneCode": 260,
+    "iconPath": "/icons/flags/zm.svg"
+  },
+  {
+    "name": "Zimbabwe",
+    "abbreviation": "ZWE",
+    "phoneCode": 263,
+    "iconPath": "/icons/flags/zw.svg"
+  }
+]

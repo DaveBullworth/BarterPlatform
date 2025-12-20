@@ -1,20 +1,34 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './modules/users/users.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserEntity } from './database/entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
-      username: process.env.DB_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      autoLoadEntities: true, // Nest сам найдёт все Entity
-      synchronize: true, // ⚠️ таблицы создаются автоматически (ТОЛЬКО ДЛЯ DEV)
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
     }),
-    UsersModule,
+
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get('POSTGRES_HOST'),
+        port: Number(config.get('POSTGRES_PORT')),
+        username: config.get('POSTGRES_USER'),
+        password: config.get('POSTGRES_PASSWORD'),
+        database: config.get('POSTGRES_DB'),
+
+        // Cущности
+        autoLoadEntities: true, // Nest сам найдёт все Entity
+
+        synchronize: config.get('NODE_ENV') === 'development', // 🔹 dev only
+        logging: config.get('NODE_ENV') === 'development', // 🔹 dev only
+      }),
+    }),
+
+    TypeOrmModule.forFeature([UserEntity]),
   ],
 })
 export class AppModule {}
