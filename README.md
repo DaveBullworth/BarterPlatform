@@ -340,3 +340,44 @@ docker compose -f docker/docker-compose.yml down
 ```
 
 ---
+
+> **Команды используемые при разработке:**
+
+_Создание сервиса `NestJS`_
+
+```bash
+cd server
+nest g service modules/{entityName}
+```
+
+_Создание модуля `NestJS`_
+
+```bash
+cd server
+nest g module modules/{entityName}
+```
+
+_Создание контроллера `NestJS`_
+
+```bash
+cd server
+nest g controller modules/{entityName}
+```
+
+---
+
+> **Логика работы REST API в NextJS:**
+
+В `NestJS` ВСЁ строится вокруг модулей.
+
+```scss
+HTTP запрос
+   ↓
+Controller  →  Service  →  Repository (TypeORM)  →  Database
+```
+
+- **Controller** — принимает HTTP-запросы
+- **Service** — бизнес-логика
+- **Repository** — работа с БД (через TypeORM)
+- **Database** — непосредственно БД (Postgre)
+- **Module** — склеивает всё это вместе

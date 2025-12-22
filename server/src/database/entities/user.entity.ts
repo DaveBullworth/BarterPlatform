@@ -60,13 +60,16 @@ export class UserEntity {
   @Column({ type: 'boolean', default: true })
   status: boolean; // true = активен, false = деактивирован
 
+  // Номер телефона (без кода)
   @Column({ nullable: true })
   phone: string;
 
+  // Страна (внешняя связь 1 к многим)
   @ManyToOne(() => CountryEntity, { nullable: true })
   @JoinColumn({ name: 'country_id' })
   country: CountryEntity;
 
+  // Язык (из enum)
   @Column({
     type: 'enum',
     enum: UserLanguage,

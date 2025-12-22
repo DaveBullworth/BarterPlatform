@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserEntity } from './database/entities/user.entity';
+import { CountriesModule } from './modules/countries/countries.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthController } from './modules/auth/auth.controller';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -28,7 +31,10 @@ import { UserEntity } from './database/entities/user.entity';
       }),
     }),
 
-    TypeOrmModule.forFeature([UserEntity]),
+    UsersModule,
+    CountriesModule,
+    AuthModule,
   ],
+  controllers: [AuthController],
 })
 export class AppModule {}
