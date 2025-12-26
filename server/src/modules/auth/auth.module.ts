@@ -6,17 +6,17 @@ import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
 import { UserEntity } from '../../database/entities/user.entity';
 import { SessionEntity } from '../../database/entities/session.entity';
+import { SessionPolicyService } from './policies/session-policy.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity, SessionEntity]),
     JwtModule.register({
       secret: process.env.ACCESS_TOKEN_SECRET,
-      signOptions: { expiresIn: '15m' }, // короткий срок жизни access token
     }),
   ],
   providers: [AuthService, AuthGuard],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard],
+  exports: [AuthService, AuthGuard, SessionPolicyService],
 })
 export class AuthModule {}

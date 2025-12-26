@@ -1,16 +1,23 @@
 // Импортируем необходимые модули NestJS и утилиты
 import { NestFactory } from '@nestjs/core'; // фабрика для запуска приложения Nest
 import { ValidationPipe } from '@nestjs/common';
-import cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express'; // расширение Nest для работы с Express
 import { join } from 'path'; // стандартный модуль Node.js для работы с путями
-import { AppModule } from './app.module'; // главный модуль приложения
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // инструменты для автогенерации Swagger
+import { AppModule } from './app.module'; // главный модуль приложения
+import { requestLogger } from '@/common/services/logger/request.logger';
+import { AllExceptionsFilter } from '@/common/services/logger/exceptions.logger';
 
 async function bootstrap() {
   // Создаём экземпляр приложения NestJS, используя Express
   // Тип <NestExpressApplication> нужен, чтобы использовать методы Express, например useStaticAssets
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // HTTP request logging
+  app.use(requestLogger);
+
+  // Логирование неотлавливаемых ошибок
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // 🔐 ГЛОБАЛЬНАЯ ВАЛИДАЦИЯ DTO (ОБЯЗАТЕЛЬНО)
   app.useGlobalPipes(
@@ -20,9 +27,6 @@ async function bootstrap() {
       transform: true, // приводит типы (string → number и т.д.)
     }),
   );
-
-  // Подключаем парсинг куков
-  app.use(cookieParser());
 
   // Подключаем папку с публичными статическими файлами
   // Все файлы в 'public' будут доступны напрямую по URL, например: http://localhost:3000/logo.svg

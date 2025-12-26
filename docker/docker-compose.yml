@@ -12,6 +12,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7-alpine
+    container_name: barter-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
   server:
     build:
       context: ..
@@ -23,11 +30,13 @@ services:
       - ../server/.env
     depends_on:
       - postgres
+      - redis
     ports:
       - "3000:3000"
     volumes:
       - ../server:/app
       - /app/node_modules
+      - ../logs:/app/logs
     command: npm run start:dev
 
 volumes:

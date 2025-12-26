@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CountriesModule } from './modules/countries/countries.module';
-import { UsersModule } from './modules/users/users.module';
-import { AuthController } from './modules/auth/auth.controller';
+import { MiddlewareModule } from './common/middlewares/middleware.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { CountriesModule } from './modules/countries/countries.module';
+import { TypeOrmLogger } from './common/services/logger/typeorm.logger';
 
 @Module({
   imports: [
@@ -28,13 +29,15 @@ import { AuthModule } from './modules/auth/auth.module';
 
         synchronize: config.get('NODE_ENV') === 'development', // 🔹 dev only
         logging: config.get('NODE_ENV') === 'development', // 🔹 dev only
+        // SQL логирование
+        logger: new TypeOrmLogger(),
       }),
     }),
 
+    MiddlewareModule,
+    AuthModule,
     UsersModule,
     CountriesModule,
-    AuthModule,
   ],
-  controllers: [AuthController],
 })
 export class AppModule {}
