@@ -6,6 +6,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { CountriesModule } from './modules/countries/countries.module';
 import { TypeOrmLogger } from './common/services/logger/typeorm.logger';
+import { MailModule } from './modules/mail/mail.module';
+import { MailConfirmModule } from './modules/mail-confirm/mail-confirm.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { TypeOrmLogger } from './common/services/logger/typeorm.logger';
     AuthModule,
     UsersModule,
     CountriesModule,
+    MailModule,
+    MailConfirmModule,
   ],
 })
 export class AppModule {}

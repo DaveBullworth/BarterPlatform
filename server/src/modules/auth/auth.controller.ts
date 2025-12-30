@@ -7,6 +7,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
   ApiCookieAuth,
+  ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequest } from '@/common/interfaces/auth-request.interface';
@@ -26,6 +27,7 @@ export class AuthController {
 
     Возможные ошибки:
     - INVALID_CREDENTIALS — неверный логин или пароль
+    - EMAIL_NOT_CONFIRMED — почта не подтверждена
     - MAX_SESSIONS_EXCEEDED — превышен лимит активных сессий
     - LOGIN_RATE_LIMIT — превышен лимит попыток входа
     `,
@@ -63,6 +65,15 @@ export class AuthController {
   })
   @ApiResponse({
     status: 403,
+    description: 'Почта не подтверждена',
+    schema: {
+      example: {
+        code: 'EMAIL_NOT_CONFIRMED',
+      },
+    },
+  })
+  @ApiResponse({
+    status: 403,
     description: 'Превышен лимит активных сессий',
     schema: {
       example: {
@@ -83,6 +94,9 @@ export class AuthController {
         code: 'LOGIN_RATE_LIMIT',
       },
     },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   @Post('login')
   async login(
@@ -170,6 +184,9 @@ export class AuthController {
       ],
     },
   })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
+  })
   @Post('refresh')
   async refresh(
     @Body('refreshToken') refreshToken: string,
@@ -241,6 +258,9 @@ export class AuthController {
         },
       ],
     },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   @UseGuards(AuthGuard)
   @Post('logout')

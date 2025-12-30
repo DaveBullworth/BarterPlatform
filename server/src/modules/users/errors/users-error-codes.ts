@@ -1,0 +1,12 @@
+export enum UserErrorCode {
+  // Общие
+  USER_NOT_FOUND = 'USER_NOT_FOUND',
+  USER_DEACTIVATED = 'USER_DEACTIVATED',
+
+  // Регистрация / профиль
+  EMAIL_ALREADY_IN_USE = 'EMAIL_ALREADY_IN_USE',
+  LOGIN_ALREADY_IN_USE = 'LOGIN_ALREADY_IN_USE',
+
+  // Связи
+  COUNTRY_NOT_FOUND = 'COUNTRY_NOT_FOUND',
+}

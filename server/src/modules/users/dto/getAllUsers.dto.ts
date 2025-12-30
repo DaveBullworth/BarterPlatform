@@ -27,6 +27,7 @@ export class UserResponseDto {
   id: string;
   email: string;
   login: string;
+  name: string;
   role: UserRole;
   status: boolean;
   phone: string | null;

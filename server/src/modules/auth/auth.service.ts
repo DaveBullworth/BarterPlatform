@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
@@ -43,6 +47,14 @@ export class AuthService {
 
       throw new UnauthorizedException({
         code: AuthErrorCode.INVALID_CREDENTIALS,
+      });
+    }
+
+    // почта не подтверждена
+    if (!user.statusEmail) {
+      // НЕ регистрируем brute-force фейл и НЕ сбрасываем счётчик
+      throw new ForbiddenException({
+        code: AuthErrorCode.EMAIL_NOT_CONFIRMED,
       });
     }
 

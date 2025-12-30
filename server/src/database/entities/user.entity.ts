@@ -44,6 +44,10 @@ export class UserEntity {
   @Column({ unique: true })
   login: string;
 
+  // Имя (ФИО)
+  @Column()
+  name: string;
+
   // Пароль (хеш)
   @Column()
   password: string;
@@ -59,6 +63,10 @@ export class UserEntity {
   // Статус
   @Column({ type: 'boolean', default: true })
   status: boolean; // true = активен, false = деактивирован
+
+  // Статус почты
+  @Column({ type: 'boolean', default: false })
+  statusEmail: boolean; // true = активен, false = деактивирован
 
   // Номер телефона (без кода)
   @Column({ nullable: true })

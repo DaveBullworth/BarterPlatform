@@ -1,0 +1,59 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { MailerService } from '@nestjs-modules/mailer';
+import templates from './templates/templates.json';
+import { UserLanguage } from '@/database/entities/user.entity';
+
+@Injectable()
+export class MailService {
+  private readonly logger = new Logger(MailService.name);
+
+  constructor(private readonly mailerService: MailerService) {}
+
+  /**
+   * Отправка письма с подтверждением почты
+   * @param email - адрес пользователя
+   * @param language - язык пользователя
+   * @param confirmUrl - ссылка для подтверждения
+   */
+  async sendEmailConfirmation(
+    email: string,
+    language: UserLanguage,
+    confirmUrl: string,
+  ): Promise<void> {
+    // Берём шаблон по языку, если нет — fallback на английский
+    const template =
+      templates.emailConfirmation[language] ?? templates.emailConfirmation.en;
+
+    // Подставляем ссылку в html
+    const html = template.html.replace('{{confirmUrl}}', confirmUrl);
+
+    await this.sendMail({
+      to: email,
+      subject: template.subject,
+      html,
+    });
+  }
+
+  /**
+   * Основной метод отправки письма
+   */
+  private async sendMail(options: {
+    to: string;
+    subject: string;
+    html: string;
+  }): Promise<void> {
+    // В dev-режиме — логируем письмо в консоль
+    if (process.env.NODE_ENV !== 'production') {
+      this.logger.log(`📧 DEV MAIL → ${options.to}`);
+      this.logger.debug(options.html);
+      return;
+    }
+
+    // В проде — реально отправляем через Nest MailerService
+    await this.mailerService.sendMail({
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+    });
+  }
+}

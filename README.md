@@ -196,6 +196,10 @@ sequenceDiagram
 - **WebSocket:** Socket.IO (реализация через Gateway NestJS)
 - **Аутентификация:** JWT + bcryptjs (offline-совместимый)
 - **Валидация:** class-validator, DTO
+- **Защита от DOS атак:** redis
+- **Логирование:** winston, nest-winston
+- **Письма email:** nodemailer (с обёрткой @nestjs-modules/mailer для NestJS)
+- **API документация**: nestjs/swagger (встроенный в NestJS).
 - **Файловая безопасность:** локальный антивирусный сервис (проверка PNG, JPG, PDF)
 - **Медиа:** jimp для обработки изображений
 - **Архитектура:** модульная, SOLID, DI, слои: контроллеры → сервисы → репозитории
@@ -273,23 +277,19 @@ barter-platform/
 │ ├── src/
 │ │ ├── app.module.ts # Главный модуль NestJS
 │ │ ├── main.ts # Точка входа backend
-│ │ ├── config/ # Конфигурации (DB, env, email)
-│ │ ├── common/ # Общие утилиты, фильтры, guards, interceptors
-│ │ │ ├── decorators/ # Пользовательские декораторы
-│ │ │ ├── dto/ # Общие DTO
-│ │ │ ├── exceptions/ # Кастомные ошибки
-│ │ │ ├── guards/ # Auth/Role guards
-│ │ │ └── interceptors/ # Логирование, трансформации
+│ │ ├── common/ # Общие утилиты, интерфейсы, мидлвейры и сервисы
+│ │ │ ├── interfaces/ # Пользовательские интерфейсы
+│ │ │ ├── middlewares/ # Общие мидлвейры API
+│ │ │ ├── services/ # различные сторонние используемые сервисы (redis, winston, ..)
 │ │ ├── modules/ # Модули приложения
-│ │ │ ├── auth/ # Регистрация, логин, JWT, сброс пароля
-│ │ │ ├── users/ # Пользователи, роли, настройки
-│ │ │ └── admin/ # Админка (если отдельный модуль)
-│ │ ├── database/ # Настройка TypeORM, миграции, сущности
-│ │ │ ├── entities/ # Entity-классы (User, Role, Settings)
-│ │ │ ├── migrations/ # Миграции базы данных
-│ │ │ └── seeds/ # Тестовые данные
-│ │ ├── email/ # Сервисы для отправки писем (SMTP, шаблоны)
-│ │ └── websocket/ # Socket.IO Gateway
+│ │ │ ├── auth/ # Регистрация, логин, JWT аутентификация (auth, roles guard)
+│ │ │ ├── users/ # Пользовательские маршруты
+│ │ │ ├── countries/ # Маршруты для данных стран
+│ │ │ └── mail/ # Маршруты для отправки писем на email
+│ │ └── database/ # Настройка TypeORM, миграции, сущности
+│ │   ├── entities/ # Entity-классы (User, Role, Settings)
+│ │   ├── migrations/ # Миграции базы данных
+│ │   └── seeds/ # Начальные данные
 │ └── package.json
 │
 ├── docker/ # Docker файлы и конфигурации

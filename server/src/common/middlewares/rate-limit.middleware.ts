@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response, NextFunction } from 'express';
-import { RedisService } from '../services/redis.service';
+import { RedisService } from '../services/redis/redis.service';
 import { AppRequest } from '../interfaces/app-request.interface';
 import { SecurityErrorCode } from '@/modules/auth/errors/auth-error-codes';
 

@@ -49,6 +49,7 @@ export async function seedAdmin(dataSource: DataSource) {
     password: passwordHash,
     role: UserRole.ADMIN,
     status: true,
+    statusEmail: true,
     theme: UserThemes.LIGHT,
     language: adminLanguage,
     ...(country ? { country } : {}),

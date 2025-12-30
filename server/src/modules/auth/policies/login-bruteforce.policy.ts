@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { RedisService } from '@/common/services/redis.service';
+import { RedisService } from '@/common/services/redis/redis.service';
 import { createHash } from 'crypto';
 import { SecurityErrorCode } from '../errors/auth-error-codes';
 
