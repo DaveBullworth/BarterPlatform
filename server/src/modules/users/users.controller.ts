@@ -1,14 +1,5 @@
 // Импортируем необходимые декораторы и утилиты из NestJS
-import {
-  Controller,
-  Get,
-  Req,
-  Post,
-  Body,
-  Param,
-  UseGuards,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Req, Post, Body, Param, Query } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -27,8 +18,7 @@ import {
 // Импорт сервиса пользователей — тут будет вся бизнес-логика
 import { UsersService } from './users.service';
 // Guard для аутентификации — проверяет, что пользователь авторизован
-import { AuthGuard } from '../auth/auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
+import { Authenticated } from '../auth/auth.decorator';
 import { Roles } from '../auth/roles.decorator';
 import { CurrentUser } from '../auth/user.decorator';
 import { UserRole } from '@/database/entities/user.entity';
@@ -98,7 +88,7 @@ export class UsersController {
 
   @ApiTags('Users')
   @ApiBearerAuth()
-  @UseGuards(AuthGuard, RolesGuard)
+  @Authenticated()
   @Roles(UserRole.ADMIN)
   @Get()
   @ApiOperation({
@@ -147,7 +137,7 @@ export class UsersController {
 
   // GET-запрос на 'users/:id' для получения конкретного пользователя
   // :id — параметр маршрута
-  @UseGuards(AuthGuard)
+  @Authenticated()
   @Get(':id')
   @ApiOperation({ summary: 'Получение пользователя по ID' })
   @ApiOkResponse({

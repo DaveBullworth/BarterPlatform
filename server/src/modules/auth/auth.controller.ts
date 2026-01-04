@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Req, Res } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import {
   ApiTags,
@@ -11,7 +11,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequest } from '@/common/interfaces/auth-request.interface';
-import { AuthGuard } from './auth.guard';
+import { Authenticated } from './auth.decorator';
 import { LoginDto } from './dto/login.dto';
 
 @ApiTags('Auth')
@@ -135,6 +135,7 @@ export class AuthController {
     Возможные ошибки:
     - REFRESH_TOKEN_INVALID — токен невалиден, истёк или повреждён
     - SESSION_NOT_FOUND — сессия не найдена или отозвана
+    - SESSION_MISMATCH — сессия не соответствующего пользователя
     `,
   })
   @ApiBody({
@@ -168,7 +169,8 @@ export class AuthController {
   })
   @ApiResponse({
     status: 401,
-    description: 'Refresh token недействителен или сессия не найдена',
+    description:
+      'Refresh token недействителен, сессия не найдена или не принадлежит ПОЗ',
     schema: {
       oneOf: [
         {
@@ -179,6 +181,11 @@ export class AuthController {
         {
           example: {
             code: 'SESSION_NOT_FOUND',
+          },
+        },
+        {
+          example: {
+            code: 'SESSION_MISMATCH',
           },
         },
       ],
@@ -262,7 +269,7 @@ export class AuthController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
-  @UseGuards(AuthGuard)
+  @Authenticated()
   @Post('logout')
   async logout(@Req() req: AuthenticatedRequest) {
     const userId: string = req.user?.sub;

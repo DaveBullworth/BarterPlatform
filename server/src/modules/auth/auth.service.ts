@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RedisService } from '@/common/services/redis/redis.service';
 import { SessionPolicyService } from './policies/session-policy.service';
 import { LoginBruteforcePolicy } from './policies/login-bruteforce.policy';
 import { UserEntity } from '../../database/entities/user.entity';
@@ -24,6 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly sessionPolicy: SessionPolicyService,
     private readonly loginBruteforcePolicy: LoginBruteforcePolicy,
+    private readonly redisService: RedisService,
   ) {}
 
   // Логин
@@ -64,37 +66,47 @@ export class AuthService {
     // Проверка ограничения по кол-ву одновременных сессий
     await this.sessionPolicy.assertCanCreateSession(user.id);
 
-    // Генерация токенов
-    const accessToken = this.generateAccessToken(user);
-    const refreshToken = this.generateRefreshToken(user);
-
-    // Хешируем refreshToken для хранения в сессии
-    const hashedRefresh = await bcrypt.hash(refreshToken, 10);
-
+    // Создаём сессию ПЕРЕД токенами
     const session = this.sessionRepo.create({
       user,
-      refreshTokenHash: hashedRefresh,
       ip,
       userAgent,
-      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 дней
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       status: true,
     });
 
+    // Генерация токенов с SID
+    const accessToken = this.generateAccessToken(user, session.id);
+    const refreshToken = this.generateRefreshToken(user, session.id);
+
+    // Хешируем refresh и сохраняем в сессию
+    session.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
     await this.sessionRepo.save(session);
+
+    // Записываем инфу о сессии в Redis
+    await this.redisService.setSession(
+      session.id,
+      {
+        userId: user.id,
+        active: true,
+        expiresAt: session.expiresAt.getTime(),
+      },
+      30 * 24 * 60 * 60,
+    );
 
     return { accessToken, refreshToken };
   }
 
-  generateAccessToken(user: UserEntity) {
+  generateAccessToken(user: UserEntity, sessionId: string) {
     return this.jwtService.sign(
-      { sub: user.id, login: user.login, role: user.role },
+      { sub: user.id, sid: sessionId, login: user.login, role: user.role },
       { expiresIn: '15m' },
     );
   }
 
-  generateRefreshToken(user: UserEntity) {
+  generateRefreshToken(user: UserEntity, sessionId: string) {
     return this.jwtService.sign(
-      { sub: user.id, login: user.login, role: user.role },
+      { sub: user.id, sid: sessionId, login: user.login, role: user.role },
       { expiresIn: '30d', secret: process.env.REFRESH_TOKEN_SECRET },
     );
   }
@@ -107,7 +119,7 @@ export class AuthService {
       });
 
       const session = await this.sessionRepo.findOne({
-        where: { user: { id: payload.sub }, status: true },
+        where: { id: payload.sid, status: true },
         relations: ['user'],
       });
 
@@ -125,8 +137,18 @@ export class AuthService {
         });
       }
 
-      const accessToken = this.generateAccessToken(session.user);
-      const newRefreshToken = this.generateRefreshToken(session.user);
+      // Сессия принадлежит соответствующему пользователю
+      if (session.user.id !== payload.sub) {
+        throw new UnauthorizedException({
+          code: AuthErrorCode.SESSION_MISMATCH,
+        });
+      }
+
+      const accessToken = this.generateAccessToken(session.user, session.id);
+      const newRefreshToken = this.generateRefreshToken(
+        session.user,
+        session.id,
+      );
 
       return { accessToken, refreshToken: newRefreshToken };
     } catch (error) {
@@ -163,7 +185,10 @@ export class AuthService {
       );
       if (isMatch) {
         session.status = false;
+        // Сохраняем сессию с новым статусом с БД
         await this.sessionRepo.save(session);
+        // Удаляем сессию из Redis
+        await this.redisService.revokeSession(session.id);
         return;
       }
     }
