@@ -9,8 +9,18 @@ if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
 export const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json(),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+    winston.format.printf((info) => {
+      const { timestamp, level, message, ...meta } = info as {
+        timestamp: string;
+        level: string;
+        message: string;
+        [key: string]: any;
+      };
+
+      const metaString = Object.keys(meta).length ? JSON.stringify(meta) : '';
+      return `[${timestamp}] ${level.toUpperCase()}: ${message} ${metaString}`;
+    }),
   ),
   transports: [
     new DailyRotateFile({

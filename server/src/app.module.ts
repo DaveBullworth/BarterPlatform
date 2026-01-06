@@ -8,6 +8,7 @@ import { CountriesModule } from './modules/countries/countries.module';
 import { TypeOrmLogger } from './common/services/logger/typeorm.logger';
 import { MailModule } from './modules/mail/mail.module';
 import { MailConfirmModule } from './modules/mail-confirm/mail-confirm.module';
+import { RedisModule } from './modules/redis/redis.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { MailConfirmModule } from './modules/mail-confirm/mail-confirm.module';
     CountriesModule,
     MailModule,
     MailConfirmModule,
+    RedisModule,
   ],
 })
 export class AppModule {}

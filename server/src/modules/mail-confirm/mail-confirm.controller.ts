@@ -7,6 +7,7 @@ import {
   UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   ApiOperation,
@@ -26,6 +27,7 @@ import { MailConfirmService } from './mail-confirm.service';
 export class MailConfirmController {
   constructor(
     private readonly mailConfirmService: MailConfirmService,
+    @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 

@@ -27,6 +27,7 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(CountryEntity)
     private readonly countryRepo: Repository<CountryEntity>,
     private readonly emailConfirmationService: MailConfirmService,
   ) {}

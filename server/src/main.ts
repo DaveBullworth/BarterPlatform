@@ -48,7 +48,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // Запускаем приложение на порту из переменной окружения PORT или 3000 по умолчанию
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
 
 // Обёртываем bootstrap в try/catch с .catch, чтобы корректно ловить ошибки старта

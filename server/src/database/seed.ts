@@ -8,8 +8,8 @@ async function runSeeds() {
     await AppDataSource.initialize();
     console.log('📦 Database connected');
 
-    await seedAdmin(AppDataSource);
     await seedCountries(AppDataSource);
+    await seedAdmin(AppDataSource);
 
     await AppDataSource.destroy();
     console.log('🌱 Seeding finished');

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisModule } from '../redis/redis.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { AuthGuard } from './auth.guard';
@@ -16,6 +17,7 @@ import { LoginBruteforcePolicy } from './policies/login-bruteforce.policy';
     JwtModule.register({
       secret: process.env.ACCESS_TOKEN_SECRET,
     }),
+    RedisModule,
   ],
   providers: [
     AuthService,
@@ -25,6 +27,6 @@ import { LoginBruteforcePolicy } from './policies/login-bruteforce.policy';
     LoginBruteforcePolicy,
   ],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard, SessionGuard],
+  exports: [AuthService, AuthGuard, SessionGuard, JwtModule],
 })
 export class AuthModule {}
