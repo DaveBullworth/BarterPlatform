@@ -20,8 +20,8 @@ export class SessionEntity {
   user: UserEntity;
 
   // Хеш refresh токена
-  @Column()
-  refreshTokenHash: string;
+  @Column({ type: 'text', nullable: true })
+  refreshTokenHash: string | null;
 
   // IP адрес устройства
   @Column({ nullable: true })

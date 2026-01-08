@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { Repository } from 'typeorm';
+import { Repository, Not, IsNull } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RedisService } from '@/common/services/redis/redis.service';
 import { SessionPolicyService } from './policies/session-policy.service';
@@ -75,6 +75,9 @@ export class AuthService {
       status: true,
     });
 
+    // СОХРАНЯЕМ → теперь есть session.id
+    await this.sessionRepo.save(session);
+
     // Генерация токенов с SID
     const accessToken = this.generateAccessToken(user, session.id);
     const refreshToken = this.generateRefreshToken(user, session.id);
@@ -119,7 +122,11 @@ export class AuthService {
       });
 
       const session = await this.sessionRepo.findOne({
-        where: { id: payload.sid, status: true },
+        where: {
+          id: payload.sid,
+          status: true,
+          refreshTokenHash: Not(IsNull()),
+        },
         relations: ['user'],
       });
 
@@ -131,7 +138,8 @@ export class AuthService {
       }
 
       // Если токен не верный
-      if (!(await bcrypt.compare(refreshToken, session.refreshTokenHash))) {
+      // тут исключение так как TS не понимает что мы уже отфильтровали в БД нужные записи
+      if (!(await bcrypt.compare(refreshToken, session.refreshTokenHash!))) {
         throw new UnauthorizedException({
           code: AuthErrorCode.REFRESH_TOKEN_INVALID,
         });
@@ -175,13 +183,18 @@ export class AuthService {
     }
 
     const sessions = await this.sessionRepo.find({
-      where: { user: { id: userId }, status: true },
+      where: {
+        user: { id: userId },
+        status: true,
+        refreshTokenHash: Not(IsNull()),
+      },
     });
 
     for (const session of sessions) {
       const isMatch = await bcrypt.compare(
         refreshToken,
-        session.refreshTokenHash,
+        // тут исключение так как TS не понимает что мы уже отфильтровали в БД нужные записи
+        session.refreshTokenHash!,
       );
       if (isMatch) {
         session.status = false;

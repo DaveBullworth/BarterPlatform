@@ -139,7 +139,9 @@ export class UsersController {
   // :id — параметр маршрута
   @Authenticated()
   @Get(':id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Получение пользователя по ID' })
+  @ApiExtraModels(AdminUserDto, SelfUserDto, PublicUserDto)
   @ApiOkResponse({
     description: 'Пользователь успешно получен',
     schema: {
