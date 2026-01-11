@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
   ApiOperation,
+  ApiBody,
   ApiOkResponse,
   ApiBadRequestResponse,
   ApiQuery,
@@ -62,11 +63,12 @@ export class MailConfirmController {
     },
   })
   @ApiBadRequestResponse({
-    description: 'Неверный или просроченный токен',
+    description: 'Неверный или просроченный токен или почта уже подтверждена',
     schema: {
       oneOf: [
         { example: { message: 'Invalid or expired token' } },
         { example: { message: 'Token has expired' } },
+        { example: { message: 'Email is already confirmed' } },
       ],
     },
   })
@@ -89,6 +91,18 @@ export class MailConfirmController {
     - если email уже подтверждён — письмо не отправляется
     - действует лимит повторной отправки (1 час)
     `,
+  })
+  @ApiBody({
+    description:
+      'Email или логин пользователя, для которого нужно повторно отправить письмо подтверждения',
+    required: true,
+    schema: {
+      type: 'object',
+      properties: {
+        loginOrEmail: { type: 'string', example: 'user@example.com' },
+      },
+      required: ['loginOrEmail'],
+    },
   })
   @ApiOkResponse({
     description: 'Письмо подтверждения успешно отправлено',

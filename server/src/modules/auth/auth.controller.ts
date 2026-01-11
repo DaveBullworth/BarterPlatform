@@ -1,5 +1,12 @@
-import { Controller, Post, Body, Req, Res } from '@nestjs/common';
-import type { Request, Response } from 'express';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  UseInterceptors,
+  UnauthorizedException,
+} from '@nestjs/common';
+import type { Request } from 'express';
 import {
   ApiTags,
   ApiOperation,
@@ -11,8 +18,11 @@ import {
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import type { AuthenticatedRequest } from '@/common/interfaces/auth-request.interface';
+import type { LoginResponse } from './interfaces/loginResponse.interface';
 import { Authenticated } from './auth.decorator';
 import { LoginDto } from './dto/login.dto';
+import { AuthErrorCode } from './errors/auth-error-codes';
+import { RefreshTokenCookieInterceptor } from './interceptors/refreshTokenCookie.interceptor';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -98,12 +108,13 @@ export class AuthController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
+  @UseInterceptors(RefreshTokenCookieInterceptor)
   @Post('login')
   async login(
     @Body() body: LoginDto,
     @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Promise<LoginResponse> {
+    // Явно закрепляем указанный контракт
     const tokens = await this.authService.login(
       body.loginOrEmail,
       body.password,
@@ -111,18 +122,12 @@ export class AuthController {
       req.headers['user-agent'],
     );
 
-    // Кладём только refreshToken в HttpOnly cookie
-    res.cookie('refreshToken', tokens.refreshToken, {
-      httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: 'strict', // для защиты от CSRF
-    });
-
     // Access token возвращаем в теле ответа
     return {
       // Пока оставим на этапе разработки для удобство тестирования
       message: 'Login successful',
       accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
     };
   }
 
@@ -133,25 +138,13 @@ export class AuthController {
     Обновляет access token с помощью refresh token.
 
     Возможные ошибки:
+    - REFRESH_TOKEN_MISSING — refresh token отсутствует в cookie
     - REFRESH_TOKEN_INVALID — токен невалиден, истёк или повреждён
     - SESSION_NOT_FOUND — сессия не найдена или отозвана
     - SESSION_MISMATCH — сессия не соответствующего пользователя
     `,
   })
-  @ApiBody({
-    required: true,
-    schema: {
-      type: 'object',
-      required: ['refreshToken'],
-      properties: {
-        refreshToken: {
-          type: 'string',
-          description: 'Refresh token пользователя',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        },
-      },
-    },
-  })
+  @ApiCookieAuth('refreshToken')
   @ApiResponse({
     status: 200,
     description: 'Токен успешно обновлён',
@@ -163,16 +156,16 @@ export class AuthController {
     },
   })
   @ApiResponse({
-    status: 400,
-    description:
-      'Некорректное тело запроса (refreshToken отсутствует или неверного типа)',
-  })
-  @ApiResponse({
     status: 401,
     description:
       'Refresh token недействителен, сессия не найдена или не принадлежит ПОЗ',
     schema: {
       oneOf: [
+        {
+          example: {
+            code: 'REFRESH_TOKEN_MISSING',
+          },
+        },
         {
           example: {
             code: 'REFRESH_TOKEN_INVALID',
@@ -194,30 +187,26 @@ export class AuthController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
+  @UseInterceptors(RefreshTokenCookieInterceptor)
   @Post('refresh')
-  async refresh(
-    @Body('refreshToken') refreshToken: string,
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  async refresh(@Req() req: AuthenticatedRequest): Promise<LoginResponse> {
+    const refreshToken: string | undefined = req.cookies?.refreshToken;
+    if (!refreshToken)
+      throw new UnauthorizedException({
+        code: AuthErrorCode.REFRESH_TOKEN_MISSING,
+      });
     const newTokens = await this.authService.refresh(
       refreshToken,
       req.ip,
       req.headers['user-agent'],
     );
 
-    // Обновляем только refreshToken cookie
-    res.cookie('refreshToken', newTokens.refreshToken, {
-      httpOnly: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: 'strict',
-    });
-
     // Access token возвращаем в теле ответа
     return {
       // Пока оставим на этапе разработки для удобство тестирования
       message: 'Token refreshed',
       accessToken: newTokens.accessToken,
+      refreshToken: newTokens.refreshToken,
     };
   }
 

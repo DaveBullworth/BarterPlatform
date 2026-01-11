@@ -71,6 +71,13 @@ export class MailConfirmService {
       throw new BadRequestException('Token has expired');
     }
 
+    if (entity.user.statusEmail) {
+      // Почта уже подтверждена
+      // Можно удалить токен, если он ещё существует, чтобы не оставлять мусор
+      await this.emailConfirmRepo.remove(entity);
+      throw new BadRequestException('Email is already confirmed');
+    }
+
     // Активируем почту пользователя
     entity.user.statusEmail = true;
     await this.emailConfirmRepo.manager.save(entity.user);

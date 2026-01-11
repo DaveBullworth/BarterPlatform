@@ -1,6 +1,6 @@
 // Импортируем необходимые модули NestJS и утилиты
 import { NestFactory } from '@nestjs/core'; // фабрика для запуска приложения Nest
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express'; // расширение Nest для работы с Express
 import { join } from 'path'; // стандартный модуль Node.js для работы с путями
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // инструменты для автогенерации Swagger
@@ -19,12 +19,25 @@ async function bootstrap() {
   // Логирование неотлавливаемых ошибок
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  // 🔐 ГЛОБАЛЬНАЯ ВАЛИДАЦИЯ DTO (ОБЯЗАТЕЛЬНО)
+  // ГЛОБАЛЬНАЯ ВАЛИДАЦИЯ DTO (ОБЯЗАТЕЛЬНО)
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // удаляет лишние поля из body
       forbidNonWhitelisted: true, // кидает 400, если пришли лишние поля
       transform: true, // приводит типы (string → number и т.д.)
+      stopAtFirstError: false, //
+      // кастомная фабрика оишбок валидации
+      exceptionFactory: (errors) => {
+        // расплющивает все ошибки по всем полям в один массив строк
+        const messages = errors.flatMap((err) =>
+          err.constraints ? Object.values(err.constraints) : [],
+        );
+        return new BadRequestException({
+          statusCode: 400,
+          message: messages,
+          error: 'Bad Request',
+        });
+      },
     }),
   );
 

@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 import { CountryEntity } from './country.entity';
 
 // РОЛИ Пользователей
@@ -32,27 +33,46 @@ export enum UserLanguage {
 
 @Entity('users')
 export class UserEntity {
-  // Иденитификатор
+  @ApiProperty({
+    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'Уникальный идентификатор пользователя',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  // Почта
+  @ApiProperty({
+    example: 'user@example.com',
+    description: 'Email пользователя (уникальный)',
+  })
   @Column({ unique: true })
   email: string;
 
-  // Логин
+  @ApiProperty({
+    example: 'john_doe',
+    description: 'Логин пользователя (уникальный)',
+  })
   @Column({ unique: true })
   login: string;
 
-  // Имя (ФИО)
+  @ApiProperty({
+    example: 'John Doe',
+    description: 'Полное имя пользователя',
+  })
   @Column()
   name: string;
 
-  // Пароль (хеш)
+  @ApiProperty({
+    example: 'hashedpassword123',
+    description: 'Хеш пароля пользователя',
+  })
   @Column()
   password: string;
 
-  // Роль
+  @ApiProperty({
+    example: UserRole.USER,
+    description: 'Роль пользователя',
+    enum: UserRole,
+  })
   @Column({
     type: 'enum',
     enum: UserRole,
@@ -60,32 +80,54 @@ export class UserEntity {
   })
   role: UserRole;
 
-  // Статус
+  @ApiProperty({
+    example: true,
+    description: 'Статус активности пользователя',
+  })
   @Column({ type: 'boolean', default: true })
-  status: boolean; // true = активен, false = деактивирован
+  status: boolean;
 
-  // Статус почты
+  @ApiProperty({
+    example: false,
+    description: 'Статус подтверждения email',
+  })
   @Column({ type: 'boolean', default: false })
-  statusEmail: boolean; // true = активен, false = деактивирован
+  statusEmail: boolean;
 
-  // Номер телефона (без кода)
+  @ApiProperty({
+    example: '501234567',
+    description: 'Номер телефона пользователя без кода страны',
+    nullable: true,
+  })
   @Column({ nullable: true })
   phone: string;
 
-  // Страна (внешняя связь 1 к многим)
+  @ApiProperty({
+    type: () => CountryEntity,
+    description: 'Страна пользователя',
+    nullable: true,
+  })
   @ManyToOne(() => CountryEntity, { nullable: true })
   @JoinColumn({ name: 'country_id' })
   country: CountryEntity;
 
-  // Язык (из enum)
+  @ApiProperty({
+    example: UserLanguage.EN,
+    description: 'Язык интерфейса пользователя',
+    enum: UserLanguage,
+  })
   @Column({
     type: 'enum',
     enum: UserLanguage,
-    default: UserLanguage.EN, // по умолчанию английский
+    default: UserLanguage.EN,
   })
   language: UserLanguage;
 
-  // Настройка темы
+  @ApiProperty({
+    example: UserThemes.LIGHT,
+    description: 'Тема интерфейса пользователя',
+    enum: UserThemes,
+  })
   @Column({
     type: 'enum',
     enum: UserThemes,
@@ -93,11 +135,17 @@ export class UserEntity {
   })
   theme: UserThemes;
 
-  // Дата создания
+  @ApiProperty({
+    example: '2026-01-11T10:30:00.000Z',
+    description: 'Дата создания пользователя',
+  })
   @CreateDateColumn()
   createdAt: Date;
 
-  // Дата обновления
+  @ApiProperty({
+    example: '2026-01-11T12:00:00.000Z',
+    description: 'Дата последнего обновления пользователя',
+  })
   @UpdateDateColumn()
   updatedAt: Date;
 }

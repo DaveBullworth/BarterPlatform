@@ -17,10 +17,34 @@ export class GetUsersQueryDto {
 }
 
 export class CountryResponseDto {
+  @ApiProperty({
+    example: '6a8c5b1e-3e42-4e6f-bd22-8b7c2b5c91aa',
+    description: 'Уникальный идентификатор страны',
+  })
   id: string;
+
+  @ApiProperty({
+    example: 'Germany',
+    description: 'Полное название страны',
+  })
   name: string;
+
+  @ApiProperty({
+    example: 'BLR',
+    description: 'Трёхбуквенное обозначение страны',
+  })
   abbreviation: string;
+
+  @ApiProperty({
+    example: 49,
+    description: 'Телефонный код страны',
+  })
   phoneCode: number;
+
+  @ApiPropertyOptional({
+    example: '/icons/flags/de.svg',
+    description: 'Путь к иконке флага страны',
+  })
   iconPath?: string | null;
 }
 

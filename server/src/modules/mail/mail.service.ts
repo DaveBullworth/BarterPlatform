@@ -43,17 +43,22 @@ export class MailService {
     html: string;
   }): Promise<void> {
     // В dev-режиме — логируем письмо в консоль
-    if (process.env.NODE_ENV !== 'production') {
-      this.logger.log(`📧 DEV MAIL → ${options.to}`);
-      this.logger.debug(options.html);
-      return;
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   this.logger.log(`📧 DEV MAIL → ${options.to}`);
+    //   this.logger.debug(options.html);
+    //   return;
+    // }
 
     // В проде — реально отправляем через Nest MailerService
-    await this.mailerService.sendMail({
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-    });
+    try {
+      await this.mailerService.sendMail({
+        from: `"Barter Exchange" <${process.env.EMAIL_USERNAME}>`,
+        to: options.to,
+        subject: options.subject,
+        html: options.html,
+      });
+    } catch (e) {
+      this.logger.error('Email failed', e);
+    }
   }
 }

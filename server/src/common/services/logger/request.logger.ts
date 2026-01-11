@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { AppRequest } from '@/common/interfaces/app-request.interface';
-import { dbLogger } from './logger.scopes';
+import { httpLogger } from './logger.scopes';
 
 export function requestLogger(
   req: AppRequest,
@@ -30,18 +30,18 @@ export function requestLogger(
         },
       };
 
-      dbLogger.info(
+      httpLogger.info(
         `${req.method} ${req.originalUrl} ${res.statusCode} - ${info.durationMs}ms`,
         info,
       );
     } catch (err: unknown) {
       if (err instanceof Error) {
-        dbLogger.error('Failed to log request', {
+        httpLogger.error('Failed to log request', {
           error: err.message,
           stack: err.stack,
         });
       } else {
-        dbLogger.error('Failed to log request', { error: String(err) });
+        httpLogger.error('Failed to log request', { error: String(err) });
       }
     }
   });

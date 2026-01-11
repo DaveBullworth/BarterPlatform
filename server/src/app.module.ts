@@ -9,6 +9,7 @@ import { TypeOrmLogger } from './common/services/logger/typeorm.logger';
 import { MailModule } from './modules/mail/mail.module';
 import { MailConfirmModule } from './modules/mail-confirm/mail-confirm.module';
 import { RedisModule } from './modules/redis/redis.module';
+import { MediaModule } from './modules/media/media.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { RedisModule } from './modules/redis/redis.module';
     MailModule,
     MailConfirmModule,
     RedisModule,
+    MediaModule,
   ],
 })
 export class AppModule {}

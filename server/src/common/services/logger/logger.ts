@@ -13,67 +13,76 @@ const isProd = process.env.NODE_ENV === 'production';
 const logDir = path.join(process.cwd(), 'logs');
 if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
 
+// Фильтр по scope
 const scopeFilter = (allowedScopes: string[]) =>
   winston.format((info: ScopedLogInfo) => {
-    if (!info.scope) return info;
-    if (allowedScopes.includes(info.scope)) return info;
+    // Пропускаем только сообщения с нужным scope
+    if (info.scope && allowedScopes.includes(info.scope)) return info;
     return false;
   })();
+
+// Универсальный формат логов с timestamp
+const logFormat = winston.format.printf((info: ScopedLogInfo) => {
+  const { timestamp, level, message, ...meta } = info as {
+    timestamp: string;
+    level: string;
+    message: string;
+    [key: string]: any;
+  };
+  const metaString = Object.keys(meta).length ? JSON.stringify(meta) : '';
+  return `[${timestamp}] ${level.toUpperCase()}: ${message} ${metaString}`;
+});
 
 export const logger = winston.createLogger({
   level: isProd ? 'info' : 'debug',
   format: winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
-    winston.format.printf((info) => {
-      const { timestamp, level, message, ...meta } = info as {
-        timestamp: string;
-        level: string;
-        message: string;
-        [key: string]: any;
-      };
-
-      const metaString = Object.keys(meta).length ? JSON.stringify(meta) : '';
-      return `[${timestamp}] ${level.toUpperCase()}: ${message} ${metaString}`;
-    }),
   ),
   transports: [
+    // DB
     new DailyRotateFile({
       filename: path.join(logDir, 'db-%DATE%.log'),
       datePattern: 'YYYY-MM-DD',
       level: 'info',
-      format: winston.format.combine(
-        scopeFilter(['db']),
-        winston.format.json(),
-      ),
+      format: winston.format.combine(scopeFilter(['db']), logFormat),
     }),
+
+    // Redis
     new DailyRotateFile({
       filename: path.join(logDir, 'redis-%DATE%.log'),
       datePattern: 'YYYY-MM-DD',
       level: 'debug',
-      format: winston.format.combine(
-        scopeFilter(['redis']),
-        winston.format.json(),
-      ),
+      format: winston.format.combine(scopeFilter(['redis']), logFormat),
     }),
+
+    // HTTP
     new DailyRotateFile({
       filename: path.join(logDir, 'http-%DATE%.log'),
       datePattern: 'YYYY-MM-DD',
       level: 'info',
-      format: winston.format.combine(
-        scopeFilter(['http']),
-        winston.format.json(),
-      ),
+      format: winston.format.combine(scopeFilter(['http']), logFormat),
     }),
+
+    // Error
     new DailyRotateFile({
       filename: path.join(logDir, 'error-%DATE%.log'),
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxFiles: '30d',
       level: 'error',
+      format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+        logFormat,
+      ),
     }),
+
+    // Console
     new winston.transports.Console({
       level: isProd ? 'info' : 'debug',
-      format: winston.format.simple(),
+      format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+        logFormat,
+      ),
     }),
   ],
 });

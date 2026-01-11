@@ -96,6 +96,7 @@ export class UsersService {
     const user = this.userRepo.create({
       email: dto.email,
       login: dto.login,
+      name: dto.name,
       password: passwordHash,
       phone: dto.phone,
       role: UserRole.USER,

@@ -14,7 +14,11 @@ export class AdminUserDto {
   })
   id: string;
 
-  @ApiProperty({ enum: UserRole, description: 'Роль пользователя' })
+  @ApiProperty({
+    enum: UserRole,
+    example: UserRole.USER,
+    description: 'Роль пользователя',
+  })
   role: UserRole;
 
   @ApiProperty({
@@ -97,10 +101,18 @@ export class SelfUserDto {
   })
   country: CountryEntity;
 
-  @ApiProperty({ enum: UserLanguage, description: 'Язык пользователя' })
+  @ApiProperty({
+    enum: UserLanguage,
+    example: UserLanguage.RU,
+    description: 'Язык пользователя',
+  })
   language: UserLanguage;
 
-  @ApiProperty({ enum: UserThemes, description: 'Тема пользователя' })
+  @ApiProperty({
+    enum: UserThemes,
+    example: UserThemes.DARK,
+    description: 'Тема пользователя',
+  })
   theme: UserThemes;
 
   @ApiProperty({

@@ -1,9 +1,9 @@
 import { Logger } from 'typeorm';
-import logger from './logger'; // твой Winston логгер
+import { dbLogger } from './logger.scopes';
 
 export class TypeOrmLogger implements Logger {
   logQuery(query: string, parameters?: any[]) {
-    logger.info(
+    dbLogger.info(
       `SQL QUERY: ${query} -- params: ${JSON.stringify(parameters ?? [])}`,
     );
   }
@@ -20,27 +20,27 @@ export class TypeOrmLogger implements Logger {
   */
 
   logQueryError(error: string | Error, query: string, parameters?: any[]) {
-    logger.error(
+    dbLogger.error(
       `SQL ERROR: ${error} -- query: ${query} -- params: ${JSON.stringify(parameters ?? [])}`,
     );
   }
 
   logQuerySlow(time: number, query: string, parameters?: any[]) {
-    logger.warn(
+    dbLogger.warn(
       `SLOW QUERY (${time}ms): ${query} -- params: ${JSON.stringify(parameters ?? [])}`,
     );
   }
 
   logSchemaBuild(message: string) {
-    logger.info(`SCHEMA BUILD: ${message}`);
+    dbLogger.info(`SCHEMA BUILD: ${message}`);
   }
 
   logMigration(message: string) {
-    logger.info(`MIGRATION: ${message}`);
+    dbLogger.info(`MIGRATION: ${message}`);
   }
 
   log(level: 'log' | 'info' | 'warn', message: any) {
-    if (level === 'warn') logger.warn(message);
-    else logger.info(message);
+    if (level === 'warn') dbLogger.warn(message);
+    else dbLogger.info(message);
   }
 }
