@@ -1,8 +1,12 @@
+import * as path from 'path';
+import * as fs from 'fs/promises';
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
+import { Jimp } from 'jimp';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -11,9 +15,6 @@ import {
   MediaFileVisibility,
 } from '@/database/entities/mediafile.entity';
 import { UserEntity } from '@/database/entities/user.entity';
-import * as fs from 'fs/promises';
-import * as path from 'path';
-import { Jimp } from 'jimp';
 import logger from '@/common/services/logger/logger';
 
 // создаём тип точно для multer
@@ -43,6 +44,7 @@ export class MediaService {
     await fs.mkdir(userDir, { recursive: true });
 
     const filename = 'avatar.png';
+    const filePath = path.join(userDir, filename);
 
     try {
       // читаем изображение
@@ -52,7 +54,7 @@ export class MediaService {
       image.cover({ w: 300, h: 300 });
 
       // сохраняем изображение
-      await image.write(filename);
+      await image.write(filePath as `${string}.png`);
     } catch (err) {
       const status = 500;
       const message = 'Ошибка обработки изображения';
@@ -82,7 +84,7 @@ export class MediaService {
     const media = this.mediaRepository.create({
       type: MediaFileType.AVATAR,
       visibility: MediaFileVisibility.PUBLIC,
-      mimeType: 'image/webp',
+      mimeType: 'image/png',
       size: file.size,
       path: `avatars/${userId}/${filename}`,
       user: { id: userId } as UserEntity,
@@ -92,6 +94,46 @@ export class MediaService {
 
     return {
       message: 'Аватар успешно загружен',
+    };
+  }
+
+  async getUserAvatar(userId: string): Promise<MediaFileEntity | null> {
+    return this.mediaRepository.findOne({
+      where: {
+        user: { id: userId },
+        type: MediaFileType.AVATAR,
+      },
+    });
+  }
+
+  async deleteUserAvatar(userId: string) {
+    const avatar = await this.mediaRepository.findOne({
+      where: {
+        user: { id: userId },
+        type: MediaFileType.AVATAR,
+      },
+    });
+
+    if (!avatar) {
+      throw new NotFoundException('Avatar not found');
+    }
+
+    const filePath = path.join(process.cwd(), 'media', avatar.path);
+
+    try {
+      await fs.unlink(filePath);
+    } catch (err) {
+      // файл мог быть уже удалён — это не критично
+      logger.warn(
+        `Avatar file missing on delete: ${filePath}`,
+        err instanceof Error ? { stack: err.stack } : undefined,
+      );
+    }
+
+    await this.mediaRepository.delete({ id: avatar.id });
+
+    return {
+      message: 'Аватар успешно удалён',
     };
   }
 }
