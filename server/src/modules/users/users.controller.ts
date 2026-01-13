@@ -82,7 +82,7 @@ export class UsersController {
       ],
     },
   })
-  async register(@Body() dto: RegisterUserDto, @Req() req: AppRequest) {
+  register(@Body() dto: RegisterUserDto, @Req() req: AppRequest) {
     return this.usersService.register(dto, req);
   }
 
@@ -131,7 +131,7 @@ export class UsersController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
-  async getAllUsers(@Query() query: GetUsersQueryDto) {
+  getAllUsers(@Query() query: GetUsersQueryDto) {
     return this.usersService.getAll(query.page ?? 1, query.limit ?? 20);
   }
 
@@ -170,7 +170,7 @@ export class UsersController {
       },
     },
   })
-  async getUserById(
+  getUserById(
     // @Param('id') извлекает параметр id из маршрута
     @Param('id') id: string,
     // берём расшифрованный токен с данными пользователя (id, role)
@@ -178,5 +178,37 @@ export class UsersController {
   ) {
     // Вызываем сервис для получения одного пользователя по id
     return this.usersService.getById(id, user);
+  }
+
+  // GET-запрос на 'users/self' для получения пользователя отправившего запрос
+  @Authenticated()
+  @Get('self')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Получение данных текущего пользователя' })
+  @ApiOkResponse({
+    description: 'Текущий пользователь',
+    type: SelfUserDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
+    schema: {
+      example: {
+        code: UserErrorCode.USER_NOT_FOUND,
+        message: 'User not found',
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'Пользователь деактивирован или доступ запрещен',
+    schema: {
+      example: {
+        code: UserErrorCode.USER_DEACTIVATED,
+        message: 'User account is deactivated',
+      },
+    },
+  })
+  getSelf(@CurrentUser() user: JwtPayload) {
+    const { sub: userId } = user;
+    return this.usersService.getById(userId, user);
   }
 }

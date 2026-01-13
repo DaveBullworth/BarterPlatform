@@ -81,6 +81,13 @@ export class SelfUserDto {
   id: string;
 
   @ApiProperty({
+    enum: UserRole,
+    example: UserRole.USER,
+    description: 'Роль пользователя',
+  })
+  role: UserRole;
+
+  @ApiProperty({
     example: 'user@example.com',
     description: 'Email пользователя',
   })
@@ -124,6 +131,7 @@ export class SelfUserDto {
   constructor(user: UserEntity) {
     Object.assign(this, {
       id: user.id,
+      role: user.role,
       email: user.email,
       login: user.login,
       name: user.name,

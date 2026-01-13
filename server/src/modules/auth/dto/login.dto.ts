@@ -19,4 +19,10 @@ export class LoginDto {
   @MinLength(8)
   @MaxLength(60)
   password: string;
+
+  @ApiProperty({
+    example: true,
+    description: 'Запомнить пользователя на долгое время',
+  })
+  remember?: boolean;
 }

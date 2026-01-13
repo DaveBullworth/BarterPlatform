@@ -114,10 +114,14 @@ export class AuthController {
     @Body() body: LoginDto,
     @Req() req: Request,
   ): Promise<LoginResponse> {
+    // по умолчанию false, если не передано
+    const remember = body.remember ?? false;
+
     // Явно закрепляем указанный контракт
     const tokens = await this.authService.login(
       body.loginOrEmail,
       body.password,
+      remember,
       req.ip,
       req.headers['user-agent'],
     );

@@ -261,17 +261,37 @@ barter-platform/
 ├── client/ # Frontend
 │ ├── public/ # Статические файлы (favicon, index.html)
 │ ├── src/
-│ │ ├── assets/ # Картинки, иконки, шрифты
-│ │ ├── components/ # Переиспользуемые React-компоненты
-│ │ ├── layouts/ # Общие layout-компоненты (Header, Footer, AdminLayout)
-│ │ ├── pages/ # Страницы (Login, Registration, AdminPanel, Profile)
-│ │ ├── services/ # API-сервисы для общения с backend
-│ │ ├── hooks/ # Пользовательские хуки
-│ │ ├── store/ # State management (Redux/Context)
-│ │ ├── styles/ # SCSS файлы
-│ │ ├── utils/ # Утилиты, валидаторы, константы
-│ │ └── main.tsx # Точка входа приложения
-│ └── package.json
+│ │ ├── app/
+│ │ │   ├── App.tsx
+│ │ │   ├── providers/
+│ │ │   │   ├── AppProviders.tsx
+│ │ │   │   ├── RouterProvider.tsx
+│ │ │   │   └── MantineProvider.tsx
+│ │ │   │
+│ │ │   ├── routes/
+│ │ │   │   ├── index.tsx
+│ │ │   │   ├── private.routes.tsx
+│ │ │   │   └── public.routes.tsx
+│ │ │   │
+│ │ │   └── layouts/
+│ │ │       ├── PublicLayout.tsx
+│ │ │       └── PrivateLayout.tsx
+│ │ │
+│ │ ├── pages/
+│ │ │   ├── auth/
+│ │ │   │   └── AuthPage.tsx
+│ │ │   └── placeholder/
+│ │ │       └── AuthorizedPage.tsx
+│ │ │
+│ │ ├── shared/
+│ │ │   ├── hooks/
+│ │ │   │   └── useAuth.ts
+│ │ │   ├── store/
+│ │ │   │   └── auth.store.ts
+│ │ │   └── types/
+│ │ │
+│ │ ├── main.tsx
+│ │ └── index.scss
 │
 ├── server/ # Backend
 │ ├── src/

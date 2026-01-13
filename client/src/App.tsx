@@ -1,5 +1,5 @@
-function App() {
-  return <></>;
-}
+import { AppProviders } from './app/providers/AppProviders';
 
-export default App;
+export const App = () => {
+  return <AppProviders />;
+};

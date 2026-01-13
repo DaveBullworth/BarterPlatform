@@ -32,6 +32,7 @@ export class AuthService {
   async login(
     loginOrEmail: string,
     password: string,
+    remember: boolean,
     ip?: string,
     userAgent?: string,
   ) {
@@ -67,11 +68,15 @@ export class AuthService {
     await this.sessionPolicy.assertCanCreateSession(user.id);
 
     // Создаём сессию ПЕРЕД токенами
+    const sessionDuration = remember
+      ? 30 * 24 * 60 * 60 * 1000
+      : 24 * 60 * 60 * 1000; // ms
+
     const session = this.sessionRepo.create({
       user,
       ip,
       userAgent,
-      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      expiresAt: new Date(Date.now() + sessionDuration),
       status: true,
     });
 
@@ -80,7 +85,7 @@ export class AuthService {
 
     // Генерация токенов с SID
     const accessToken = this.generateAccessToken(user, session.id);
-    const refreshToken = this.generateRefreshToken(user, session.id);
+    const refreshToken = this.generateRefreshToken(user, session.id, remember);
 
     // Хешируем refresh и сохраняем в сессию
     session.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
@@ -107,10 +112,13 @@ export class AuthService {
     );
   }
 
-  generateRefreshToken(user: UserEntity, sessionId: string) {
+  generateRefreshToken(user: UserEntity, sessionId: string, remember: boolean) {
     return this.jwtService.sign(
       { sub: user.id, sid: sessionId, login: user.login, role: user.role },
-      { expiresIn: '30d', secret: process.env.REFRESH_TOKEN_SECRET },
+      {
+        expiresIn: remember ? '30d' : '1d',
+        secret: process.env.REFRESH_TOKEN_SECRET,
+      },
     );
   }
 
@@ -156,6 +164,7 @@ export class AuthService {
       const newRefreshToken = this.generateRefreshToken(
         session.user,
         session.id,
+        false,
       );
 
       return { accessToken, refreshToken: newRefreshToken };

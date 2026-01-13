@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "title": "Anmeldung",
+    "login": "Login oder E-Mail",
+    "password": "Passwort",
+    "remember": "Angemeldet bleiben",
+    "forgot": "Passwort vergessen?",
+    "submit": "Anmelden",
+    "register": "Registrieren",
+    "support": "Support"
+  }
+}
