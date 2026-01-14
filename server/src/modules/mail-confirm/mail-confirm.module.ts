@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { MailConfirmService } from './mail-confirm.service';
 import { MailConfirmController } from './mail-confirm.controller';
-import { EmailConfirmationEntity } from '@/database/entities/email_confirmations.entity';
+import { EmailConfirmationEntity } from '@/database/entities/email_confirmation.entity';
 import { MailModule } from '../mail/mail.module';
 import { UserEntity } from '@/database/entities/user.entity';
 

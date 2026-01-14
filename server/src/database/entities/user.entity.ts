@@ -100,14 +100,13 @@ export class UserEntity {
     nullable: true,
   })
   @Column({ nullable: true })
-  phone: string;
+  phone: string | null;
 
   @ApiProperty({
     type: () => CountryEntity,
     description: 'Страна пользователя',
-    nullable: true,
   })
-  @ManyToOne(() => CountryEntity, { nullable: true })
+  @ManyToOne(() => CountryEntity)
   @JoinColumn({ name: 'country_id' })
   country: CountryEntity;
 

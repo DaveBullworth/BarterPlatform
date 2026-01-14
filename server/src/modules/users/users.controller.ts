@@ -1,5 +1,14 @@
 // Импортируем необходимые декораторы и утилиты из NestJS
-import { Controller, Get, Req, Post, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Patch,
+  Req,
+  Post,
+  Body,
+  Param,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -28,6 +37,7 @@ import type { AppRequest } from '@/common/interfaces/app-request.interface';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { UserErrorCode } from './errors/users-error-codes';
 import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
+import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 
 // Декоратор @Controller связывает класс с маршрутом 'users'
 @Controller('users')
@@ -210,5 +220,77 @@ export class UsersController {
   getSelf(@CurrentUser() user: JwtPayload) {
     const { sub: userId } = user;
     return this.usersService.getById(userId, user);
+  }
+
+  @Authenticated()
+  @Patch('self')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Обновление профиля текущего пользователя',
+    description: `
+    Позволяет пользователю обновить свои данные и настройки.
+
+    Можно менять:
+    - login
+    - name
+    - phone (включая null)
+    - country
+    - language
+    - theme
+  `,
+  })
+  @ApiOkResponse({
+    description: 'Профиль обновлён',
+    type: SelfUserDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Ошибка валидации или бизнес-логики',
+    schema: {
+      oneOf: [
+        // --- бизнес-ошибки ---
+        {
+          example: {
+            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+            message: 'Login already in use',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.COUNTRY_NOT_FOUND,
+            message: 'Country not found',
+          },
+        },
+
+        // --- ошибки валидации DTO ---
+        {
+          example: {
+            statusCode: 400,
+            error: 'Bad Request',
+            message: [
+              'login must be longer than or equal to 8 characters',
+              'login must be a string',
+            ],
+          },
+        },
+        {
+          example: {
+            statusCode: 400,
+            error: 'Bad Request',
+            message: ['countryId must be a UUID'],
+          },
+        },
+        {
+          example: {
+            statusCode: 400,
+            error: 'Bad Request',
+            message: ['language must be a valid enum value'],
+          },
+        },
+      ],
+    },
+  })
+  updateSelf(@Body() dto: UpdateSelfUserDto, @CurrentUser() user: JwtPayload) {
+    const { sub: userId } = user;
+    return this.usersService.updateSelf(userId, dto);
   }
 }

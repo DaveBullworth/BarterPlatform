@@ -40,7 +40,7 @@ export class SessionEntity {
     nullable: true,
   })
   @Column({ nullable: true })
-  ip: string;
+  ip: string | null;
 
   @ApiProperty({
     example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)...',
@@ -48,7 +48,7 @@ export class SessionEntity {
     nullable: true,
   })
   @Column({ nullable: true })
-  userAgent: string;
+  userAgent: string | null;
 
   @ApiProperty({
     example: '2026-01-11T10:30:00.000Z',

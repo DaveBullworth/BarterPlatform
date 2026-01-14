@@ -11,4 +11,5 @@ export enum AuthErrorCode {
 export enum SecurityErrorCode {
   TOO_MANY_REQUESTS = 'TOO_MANY_REQUESTS',
   LOGIN_RATE_LIMIT = 'LOGIN_RATE_LIMIT',
+  PASSWORD_RESET_RATE_LIMIT = 'PASSWORD_RESET_RATE_LIMIT',
 }

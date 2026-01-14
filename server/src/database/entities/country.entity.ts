@@ -44,5 +44,5 @@ export class CountryEntity {
     nullable: true,
   })
   @Column({ nullable: true })
-  iconPath: string; // путь до SVG
+  iconPath: string | null; // путь до SVG
 }

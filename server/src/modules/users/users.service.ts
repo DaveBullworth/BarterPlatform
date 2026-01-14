@@ -16,6 +16,7 @@ import {
 import { UserResponseDto } from './dto/getAllUsers.dto';
 import { RegisterUserDto } from '../auth/dto/register.dto';
 import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
+import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 import { AppRequest } from '@/common/interfaces/app-request.interface';
 import { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { CountryEntity } from '@/database/entities/country.entity';
@@ -129,7 +130,7 @@ export class UsersService {
       skip: (page - 1) * limit,
       take: limit,
       order: { createdAt: 'DESC' },
-      relations: ['country'], // 🔹 подгружаем связанные страны
+      relations: ['country'], // подгружаем связанные страны
     });
 
     return {
@@ -148,15 +149,13 @@ export class UsersService {
       status: user.status,
       phone: user.phone,
       createdAt: user.createdAt,
-      country: user.country
-        ? {
-            id: user.country.id,
-            name: user.country.name,
-            abbreviation: user.country.abbreviation,
-            phoneCode: user.country.phoneCode,
-            iconPath: user.country.iconPath ?? null,
-          }
-        : null,
+      country: {
+        id: user.country.id,
+        name: user.country.name,
+        abbreviation: user.country.abbreviation,
+        phoneCode: user.country.phoneCode,
+        iconPath: user.country.iconPath ?? null,
+      },
     };
   }
 
@@ -193,5 +192,75 @@ export class UsersService {
     }
 
     return new PublicUserDto(user);
+  }
+
+  async updateSelf(userId: string, dto: UpdateSelfUserDto) {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: ['country'],
+    });
+
+    if (!user) {
+      throw new NotFoundException({
+        code: UserErrorCode.USER_NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    // --- login ---
+    if (dto.login && dto.login !== user.login) {
+      const exists = await this.userRepo.findOne({
+        where: { login: dto.login },
+      });
+
+      if (exists) {
+        throw new BadRequestException({
+          code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+          message: 'Login already in use',
+        });
+      }
+
+      user.login = dto.login;
+    }
+
+    // --- name ---
+    if (dto.name !== undefined) {
+      user.name = dto.name;
+    }
+
+    // --- phone (null разрешён) ---
+    if (dto.phone !== undefined) {
+      user.phone = dto.phone; // может быть null
+    }
+
+    // --- language ---
+    if (dto.language) {
+      user.language = dto.language;
+    }
+
+    // --- theme ---
+    if (dto.theme) {
+      user.theme = dto.theme;
+    }
+
+    // --- country ---
+    if (dto.countryId !== undefined) {
+      const country = await this.countryRepo.findOne({
+        where: { id: dto.countryId },
+      });
+
+      if (!country) {
+        throw new BadRequestException({
+          code: UserErrorCode.COUNTRY_NOT_FOUND,
+          message: 'Country not found',
+        });
+      }
+
+      user.country = country;
+    }
+
+    await this.userRepo.save(user);
+
+    return new SelfUserDto(user);
   }
 }

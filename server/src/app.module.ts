@@ -10,6 +10,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { MailConfirmModule } from './modules/mail-confirm/mail-confirm.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { MediaModule } from './modules/media/media.module';
+import { PasswordResetModule } from './modules/password-reset/password-reset.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { MediaModule } from './modules/media/media.module';
     MailConfirmModule,
     RedisModule,
     MediaModule,
+    PasswordResetModule,
   ],
 })
 export class AppModule {}

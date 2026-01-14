@@ -103,8 +103,7 @@ export class UserResponseDto {
 
   @ApiPropertyOptional({
     type: () => CountryResponseDto,
-    nullable: true,
     description: 'Страна пользователя',
   })
-  country?: CountryResponseDto | null;
+  country: CountryResponseDto;
 }

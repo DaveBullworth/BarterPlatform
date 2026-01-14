@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
-import { EmailConfirmationEntity } from '@/database/entities/email_confirmations.entity';
+import { EmailConfirmationEntity } from '@/database/entities/email_confirmation.entity';
 import { UserEntity } from '@/database/entities/user.entity';
 import { MailService } from '../mail/mail.service';
 import { EmailConfirmationRateLimitException } from './email-rate-limit.exception';

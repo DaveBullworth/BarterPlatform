@@ -61,4 +61,27 @@ export class MailService {
       this.logger.error('Email failed', e);
     }
   }
+
+  /**
+   * Отправка письма для сброса пароля
+   * @param email - адрес пользователя
+   * @param language - язык пользователя
+   * @param resetUrl - ссылка для сброса пароля
+   */
+  async sendPasswordReset(
+    email: string,
+    language: UserLanguage,
+    resetUrl: string,
+  ): Promise<void> {
+    const template =
+      templates.passwordReset[language] ?? templates.passwordReset.en;
+
+    const html = template.html.replace('{{resetUrl}}', resetUrl);
+
+    await this.sendMail({
+      to: email,
+      subject: template.subject,
+      html,
+    });
+  }
 }
