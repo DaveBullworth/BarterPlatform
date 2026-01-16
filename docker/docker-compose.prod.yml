@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: barter-postgres
+    restart: unless-stopped
+    env_file:
+      - ../server/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: barter-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+      target: prod
+    container_name: barter-server
+    restart: unless-stopped
+    env_file:
+      - ../server/.env
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "3000:3000"
+    command: node dist/main.js
+
+  client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.client
+      target: prod
+    container_name: barter-client
+    restart: unless-stopped
+    env_file:
+      - ../client/.env
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:

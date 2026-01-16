@@ -17,6 +17,8 @@ import { UserResponseDto } from './dto/getAllUsers.dto';
 import { RegisterUserDto } from '../auth/dto/register.dto';
 import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
 import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
+import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
+import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { AppRequest } from '@/common/interfaces/app-request.interface';
 import { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { CountryEntity } from '@/database/entities/country.entity';
@@ -262,5 +264,146 @@ export class UsersService {
     await this.userRepo.save(user);
 
     return new SelfUserDto(user);
+  }
+
+  async adminUpdateUser(userId: string, dto: AdminUpdateUserDto) {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: ['country'],
+    });
+
+    if (!user) {
+      throw new NotFoundException({
+        code: UserErrorCode.USER_NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    if (dto.email && dto.email !== user.email) {
+      const exists = await this.userRepo.findOne({
+        where: { email: dto.email },
+      });
+      if (exists) {
+        throw new BadRequestException({
+          code: UserErrorCode.EMAIL_ALREADY_IN_USE,
+          message: 'Email already in use',
+        });
+      }
+      user.email = dto.email;
+    }
+
+    if (dto.login && dto.login !== user.login) {
+      const exists = await this.userRepo.findOne({
+        where: { login: dto.login },
+      });
+      if (exists) {
+        throw new BadRequestException({
+          code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+          message: 'Login already in use',
+        });
+      }
+      user.login = dto.login;
+    }
+
+    if (dto.password) {
+      user.password = await bcrypt.hash(dto.password, 10);
+    }
+
+    if (dto.name !== undefined) user.name = dto.name;
+    if (dto.status !== undefined) user.status = dto.status;
+    if (dto.statusEmail !== undefined) user.statusEmail = dto.statusEmail;
+    if (dto.role !== undefined) user.role = dto.role;
+    if (dto.phone !== undefined) user.phone = dto.phone;
+
+    if (dto.countryId) {
+      const country = await this.countryRepo.findOne({
+        where: { id: dto.countryId },
+      });
+
+      if (!country) {
+        throw new BadRequestException({
+          code: UserErrorCode.COUNTRY_NOT_FOUND,
+          message: 'Country not found',
+        });
+      }
+
+      user.country = country;
+    }
+
+    await this.userRepo.save(user);
+
+    return new AdminUserDto(user);
+  }
+
+  async deleteUserByAdmin(userId: string) {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException({
+        code: UserErrorCode.USER_NOT_FOUND,
+        message: 'User not found',
+      });
+    }
+
+    await this.userRepo.remove(user);
+
+    return {
+      success: true,
+    };
+  }
+
+  async createUserByAdmin(dto: AdminCreateUserDto) {
+    const emailExists = await this.userRepo.findOne({
+      where: { email: dto.email },
+    });
+
+    if (emailExists) {
+      throw new BadRequestException({
+        code: UserErrorCode.EMAIL_ALREADY_IN_USE,
+        message: 'Email already in use',
+      });
+    }
+
+    const loginExists = await this.userRepo.findOne({
+      where: { login: dto.login },
+    });
+
+    if (loginExists) {
+      throw new BadRequestException({
+        code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+        message: 'Login already in use',
+      });
+    }
+
+    const country = await this.countryRepo.findOne({
+      where: { id: dto.countryId },
+    });
+
+    if (!country) {
+      throw new BadRequestException({
+        code: UserErrorCode.COUNTRY_NOT_FOUND,
+        message: 'Country not found',
+      });
+    }
+
+    const defaultPassword = process.env.DEFAULT_PASSWORD || 'default_password';
+
+    const user = this.userRepo.create({
+      email: dto.email,
+      login: dto.login,
+      name: dto.name,
+      role: dto.role,
+      phone: dto.phone ?? null,
+      country,
+      password: await bcrypt.hash(defaultPassword, 10),
+      status: true,
+      statusEmail: true,
+    });
+
+    await this.userRepo.save(user);
+
+    return new AdminUserDto(user);
   }
 }

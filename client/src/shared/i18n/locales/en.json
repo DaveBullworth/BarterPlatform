@@ -7,6 +7,18 @@
     "forgot": "Forgot password?",
     "submit": "Sign in",
     "register": "Create account",
-    "support": "Support"
+    "support": "Support",
+    "enterValid": "It must be longer than 8 characters",
+    "invalidCredentials": "Invalid login or password",
+    "emailNotConfirmed": "Email not confirmed",
+    "maxSessions": "Maximum number of sessions exceeded",
+    "loginRateLimit": "Too many login attempts",
+    "loginError": "Login error",
+    "serverError": "Server unavailable",
+    "loginPlaceholder": "Enter your login or email",
+    "passwordPlaceholder": "Enter your password",
+    "or": "or",
+    "rateLimitTitle": "Too many requests",
+    "rateLimitMessage": "Please wait {{seconds}} seconds before trying again"
   }
 }

@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import i18n from '@/shared/i18n';
-import { getSelfUser } from '@/http/user';
 import { useTheme } from './useTheme';
-import { setUser, logout } from '@/store/userSlice';
-import { USER_THEMES } from '@/shared/constants/user-theme';
+import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import type { RootState, AppDispatch } from '@/store';
 
 export const useAuth = () => {
@@ -14,64 +11,26 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const bootstrap = async () => {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        setLoading(false);
-        return;
-      }
+    let timeoutId: ReturnType<typeof setTimeout>;
 
-      try {
-        const selfUser = await getSelfUser();
+    const runBootstrap = async () => {
+      const result = await bootstrapUser({
+        dispatch,
+        setColorScheme,
+        onRateLimit: () => {
+          // остаёмся в loading, пробуем снова через 10 секунд
+          timeoutId = setTimeout(runBootstrap, 10000);
+        },
+      });
 
-        // явно маппим DTO → состояние auth
-        dispatch(
-          setUser({
-            id: selfUser.id,
-            login: selfUser.login,
-            role: selfUser.role,
-          }),
-        );
-
-        // язык
-        const storedLang = localStorage.getItem('user-language');
-
-        if (!storedLang) {
-          i18n.changeLanguage(selfUser.language);
-          localStorage.setItem('user-language', selfUser.language);
-        }
-
-        // Тема Mantine
-        if (
-          selfUser.theme &&
-          Object.values(USER_THEMES).includes(selfUser.theme)
-        ) {
-          let mantineTheme: 'light' | 'dark' | 'auto';
-
-          switch (selfUser.theme) {
-            case 'light':
-              mantineTheme = 'light';
-              break;
-            case 'dark':
-              mantineTheme = 'dark';
-              break;
-            case 'system': // system → auto для Mantine
-            default:
-              mantineTheme = 'auto';
-              break;
-          }
-
-          setColorScheme(mantineTheme);
-        }
-      } catch (err) {
-        console.error('Auth bootstrap failed', err);
-        dispatch(logout());
-      } finally {
-        setLoading(false);
-      }
+      if (result !== 'RATE_LIMIT') setLoading(false);
     };
 
-    bootstrap();
+    runBootstrap();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [dispatch, setColorScheme]);
 
   return {

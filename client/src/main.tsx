@@ -5,6 +5,9 @@ import { store } from './store';
 import { AppMantineProvider } from './app/providers/MantineProvider';
 import { App } from './App';
 
+import './app/styles/reset.scss';
+import './app/styles/globals.scss';
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ReduxProvider store={store}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { localStorageColorSchemeManager } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
+import '@mantine/core/styles.css';
 
 type Props = {
   children: React.ReactNode;

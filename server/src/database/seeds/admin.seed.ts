@@ -28,36 +28,34 @@ export async function seedAdmin(dataSource: DataSource) {
     return;
   }
 
-  let country: CountryEntity | null = null;
+  const country = await countryRepo.findOne({
+    where: { abbreviation: adminCountryAbbr },
+  });
 
-  if (adminCountryAbbr) {
-    country = await countryRepo.findOne({
-      where: { abbreviation: adminCountryAbbr },
-    });
-
-    if (!country) {
-      console.warn(
-        `⚠️  Country with abbreviation "${adminCountryAbbr}" not found. Admin will be created without country.`,
-      );
-    }
+  if (!country) {
+    throw new Error(
+      `❌ Country with abbreviation "${adminCountryAbbr}" not found. ` +
+        `Admin user cannot be created without country.`,
+    );
   }
 
   const passwordHash = await bcrypt.hash(adminPassword, 10);
 
-  const admin = userRepo.create({
-    email: adminEmail,
-    login: adminLogin,
-    name: adminName,
-    password: passwordHash,
-    role: UserRole.ADMIN,
-    status: true,
-    statusEmail: true,
-    theme: UserThemes.LIGHT,
-    language: adminLanguage,
-    ...(country ? { country } : {}),
-  });
-
-  await userRepo.save(admin);
+  await userRepo.upsert(
+    {
+      email: adminEmail,
+      login: adminLogin,
+      name: adminName,
+      password: passwordHash,
+      role: UserRole.ADMIN,
+      status: true,
+      statusEmail: true,
+      theme: UserThemes.LIGHT,
+      language: adminLanguage,
+      country,
+    },
+    ['email'],
+  );
 
   console.log('🚀 Admin user created');
 }

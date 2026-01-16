@@ -43,11 +43,11 @@ export class MailService {
     html: string;
   }): Promise<void> {
     // В dev-режиме — логируем письмо в консоль
-    // if (process.env.NODE_ENV !== 'production') {
-    //   this.logger.log(`📧 DEV MAIL → ${options.to}`);
-    //   this.logger.debug(options.html);
-    //   return;
-    // }
+    if (process.env.NODE_ENV !== 'production') {
+      this.logger.log(`📧 DEV MAIL → ${options.to}`);
+      this.logger.debug(options.html);
+      return;
+    }
 
     // В проде — реально отправляем через Nest MailerService
     try {

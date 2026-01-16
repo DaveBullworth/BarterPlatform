@@ -7,6 +7,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   getSchemaPath,
+  ApiExtraModels,
 } from '@nestjs/swagger';
 import { PasswordResetService } from './password-reset.service';
 import { PasswordResetRequestDto } from './dto/passwordResetRequestDto';
@@ -29,6 +30,7 @@ export class PasswordResetController {
       - токен одноразовый и ограничен по времени
     `,
   })
+  @ApiExtraModels(PasswordResetRequestDto)
   @ApiBody({
     description:
       'Email пользователя, на которое будет отправленно письмо со ссылкой для сброса пароля',
@@ -74,6 +76,7 @@ export class PasswordResetController {
       - возвращает 200 даже если токен некорректен
     `,
   })
+  @ApiBody({ type: PasswordResetConfirmDto })
   @ApiOkResponse({
     schema: {
       example: {

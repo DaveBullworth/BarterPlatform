@@ -1,7 +1,10 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { UserEntity } from './entities/user.entity';
-import { CountryEntity } from './entities/country.entity';
+import { entities } from './entities';
+import type { EntitySchema } from 'typeorm';
+
+// Тип для Entity класса
+type EntityClass = { new (...args: any[]): any } | EntitySchema<any> | string;
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -10,6 +13,8 @@ export const AppDataSource = new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: [UserEntity, CountryEntity],
-  synchronize: process.env.NODE_ENV === 'development', // только для dev
+  entities: entities as EntityClass[],
+  migrations: ['dist/database/migrations/*.js'], // для получения папки содержащей миграции
+  // synchronize: false, // для новых миграций через dev контейнер
+  synchronize: process.env.NODE_ENV === 'development',
 });

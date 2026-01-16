@@ -23,8 +23,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.server
-      target: ${BUILD_TARGET}
-    container_name: barter-server
+      target: dev
+    container_name: barter-server-dev
     restart: unless-stopped
     env_file:
       - ../server/.env
@@ -36,8 +36,22 @@ services:
     volumes:
       - ../server:/app
       - /app/node_modules
-      - ../logs:/app/logs
     command: npm run start:dev
+
+  client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.client
+      target: dev
+    container_name: barter-client-dev
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../client:/app
+      - /app/node_modules
+    depends_on:
+      - server
 
 volumes:
   postgres_data:

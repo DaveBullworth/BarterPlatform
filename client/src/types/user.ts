@@ -15,3 +15,14 @@ export interface SelfUserDto {
   theme: UserTheme;
   createdAt: string;
 }
+
+export interface LoginDto {
+  loginOrEmail: string;
+  password: string;
+  remember: boolean;
+}
+
+export interface LoginResponse {
+  message: string;
+  accessToken: string;
+}

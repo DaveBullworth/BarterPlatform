@@ -39,7 +39,7 @@ export class SessionEntity {
     description: 'IP адрес устройства, с которого создана сессия',
     nullable: true,
   })
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   ip: string | null;
 
   @ApiProperty({
@@ -47,7 +47,7 @@ export class SessionEntity {
     description: 'User-agent браузера или устройства',
     nullable: true,
   })
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   userAgent: string | null;
 
   @ApiProperty({

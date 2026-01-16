@@ -37,7 +37,7 @@ $host.interceptors.request.use((config) => {
 
 // Авторизованный хост
 $authHost.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const lng = localStorage.getItem('lng') || USER_LANGUAGES.EN;
 
   if ('set' in config.headers) {
@@ -70,14 +70,14 @@ $authHost.interceptors.response.use(
 
       try {
         // refresh отправляется автоматически с cookie
-        const { data } = await $host.post('/user/refresh');
+        const { data } = await $host.post('/auth/refresh');
 
         // Новый access token
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('accessToken', data.accessToken);
 
         // Повторяем исходный запрос
         if (originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${data.token}`;
+          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         }
 
         return $authHost(originalRequest);

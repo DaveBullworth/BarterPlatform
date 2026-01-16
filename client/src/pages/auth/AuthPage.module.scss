@@ -1,0 +1,9 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  background: var(--mantine-color-body);
+}

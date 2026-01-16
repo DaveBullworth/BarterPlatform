@@ -1,4 +1,10 @@
-import { IsString, MinLength, MaxLength } from 'class-validator';
+import {
+  IsString,
+  MinLength,
+  MaxLength,
+  IsOptional,
+  IsBoolean,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDto {
@@ -24,5 +30,7 @@ export class LoginDto {
     example: true,
     description: 'Запомнить пользователя на долгое время',
   })
+  @IsOptional()
+  @IsBoolean()
   remember?: boolean;
 }

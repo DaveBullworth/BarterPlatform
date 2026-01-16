@@ -10,7 +10,8 @@ export class DeviceMiddleware implements NestMiddleware {
       res.cookie('device_id', uuid, {
         httpOnly: true,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
+        secure: false,
+        // secure: process.env.NODE_ENV === 'production',
         maxAge: 1000 * 60 * 60 * 24 * 365, // 1 год
       });
       req.cookies.device_id = uuid; // чтобы сразу был доступ в запросе

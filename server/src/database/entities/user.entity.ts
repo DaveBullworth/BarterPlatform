@@ -99,7 +99,7 @@ export class UserEntity {
     description: 'Номер телефона пользователя без кода страны',
     nullable: true,
   })
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   phone: string | null;
 
   @ApiProperty({

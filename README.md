@@ -327,36 +327,30 @@ barter-platform/
 
 ### 🔹 DEV режим (разработка, hot-reload)
 
-Файл `docker/.env`:
-
-```env
-BUILD_TARGET=builder
-NODE_ENV=development
-```
-
 Запуск из корня репозитория:
 
 ```bash
-docker compose --env-file docker/.env  -f docker/docker-compose.yml up --build
-```
-
-### 🔹 PROD режим (чистый, минимальный контейнер)
-
-```env
-BUILD_TARGET=prod
-NODE_ENV=production
-```
-
-Запуск из корня репозитория:
-
-```bash
-docker compose  --env-file docker/.env  -f docker/docker-compose.yml  up --build -d
+docker compose -f docker/docker-compose.dev.yml up --build
 ```
 
 Приостановка из корня репозитория:
 
 ```bash
-docker compose -f docker/docker-compose.yml down
+docker compose -f docker/docker-compose.dev.yml down
+```
+
+### 🔹 PROD режим (чистый, минимальный контейнер)
+
+Запуск из корня репозитория:
+
+```bash
+docker compose -f docker/docker-compose.prod.yml  up --build -d
+```
+
+Приостановка из корня репозитория:
+
+```bash
+docker compose -f docker/docker-compose.prod.yml down
 ```
 
 ---

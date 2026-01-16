@@ -5,13 +5,44 @@ import { NestExpressApplication } from '@nestjs/platform-express'; // расши
 import { join } from 'path'; // стандартный модуль Node.js для работы с путями
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; // инструменты для автогенерации Swagger
 import { AppModule } from './app.module'; // главный модуль приложения
+import { AppDataSource } from './database/data-source';
 import { requestLogger } from '@/common/services/logger/request.logger';
 import { AllExceptionsFilter } from '@/common/services/logger/exceptions.logger';
 
+// --- Миграции и сидирование для продакшена ---
+async function prepareDatabase() {
+  if (process.env.NODE_ENV !== 'production') return;
+
+  console.log('📦 Initializing DB for migrations...');
+  await AppDataSource.initialize();
+
+  console.log('📦 Running migrations...');
+  await AppDataSource.runMigrations();
+
+  if (process.env.SEED === 'true') {
+    console.log('🌱 Running seeds automatically in prod...');
+    const seedModule = await import('./database/seed.js');
+    await seedModule.runSeeds();
+  }
+
+  console.log('✅ Database ready');
+}
+
 async function bootstrap() {
+  // Подготовка базы данных (миграции + сиды) до старта приложения
+  await prepareDatabase();
+
   // Создаём экземпляр приложения NestJS, используя Express
   // Тип <NestExpressApplication> нужен, чтобы использовать методы Express, например useStaticAssets
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Поддержка CORS для потока запросов между разными доменами
+  app.enableCors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
 
   // HTTP request logging
   app.use(requestLogger);

@@ -43,6 +43,6 @@ export class CountryEntity {
     description: 'Относительный путь к SVG-иконке флага страны',
     nullable: true,
   })
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   iconPath: string | null; // путь до SVG
 }

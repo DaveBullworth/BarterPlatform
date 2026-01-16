@@ -7,6 +7,18 @@
     "forgot": "Passwort vergessen?",
     "submit": "Anmelden",
     "register": "Registrieren",
-    "support": "Support"
+    "support": "Support",
+    "enterValid": "Muss 8 Zeichen lang sein",
+    "invalidCredentials": "Ungültiger Benutzername oder Passwort",
+    "emailNotConfirmed": "E-Mail nicht bestätigt",
+    "maxSessions": "Maximale Anzahl von Sitzungen überschritten",
+    "loginRateLimit": "Zu viele Anmeldeversuche",
+    "loginError": "Anmeldefehler",
+    "serverError": "Server nicht verfügbar",
+    "loginPlaceholder": "Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",
+    "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+    "or": "oder",
+    "rateLimitTitle": "Zu viele Anfragen",
+    "rateLimitMessage": "Bitte warten Sie {{seconds}} Sekunden, bevor Sie es erneut versuchen"
   }
 }

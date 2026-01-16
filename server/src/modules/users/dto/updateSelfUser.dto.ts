@@ -30,7 +30,7 @@ export class UpdateSelfUserDto {
   })
   @IsOptional()
   @IsUUID()
-  countryId: string;
+  countryId?: string;
 
   @ApiPropertyOptional({
     enum: UserLanguage,

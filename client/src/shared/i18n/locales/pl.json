@@ -7,6 +7,18 @@
     "forgot": "Nie pamiętasz hasła?",
     "submit": "Zaloguj się",
     "register": "Rejestracja",
-    "support": "Wsparcie"
+    "support": "Wsparcie",
+    "enterValid": "Musi mieć długość 8 znaków",
+    "invalidCredentials": "Nieprawidłowy login lub hasło",
+    "emailNotConfirmed": "Email nie został potwierdzony",
+    "maxSessions": "Przekroczono maksymalną liczbę sesji",
+    "loginRateLimit": "Zbyt wiele prób logowania",
+    "loginError": "Błąd logowania",
+    "serverError": "Serwer niedostępny",
+    "loginPlaceholder": "Wprowadź swój login lub email",
+    "passwordPlaceholder": "Wprowadź swoje hasło",
+    "or": "lub",
+    "rateLimitTitle": "Za dużo żądań",
+    "rateLimitMessage": "Proszę poczekać {{seconds}} sekund przed ponowną próbą"
   }
 }
