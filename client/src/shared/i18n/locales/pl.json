@@ -11,14 +11,17 @@
     "enterValid": "Musi mieć długość 8 znaków",
     "invalidCredentials": "Nieprawidłowy login lub hasło",
     "emailNotConfirmed": "Email nie został potwierdzony",
-    "maxSessions": "Przekroczono maksymalną liczbę sesji",
-    "loginRateLimit": "Zbyt wiele prób logowania",
+    "maxSessionsExceeded": "Przekroczono limit sesji (maks: {{max}})",
+    "loginRateLimit": "Przekroczono limit żądań. Proszę poczekać 10 sekund.",
+    "loginBruteforce": "Zbyt wiele prób logowania. Proszę poczekać od 15 minut do godziny.",
     "loginError": "Błąd logowania",
     "serverError": "Serwer niedostępny",
     "loginPlaceholder": "Wprowadź swój login lub email",
     "passwordPlaceholder": "Wprowadź swoje hasło",
     "or": "lub",
     "rateLimitTitle": "Za dużo żądań",
-    "rateLimitMessage": "Proszę poczekać {{seconds}} sekund przed ponowną próbą"
+    "rateLimitMessage": "Proszę poczekać {{seconds}} sekund przed ponowną próbą",
+    "signin": "Zaloguj się",
+    "copied": "skopiowane"
   }
 }

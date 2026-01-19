@@ -1,8 +1,10 @@
 import React from 'react';
+import { Notifications } from '@mantine/notifications';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { localStorageColorSchemeManager } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 type Props = {
   children: React.ReactNode;
@@ -27,6 +29,7 @@ export const AppMantineProvider = ({ children }: Props) => {
       withCssVariables
       withGlobalClasses
     >
+      <Notifications />
       <DatesProvider settings={{ locale: lang }}>{children}</DatesProvider>
     </MantineProvider>
   );

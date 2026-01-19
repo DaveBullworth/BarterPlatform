@@ -1,11 +1,12 @@
 import type { PropsWithChildren } from 'react';
 import { useAuth } from '@/shared/hooks/useAuth';
+import { FullPageLoader } from '@/shared/ui/FullPageLoader';
 
 export const AuthBootstrap = ({ children }: PropsWithChildren) => {
-  const { loading } = useAuth();
+  const { loading, loadingReason, retryIn } = useAuth();
 
   if (loading) {
-    return null; // или <FullPageLoader />
+    return <FullPageLoader reason={loadingReason} retryIn={retryIn} />;
   }
 
   return children;

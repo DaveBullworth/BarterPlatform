@@ -11,14 +11,17 @@
     "enterValid": "It must be longer than 8 characters",
     "invalidCredentials": "Invalid login or password",
     "emailNotConfirmed": "Email not confirmed",
-    "maxSessions": "Maximum number of sessions exceeded",
-    "loginRateLimit": "Too many login attempts",
+    "maxSessionsExceeded": "Maximum sessions exceeded (max: {{max}})",
+    "loginRateLimit": "Rate limit exceeded. Please wait 10 seconds.",
+    "loginBruteforce": "Too many login attempts. Please wait 15 minutes to 1 hour.",
     "loginError": "Login error",
     "serverError": "Server unavailable",
     "loginPlaceholder": "Enter your login or email",
     "passwordPlaceholder": "Enter your password",
     "or": "or",
     "rateLimitTitle": "Too many requests",
-    "rateLimitMessage": "Please wait {{seconds}} seconds before trying again"
+    "rateLimitMessage": "Please wait {{seconds}} seconds before trying again",
+    "signin": "Sign in",
+    "copied": "copied"
   }
 }

@@ -10,15 +10,18 @@ import {
   Divider,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { showNotification } from '@mantine/notifications';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import type { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
+import { notify } from '@/shared/utils/notifications';
 import { SupportPopover } from './SupportPopover';
 import { useTheme } from '@/shared/hooks/useTheme';
 import { loginUser } from '@/http/user';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
+import { handleApiError } from '@/shared/utils/handleApiError';
 import type { AppDispatch } from '@/store';
+import type { ApiErrorData } from '@/types/error';
 
 type LoginFormValues = {
   login: string;
@@ -63,17 +66,36 @@ export const LoginForm = () => {
         onRateLimit: () => {
           setBlockTimer(10); // блок на 10 секунд
 
-          showNotification({
+          notify({
             title: t('auth.rateLimitTitle'),
             message: t('auth.rateLimitMessage', { seconds: 10 }),
             color: 'yellow',
+            position: 'bottom-right',
+            loading: true,
           });
         },
       });
 
       if (result !== 'RATE_LIMIT') navigate('/');
     } catch (err) {
-      console.error(err);
+      const axiosError = err as AxiosError<ApiErrorData>;
+
+      // Проверяем, что это ошибка с ответом от сервера
+      if (axiosError.response?.data) {
+        const data = axiosError.response.data;
+
+        // Блокируем кнопку только для LOGIN_RATE_LIMIT
+        if (data.code === 'LOGIN_RATE_LIMIT') {
+          const isBruteforce = data.meta?.isBruteforce ?? false;
+
+          // Таймер в секундах: 10 для обычного rate-limit, 15 минут для brute-force
+          const seconds = isBruteforce ? 15 * 60 : 10;
+          setBlockTimer(seconds);
+        }
+      }
+
+      // Показываем уведомление в любом случае
+      handleApiError(err, t, { defaultMessage: t('auth.loginFailed') });
     }
   };
 

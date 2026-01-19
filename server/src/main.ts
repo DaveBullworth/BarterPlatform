@@ -36,6 +36,9 @@ async function bootstrap() {
   // Тип <NestExpressApplication> нужен, чтобы использовать методы Express, например useStaticAssets
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Для получения реального ip из запросов
+  app.set('trust proxy', true);
+
   // Поддержка CORS для потока запросов между разными доменами
   app.enableCors({
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],

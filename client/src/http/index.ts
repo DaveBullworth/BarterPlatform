@@ -10,6 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 // Публичные запросы
 const $host = axios.create({
   baseURL: API_URL,
+  withCredentials: true, // для получения device_id из куки
 });
 
 // Авторизованные запросы

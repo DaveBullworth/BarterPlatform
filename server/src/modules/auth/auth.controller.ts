@@ -6,7 +6,6 @@ import {
   UseInterceptors,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { Request } from 'express';
 import {
   ApiTags,
   ApiOperation,
@@ -17,6 +16,7 @@ import {
   ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import type { RequestLogin } from '@/common/interfaces/login-request.interface';
 import type { AuthenticatedRequest } from '@/common/interfaces/auth-request.interface';
 import type { LoginResponse } from './interfaces/loginResponse.interface';
 import { Authenticated } from './auth.decorator';
@@ -112,7 +112,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() body: LoginDto,
-    @Req() req: Request,
+    @Req() req: RequestLogin,
   ): Promise<LoginResponse> {
     // по умолчанию false, если не передано
     const remember = body.remember ?? false;
@@ -122,7 +122,8 @@ export class AuthController {
       body.loginOrEmail,
       body.password,
       remember,
-      req.ip,
+      req.clientIp,
+      req.cookies.device_id,
       req.headers['user-agent'],
     );
 

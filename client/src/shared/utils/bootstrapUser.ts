@@ -16,7 +16,9 @@ export const bootstrapUser = async ({
   onRateLimit,
 }: BootstrapOptions & { onRateLimit?: () => void }) => {
   const token = localStorage.getItem('accessToken');
-  if (!token) return; // нет токена → ничего не делаем
+  if (!token) {
+    return 'NO_TOKEN';
+  }
 
   try {
     const selfUser = await getSelfUser();
@@ -58,17 +60,19 @@ export const bootstrapUser = async ({
       }
       setColorScheme(mantineTheme);
     }
+
+    return 'OK';
   } catch (error: unknown) {
     // Проверяем, что это rate-limit тогда просто тихо выходим и ждём
     if (isAxiosError(error) && error.response?.status === 429) {
       console.warn('Rate limit hit during bootstrapUser');
       onRateLimit?.();
-      return 'RATE_LIMIT' as const;
+      return 'RATE_LIMIT';
     }
 
     console.error('Bootstrap user failed', error);
     dispatch(logout());
-    return null;
+    return 'ERROR';
   }
 };
 

@@ -11,14 +11,17 @@
     "enterValid": "Должен быть длине 8 символов",
     "invalidCredentials": "Неверный логин или пароль",
     "emailNotConfirmed": "Email не подтвержден",
-    "maxSessions": "Превышен лимит сессий",
-    "loginRateLimit": "Слишком много попыток входа",
+    "maxSessionsExceeded": "Превышен лимит сессий (макс: {{max}})",
+    "loginRateLimit": "Превышен лимит запросов. Подождите 10 секунд.",
+    "loginBruteforce": "Слишком много попыток входа. Подождите от 15 минут до часа.",
     "loginError": "Ошибка входа",
     "serverError": "Сервер недоступен",
     "loginPlaceholder": "Введите свой Логин или Почту",
     "passwordPlaceholder": "Введите свой Пароль",
     "or": "или",
     "rateLimitTitle": "Слишком много запросов",
-    "rateLimitMessage": "Подождите {{seconds}} секунд перед повторной попыткой"
+    "rateLimitMessage": "Подождите {{seconds}} секунд перед повторной попыткой",
+    "signin": "Войти",
+    "copied": "скопировано"
   }
 }

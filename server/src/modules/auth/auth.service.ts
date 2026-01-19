@@ -34,10 +34,15 @@ export class AuthService {
     password: string,
     remember: boolean,
     ip?: string,
+    deviceId?: string,
     userAgent?: string,
   ) {
     // БРУТФОРС - проверяем лимит ДО ВСЕГО
-    await this.loginBruteforcePolicy.assertCanTry(loginOrEmail);
+    await this.loginBruteforcePolicy.assertCanTry({
+      loginOrEmail,
+      deviceId,
+      ip,
+    });
 
     const user = await this.userRepo.findOne({
       where: [{ email: loginOrEmail }, { login: loginOrEmail }],
@@ -46,7 +51,11 @@ export class AuthService {
     // Не разделяем ошибки в целях безопасности
     if (!user || !(await bcrypt.compare(password, user.password))) {
       // БРУТФОРС - если ошибка — регистрируем фейл
-      await this.loginBruteforcePolicy.registerFailure(loginOrEmail);
+      await this.loginBruteforcePolicy.registerFailure({
+        loginOrEmail,
+        deviceId,
+        ip,
+      });
 
       throw new UnauthorizedException({
         code: AuthErrorCode.INVALID_CREDENTIALS,
@@ -62,7 +71,17 @@ export class AuthService {
     }
 
     // БРУТФОРС - успех → сбрасываем счётчик
-    await this.loginBruteforcePolicy.reset(loginOrEmail);
+    await this.loginBruteforcePolicy.reset({ deviceId, ip });
+
+    // ===== ИЩЕМ СУЩЕСТВУЮ СЕССИЮ С ЭТОГО УСТРОЙСТВА =====
+    const existingSession = await this.sessionRepo.findOne({
+      where: {
+        user: { id: user.id },
+        status: true,
+        deviceId,
+        userAgent,
+      },
+    });
 
     // Проверка ограничения по кол-ву одновременных сессий
     await this.sessionPolicy.assertCanCreateSession(user.id);
@@ -72,26 +91,53 @@ export class AuthService {
       ? 30 * 24 * 60 * 60 * 1000
       : 24 * 60 * 60 * 1000; // ms
 
+    // ===== ПЕРЕИСПОЛЬЗОВАНИЕ =====
+    if (existingSession) {
+      existingSession.expiresAt = new Date(Date.now() + sessionDuration);
+
+      const accessToken = this.generateAccessToken(user, existingSession.id);
+      const refreshToken = this.generateRefreshToken(
+        user,
+        existingSession.id,
+        remember,
+      );
+
+      existingSession.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
+      await this.sessionRepo.save(existingSession);
+
+      await this.redisService.setSession(
+        existingSession.id,
+        {
+          userId: user.id,
+          active: true,
+          expiresAt: existingSession.expiresAt.getTime(),
+        },
+        30 * 24 * 60 * 60,
+      );
+
+      return { accessToken, refreshToken };
+    }
+
+    // ===== НОВАЯ СЕССИЯ =====
+    await this.sessionPolicy.assertCanCreateSession(user.id);
+
     const session = this.sessionRepo.create({
       user,
       ip,
       userAgent,
+      deviceId,
       expiresAt: new Date(Date.now() + sessionDuration),
       status: true,
     });
 
-    // СОХРАНЯЕМ → теперь есть session.id
     await this.sessionRepo.save(session);
 
-    // Генерация токенов с SID
     const accessToken = this.generateAccessToken(user, session.id);
     const refreshToken = this.generateRefreshToken(user, session.id, remember);
 
-    // Хешируем refresh и сохраняем в сессию
     session.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
     await this.sessionRepo.save(session);
 
-    // Записываем инфу о сессии в Redis
     await this.redisService.setSession(
       session.id,
       {

@@ -1,8 +1,9 @@
 import { Select } from '@mantine/core';
-import i18n from '@/shared/i18n';
+import { useTranslation } from 'react-i18next';
 import { USER_LANGUAGES } from '@/shared/constants/user-language.ts';
 
 export const LanguageSwitcher = () => {
+  const { i18n } = useTranslation();
   const changeLanguage = (value: string | null) => {
     if (!value) return;
     i18n.changeLanguage(value);

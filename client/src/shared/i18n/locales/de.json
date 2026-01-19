@@ -11,14 +11,17 @@
     "enterValid": "Muss 8 Zeichen lang sein",
     "invalidCredentials": "Ungültiger Benutzername oder Passwort",
     "emailNotConfirmed": "E-Mail nicht bestätigt",
-    "maxSessions": "Maximale Anzahl von Sitzungen überschritten",
-    "loginRateLimit": "Zu viele Anmeldeversuche",
+    "maxSessionsExceeded": "Maximale Sitzungen überschritten (max: {{max}})",
+    "loginRateLimit": "Limit für Anfragen überschritten. Bitte 10 Sekunden warten.",
+    "loginBruteforce": "Zu viele Anmeldeversuche. Bitte 15 Minuten bis 1 Stunde warten.",
     "loginError": "Anmeldefehler",
     "serverError": "Server nicht verfügbar",
     "loginPlaceholder": "Geben Sie Ihren Benutzernamen oder Ihre E-Mail ein",
     "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
     "or": "oder",
     "rateLimitTitle": "Zu viele Anfragen",
-    "rateLimitMessage": "Bitte warten Sie {{seconds}} Sekunden, bevor Sie es erneut versuchen"
+    "rateLimitMessage": "Bitte warten Sie {{seconds}} Sekunden, bevor Sie es erneut versuchen",
+    "signin": "Anmelden",
+    "copied": "kopiert"
   }
 }
