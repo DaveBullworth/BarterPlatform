@@ -29,6 +29,7 @@ export const handleApiError = (
       const data = axiosError.response.data as ApiErrorData;
 
       switch (data.code) {
+        /** AUTH */
         case 'INVALID_CREDENTIALS':
           message = t('auth.invalidCredentials');
           color = 'yellow';
@@ -56,6 +57,23 @@ export const handleApiError = (
             loading = true;
           }
           break;
+
+        /** REGISTRATION */
+        case 'EMAIL_ALREADY_IN_USE':
+          message = t('auth.emailAlreadyInUse');
+          color = 'yellow';
+          break;
+
+        case 'LOGIN_ALREADY_IN_USE':
+          message = t('auth.loginAlreadyInUse');
+          color = 'yellow';
+          break;
+
+        case 'COUNTRY_NOT_FOUND':
+          message = t('auth.countryNotFound');
+          color = 'yellow';
+          break;
+
         default:
           message = data.message || message;
           color = 'red';

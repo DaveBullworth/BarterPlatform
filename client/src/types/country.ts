@@ -2,6 +2,6 @@ export interface Country {
   id: string;
   name: string;
   abbreviation: string;
-  phoneCode: string;
+  phoneCode: number;
   iconPath: string | null;
 }

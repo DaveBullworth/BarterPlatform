@@ -1,4 +1,5 @@
 import { Center, Stack, Loader, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import type { LoadingReason } from '@/types/common';
 
 interface FullPageLoaderProps {
@@ -7,14 +8,14 @@ interface FullPageLoaderProps {
 }
 
 export const FullPageLoader = ({ reason, retryIn }: FullPageLoaderProps) => {
+  const { t } = useTranslation();
+
   return (
     <Center h="100vh">
       <Stack align="center" gap="sm">
         {reason === 'RATE_LIMIT' && (
           <Text size="sm" c="dimmed" ta="center">
-            Превышен лимит запросов.
-            <br />
-            Пожалуйста, подождите…
+            {t('auth.loginRateLimit')}
           </Text>
         )}
 

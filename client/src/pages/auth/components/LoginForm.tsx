@@ -20,8 +20,13 @@ import { useTheme } from '@/shared/hooks/useTheme';
 import { loginUser } from '@/http/user';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import { handleApiError } from '@/shared/utils/handleApiError';
+import { createLengthValidator } from '@/shared/utils/validators';
 import type { AppDispatch } from '@/store';
 import type { ApiErrorData } from '@/types/error';
+
+type LoginFormProps = {
+  onRegister: () => void;
+};
 
 type LoginFormValues = {
   login: string;
@@ -29,7 +34,7 @@ type LoginFormValues = {
   remember: boolean;
 };
 
-export const LoginForm = () => {
+export const LoginForm = ({ onRegister }: LoginFormProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { setColorScheme } = useTheme();
@@ -43,10 +48,14 @@ export const LoginForm = () => {
       remember: true,
     },
     validate: {
-      login: (v) =>
-        v.length < 8 ? t('auth.login') + ' ' + t('auth.enterValid') : null,
-      password: (v) =>
-        v.length < 8 ? t('auth.password') + ' ' + t('auth.enterValid') : null,
+      login: createLengthValidator(t, 'auth.login', {
+        min: 8,
+        max: 60,
+      }),
+      password: createLengthValidator(t, 'auth.password', {
+        min: 8,
+        max: 60,
+      }),
     },
   });
 
@@ -114,8 +123,8 @@ export const LoginForm = () => {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="sm">
         <TextInput
-          label={t('auth.login')}
-          placeholder={t('auth.loginPlaceholder')}
+          label={t('auth.loginOrEmail')}
+          placeholder={t('auth.loginOrEmailPlaceholder')}
           required
           {...form.getInputProps('login')}
         />
@@ -149,7 +158,12 @@ export const LoginForm = () => {
         <Group justify="space-between">
           <SupportPopover />
 
-          <Anchor size="sm" component="button" type="button">
+          <Anchor
+            size="sm"
+            component="button"
+            type="button"
+            onClick={onRegister}
+          >
             {t('auth.register')}
           </Anchor>
         </Group>

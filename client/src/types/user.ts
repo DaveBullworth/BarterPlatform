@@ -26,3 +26,16 @@ export interface LoginResponse {
   message: string;
   accessToken: string;
 }
+
+export interface RegisterUserDto {
+  email: string;
+  login: string;
+  name: string;
+  password: string;
+  phone?: string;
+  countryId: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+}

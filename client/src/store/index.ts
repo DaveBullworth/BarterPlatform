@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
+import countriesReducer from './countriesSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    countries: countriesReducer,
     // сюда потом добавим ui, lots, chat и т.д.
   },
 });

@@ -1,22 +1,33 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Container, Stack, Title, Card } from '@mantine/core';
 import { LoginForm } from './components/LoginForm';
+import { RegisterScreen } from './components/RegisterScreen';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+
+import styles from './AuthPage.module.scss';
+
+type AuthMode = 'login' | 'register';
 
 export const AuthPage = () => {
   const { t } = useTranslation();
+  const [mode, setMode] = useState<AuthMode>('login');
 
   return (
-    <Container size={420} my="auto">
-      <Stack gap="md">
+    <Container size={420} my="auto" className={styles.container}>
+      <Stack gap="md" className={styles.stack}>
         <LanguageSwitcher />
 
-        <Card withBorder radius="md" p="lg">
+        <Card withBorder radius="md" p="lg" className={styles.card}>
           <Title order={3} ta="center" mb="md">
-            {t('auth.signin')}
+            {mode === 'login' ? t('auth.signin') : t('auth.registration')}
           </Title>
 
-          <LoginForm />
+          {mode === 'login' ? (
+            <LoginForm onRegister={() => setMode('register')} />
+          ) : (
+            <RegisterScreen onBackToLogin={() => setMode('login')} />
+          )}
         </Card>
       </Stack>
     </Container>

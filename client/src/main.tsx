@@ -7,6 +7,7 @@ import { App } from './App';
 
 import './app/styles/reset.scss';
 import './app/styles/globals.scss';
+import './app/styles/variables.scss';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

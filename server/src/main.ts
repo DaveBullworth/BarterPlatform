@@ -1,4 +1,5 @@
 // Импортируем необходимые модули NestJS и утилиты
+import { cwd } from 'process';
 import { NestFactory } from '@nestjs/core'; // фабрика для запуска приложения Nest
 import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express'; // расширение Nest для работы с Express
@@ -77,7 +78,7 @@ async function bootstrap() {
 
   // Подключаем папку с публичными статическими файлами
   // Все файлы в 'public' будут доступны напрямую по URL, например: http://localhost:3000/logo.svg
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useStaticAssets(join(cwd(), 'public'));
 
   // Настраиваем Swagger (OpenAPI) для автогенерации документации
   const config = new DocumentBuilder()

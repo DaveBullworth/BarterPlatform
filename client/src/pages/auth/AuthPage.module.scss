@@ -1,9 +1,17 @@
 .container {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   align-items: center;
+  .stack {
+    width: 100%;
+    .card {
+      width: 100%;
+      background: var(--mantine-color-body);
+    }
+  }
 }
 
-.card {
-  background: var(--mantine-color-body);
+.country_image {
+  border: 1px solid black;
 }
