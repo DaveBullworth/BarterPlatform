@@ -31,7 +31,7 @@ export const notify = ({
   message,
   color,
   icon,
-  autoClose = 3000,
+  autoClose,
   position = 'top-center',
   loading,
   loaderProps,

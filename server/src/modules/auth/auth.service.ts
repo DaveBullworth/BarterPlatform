@@ -67,6 +67,9 @@ export class AuthService {
       // НЕ регистрируем brute-force фейл и НЕ сбрасываем счётчик
       throw new ForbiddenException({
         code: AuthErrorCode.EMAIL_NOT_CONFIRMED,
+        meta: {
+          loginOrEmail,
+        },
       });
     }
 

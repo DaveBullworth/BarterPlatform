@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from './useTheme';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import type { RootState, AppDispatch } from '@/store';
-import type { LoadingReason } from '@/types/common';
+import type { LoadingReason, BootstrapResult } from '@/types/common';
 
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,7 +46,7 @@ export const useAuth = () => {
       setLoading(true);
       setLoadingReason('BOOTSTRAP');
 
-      const result = await bootstrapUser({
+      const result: BootstrapResult = await bootstrapUser({
         dispatch,
         setColorScheme: setColorSchemeRef.current,
       });

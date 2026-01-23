@@ -43,7 +43,33 @@
     "loginAlreadyInUse": "Der Benutzername ist bereits vergeben",
     "countryNotFound": "Das ausgewählte Land wurde nicht gefunden",
     "registrationSuccess": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet. Bitte bestätigen Sie diese, um die Registrierung abzuschließen.",
-    "registrationFailed": "Die Registrierung ist fehlgeschlagen. Bitte versuchen Sie es später erneut."
+    "registrationFailed": "Die Registrierung ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+    "resend": "Erneut senden",
+    "confirmEmailResent": "Bestätigungs-E-Mail wurde erneut gesendet",
+    "emailAlreadyConfirmed": "Die E-Mail-Adresse ist bereits bestätigt",
+    "resendRateLimit": "Sie können in {{hours}} Std. eine neue E-Mail anfordern",
+    "userNotFound": "Benutzer nicht gefunden",
+    "forgotPasswordText": "Geben Sie Ihre E-Mail ein, um einen Link zum Zurücksetzen des Passworts zu erhalten.",
+    "send": "Senden",
+    "close": "Schließen",
+    "passwordResetSent": "E-Mail zum Zurücksetzen des Passworts gesendet",
+    "passwordResetAlreadyRequested": "Sie können eine neue Passwortzurücksetzung in {{hours}} Stunde(n) anfordern",
+    "passwordResetRateLimit": "Der Schwellenwert für das Zurücksetzen des Kennworts innerhalb eines Tages wurde überschritten!"
+  },
+  "validation": {
+    "required": "Das Feld „{{field}}“ ist erforderlich",
+    "minLength": "Das Feld „{{field}}“ muss mindestens {{min}} Zeichen enthalten",
+    "maxLength": "Das Feld „{{field}}“ darf höchstens {{max}} Zeichen enthalten",
+    "invalidEmail": "Ungültige E-Mail-Adresse"
+  },
+  "mailConfirm": {
+    "loading": "E-Mail wird bestätigt…",
+    "successTitle": "E-Mail bestätigt",
+    "successText": "Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Sie können sich jetzt anmelden.",
+    "redirect": "Sie werden in Kürze zur Anmeldeseite weitergeleitet",
+    "errorTitle": "Bestätigungsfehler",
+    "errorText": "Die E-Mail konnte nicht bestätigt werden. Der Link ist möglicherweise abgelaufen.",
+    "noToken": "Bestätigungstoken fehlt"
   },
   "countries": {
     "AFG": "Afghanistan",

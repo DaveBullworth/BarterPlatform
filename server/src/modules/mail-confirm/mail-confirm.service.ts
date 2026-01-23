@@ -2,7 +2,6 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as crypto from 'crypto';
-import { ConfigService } from '@nestjs/config';
 import { EmailConfirmationEntity } from '@/database/entities/email_confirmation.entity';
 import { UserEntity } from '@/database/entities/user.entity';
 import { MailService } from '../mail/mail.service';
@@ -17,9 +16,6 @@ export class MailConfirmService {
 
     // Сервис отправки писем
     private readonly mailService: MailService,
-
-    // Для доступа к конфигу приложения (например, базовый URL)
-    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -41,13 +37,9 @@ export class MailConfirmService {
     });
     await this.emailConfirmRepo.save(emailToken);
 
-    // 🔹 Формируем ссылку подтверждения динамически через конфиг
-    // Вместо захардкода используем BASE_URL из env
-    const baseUrl =
-      this.configService.get<string>('BASE_URL') ?? 'http://localhost:3000';
-    const confirmUrl = `${baseUrl}/mail-confirm/confirm-email?token=${token}`;
+    const confirmUrl = `${process.env.FRONTEND_URL}/mail-confirm?token=${token}`;
 
-    // 🔹 Отправляем письмо пользователю через MailService
+    // Отправляем письмо пользователю через MailService
     await this.mailService.sendEmailConfirmation(
       user.email,
       user.language,

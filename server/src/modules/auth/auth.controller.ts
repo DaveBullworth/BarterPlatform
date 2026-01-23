@@ -79,6 +79,9 @@ export class AuthController {
     schema: {
       example: {
         code: 'EMAIL_NOT_CONFIRMED',
+        meta: {
+          loginOrEmail: 'user@example.com',
+        },
       },
     },
   })

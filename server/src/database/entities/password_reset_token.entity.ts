@@ -50,14 +50,6 @@ export class PasswordResetTokenEntity {
   used: boolean;
 
   @ApiProperty({
-    example: 0,
-    description:
-      'Количество неудачных попыток использования токена (защита от brute-force)',
-  })
-  @Column({ default: 0 })
-  attempts: number;
-
-  @ApiProperty({
     example: '2026-01-11T10:15:00.000Z',
     description: 'Дата и время создания токена сброса пароля',
   })

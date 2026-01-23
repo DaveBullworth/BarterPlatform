@@ -380,6 +380,87 @@ nest g controller modules/{entityName}
 
 ---
 
+> **Генерация миграций базы данных (TypeORM):**
+
+1. Проверяем, что сервер в режиме **development**:
+
+```env
+NODE_ENV=development
+```
+
+2. Отключаем автосинхронизацию для миграций:
+
+`src/app.module.ts`
+
+```ts
+synchronize: false, // для новых миграций через dev контейнер
+// synchronize: config.get('NODE_ENV') === 'development', // dev only
+```
+
+`src/database/data-source.ts`
+
+```ts
+synchronize: false, // для новых миграций через dev контейнер
+// synchronize: process.env.NODE_ENV === 'development',
+```
+
+3. Удаляем volume’ы сервера (Postgres/Redis можно оставить):
+
+```bash
+docker volume prune
+```
+
+4. Собираем и запускаем dev-контейнер сервера:
+
+```bash
+docker compose -f docker/docker-compose.dev.yml up --build
+```
+
+5. Заходим внутрь контейнера сервера:
+
+```bash
+docker exec -it server-dev bash
+```
+
+6. Генерируем миграцию с указанием пути и префикса имени:
+
+```bash
+npm run typeorm -- migration:generate -d src/database/data-source.ts src/database/migrations/Init
+
+```
+
+> TypeORM автоматически добавит timestamp к имени файла.
+
+7. Проверяем созданный файл миграции:
+
+```ts
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class Init1768496766397 implements MigrationInterface {
+  name = "Init1768496766397";
+
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // SQL изменения
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    // rollback
+  }
+}
+```
+
+8. Возвращаем `synchronize: false` для production.
+
+9. Закоммитить миграцию в репозиторий.
+
+10. В production запускаем миграции командой:
+
+```bash
+npm run migration:run
+```
+
+---
+
 > **Логика работы REST API в NextJS:**
 
 В `NestJS` ВСЁ строится вокруг модулей.

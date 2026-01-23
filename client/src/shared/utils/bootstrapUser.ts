@@ -3,6 +3,7 @@ import i18n from '@/shared/i18n';
 import { getSelfUser } from '@/http/user';
 import { USER_THEMES } from '@/shared/constants/user-theme';
 import type { AppDispatch } from '@/store';
+import type { BootstrapResult } from '@/types/common';
 import { setUser, logout } from '@/store/userSlice';
 
 interface BootstrapOptions {
@@ -14,7 +15,9 @@ export const bootstrapUser = async ({
   dispatch,
   setColorScheme,
   onRateLimit,
-}: BootstrapOptions & { onRateLimit?: () => void }) => {
+}: BootstrapOptions & {
+  onRateLimit?: () => void;
+}): Promise<BootstrapResult> => {
   const token = localStorage.getItem('accessToken');
   if (!token) {
     return 'NO_TOKEN';

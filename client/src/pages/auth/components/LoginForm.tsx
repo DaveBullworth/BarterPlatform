@@ -16,13 +16,16 @@ import type { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 import { notify } from '@/shared/utils/notifications';
 import { SupportPopover } from './SupportPopover';
+import { ForgotPasswordModal } from './ForgotPasswordModal';
 import { useTheme } from '@/shared/hooks/useTheme';
 import { loginUser } from '@/http/user';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { createLengthValidator } from '@/shared/utils/validators';
+import { ERROR_TYPES } from '@/shared/constants/error-types';
 import type { AppDispatch } from '@/store';
 import type { ApiErrorData } from '@/types/error';
+import type { BootstrapResult } from '@/types/common';
 
 type LoginFormProps = {
   onRegister: () => void;
@@ -40,6 +43,7 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
   const { setColorScheme } = useTheme();
   const navigate = useNavigate();
   const [blockTimer, setBlockTimer] = useState(0); // оставшееся время блокировки кнопки
+  const [forgotOpened, setForgotOpened] = useState(false);
 
   const form = useForm<LoginFormValues>({
     initialValues: {
@@ -69,7 +73,7 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
 
       localStorage.setItem('accessToken', accessToken);
 
-      const result = await bootstrapUser({
+      const result: BootstrapResult = await bootstrapUser({
         dispatch,
         setColorScheme,
         onRateLimit: () => {
@@ -94,7 +98,7 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
         const data = axiosError.response.data;
 
         // Блокируем кнопку только для LOGIN_RATE_LIMIT
-        if (data.code === 'LOGIN_RATE_LIMIT') {
+        if (data.code === ERROR_TYPES.LOGIN_RATE_LIMIT) {
           const isBruteforce = data.meta?.isBruteforce ?? false;
 
           // Таймер в секундах: 10 для обычного rate-limit, 15 минут для brute-force
@@ -120,54 +124,65 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
   }, [blockTimer]);
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack gap="sm">
-        <TextInput
-          label={t('auth.loginOrEmail')}
-          placeholder={t('auth.loginOrEmailPlaceholder')}
-          required
-          {...form.getInputProps('login')}
-        />
-
-        <PasswordInput
-          label={t('auth.password')}
-          placeholder={t('auth.passwordPlaceholder')}
-          required
-          {...form.getInputProps('password')}
-        />
-
-        <Group justify="space-between">
-          <Checkbox
-            label={t('auth.remember')}
-            {...form.getInputProps('remember', { type: 'checkbox' })}
+    <>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="sm">
+          <TextInput
+            label={t('auth.loginOrEmail')}
+            placeholder={t('auth.loginOrEmailPlaceholder')}
+            required
+            {...form.getInputProps('login')}
           />
 
-          <Anchor size="sm" component="button" type="button">
-            {t('auth.forgot')}
-          </Anchor>
-        </Group>
+          <PasswordInput
+            label={t('auth.password')}
+            placeholder={t('auth.passwordPlaceholder')}
+            required
+            {...form.getInputProps('password')}
+          />
 
-        <Button fullWidth type="submit" disabled={blockTimer > 0}>
-          {blockTimer > 0
-            ? `${t('auth.submit')} (${blockTimer})`
-            : t('auth.submit')}
-        </Button>
+          <Group justify="space-between">
+            <Checkbox
+              label={t('auth.remember')}
+              {...form.getInputProps('remember', { type: 'checkbox' })}
+            />
 
-        <Divider label={t('auth.or')} labelPosition="center" />
+            <Anchor
+              size="sm"
+              component="button"
+              type="button"
+              onClick={() => setForgotOpened(true)}
+            >
+              {t('auth.forgot')}
+            </Anchor>
+          </Group>
 
-        <Group justify="space-between">
-          <SupportPopover />
+          <Button fullWidth type="submit" disabled={blockTimer > 0}>
+            {blockTimer > 0
+              ? `${t('auth.submit')} (${blockTimer})`
+              : t('auth.submit')}
+          </Button>
 
-          <Anchor
-            size="sm"
-            component="button"
-            type="button"
-            onClick={onRegister}
-          >
-            {t('auth.register')}
-          </Anchor>
-        </Group>
-      </Stack>
-    </form>
+          <Divider label={t('auth.or')} labelPosition="center" />
+
+          <Group justify="space-between">
+            <SupportPopover />
+
+            <Anchor
+              size="sm"
+              component="button"
+              type="button"
+              onClick={onRegister}
+            >
+              {t('auth.register')}
+            </Anchor>
+          </Group>
+        </Stack>
+      </form>
+      <ForgotPasswordModal
+        opened={forgotOpened}
+        onClose={() => setForgotOpened(false)}
+      />
+    </>
   );
 };

@@ -44,11 +44,9 @@ export class PasswordResetService {
       where: { email: normalizedEmail },
     });
 
-    // регистрируем попытку ВСЕГДА
-    await this.resetPolicy.registerRequest(normalizedEmail);
-
-    // 3. если пользователя нет — тихо выходим (врём что типо отправили)
+    // 3. если пользователя нет — регистрируем попытку и тихо выходим (врём что отправили)
     if (!user) {
+      await this.resetPolicy.registerRequest(normalizedEmail);
       return { result: PasswordResetRequestResult.SENT };
     }
 
@@ -75,21 +73,24 @@ export class PasswordResetService {
       };
     }
 
-    // 5. генерируем токен
+    // 5. регистрируем попытку ТОЛЬКО если реально будем слать письмо
+    await this.resetPolicy.registerRequest(normalizedEmail);
+
+    // 6. генерируем токен
     const rawToken = this.generateToken();
     const tokenHash = this.hashToken(rawToken);
 
-    // 6. сохраняем токен
+    // 7. сохраняем токен
     await this.tokenRepo.save({
       user,
       tokenHash,
       expiresAt: this.expireAt(),
     });
 
-    // 7. формируем ссылку
+    // 8. формируем ссылку
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${rawToken}`;
 
-    // 8. отправляем письмо
+    // 9. отправляем письмо
     await this.mailService.sendPasswordReset(
       user.email,
       user.language,
