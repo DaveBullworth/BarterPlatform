@@ -15,6 +15,7 @@ export const PhoneInput = ({ phone, countryCode, onChange }: Props) => {
       label={t('auth.phone')}
       placeholder={t('auth.phonePlaceholder')}
       leftSection={countryCode ? `+${countryCode}` : undefined}
+      leftSectionWidth={'3rem'}
       value={phone ?? ''}
       onChange={(e) => {
         const digits = e.currentTarget.value.replace(/\D/g, '');

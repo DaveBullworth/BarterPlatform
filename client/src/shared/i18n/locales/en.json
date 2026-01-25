@@ -49,7 +49,7 @@
     "emailAlreadyConfirmed": "Email is already confirmed",
     "resendRateLimit": "You can request a new confirmation email in {{hours}} hour(s)",
     "userNotFound": "User not found",
-    "forgotPassword": "Reset password",
+    "forgotPassword": "Forgot password",
     "forgotPasswordText": "Enter your email to receive a link to reset your password.",
     "send": "Send",
     "close": "Close",
@@ -82,6 +82,27 @@
     "errorTitle": "Confirmation error",
     "errorText": "We were unable to confirm your email. The link may be expired.",
     "noToken": "Confirmation token is missing"
+  },
+  "nav": {
+    "main": "Main",
+    "profile": "Profile",
+    "admin": "Admin",
+    "authRequired": "A login is required"
+  },
+  "profile": {
+    "title": "Profile",
+    "stub": "This is a profile page stub"
+  },
+  "admin": {
+    "title": "Admin panel",
+    "stub": "This is an admin page stub"
+  },
+  "authRequired": {
+    "title": "Authentication required",
+    "text": "You need to be logged in to perform this action.",
+    "question": "Do you want to go to the login page?",
+    "login": "Login",
+    "cancel": "Cancel"
   },
   "countries": {
     "AFG": "Afghanistan",

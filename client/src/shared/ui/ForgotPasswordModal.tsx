@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Modal, Button, TextInput, Group, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
+import { Mail } from 'lucide-react';
 import { createEmailValidator } from '@/shared/utils/validators';
 import { requestPasswordReset } from '@/http/password.reset';
 import { notify } from '@/shared/utils/notifications';
@@ -64,13 +65,23 @@ export const ForgotPasswordModal = ({ opened, onClose }: Props) => {
     <Modal
       opened={opened}
       onClose={handleClose}
-      title={t('auth.forgotPassword')}
+      title={
+        <Text fw={700} size="lg" td="underline">
+          {t('auth.forgotPassword')}
+        </Text>
+      }
       centered
+      overlayProps={{
+        backgroundOpacity: 0.55,
+        blur: 3,
+      }}
     >
       <Text mb="sm">{t('auth.forgotPasswordText')}</Text>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
+          variant="underline"
+          leftSection={<Mail size={16} />}
           label={t('auth.email')}
           placeholder="example@mail.com"
           {...form.getInputProps('email')}

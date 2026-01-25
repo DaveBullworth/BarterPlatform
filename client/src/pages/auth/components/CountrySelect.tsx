@@ -113,10 +113,32 @@ const CountrySelect = ({ value, onChange }: Props) => {
       }}
       data={filteredData}
       rightSection={loading ? <Loader size="xs" /> : null}
+      leftSection={
+        value
+          ? (() => {
+              const selected = countries.find((c) => c.id === value);
+              if (!selected || !selected.iconPath) return null;
+              return (
+                <div className={styles.country_image_container}>
+                  <Image
+                    src={`${STATIC_URL}${selected.iconPath}`}
+                    w={25}
+                    h={25}
+                    radius="lg"
+                    fit="contain"
+                    className={styles.country_image}
+                  />
+                </div>
+              );
+            })()
+          : null
+      }
+      leftSectionWidth={'3rem'}
       maxDropdownHeight={320}
       comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
       renderOption={({ option, ...props }) => {
         const opt = option as CountryAutocompleteItem;
+        const isSelected = opt.value === value;
         return (
           <div {...props}>
             <Group gap="sm" align="center">
@@ -132,11 +154,15 @@ const CountrySelect = ({ value, onChange }: Props) => {
                   />
                 </div>
               )}
-              <Text size="sm">{opt.label}</Text>
+              <Text fw={isSelected ? 700 : 400} size="sm">
+                {opt.label}
+              </Text>
             </Group>
           </div>
         );
       }}
+      classNames={{ input: styles.countryAutocompleteInput }}
+      data-has-value={!!value} // добавляем атрибут для селектора
     />
   );
 };

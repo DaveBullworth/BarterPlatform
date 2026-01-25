@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Container, Stack, Title, Card } from '@mantine/core';
+import { Container, Stack, Title, Card, Flex } from '@mantine/core';
 import { LoginForm } from './components/LoginForm';
 import { RegisterScreen } from './components/RegisterScreen';
-import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
+import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
 
 import styles from './AuthPage.module.scss';
 
@@ -16,8 +17,6 @@ export const AuthPage = () => {
   return (
     <Container size={420} my="auto" className={styles.container}>
       <Stack gap="md" className={styles.stack}>
-        <LanguageSwitcher />
-
         <Card withBorder radius="md" p="lg" className={styles.card}>
           <Title order={3} ta="center" mb="md">
             {mode === 'login' ? t('auth.signin') : t('auth.registration')}
@@ -29,6 +28,10 @@ export const AuthPage = () => {
             <RegisterScreen onBackToLogin={() => setMode('login')} />
           )}
         </Card>
+        <Flex justify="space-between">
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+        </Flex>
       </Stack>
     </Container>
   );

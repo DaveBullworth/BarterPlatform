@@ -1,10 +1,12 @@
 import React from 'react';
-import { Notifications } from '@mantine/notifications';
-import { MantineProvider, createTheme } from '@mantine/core';
+import { Input, MantineProvider, createTheme } from '@mantine/core';
 import { localStorageColorSchemeManager } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
 import { DatesProvider } from '@mantine/dates';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import classes from '@/app/styles/Mantine.module.scss';
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +18,9 @@ export const AppMantineProvider = ({ children }: Props) => {
   });
 
   const theme = createTheme({
-    /** сюда позже: colors, fontFamily, radius, spacing */
+    components: {
+      Input: Input.extend({ classNames: classes }),
+    },
   });
 
   const lang = localStorage.getItem('user-language') || 'en';
@@ -30,6 +34,7 @@ export const AppMantineProvider = ({ children }: Props) => {
       withGlobalClasses
     >
       <Notifications />
+      <ModalsProvider />
       <DatesProvider settings={{ locale: lang }}>{children}</DatesProvider>
     </MantineProvider>
   );

@@ -9,6 +9,7 @@ import {
   Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { Mail, User, AtSign, LockKeyhole } from 'lucide-react';
 import { PhoneInput } from './PhoneInput';
 import {
   createLengthValidator,
@@ -68,6 +69,8 @@ export const RegisterForm = ({
     <form onSubmit={form.onSubmit(onSubmit)}>
       <Stack gap="sm">
         <TextInput
+          variant="underline"
+          leftSection={<Mail size={16} />}
           label={t('auth.email')}
           placeholder={t('auth.emailPlaceholder')}
           required
@@ -75,6 +78,8 @@ export const RegisterForm = ({
         />
 
         <TextInput
+          variant="underline"
+          leftSection={<AtSign size={16} />}
           label={t('auth.login')}
           placeholder={t('auth.loginPlaceholder')}
           required
@@ -82,6 +87,8 @@ export const RegisterForm = ({
         />
 
         <TextInput
+          variant="underline"
+          leftSection={<User size={16} />}
           label={t('auth.name')}
           placeholder={t('auth.namePlaceholder')}
           required
@@ -89,6 +96,8 @@ export const RegisterForm = ({
         />
 
         <PasswordInput
+          variant="underline"
+          leftSection={<LockKeyhole size={16} />}
           label={t('auth.password')}
           placeholder={t('auth.passwordPlaceholder')}
           required

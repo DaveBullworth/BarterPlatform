@@ -12,11 +12,12 @@ import {
 import { useForm } from '@mantine/form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import type { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
+import { AtSign, LockKeyhole } from 'lucide-react';
+import type { AxiosError } from 'axios';
 import { notify } from '@/shared/utils/notifications';
 import { SupportPopover } from './SupportPopover';
-import { ForgotPasswordModal } from './ForgotPasswordModal';
+import { ForgotPasswordModal } from '../../../shared/ui/ForgotPasswordModal';
 import { useTheme } from '@/shared/hooks/useTheme';
 import { loginUser } from '@/http/user';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
@@ -128,14 +129,18 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="sm">
           <TextInput
+            variant="underline"
             label={t('auth.loginOrEmail')}
+            leftSection={<AtSign size={16} />}
             placeholder={t('auth.loginOrEmailPlaceholder')}
             required
             {...form.getInputProps('login')}
           />
 
           <PasswordInput
+            variant="underline"
             label={t('auth.password')}
+            leftSection={<LockKeyhole size={16} />}
             placeholder={t('auth.passwordPlaceholder')}
             required
             {...form.getInputProps('password')}

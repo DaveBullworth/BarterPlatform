@@ -1,3 +1,13 @@
+import { Title, Text, Stack } from '@mantine/core';
+// import { useTranslation } from 'react-i18next';
+
 export const AuthorizedPage = () => {
-  return <div>You are authorized</div>;
+  // const { t } = useTranslation();
+
+  return (
+    <Stack>
+      <Title order={2}>Home Page</Title>
+      <Text c="dimmed">Vremenno</Text>
+    </Stack>
+  );
 };

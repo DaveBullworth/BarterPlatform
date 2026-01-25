@@ -7,3 +7,11 @@ body {
   margin: 0;
   line-height: normal;
 }
+
+.mantine-Select-option[aria-selected='true'] {
+  font-weight: 700; /* выбранный элемент в dropdown */
+}
+
+.mantine-Select-input {
+  font-weight: 700; /* текст выбранного значения в самом input */
+}

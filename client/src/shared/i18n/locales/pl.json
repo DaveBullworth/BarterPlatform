@@ -49,6 +49,7 @@
     "emailAlreadyConfirmed": "Adres e-mail jest już potwierdzony",
     "resendRateLimit": "Nową wiadomość możesz wysłać za {{hours}} godz.",
     "userNotFound": "Użytkownik nie został znaleziony",
+    "forgotPassword": "Zapomniałem hasła",
     "forgotPasswordText": "Wprowadź swój e-mail, aby otrzymać link do resetowania hasła.",
     "send": "Wyślij",
     "close": "Zamknij",
@@ -81,6 +82,27 @@
     "errorTitle": "Błąd potwierdzenia",
     "errorText": "Nie udało się potwierdzić adresu e-mail. Link mógł wygasnąć.",
     "noToken": "Brakuje tokenu potwierdzającego"
+  },
+  "nav": {
+    "main": "Główna",
+    "profile": "Profil",
+    "admin": "Panel admina",
+    "authRequired": "Wymagane logowanie"
+  },
+  "profile": {
+    "title": "Profil",
+    "stub": "To jest strona profilu (zaślepka)"
+  },
+  "admin": {
+    "title": "Panel administracyjny",
+    "stub": "To jest strona administratora (zaślepka)"
+  },
+  "authRequired": {
+    "title": "Wymagane logowanie",
+    "text": "Musisz być zalogowany, aby wykonać tę akcję.",
+    "question": "Czy chcesz przejść do strony logowania?",
+    "login": "Zaloguj się",
+    "cancel": "Anuluj"
   },
   "countries": {
     "AFG": "Afghanistan",

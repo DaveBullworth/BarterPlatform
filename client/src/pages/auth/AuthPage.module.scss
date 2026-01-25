@@ -15,3 +15,11 @@
 .country_image {
   border: 1px solid black;
 }
+
+.countryAutocompleteInput {
+  font-weight: 400; // обычный
+
+  &[data-has-value='true'] {
+    font-weight: 700; // жирный, если value есть
+  }
+}
