@@ -4,6 +4,7 @@ import { Center, Stack, Text, Title, Loader } from '@mantine/core';
 import { CircleCheckBig, CircleOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+import { goToAuth } from '@/shared/utils/navigation';
 import { confirmEmail } from '@/http/mail.confirm';
 
 type Status = 'loading' | 'success' | 'error';
@@ -31,7 +32,7 @@ export const MailConfirmPage = () => {
         setStatus('success');
 
         setTimeout(() => {
-          navigate('/auth');
+          goToAuth(navigate);
         }, 4000);
       })
       .catch(() => {

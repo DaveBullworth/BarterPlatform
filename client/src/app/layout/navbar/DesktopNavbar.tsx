@@ -8,7 +8,7 @@ import { NAV_ACCESS } from '@/shared/constants/nav-access';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { openAuthRequiredModal } from '@/shared/ui/AuthRequiredModal';
 
-export const MainNavbar = () => {
+export const DesktopNavbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();

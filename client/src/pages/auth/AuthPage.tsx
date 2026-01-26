@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Container, Stack, Title, Card, Flex } from '@mantine/core';
+import { Container, Stack, Title, Card, Group } from '@mantine/core';
 import { LoginForm } from './components/LoginForm';
 import { RegisterScreen } from './components/RegisterScreen';
 import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
@@ -28,10 +28,10 @@ export const AuthPage = () => {
             <RegisterScreen onBackToLogin={() => setMode('login')} />
           )}
         </Card>
-        <Flex justify="space-between">
+        <Group gap="sm" grow>
           <LanguageSwitcher />
           <ThemeSwitcher />
-        </Flex>
+        </Group>
       </Stack>
     </Container>
   );

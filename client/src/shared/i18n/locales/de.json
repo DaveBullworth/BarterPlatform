@@ -82,6 +82,12 @@
     "errorText": "Die E-Mail konnte nicht bestätigt werden. Der Link ist möglicherweise abgelaufen.",
     "noToken": "Bestätigungstoken fehlt"
   },
+  "header": {
+    "title": "Tauschgeschäft",
+    "categories": "Kategorien",
+    "createLot": "Anzeige erstellen",
+    "lotSearch": "Lose suchen"
+  },
   "nav": {
     "main": "Startseite",
     "profile": "Profil",
@@ -102,6 +108,15 @@
     "question": "Möchten Sie zur Anmeldeseite gehen?",
     "login": "Anmelden",
     "cancel": "Abbrechen"
+  },
+  "common": {
+    "exit": "Beenden",
+    "exitQuestion": "Sind Sie sicher, dass Sie ausgehen möchten?",
+    "refreshTokenNotFound": "Kein Aktualisierungstoken gefunden",
+    "sessionNotFound": "Sitzung wurde nicht gefunden",
+    "logoutFailed": "Konnte nicht abgemeldet werden!",
+    "user": "Benutzer",
+    "guest": "Gast"
   },
   "countries": {
     "AFG": "Afghanistan",

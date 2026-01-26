@@ -8,10 +8,11 @@ import { AuthPage } from '@/pages/auth/AuthPage';
 import { MailConfirmPage } from '@/pages/mail-confirm/MailConfirmPage';
 import { ResetPasswordPage } from '@/pages/reset-password/ResetPasswordPage';
 import { MainLayout } from '../layout/MainLayout';
+import { ROUTES } from '@/shared/constants/routes';
 
 export const routes: RouteObject[] = [
   {
-    path: '/',
+    path: ROUTES.ROOT,
     element: <MainLayout />,
     children: [
       // Главная страница приложения (гость + пользователь)
@@ -19,7 +20,7 @@ export const routes: RouteObject[] = [
 
       // Личный кабинет (только авторизованный)
       {
-        path: 'profile',
+        path: ROUTES.PROFILE,
         element: (
           <RequireAuth>
             <ProfilePage />
@@ -29,7 +30,7 @@ export const routes: RouteObject[] = [
 
       // Админка
       {
-        path: 'admin',
+        path: ROUTES.ADMIN,
         element: (
           <RequireAdmin>
             <AdminPage />
@@ -40,10 +41,10 @@ export const routes: RouteObject[] = [
   },
 
   // ===== Страницы вне основной части приложения =====
-  { path: '/auth', element: <AuthPage /> },
-  { path: '/mail-confirm', element: <MailConfirmPage /> },
-  { path: '/reset-password', element: <ResetPasswordPage /> },
+  { path: ROUTES.AUTH, element: <AuthPage /> },
+  { path: ROUTES.MAIL_CONFIRM, element: <MailConfirmPage /> },
+  { path: ROUTES.RESET_PASSWORD, element: <ResetPasswordPage /> },
 
   // fallback при ошибочном маршруте
-  { path: '*', element: <Navigate to="/" /> },
+  { path: '*', element: <Navigate to={ROUTES.ROOT} /> },
 ];

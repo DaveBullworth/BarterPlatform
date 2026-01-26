@@ -23,3 +23,7 @@ export const registerUser = async (
   const { data } = await $host.post<RegisterResponse>('/user/register', dto);
   return data;
 };
+
+export const logoutUser = async () => {
+  await $authHost.post('/auth/logout');
+};

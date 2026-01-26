@@ -16,7 +16,6 @@ export const LanguageSwitcher = () => {
   return (
     <Select
       size="xs"
-      w="5rem"
       checkIconPosition="right"
       value={i18n.language}
       onChange={changeLanguage}

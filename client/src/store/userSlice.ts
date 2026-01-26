@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 interface UserState {
   id?: string;
   login?: string;
+  name?: string;
   role?: string;
   isAuthenticated: boolean;
 }
@@ -10,6 +11,7 @@ interface UserState {
 const initialState: UserState = {
   id: undefined,
   login: undefined,
+  name: undefined,
   role: undefined,
   isAuthenticated: false,
 };
@@ -26,12 +28,14 @@ export const userSlice = createSlice({
     ) => {
       state.id = action.payload.id;
       state.login = action.payload.login;
+      state.name = action.payload.name;
       state.role = action.payload.role;
       state.isAuthenticated = true;
     },
     logout: (state) => {
       state.id = undefined;
       state.login = undefined;
+      state.name = undefined;
       state.role = undefined;
       state.isAuthenticated = false;
       localStorage.removeItem('accessToken'); // чистим access token

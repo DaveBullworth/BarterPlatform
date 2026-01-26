@@ -83,6 +83,12 @@
     "errorText": "We were unable to confirm your email. The link may be expired.",
     "noToken": "Confirmation token is missing"
   },
+  "header": {
+    "title": "Barter",
+    "categories": "Categories",
+    "createLot": "Create listing",
+    "lotSearch": "Search for lots"
+  },
   "nav": {
     "main": "Main",
     "profile": "Profile",
@@ -103,6 +109,15 @@
     "question": "Do you want to go to the login page?",
     "login": "Login",
     "cancel": "Cancel"
+  },
+  "common": {
+    "exit": "Exit",
+    "exitQuestion": "Are you sure you want to exit?",
+    "refreshTokenNotFound": "Refresh token not found",
+    "sessionNotFound": "Session not found",
+    "logoutFailed": "Unable to log out!",
+    "user": "User",
+    "guest": "Guest"
   },
   "countries": {
     "AFG": "Afghanistan",

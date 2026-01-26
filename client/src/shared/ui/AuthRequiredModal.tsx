@@ -3,6 +3,8 @@ import { modals } from '@mantine/modals';
 import type { TFunction } from 'i18next';
 import type { NavigateFunction } from 'react-router-dom';
 
+import { goToAuth } from '@/shared/utils/navigation';
+
 export const openAuthRequiredModal = (
   navigate: NavigateFunction,
   t: TFunction,
@@ -26,7 +28,7 @@ export const openAuthRequiredModal = (
         <Group justify="flex-end">
           <Button
             onClick={() => {
-              navigate('/auth');
+              goToAuth(navigate);
               modals.closeAll();
             }}
           >

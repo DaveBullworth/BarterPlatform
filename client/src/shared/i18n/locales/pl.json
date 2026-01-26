@@ -83,6 +83,12 @@
     "errorText": "Nie udało się potwierdzić adresu e-mail. Link mógł wygasnąć.",
     "noToken": "Brakuje tokenu potwierdzającego"
   },
+  "header": {
+    "title": "Barter",
+    "categories": "Kategorie",
+    "createLot": "Utwórz ofertę",
+    "lotSearch": "Szukaj partii"
+  },
   "nav": {
     "main": "Główna",
     "profile": "Profil",
@@ -103,6 +109,15 @@
     "question": "Czy chcesz przejść do strony logowania?",
     "login": "Zaloguj się",
     "cancel": "Anuluj"
+  },
+  "common": {
+    "exit": "Wyjdź",
+    "exitQuestion": "Czy na pewno chcesz wyjść?",
+    "refreshTokenNotFound": " Nie znaleziono tokena odświeżania",
+    "sessionNotFound": "Nie znaleziono sesji",
+    "logoutFailed": "Nie udało się wylogować!",
+    "user": "Użytkownik",
+    "guest": "Gość"
   },
   "countries": {
     "AFG": "Afghanistan",

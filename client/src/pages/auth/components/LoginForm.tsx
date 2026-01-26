@@ -24,6 +24,7 @@ import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { createLengthValidator } from '@/shared/utils/validators';
 import { ERROR_TYPES } from '@/shared/constants/error-types';
+import { ROUTES } from '@/shared/constants/routes';
 import type { AppDispatch } from '@/store';
 import type { ApiErrorData } from '@/types/error';
 import type { BootstrapResult } from '@/types/common';
@@ -90,7 +91,7 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
         },
       });
 
-      if (result !== 'RATE_LIMIT') navigate('/');
+      if (result !== 'RATE_LIMIT') navigate(ROUTES.ROOT);
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorData>;
 

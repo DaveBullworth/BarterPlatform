@@ -31,6 +31,7 @@ export const bootstrapUser = async ({
       setUser({
         id: selfUser.id,
         login: selfUser.login,
+        name: selfUser.name,
         role: selfUser.role,
       }),
     );

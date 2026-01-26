@@ -8,7 +8,9 @@ import type { AxiosError } from 'axios';
 import { confirmPasswordReset } from '@/http/password.reset';
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
+import { goToAuth } from '@/shared/utils/navigation';
 import { createLengthValidator } from '@/shared/utils/validators';
+import { ROUTES } from '@/shared/constants/routes';
 import type { ApiErrorData } from '@/types/error';
 
 type ResetPasswordFormValues = {
@@ -42,7 +44,7 @@ export const ResetPasswordPage = () => {
 
   // если токена нет — сразу уводим
   if (!token) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to={ROUTES.AUTH} replace />;
   }
 
   const handleSubmit = async (values: ResetPasswordFormValues) => {
@@ -60,7 +62,7 @@ export const ResetPasswordPage = () => {
         color: 'green',
       });
 
-      navigate('/auth', { replace: true });
+      goToAuth(navigate, true);
     } catch (err: unknown) {
       const axiosError = err as AxiosError<ApiErrorData>;
       // Проверяем, что это ошибка с ответом от сервера
