@@ -18,7 +18,7 @@
     "invalidCredentials": "Invalid login or password",
     "emailNotConfirmed": "Email not confirmed",
     "maxSessionsExceeded": "Maximum sessions exceeded (max: {{max}})",
-    "loginRateLimit": "Rate limit exceeded. Please wait 10 seconds.",
+    "loginRateLimit": "Rate limit exceeded. Please wait 5 seconds.",
     "loginBruteforce": "Too many login attempts. Please wait 15 minutes to 1 hour.",
     "loginError": "Login error",
     "serverError": "Server unavailable",
@@ -118,6 +118,10 @@
     "logoutFailed": "Unable to log out!",
     "user": "User",
     "guest": "Guest"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You have no new notifications"
   },
   "countries": {
     "AFG": "Afghanistan",

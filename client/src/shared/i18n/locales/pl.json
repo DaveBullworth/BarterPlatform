@@ -18,7 +18,7 @@
     "invalidCredentials": "Nieprawidłowy login lub hasło",
     "emailNotConfirmed": "Email nie został potwierdzony",
     "maxSessionsExceeded": "Przekroczono limit sesji (maks: {{max}})",
-    "loginRateLimit": "Przekroczono limit żądań. Proszę poczekać 10 sekund.",
+    "loginRateLimit": "Przekroczono limit żądań. Proszę poczekać 5 sekund.",
     "loginBruteforce": "Zbyt wiele prób logowania. Proszę poczekać od 15 minut do godziny.",
     "loginError": "Błąd logowania",
     "serverError": "Serwer niedostępny",
@@ -118,6 +118,10 @@
     "logoutFailed": "Nie udało się wylogować!",
     "user": "Użytkownik",
     "guest": "Gość"
+  },
+  "notifications": {
+    "title": "Powiadomienia",
+    "empty": "Nie masz nowych powiadomień"
   },
   "countries": {
     "AFG": "Afghanistan",

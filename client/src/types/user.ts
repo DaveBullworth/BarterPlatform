@@ -14,6 +14,7 @@ export interface SelfUserDto {
   language: UserLanguage;
   theme: UserTheme;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface LoginDto {

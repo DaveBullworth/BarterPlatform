@@ -14,15 +14,22 @@ import { SecurityErrorCode } from '@/modules/auth/errors/auth-error-codes';
 export class RateLimitMiddleware implements NestMiddleware {
   constructor(private readonly redisService: RedisService) {}
 
-  private readonly LIMIT = 10; // максимум 10 запросов
-  private readonly WINDOW = 10; // окно в секундах
+  private readonly HEAVY_LIMIT = 20; // Для тяжелых запросов
+  private readonly CHEAP_LIMIT = 100; // Для легких запросов (проверка кеша)
+
+  private readonly WINDOW = 5; // окно в секундах
 
   async use(req: AppRequest, res: Response, next: NextFunction) {
     const deviceId = req.cookies.device_id;
     if (!deviceId) return next(); // на всякий случай, хотя device_id всегда есть
 
+    const isCacheCheck = Boolean(req.headers['if-user-updated-since']);
+
     const redis = this.redisService.getClient();
-    const key = `rate:dev:${deviceId}`;
+
+    const key = isCacheCheck
+      ? `rate:cheap:${deviceId}`
+      : `rate:dev:${deviceId}`;
 
     // Инкрементируем счётчик
     const requests = await redis.incr(key);
@@ -32,7 +39,9 @@ export class RateLimitMiddleware implements NestMiddleware {
       await redis.expire(key, this.WINDOW);
     }
 
-    if (requests > this.LIMIT) {
+    const limit = isCacheCheck ? this.CHEAP_LIMIT : this.HEAVY_LIMIT;
+
+    if (requests > limit) {
       // Превышен лимит → 429
       throw new HttpException(
         { code: SecurityErrorCode.TOO_MANY_REQUESTS },

@@ -1,6 +1,8 @@
 import type { NavigateFunction } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
+export const goToRoot = (navigate: NavigateFunction) => navigate(ROUTES.ROOT);
+
 export const goToAuth = (navigate: NavigateFunction, replace?: boolean) =>
   navigate(ROUTES.AUTH, { replace });
 

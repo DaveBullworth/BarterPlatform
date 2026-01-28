@@ -39,7 +39,7 @@ export const MainLayout = () => {
         <MobileBottomNavbar />
       </AppShell.Footer>
 
-      <AppShell.Main>
+      <AppShell.Main style={{ display: 'flex' }}>
         <Outlet />
       </AppShell.Main>
     </AppShell>

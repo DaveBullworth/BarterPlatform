@@ -1,5 +1,28 @@
+@use '../styles/variables' as vars;
+
 .userDrawer {
   section {
     height: auto;
+  }
+}
+
+.notificationsDrawer {
+  section {
+    // Мобильная логика: если экран меньше $breakpoint-sm, перемещаем header вниз
+    @media (max-width: vars.$breakpoint-sm) {
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      header {
+        order: 2; // заголовок вниз
+        border-top: 1px solid grey;
+        border-radius: 8px;
+      }
+      :global(.mantine-Drawer-body) {
+        height: inherit;
+        padding-top: 1rem;
+        order: 1;
+      }
+    }
   }
 }

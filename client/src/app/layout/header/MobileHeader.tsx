@@ -3,6 +3,7 @@ import { Home, Plus, Search } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
+import { goToRoot } from '@/shared/utils/navigation';
 
 export const MobileHeader = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ export const MobileHeader = () => {
         size="lg"
         onClick={() => {
           if (!isRoot) {
-            navigate(ROUTES.ROOT);
+            goToRoot(navigate);
           }
         }}
       >

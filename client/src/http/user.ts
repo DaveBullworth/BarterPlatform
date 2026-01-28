@@ -7,8 +7,11 @@ import type {
   RegisterResponse,
 } from '@/types/user';
 
-export const getSelfUser = async (): Promise<SelfUserDto> => {
-  const { data } = await $authHost.get<SelfUserDto>('/user/self');
+export const getSelfUser = async (updatedAt?: string) => {
+  const { data } = await $authHost.get<SelfUserDto>('/user/self', {
+    headers: updatedAt ? { 'If-User-Updated-Since': updatedAt } : undefined,
+  });
+
   return data;
 };
 

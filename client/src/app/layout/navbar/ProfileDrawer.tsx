@@ -1,11 +1,20 @@
-import { Drawer, Stack, Group, Text, Divider, Button } from '@mantine/core';
-import { User, LogIn, LogOut, HatGlasses } from 'lucide-react';
+import {
+  Drawer,
+  Stack,
+  Group,
+  Text,
+  Divider,
+  Button,
+  Indicator,
+} from '@mantine/core';
+import { User, LogIn, LogOut, HatGlasses, Bell } from 'lucide-react';
 
 import { useDisclosure } from '@mantine/hooks';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import type { RootState } from '@/store';
+import { NotificationsDrawer } from '../NotificationsDrawer';
 import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
 import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
 import { LogoutModal } from '@/shared/ui/LogoutModal';
@@ -31,6 +40,10 @@ export const ProfileDrawer = ({
 
   const [logoutOpened, { open: openLogout, close: closeLogout }] =
     useDisclosure(false);
+  const [notificationsOpened, notifications] = useDisclosure(false);
+
+  // временно, потом Redux
+  const unreadCount = 4;
 
   return (
     <>
@@ -82,6 +95,28 @@ export const ProfileDrawer = ({
                 {t('nav.profile')}
               </Button>
 
+              {/* 🔔 NOTIFICATIONS */}
+              <Button
+                variant="light"
+                leftSection={
+                  <Indicator
+                    inline
+                    size={14}
+                    color="red"
+                    disabled={!unreadCount}
+                    label={unreadCount}
+                  >
+                    <Bell size={16} />
+                  </Indicator>
+                }
+                onClick={() => {
+                  notifications.open();
+                  onClose();
+                }}
+              >
+                {t('notifications.title')}
+              </Button>
+
               <Divider />
             </>
           )}
@@ -109,6 +144,11 @@ export const ProfileDrawer = ({
           )}
         </Stack>
       </Drawer>
+
+      <NotificationsDrawer
+        opened={notificationsOpened}
+        onClose={notifications.close}
+      />
 
       {/* LOGOUT MODAL */}
       <LogoutModal opened={logoutOpened} onClose={closeLogout} />

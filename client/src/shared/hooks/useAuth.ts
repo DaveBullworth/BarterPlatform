@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from './useTheme';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import type { RootState, AppDispatch } from '@/store';
-import type { LoadingReason, BootstrapResult } from '@/types/common';
 
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,71 +10,40 @@ export const useAuth = () => {
   const setColorSchemeRef = useRef(setColorScheme);
   const user = useSelector((state: RootState) => state.user);
 
-  const [loading, setLoading] = useState(true);
-  const [loadingReason, setLoadingReason] =
-    useState<LoadingReason>('BOOTSTRAP');
-  const [retryIn, setRetryIn] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true); // загружается bootstrapUser
+  const [rateLimited, setRateLimited] = useState(false);
 
   useEffect(() => {
     let retryTimeout: ReturnType<typeof setTimeout>;
-    let countdownInterval: ReturnType<typeof setInterval>;
-
-    const startCountdown = (seconds: number) => {
-      if (countdownInterval) {
-        clearInterval(countdownInterval);
-      }
-
-      let remaining = seconds;
-
-      setRetryIn(remaining);
-
-      countdownInterval = setInterval(() => {
-        remaining -= 1;
-
-        if (remaining <= 0) {
-          clearInterval(countdownInterval);
-          setRetryIn(null);
-          return;
-        }
-
-        setRetryIn(remaining);
-      }, 1000);
-    };
 
     const runBootstrap = async () => {
       setLoading(true);
-      setLoadingReason('BOOTSTRAP');
+      setRateLimited(false);
 
-      const result: BootstrapResult = await bootstrapUser({
+      const result = await bootstrapUser({
         dispatch,
         setColorScheme: setColorSchemeRef.current,
       });
 
       if (result === 'RATE_LIMIT') {
-        setLoadingReason('RATE_LIMIT');
-        startCountdown(10);
-
-        retryTimeout = setTimeout(runBootstrap, 10_000);
-        return;
+        setRateLimited(true);
+        retryTimeout = setTimeout(runBootstrap, 5000);
+        return; // оставляем loading = true, UI показывает FullPageLoader
       }
 
-      setLoading(false);
-      setLoadingReason(null);
+      setRateLimited(false);
+      setLoading(false); // bootstrap завершён
     };
 
     runBootstrap();
 
-    return () => {
-      clearTimeout(retryTimeout);
-      clearInterval(countdownInterval);
-    };
+    return () => clearTimeout(retryTimeout);
   }, [dispatch]);
 
   return {
-    isAuth: user.isAuthenticated,
+    isAuth: user.isAuthenticated, // авторизован или нет
     user,
-    loading,
-    loadingReason,
-    retryIn,
+    loading, // true пока идёт bootstrapUser
+    rateLimited,
   };
 };

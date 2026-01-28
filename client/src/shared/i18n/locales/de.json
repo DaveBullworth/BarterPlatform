@@ -18,7 +18,7 @@
     "invalidCredentials": "Ungültiger Benutzername oder Passwort",
     "emailNotConfirmed": "E-Mail nicht bestätigt",
     "maxSessionsExceeded": "Maximale Sitzungen überschritten (max: {{max}})",
-    "loginRateLimit": "Limit für Anfragen überschritten. Bitte 10 Sekunden warten.",
+    "loginRateLimit": "Limit für Anfragen überschritten. Bitte 5 Sekunden warten.",
     "loginBruteforce": "Zu viele Anmeldeversuche. Bitte 15 Minuten bis 1 Stunde warten.",
     "loginError": "Anmeldefehler",
     "serverError": "Server nicht verfügbar",
@@ -117,6 +117,10 @@
     "logoutFailed": "Konnte nicht abgemeldet werden!",
     "user": "Benutzer",
     "guest": "Gast"
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "empty": "Sie haben keine neuen Benachrichtigungen"
   },
   "countries": {
     "AFG": "Afghanistan",

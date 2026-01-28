@@ -1,10 +1,11 @@
-import { Menu, ActionIcon, Avatar, Group } from '@mantine/core';
-import { User, LogIn, LogOut } from 'lucide-react';
+import { Menu, ActionIcon, Avatar, Group, Indicator } from '@mantine/core';
+import { User, LogIn, LogOut, Bell } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { NotificationsDrawer } from '../NotificationsDrawer';
 import { goToProfile, goToAuth } from '@/shared/utils/navigation';
 import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
 import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
@@ -17,8 +18,13 @@ export const UserMenu = () => {
 
   const { isAuthenticated, name } = useSelector((s: RootState) => s.user);
 
+  // временно, потом Redux
+  const unreadCount = 4;
+
   const [logoutOpened, { open: openLogout, close: closeLogout }] =
     useDisclosure(false);
+
+  const [notificationsOpened, notifications] = useDisclosure(false);
 
   const initial = isAuthenticated && name ? name[0].toUpperCase() : null;
 
@@ -26,13 +32,21 @@ export const UserMenu = () => {
     <>
       <Menu position="bottom-end" shadow="md" width={220}>
         <Menu.Target>
-          <ActionIcon variant="outline" radius="lg" size="lg">
-            {isAuthenticated && initial ? (
-              <Avatar size={40}>{initial}</Avatar>
-            ) : (
-              <User size={18} />
-            )}
-          </ActionIcon>
+          <Indicator
+            disabled={!unreadCount}
+            color="red"
+            size={8}
+            offset={4}
+            position="top-end"
+          >
+            <ActionIcon variant="outline" radius="lg" size="lg">
+              {isAuthenticated && initial ? (
+                <Avatar size={40}>{initial}</Avatar>
+              ) : (
+                <User size={18} />
+              )}
+            </ActionIcon>
+          </Indicator>
         </Menu.Target>
 
         <Menu.Dropdown>
@@ -59,6 +73,24 @@ export const UserMenu = () => {
                 {t('nav.profile')}
               </Menu.Item>
 
+              {/* NOTIFICATIONS */}
+              <Menu.Item
+                leftSection={
+                  <Indicator
+                    inline
+                    size={14}
+                    color="red"
+                    disabled={!unreadCount}
+                    label={unreadCount}
+                  >
+                    <Bell size={16} />
+                  </Indicator>
+                }
+                onClick={notifications.open}
+              >
+                {t('notifications.title')}
+              </Menu.Item>
+
               <Menu.Divider />
             </>
           )}
@@ -82,6 +114,12 @@ export const UserMenu = () => {
           )}
         </Menu.Dropdown>
       </Menu>
+
+      {/* DRAWERS */}
+      <NotificationsDrawer
+        opened={notificationsOpened}
+        onClose={notifications.close}
+      />
 
       {/* LOGOUT MODAL */}
       <LogoutModal opened={logoutOpened} onClose={closeLogout} />

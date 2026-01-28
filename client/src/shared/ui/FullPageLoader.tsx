@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Center, Stack, Loader, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { LoadingReason } from '@/types/common';
@@ -9,6 +10,24 @@ interface FullPageLoaderProps {
 
 export const FullPageLoader = ({ reason, retryIn }: FullPageLoaderProps) => {
   const { t } = useTranslation();
+  const [countdown, setCountdown] = useState<number | null>(retryIn ?? null);
+
+  useEffect(() => {
+    if (retryIn === undefined || retryIn === null) return;
+
+    const id = setTimeout(() => setCountdown(retryIn), 0);
+    return () => clearTimeout(id);
+  }, [retryIn]);
+
+  useEffect(() => {
+    if (countdown === null || countdown <= 0) return;
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => (prev !== null && prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [countdown]);
 
   return (
     <Center h="100vh">
@@ -22,7 +41,7 @@ export const FullPageLoader = ({ reason, retryIn }: FullPageLoaderProps) => {
         <div style={{ position: 'relative' }}>
           <Loader size={64} />
 
-          {retryIn !== null && (
+          {countdown !== null && countdown > 0 && (
             <Text
               size="sm"
               fw={600}
@@ -34,7 +53,7 @@ export const FullPageLoader = ({ reason, retryIn }: FullPageLoaderProps) => {
                 justifyContent: 'center',
               }}
             >
-              {retryIn}
+              {countdown}
             </Text>
           )}
         </div>

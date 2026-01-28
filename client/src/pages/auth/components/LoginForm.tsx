@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AtSign, LockKeyhole } from 'lucide-react';
 import type { AxiosError } from 'axios';
+
 import { notify } from '@/shared/utils/notifications';
 import { SupportPopover } from './SupportPopover';
 import { ForgotPasswordModal } from '../../../shared/ui/ForgotPasswordModal';
@@ -24,10 +25,10 @@ import { bootstrapUser } from '@/shared/utils/bootstrapUser';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { createLengthValidator } from '@/shared/utils/validators';
 import { ERROR_TYPES } from '@/shared/constants/error-types';
-import { ROUTES } from '@/shared/constants/routes';
 import type { AppDispatch } from '@/store';
 import type { ApiErrorData } from '@/types/error';
 import type { BootstrapResult } from '@/types/common';
+import { goToRoot } from '@/shared/utils/navigation';
 
 type LoginFormProps = {
   onRegister: () => void;
@@ -83,7 +84,7 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
 
           notify({
             title: t('auth.rateLimitTitle'),
-            message: t('auth.rateLimitMessage', { seconds: 10 }),
+            message: t('auth.rateLimitMessage', { seconds: 5 }),
             color: 'yellow',
             position: 'bottom-right',
             loading: true,
@@ -91,7 +92,7 @@ export const LoginForm = ({ onRegister }: LoginFormProps) => {
         },
       });
 
-      if (result !== 'RATE_LIMIT') navigate(ROUTES.ROOT);
+      if (result !== 'RATE_LIMIT') goToRoot(navigate);
     } catch (err) {
       const axiosError = err as AxiosError<ApiErrorData>;
 

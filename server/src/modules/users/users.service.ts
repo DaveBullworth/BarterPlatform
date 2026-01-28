@@ -23,6 +23,7 @@ import { AppRequest } from '@/common/interfaces/app-request.interface';
 import { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { CountryEntity } from '@/database/entities/country.entity';
 import { MailConfirmService } from '../mail-confirm/mail-confirm.service';
+import { RedisService } from '@/common/services/redis/redis.service';
 import { UserErrorCode } from './errors/users-error-codes';
 
 @Injectable()
@@ -33,6 +34,7 @@ export class UsersService {
     @InjectRepository(CountryEntity)
     private readonly countryRepo: Repository<CountryEntity>,
     private readonly emailConfirmationService: MailConfirmService,
+    private readonly redisService: RedisService,
   ) {}
 
   // Метод определения языка пользователя по заголовку запроса
@@ -263,6 +265,9 @@ export class UsersService {
 
     await this.userRepo.save(user);
 
+    // Обновляем Redis после сохранения
+    await this.redisService.updateUserTimestamp(user.id, user.updatedAt);
+
     return new SelfUserDto(user);
   }
 
@@ -332,6 +337,9 @@ export class UsersService {
 
     await this.userRepo.save(user);
 
+    // Обновляем Redis после сохранения
+    await this.redisService.updateUserTimestamp(user.id, user.updatedAt);
+
     return new AdminUserDto(user);
   }
 
@@ -348,6 +356,9 @@ export class UsersService {
     }
 
     await this.userRepo.remove(user);
+
+    // Обновляем Redis после сохранения
+    await this.redisService.deleteUserTimestamp(user.id);
 
     return {
       success: true,
@@ -403,6 +414,9 @@ export class UsersService {
     });
 
     await this.userRepo.save(user);
+
+    // Обновляем Redis после сохранения
+    await this.redisService.updateUserTimestamp(user.id, user.updatedAt);
 
     return new AdminUserDto(user);
   }

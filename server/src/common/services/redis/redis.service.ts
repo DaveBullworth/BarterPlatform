@@ -1,11 +1,15 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { createClient, RedisClientType } from '@redis/client';
 import type { RedisSession } from '@/common/interfaces/redis-session.interface';
+import { DataSource } from 'typeorm';
+import { UserEntity } from '@/database/entities/user.entity';
 import { redisLogger } from '@/common/services/logger/logger.scopes';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
   private client!: RedisClientType;
+
+  constructor(private readonly dataSource: DataSource) {}
 
   async onModuleInit() {
     // Лог подключения
@@ -51,6 +55,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     });
 
     await this.client.connect();
+
+    redisLogger.info('Redis connected, initializing user timestamps...');
+    await this.initUserTimestamps(); // сразу вызываем инициализацию
   }
 
   getClient(): RedisClientType {
@@ -60,6 +67,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     }
     return this.client;
   }
+
+  // Подсервис валидации сессий клиентов
 
   async setSession(sessionId: string, data: RedisSession, ttlSeconds: number) {
     const client = this.getClient();
@@ -126,6 +135,37 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     redisLogger.info('REVOKE session', { sid: sessionId });
 
     await client.del(`session:${sessionId}`);
+  }
+
+  // Подсервис валидации кеша записей
+
+  async initUserTimestamps() {
+    const repo = this.dataSource.getRepository(UserEntity);
+
+    // Берём только id и updatedAt для экономии памяти
+    const users = await repo.find({ select: ['id', 'updatedAt'] });
+    redisLogger.info(`Initializing ${users.length} user timestamps in Redis`);
+
+    const pipeline = this.client.multi(); // batch запись через pipeline
+
+    users.forEach((user) => {
+      // ключ формата "user:updated:{userId}" → timestamp
+      pipeline.set(`user:updated:${user.id}`, user.updatedAt.toISOString());
+    });
+
+    await pipeline.exec();
+    redisLogger.info('User timestamps initialized in Redis');
+  }
+
+  async updateUserTimestamp(userId: string, date?: Date) {
+    const client = this.getClient();
+    const updatedAt = (date ?? new Date()).toISOString();
+    await client.set(`user:updated:${userId}`, updatedAt);
+  }
+
+  async deleteUserTimestamp(userId: string) {
+    const client = this.getClient();
+    await client.del(`user:updated:${userId}`);
   }
 
   async onModuleDestroy() {

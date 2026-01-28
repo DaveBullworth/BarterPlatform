@@ -1,7 +1,17 @@
-import { Burger, Group, Text, Button, TextInput } from '@mantine/core';
+import {
+  UnstyledButton,
+  Burger,
+  Group,
+  Text,
+  Button,
+  TextInput,
+} from '@mantine/core';
 import { Search, Plus, ChartColumnStacked } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 import { UserMenu } from './UserMenu';
+import { goToRoot } from '@/shared/utils/navigation';
 
 type DesktopHeaderProps = {
   desktopOpened: boolean;
@@ -13,6 +23,8 @@ export const DesktopHeader = ({
   onToggleDesktop,
 }: DesktopHeaderProps) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   return (
     <Group h="100%" px="md" justify="space-between" visibleFrom="sm">
       {/* LEFT PART */}
@@ -25,9 +37,14 @@ export const DesktopHeader = ({
         />
 
         {/* LOGO / TITLE */}
-        <Text fw={700} size="lg">
-          {t('header.title')}
-        </Text>
+        <UnstyledButton
+          onClick={() => goToRoot(navigate)}
+          style={{ cursor: 'pointer' }}
+        >
+          <Text fw={700} size="lg">
+            {t('header.title')}
+          </Text>
+        </UnstyledButton>
 
         {/* CATEGORIES */}
         <Button variant="light" leftSection={<ChartColumnStacked size={16} />}>

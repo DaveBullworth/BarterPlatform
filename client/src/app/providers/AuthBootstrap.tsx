@@ -2,12 +2,19 @@ import type { PropsWithChildren } from 'react';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { FullPageLoader } from '@/shared/ui/FullPageLoader';
 
-export const AuthBootstrap = ({ children }: PropsWithChildren) => {
-  const { loading, loadingReason, retryIn } = useAuth();
+export const AuthBootstrap: React.FC<PropsWithChildren> = ({ children }) => {
+  const { loading, rateLimited } = useAuth();
 
-  if (loading) {
-    return <FullPageLoader reason={loadingReason} retryIn={retryIn} />;
+  // пока bootstrapUser загружается
+  if (loading || rateLimited) {
+    return (
+      <FullPageLoader
+        reason={rateLimited ? 'RATE_LIMIT' : 'BOOTSTRAP'}
+        retryIn={rateLimited ? 5 : 0}
+      />
+    );
   }
 
-  return children;
+  // дальше рендерим UI, даже если пользователь не авторизован (гость)
+  return <>{children}</>;
 };

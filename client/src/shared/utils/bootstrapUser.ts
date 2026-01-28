@@ -29,10 +29,8 @@ export const bootstrapUser = async ({
     // обновляем Redux
     dispatch(
       setUser({
-        id: selfUser.id,
-        login: selfUser.login,
-        name: selfUser.name,
-        role: selfUser.role,
+        ...selfUser,
+        updatedAt: selfUser.updatedAt ?? new Date().toISOString(), // если updatedAt ещё не приходит
       }),
     );
 

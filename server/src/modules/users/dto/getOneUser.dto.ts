@@ -57,6 +57,12 @@ export class AdminUserDto {
   })
   createdAt: Date;
 
+  @ApiProperty({
+    example: '2025-12-30T12:00:00.000Z',
+    description: 'Дата последнего изменения пользователя',
+  })
+  updatedAt: Date;
+
   constructor(user: UserEntity) {
     Object.assign(this, {
       id: user.id,
@@ -69,6 +75,7 @@ export class AdminUserDto {
       status: user.status,
       statusEmail: user.statusEmail,
       createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     });
   }
 }
