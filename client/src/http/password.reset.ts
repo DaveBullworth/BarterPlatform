@@ -3,7 +3,6 @@ import type {
   PasswordResetRequestDto,
   PasswordResetRequestResponseDto,
   PasswordResetConfirmDto,
-  PasswordResetConfirmResponseDto,
 } from '@/types/password.reset.dto';
 
 export const requestPasswordReset = async (
@@ -17,13 +16,8 @@ export const requestPasswordReset = async (
   return data;
 };
 
-export const confirmPasswordReset = async (
-  dto: PasswordResetConfirmDto,
-): Promise<PasswordResetConfirmResponseDto> => {
-  const { data } = await $host.post<PasswordResetConfirmResponseDto>(
-    '/password-reset/confirm',
-    dto,
-  );
+export const confirmPasswordReset = async (dto: PasswordResetConfirmDto) => {
+  const { data } = await $host.post('/password-reset/confirm', dto);
 
   return data;
 };

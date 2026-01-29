@@ -4,7 +4,7 @@ import { User } from 'lucide-react';
 import type { SelfUserDto } from '@/types/user';
 import { getUserAvatarUrl } from '@/http/media';
 
-import styles from './ProfilePage.module.scss';
+import styles from '../ProfilePage.module.scss';
 
 type Props = {
   user: SelfUserDto;

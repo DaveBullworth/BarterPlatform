@@ -382,6 +382,8 @@ nest g controller modules/{entityName}
 
 > **Генерация миграций базы данных (TypeORM):**
 
+> !!!НЕ ЗАБЫВАЕМ ПРОВЕРЯТЬ `src/database/entities/index.ts` НА НАЛИЧИЕ ВСЕХ СУЩНОСТЕЙ!!!
+
 1. Проверяем, что сервер в режиме **development**:
 
 ```env

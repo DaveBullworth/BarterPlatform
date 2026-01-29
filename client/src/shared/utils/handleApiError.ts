@@ -3,7 +3,13 @@ import type { AxiosError } from 'axios';
 import { notify } from './notifications';
 import type { ReactNode } from 'react';
 import type { TFunction } from 'i18next';
-import { AlertCircle, ClockAlert, DoorClosedLocked } from 'lucide-react';
+import {
+  AlertCircle,
+  ClockAlert,
+  DoorClosedLocked,
+  UserRoundX,
+  UserRoundMinus,
+} from 'lucide-react';
 import type { ApiErrorData } from '@/types/error';
 import { ERROR_TYPES } from '../constants/error-types';
 import { ResendConfirmEmailAction } from '../ui/ResendConfirmEmailAction';
@@ -104,6 +110,7 @@ export const handleApiError = (
         case ERROR_TYPES.USER_NOT_FOUND:
           message = t('auth.userNotFound');
           color = 'red';
+          icon = React.createElement(UserRoundMinus, { size: 18 });
           break;
 
         /** PASSWORD-RESET */
@@ -124,6 +131,13 @@ export const handleApiError = (
           message = t('common.sessionNotFound');
           color = 'red';
           icon = React.createElement(DoorClosedLocked, { size: 18 });
+          break;
+
+        /** GET SELF USER */
+        case ERROR_TYPES.USER_DEACTIVATED:
+          message = t('common.userDeactivated');
+          color = 'red';
+          icon = React.createElement(UserRoundX, { size: 18 });
           break;
 
         default:

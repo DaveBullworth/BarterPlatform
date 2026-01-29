@@ -1,13 +1,18 @@
-import { Title, Stack, Loader, Center } from '@mantine/core';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { Title, Stack, Loader, Center, Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import type { AxiosError } from 'axios';
 
 import { getSelfUser } from '@/http/user';
 import type { SelfUserDto } from '@/types/user';
-import { ProfileHeaderBlock } from './ProfileHeaderBlock';
+import { ProfileHeaderBlock } from './components/ProfileHeaderBlock';
+import { AccountDeactivationModal } from './components/AccountDeactivationModal';
+import { notify } from '@/shared/utils/notifications';
+import { handleApiError } from '@/shared/utils/handleApiError';
 import { setUser } from '@/store/userSlice';
 import type { RootState } from '@/store';
+import type { ApiErrorData } from '@/types/error';
 
 export const ProfilePage = () => {
   const { t } = useTranslation();
@@ -18,30 +23,51 @@ export const ProfilePage = () => {
     cachedUser.isAuthenticated ? (cachedUser as SelfUserDto) : null,
   );
   const [loading, setLoading] = useState(!cachedUser.isAuthenticated);
+  const [deactivationModalOpened, setDeactivationModalOpened] = useState(false);
 
   const cachedUserRef = useRef(cachedUser);
 
-  useEffect(() => {
-    // Загружаем данные с сервера
-    const fetchUser = async () => {
-      try {
-        const selfUser = await getSelfUser(cachedUserRef.current.updatedAt);
+  // Загружаем данные с сервера
+  const fetchUser = useCallback(async () => {
+    try {
+      const selfUser = await getSelfUser(cachedUserRef.current.updatedAt);
 
-        // Обновляем Redux и локальный state
-        dispatch(
-          setUser({
-            ...selfUser,
-            updatedAt: selfUser.updatedAt ?? new Date().toISOString(),
-          }),
-        );
-        setUserState(selfUser);
-      } catch (err) {
-        console.error('Failed to fetch user', err);
-      } finally {
-        setLoading(false);
+      // Обновляем Redux и локальный state
+      dispatch(
+        setUser({
+          ...selfUser,
+          updatedAt: selfUser.updatedAt ?? new Date().toISOString(),
+        }),
+      );
+      setUserState(selfUser);
+    } catch (err: unknown) {
+      const axiosError = err as AxiosError<ApiErrorData>;
+
+      if (axiosError.response?.status) {
+        const status = axiosError.response.status;
+
+        // 400 — общий ответ безопасности
+        if (status === 400) {
+          notify({
+            title: t('deactivation.errorTitle'),
+            message: t('deactivation.errorMessage'),
+            color: 'red',
+          });
+        } else {
+          // остальные — технические
+          handleApiError(err, t, {
+            defaultMessage: t('deactivation.failed'),
+          });
+        }
+      } else {
+        handleApiError(err, t, { defaultMessage: t('deactivation.failed') });
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  }, [dispatch, t]); // ESLint будет доволен
 
+  useEffect(() => {
     // Если нет кеша, загружаем
     if (!cachedUserRef.current.isAuthenticated) {
       fetchUser();
@@ -52,7 +78,7 @@ export const ProfilePage = () => {
       // но всё равно проверяем актуальность
       fetchUser();
     }
-  }, [dispatch]);
+  }, [fetchUser]);
 
   if (loading) {
     return (
@@ -71,6 +97,17 @@ export const ProfilePage = () => {
       <Title order={2}>{t('profile.title')}</Title>
 
       <ProfileHeaderBlock user={user} />
+
+      {/* Кнопка для открытия модалки */}
+      <Button color="red" onClick={() => setDeactivationModalOpened(true)}>
+        {t('deactivation.deactivate')}
+      </Button>
+
+      {/* Модалка */}
+      <AccountDeactivationModal
+        opened={deactivationModalOpened}
+        onClose={() => setDeactivationModalOpened(false)}
+      />
     </Stack>
   );
 };

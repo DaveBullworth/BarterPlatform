@@ -11,6 +11,7 @@ import { MailConfirmModule } from './modules/mail-confirm/mail-confirm.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { MediaModule } from './modules/media/media.module';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
+import { DeactivationModule } from './modules/deactivation/deactivation.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { PasswordResetModule } from './modules/password-reset/password-reset.mod
     RedisModule,
     MediaModule,
     PasswordResetModule,
+    DeactivationModule,
   ],
 })
 export class AppModule {}

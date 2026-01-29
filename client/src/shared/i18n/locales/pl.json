@@ -99,6 +99,21 @@
     "title": "Profil",
     "stub": "To jest strona profilu (zaślepka)"
   },
+  "deactivation": {
+    "title": "Dezaktywacja konta",
+    "text": "Czy na pewno chcesz dezaktywować swoje konto? Wprowadź 6-cyfrowy kod wysłany na Twój zarejestrowany e-mail.",
+    "enterFullCode": "Wprowadź pełny 6-cyfrowy kod.",
+    "success": "Konto zostało pomyślnie dezaktywowane.",
+    "codeSent": "Kod dezaktywacyjny został wysłany na Twój e-mail.",
+    "codeAlreadyRequested": "Kod został już wysłany. Poczekaj {{hours}} godzin.",
+    "alreadyDeactivated": "Konto jest już dezaktywowane.",
+    "userNotFound": "Nie znaleziono użytkownika.",
+    "requestCode": "Poproś o kod",
+    "deactivate": "Dezaktywuj",
+    "errorTitle": "Błąd dezaktywacji",
+    "errorMessage": "Nieprawidłowy lub wygasły kod. Spróbuj ponownie.",
+    "failed": "Nie udało się dezaktywować konta."
+  },
   "admin": {
     "title": "Panel administracyjny",
     "stub": "To jest strona administratora (zaślepka)"
@@ -115,6 +130,7 @@
     "exitQuestion": "Czy na pewno chcesz wyjść?",
     "refreshTokenNotFound": " Nie znaleziono tokena odświeżania",
     "sessionNotFound": "Nie znaleziono sesji",
+    "userDeactivated": "Użytkownik dezaktywowany",
     "logoutFailed": "Nie udało się wylogować!",
     "user": "Użytkownik",
     "guest": "Gość"

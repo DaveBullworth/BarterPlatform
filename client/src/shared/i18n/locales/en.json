@@ -99,6 +99,21 @@
     "title": "Profile",
     "stub": "This is a profile page stub"
   },
+  "deactivation": {
+    "title": "Account Deactivation",
+    "text": "Are you sure you want to deactivate your account? Enter the 6-digit code sent to your registered email.",
+    "enterFullCode": "Please enter the full 6-digit code.",
+    "success": "Account successfully deactivated.",
+    "codeSent": "Deactivation code has been sent to your email.",
+    "codeAlreadyRequested": "Code has already been requested. Please wait {{hours}} hours.",
+    "alreadyDeactivated": "Account is already deactivated.",
+    "userNotFound": "User not found.",
+    "requestCode": "Request Code",
+    "deactivate": "Deactivate",
+    "errorTitle": "Deactivation Error",
+    "errorMessage": "Invalid or expired code. Please try again.",
+    "failed": "Failed to deactivate account."
+  },
   "admin": {
     "title": "Admin panel",
     "stub": "This is an admin page stub"
@@ -115,6 +130,7 @@
     "exitQuestion": "Are you sure you want to exit?",
     "refreshTokenNotFound": "Refresh token not found",
     "sessionNotFound": "Session not found",
+    "userDeactivated": "The user is deactivated",
     "logoutFailed": "Unable to log out!",
     "user": "User",
     "guest": "Guest"

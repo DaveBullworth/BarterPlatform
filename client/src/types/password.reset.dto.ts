@@ -1,3 +1,5 @@
+import type { PasswordResetRequest } from '@/shared/constants/password-reset-request';
+
 // DTO для запроса
 export interface PasswordResetRequestDto {
   email: string;
@@ -5,15 +7,11 @@ export interface PasswordResetRequestDto {
 
 // DTO для ответа
 export interface PasswordResetRequestResponseDto {
-  result: 'sent' | 'already_requested';
+  result: PasswordResetRequest;
   waitHours?: number;
 }
 
 export interface PasswordResetConfirmDto {
   token: string;
   newPassword: string;
-}
-
-export interface PasswordResetConfirmResponseDto {
-  success: true;
 }

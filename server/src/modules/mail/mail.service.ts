@@ -84,4 +84,28 @@ export class MailService {
       html,
     });
   }
+
+  /**
+   * Отправка письма с кодом деактивации аккаунта
+   * @param email - адрес пользователя
+   * @param language - язык пользователя
+   * @param code - 6-значный код подтверждения
+   */
+  async sendAccountDeactivationCode(
+    email: string,
+    language: UserLanguage,
+    code: string,
+  ): Promise<void> {
+    const template =
+      templates.accountDeactivation[language] ??
+      templates.accountDeactivation.en;
+
+    const html = template.html.replace('{{code}}', code);
+
+    await this.sendMail({
+      to: email,
+      subject: template.subject,
+      html,
+    });
+  }
 }

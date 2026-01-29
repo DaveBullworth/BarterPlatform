@@ -81,6 +81,8 @@ export const ResetPasswordPage = () => {
             defaultMessage: t('auth.passwordResetFailed'),
           });
         }
+      } else {
+        handleApiError(err, t, { defaultMessage: t('deactivation.failed') });
       }
     } finally {
       setLoading(false);

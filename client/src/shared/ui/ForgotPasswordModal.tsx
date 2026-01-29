@@ -7,6 +7,7 @@ import { createEmailValidator } from '@/shared/utils/validators';
 import { requestPasswordReset } from '@/http/password.reset';
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
+import { PASSWORD_RESET_REQUEST } from '../constants/password-reset-request';
 
 interface Props {
   opened: boolean;
@@ -32,12 +33,12 @@ export const ForgotPasswordModal = ({ opened, onClose }: Props) => {
 
       const data = await requestPasswordReset({ email: values.email });
 
-      if (data.result === 'sent') {
+      if (data.result === PASSWORD_RESET_REQUEST.SENT) {
         notify({
           message: t('auth.passwordResetSent'),
           color: 'green',
         });
-      } else if (data.result === 'already_requested') {
+      } else if (data.result === PASSWORD_RESET_REQUEST.ALREADY_REQESTED) {
         notify({
           message: t('auth.passwordResetAlreadyRequested', {
             hours: data.waitHours?.toFixed(1),

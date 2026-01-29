@@ -73,7 +73,7 @@ export class PasswordResetController {
       Особенности:
       - токен одноразовый
       - проверяется срок действия
-      - возвращает 200 даже если токен некорректен
+      - возвращает 200 только если токен корректен
     `,
   })
   @ApiBody({ type: PasswordResetConfirmDto })

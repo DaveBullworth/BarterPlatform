@@ -98,6 +98,21 @@
     "title": "Profil",
     "stub": "Dies ist eine Platzhalter-Seite für das Profil"
   },
+  "deactivation": {
+    "title": "Kontodeaktivierung",
+    "text": "Sind Sie sicher, dass Sie Ihr Konto deaktivieren möchten? Geben Sie den 6-stelligen Code ein, der an Ihre registrierte E-Mail gesendet wurde.",
+    "enterFullCode": "Bitte geben Sie den vollständigen 6-stelligen Code ein.",
+    "success": "Konto erfolgreich deaktiviert.",
+    "codeSent": "Der Deaktivierungscode wurde an Ihre E-Mail gesendet.",
+    "codeAlreadyRequested": "Der Code wurde bereits angefordert. Bitte warten Sie {{hours}} Stunden.",
+    "alreadyDeactivated": "Konto ist bereits deaktiviert.",
+    "userNotFound": "Benutzer nicht gefunden.",
+    "requestCode": "Code anfordern",
+    "deactivate": "Deaktivieren",
+    "errorTitle": "Deaktivierungsfehler",
+    "errorMessage": "Ungültiger oder abgelaufener Code. Bitte versuchen Sie es erneut.",
+    "failed": "Fehler beim Deaktivieren des Kontos."
+  },
   "admin": {
     "title": "Admin-Bereich",
     "stub": "Dies ist eine Platzhalter-Seite für den Admin-Bereich"
@@ -114,6 +129,7 @@
     "exitQuestion": "Sind Sie sicher, dass Sie ausgehen möchten?",
     "refreshTokenNotFound": "Kein Aktualisierungstoken gefunden",
     "sessionNotFound": "Sitzung wurde nicht gefunden",
+    "userDeactivated": "Der Benutzer ist deaktiviert",
     "logoutFailed": "Konnte nicht abgemeldet werden!",
     "user": "Benutzer",
     "guest": "Gast"
