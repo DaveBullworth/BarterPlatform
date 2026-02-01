@@ -97,7 +97,20 @@
   },
   "profile": {
     "title": "Profile",
-    "stub": "This is a profile page stub"
+    "stub": "This is a profile page stub",
+    "missed": "Missed",
+    "language": "Language",
+    "theme": "Theme",
+    "avatar": "Avatar",
+    "savePreferences": "Save settings",
+    "confirmSaveTitle": "Confirmation",
+    "confirmSaveText": "Are you sure you want to save the following personal settings globally?",
+    "preferencesSavedSuccessfully": "User preferences have been saved!",
+    "avatarDrag": "Drag an image here or click to select",
+    "avatarDragInfo": "Allowed types [png/jpeg], weight [< 5 mb]",
+    "settingMissmatch": "The saved setting differs from the local one. Changes have not been saved to the profile yet.",
+    "avatarUpdated": "Avatar successfully updated",
+    "avatarDeleted": "Avatar successfully deleted"
   },
   "deactivation": {
     "title": "Account Deactivation",
@@ -126,6 +139,10 @@
     "cancel": "Cancel"
   },
   "common": {
+    "error": "Error",
+    "success": "Success",
+    "delete": "Delete",
+    "save": "Save",
     "exit": "Exit",
     "exitQuestion": "Are you sure you want to exit?",
     "refreshTokenNotFound": "Refresh token not found",

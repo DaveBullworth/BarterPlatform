@@ -5,6 +5,7 @@ import type {
   LoginResponse,
   RegisterUserDto,
   RegisterResponse,
+  UpdateSelfUserDto,
 } from '@/types/user';
 
 export const getSelfUser = async (updatedAt?: string) => {
@@ -29,4 +30,11 @@ export const registerUser = async (
 
 export const logoutUser = async () => {
   await $authHost.post('/auth/logout');
+};
+
+export const updateSelfUser = async (
+  dto: UpdateSelfUserDto,
+): Promise<SelfUserDto> => {
+  const { data } = await $authHost.patch<SelfUserDto>('/user/self', dto);
+  return data;
 };

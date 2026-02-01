@@ -9,6 +9,7 @@ import {
   DoorClosedLocked,
   UserRoundX,
   UserRoundMinus,
+  ImageOff,
 } from 'lucide-react';
 import type { ApiErrorData } from '@/types/error';
 import { ERROR_TYPES } from '../constants/error-types';
@@ -25,6 +26,7 @@ export const handleApiError = (
 ) => {
   if (!error) return;
 
+  const title = t('common.error');
   let message: ReactNode = opts?.defaultMessage || 'Something went wrong';
   let color: 'blue' | 'red' | 'green' | 'yellow' | 'teal' | 'gray' = 'red';
   let icon: ReactNode = undefined;
@@ -140,6 +142,25 @@ export const handleApiError = (
           icon = React.createElement(UserRoundX, { size: 18 });
           break;
 
+        /** AVATAR */
+        case ERROR_TYPES.AVATAR_INVALID_FORMAT:
+          message = t('profile.avatarInvalidFormat'); // например "Можно загружать только PNG и JPG"
+          color = 'red';
+          icon = React.createElement(ImageOff, { size: 18 });
+          break;
+
+        case ERROR_TYPES.AVATAR_PROCESSING_ERROR:
+          message = t('profile.avatarProcessingError'); // "Ошибка обработки изображения"
+          color = 'red';
+          icon = React.createElement(ImageOff, { size: 18 });
+          break;
+
+        case ERROR_TYPES.AVATAR_NOT_FOUND:
+          message = t('profile.avatarNotFound'); // "Аватар не найден"
+          color = 'yellow';
+          icon = React.createElement(ImageOff, { size: 18 });
+          break;
+
         default:
           message = data.message || message;
           color = 'red';
@@ -154,6 +175,7 @@ export const handleApiError = (
   }
 
   notify({
+    title,
     message,
     color,
     icon,

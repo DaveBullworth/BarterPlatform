@@ -7,6 +7,8 @@ import type { AxiosError } from 'axios';
 import { getSelfUser } from '@/http/user';
 import type { SelfUserDto } from '@/types/user';
 import { ProfileHeaderBlock } from './components/ProfileHeaderBlock';
+import { ProfileContactsBlock } from './components/ProfileContactsBlock';
+import { ProfilePreferencesBlock } from './components/ProfilePreferencesBlock';
 import { AccountDeactivationModal } from './components/AccountDeactivationModal';
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
@@ -26,6 +28,10 @@ export const ProfilePage = () => {
   const [deactivationModalOpened, setDeactivationModalOpened] = useState(false);
 
   const cachedUserRef = useRef(cachedUser);
+
+  const handleUserUpdated = (updatedUser: SelfUserDto) => {
+    setUserState(updatedUser);
+  };
 
   // Загружаем данные с сервера
   const fetchUser = useCallback(async () => {
@@ -93,13 +99,22 @@ export const ProfilePage = () => {
   }
 
   return (
-    <Stack gap="lg">
+    <Stack gap="lg" w={'100%'}>
       <Title order={2}>{t('profile.title')}</Title>
 
       <ProfileHeaderBlock user={user} />
+      <ProfileContactsBlock user={user} />
+      <ProfilePreferencesBlock
+        user={user}
+        onPreferencesSaved={handleUserUpdated}
+      />
 
       {/* Кнопка для открытия модалки */}
-      <Button color="red" onClick={() => setDeactivationModalOpened(true)}>
+      <Button
+        color="red"
+        onClick={() => setDeactivationModalOpened(true)}
+        maw={600}
+      >
         {t('deactivation.deactivate')}
       </Button>
 

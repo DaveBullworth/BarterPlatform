@@ -40,3 +40,12 @@ export interface RegisterUserDto {
 export interface RegisterResponse {
   message: string;
 }
+
+export type UpdateSelfUserDto = {
+  login?: string;
+  name?: string;
+  phone?: string | null;
+  countryId?: string | null;
+  language?: UserLanguage;
+  theme?: UserTheme;
+};

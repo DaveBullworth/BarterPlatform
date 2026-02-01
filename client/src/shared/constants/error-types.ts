@@ -14,6 +14,9 @@ export const ERROR_TYPES = {
   TOO_MANY_REQUESTS: 'TOO_MANY_REQUESTS',
   REFRESH_TOKEN_MISSING: 'REFRESH_TOKEN_MISSING',
   SESSION_NOT_FOUND: 'SESSION_NOT_FOUND',
+  AVATAR_INVALID_FORMAT: 'AVATAR_INVALID_FORMAT', // файл не JPG/PNG
+  AVATAR_PROCESSING_ERROR: 'AVATAR_PROCESSING_ERROR', // ошибка при обработке
+  AVATAR_NOT_FOUND: 'AVATAR_NOT_FOUND', // попытка удалить отсутствующий аватар
 } as const;
 
 export type ErrorTypes = (typeof ERROR_TYPES)[keyof typeof ERROR_TYPES];

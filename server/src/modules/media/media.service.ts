@@ -15,6 +15,7 @@ import {
   MediaFileVisibility,
 } from '@/database/entities/mediafile.entity';
 import { UserEntity } from '@/database/entities/user.entity';
+import { MediaErrorCode } from '../auth/errors/auth-error-codes';
 import logger from '@/common/services/logger/logger';
 
 // создаём тип точно для multer
@@ -36,7 +37,10 @@ export class MediaService {
 
   async uploadUserAvatar(userId: string, file: UploadedImageFile) {
     if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
-      throw new BadRequestException('Поддерживаются только PNG и JPG');
+      throw new BadRequestException({
+        code: MediaErrorCode.AVATAR_INVALID_FORMAT,
+        message: 'Поддерживаются только PNG и JPG',
+      });
     }
 
     // папка пользователя
@@ -70,8 +74,9 @@ export class MediaService {
 
       // безопасный выброс ошибки
       throw new InternalServerErrorException({
+        code: MediaErrorCode.AVATAR_PROCESSING_ERROR,
+        description: 'Ошибка обработки изображения',
         cause: err instanceof Error ? err : undefined,
-        description: message,
       });
     }
 
@@ -115,7 +120,10 @@ export class MediaService {
     });
 
     if (!avatar) {
-      throw new NotFoundException('Avatar not found');
+      throw new NotFoundException({
+        code: MediaErrorCode.AVATAR_NOT_FOUND,
+        message: 'Avatar not found',
+      });
     }
 
     const filePath = path.join(process.cwd(), 'media', avatar.path);

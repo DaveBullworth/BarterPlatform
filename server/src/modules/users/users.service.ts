@@ -177,7 +177,8 @@ export class UsersService {
     }
 
     // Админ — видит всё
-    if (requester.role === UserRole.ADMIN) {
+    // Доп проверка если админ хочет посмотреть свой профиль
+    if (requester.role === UserRole.ADMIN && requester.sub !== user.id) {
       return new AdminUserDto(user);
     }
 

@@ -97,7 +97,20 @@
   },
   "profile": {
     "title": "Profil",
-    "stub": "To jest strona profilu (zaślepka)"
+    "stub": "To jest strona profilu (zaślepka)",
+    "missed": "Być nieobecnym",
+    "language": "Język",
+    "theme": "Motyw",
+    "avatar": "Avatar",
+    "savePreferences": "Zapisz ustawienia",
+    "confirmSaveTitle": "Potwierdzenie",
+    "confirmSaveText": "Czy na pewno chcesz zapisać globalnie następujące ustawienia osobiste?",
+    "preferencesSavedSuccessfully": "ustawienia użytkownika zapisane!",
+    "avatarDrag": "Przeciągnij obraz lub kliknij, aby wybrać",
+    "avatarDragInfo": "dozwolone typy [png/jpeg], waga [< 5 MB]",
+    "settingMissmatch": "Zapisane ustawienie różni się od lokalnego. Zmiany nie zostały jeszcze zapisane w profilu.",
+    "avatarUpdated": "Awatar został pomyślnie zaktualizowany",
+    "avatarDeleted": "Awatar został pomyślnie usunięty"
   },
   "deactivation": {
     "title": "Dezaktywacja konta",
@@ -126,6 +139,10 @@
     "cancel": "Anuluj"
   },
   "common": {
+    "error": "Błąd",
+    "success": "Sukces",
+    "delete": "Usuń",
+    "save": "Zapisz",
     "exit": "Wyjdź",
     "exitQuestion": "Czy na pewno chcesz wyjść?",
     "refreshTokenNotFound": " Nie znaleziono tokena odświeżania",

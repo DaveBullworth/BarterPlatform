@@ -113,7 +113,7 @@ export const AccountDeactivationModal = ({ opened, onClose }: Props) => {
       opened={opened}
       onClose={handleCancel}
       title={
-        <Text fw={700} size="lg">
+        <Text fw={700} size="lg" td="underline">
           {t('deactivation.title')}
         </Text>
       }
