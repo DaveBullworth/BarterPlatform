@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { AxiosError } from 'axios';
 
 import { getSelfUser } from '@/http/user';
-import type { SelfUserDto } from '@/types/user';
+import { ProfileEditModal } from './components/ProfileEditModal';
 import { ProfileHeaderBlock } from './components/ProfileHeaderBlock';
 import { ProfileContactsBlock } from './components/ProfileContactsBlock';
 import { ProfilePreferencesBlock } from './components/ProfilePreferencesBlock';
@@ -13,6 +13,7 @@ import { AccountDeactivationModal } from './components/AccountDeactivationModal'
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { setUser } from '@/store/userSlice';
+import type { SelfUserDto } from '@/types/user';
 import type { RootState } from '@/store';
 import type { ApiErrorData } from '@/types/error';
 
@@ -26,6 +27,7 @@ export const ProfilePage = () => {
   );
   const [loading, setLoading] = useState(!cachedUser.isAuthenticated);
   const [deactivationModalOpened, setDeactivationModalOpened] = useState(false);
+  const [editProfileModalOpened, setEditProfileModalOpened] = useState(false);
 
   const cachedUserRef = useRef(cachedUser);
 
@@ -109,7 +111,12 @@ export const ProfilePage = () => {
         onPreferencesSaved={handleUserUpdated}
       />
 
-      {/* Кнопка для открытия модалки */}
+      {/* Кнопка для открытия модалки изменения данных профиля */}
+      <Button onClick={() => setEditProfileModalOpened(true)} maw={600}>
+        {t('profile.editData')}
+      </Button>
+
+      {/* Кнопка для открытия модалки деактивации */}
       <Button
         color="red"
         onClick={() => setDeactivationModalOpened(true)}
@@ -118,10 +125,18 @@ export const ProfilePage = () => {
         {t('deactivation.deactivate')}
       </Button>
 
-      {/* Модалка */}
+      {/* Модалка деактивации*/}
       <AccountDeactivationModal
         opened={deactivationModalOpened}
         onClose={() => setDeactivationModalOpened(false)}
+      />
+
+      {/* Модалка изменения данных профиля*/}
+      <ProfileEditModal
+        user={user}
+        opened={editProfileModalOpened}
+        onClose={() => setEditProfileModalOpened(false)}
+        onUpdated={handleUserUpdated}
       />
     </Stack>
   );

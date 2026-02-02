@@ -4,16 +4,18 @@ import { useTranslation } from 'react-i18next';
 interface Props {
   phone?: string;
   countryCode?: number;
+  error?: React.ReactNode;
   onChange: (v: string) => void;
 }
 
-export const PhoneInput = ({ phone, countryCode, onChange }: Props) => {
+export const PhoneInput = ({ phone, countryCode, error, onChange }: Props) => {
   const { t } = useTranslation();
 
   return (
     <TextInput
       label={t('auth.phone')}
       placeholder={t('auth.phonePlaceholder')}
+      error={error}
       leftSection={countryCode ? `+${countryCode}` : undefined}
       leftSectionWidth={'3rem'}
       value={phone ?? ''}

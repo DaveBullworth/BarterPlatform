@@ -48,3 +48,9 @@
     align-items: center;
   }
 }
+
+.modalEditForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

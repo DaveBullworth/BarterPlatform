@@ -110,7 +110,10 @@
     "avatarDragInfo": "Allowed types [png/jpeg], weight [< 5 mb]",
     "settingMissmatch": "The saved setting differs from the local one. Changes have not been saved to the profile yet.",
     "avatarUpdated": "Avatar successfully updated",
-    "avatarDeleted": "Avatar successfully deleted"
+    "avatarDeleted": "Avatar successfully deleted",
+    "editData": "Edit details",
+    "dataUpdated": "Profile data updated successfully",
+    "countryNotSelected": "Please select a country"
   },
   "deactivation": {
     "title": "Account Deactivation",

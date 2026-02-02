@@ -1,0 +1,97 @@
+import { useEffect, useState, Suspense, lazy } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Modal, Text, Alert } from '@mantine/core';
+
+import { ProfileEditForm } from './ProfileEditForm';
+import { buildAlertProps } from '@/shared/utils/alertPresets';
+import { CountrySelectPlaceholder } from '@/pages/auth/components/СountrySelectPlaceholder';
+import type { SelfUserDto } from '@/types/user';
+import type { Country } from '@/types/country';
+
+import styles from '../ProfilePage.module.scss';
+
+type Props = {
+  opened: boolean;
+  onClose: () => void;
+  user: SelfUserDto;
+  onUpdated: (user: SelfUserDto) => void;
+};
+
+const CountrySelectLazy = lazy(
+  () => import('@/pages/auth/components/CountrySelect'),
+);
+
+export const ProfileEditModal = ({
+  opened,
+  onClose,
+  user,
+  onUpdated,
+}: Props) => {
+  const { t } = useTranslation();
+
+  const [loadCountrySelect, setLoadCountrySelect] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(
+    user.country ?? null,
+  );
+  const [alert, setAlert] = useState<React.ReactNode | null>(null);
+
+  // lazy load CountrySelect
+  useEffect(() => {
+    const timer = setTimeout(() => setLoadCountrySelect(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // централизованный handleClose
+  const handleClose = () => {
+    setAlert(null); // очищаем alert
+    // сброс selectedCountry к начальному состоянию
+    setSelectedCountry(user.country ?? null);
+    onClose(); // закрываем модалку
+  };
+
+  return (
+    <Modal
+      mt="sm"
+      opened={opened}
+      onClose={onClose}
+      centered
+      title={
+        <Text fw={700} size="lg" td="underline">
+          {t('profile.editData')}
+        </Text>
+      }
+      overlayProps={{ backgroundOpacity: 0.55, blur: 3 }}
+    >
+      {alert && (
+        <Alert
+          mb="sm"
+          className={styles.alert}
+          onClose={() => setAlert(null)}
+          {...buildAlertProps('error', alert)}
+        />
+      )}
+      <div className={styles.modalEditForm}>
+        {/* Country */}
+        {loadCountrySelect ? (
+          <Suspense fallback={<CountrySelectPlaceholder />}>
+            <CountrySelectLazy
+              value={selectedCountry?.id ?? null}
+              onChange={setSelectedCountry}
+            />
+          </Suspense>
+        ) : (
+          <CountrySelectPlaceholder />
+        )}
+
+        {/* Form */}
+        <ProfileEditForm
+          user={user}
+          selectedCountry={selectedCountry}
+          onCountryMissing={() => setAlert(t('profile.countryNotSelected'))}
+          onUpdated={onUpdated}
+          onClose={handleClose}
+        />
+      </div>
+    </Modal>
+  );
+};

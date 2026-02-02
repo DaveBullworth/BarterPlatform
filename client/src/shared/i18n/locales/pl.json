@@ -110,7 +110,10 @@
     "avatarDragInfo": "dozwolone typy [png/jpeg], waga [< 5 MB]",
     "settingMissmatch": "Zapisane ustawienie różni się od lokalnego. Zmiany nie zostały jeszcze zapisane w profilu.",
     "avatarUpdated": "Awatar został pomyślnie zaktualizowany",
-    "avatarDeleted": "Awatar został pomyślnie usunięty"
+    "avatarDeleted": "Awatar został pomyślnie usunięty",
+    "editData": "Edytuj dane",
+    "dataUpdated": "Dane profilu zostały pomyślnie zaktualizowane",
+    "countryNotSelected": "Proszę wybrać kraj"
   },
   "deactivation": {
     "title": "Dezaktywacja konta",
