@@ -1,0 +1,28 @@
+.adminContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; // расстояние между заголовком и таблицей
+}
+
+.tableWrapper {
+  background-color: var(--mantine-color-background); // адаптивный фон
+  border-radius: 12px;
+  box-shadow: var(--mantine-shadow-md); // тень из темы
+  overflow-x: auto;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--mantine-shadow-lg);
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed; /* фиксированные колонки */
+    th,
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; /* чтобы длинный текст не переносился */
+    }
+  }
+}

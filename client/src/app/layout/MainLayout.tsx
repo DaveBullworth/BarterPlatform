@@ -6,6 +6,8 @@ import { MobileHeader } from './header/MobileHeader';
 import { DesktopNavbar } from './navbar/DesktopNavbar';
 import { MobileBottomNavbar } from './navbar/MobileBottomNavbar';
 
+import styles from './MainLayout.module.scss';
+
 export const MainLayout = () => {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
@@ -39,7 +41,7 @@ export const MainLayout = () => {
         <MobileBottomNavbar />
       </AppShell.Footer>
 
-      <AppShell.Main style={{ display: 'flex' }}>
+      <AppShell.Main className={styles.mainLayout}>
         <Outlet />
       </AppShell.Main>
     </AppShell>

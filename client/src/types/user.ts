@@ -1,3 +1,5 @@
+import type { SortingState } from '@tanstack/react-table';
+
 import type { UserLanguage } from '@/shared/constants/user-language';
 import type { UserTheme } from '@/shared/constants/user-theme';
 import type { UserRole } from '@/shared/constants/user-role';
@@ -48,4 +50,27 @@ export type UpdateSelfUserDto = {
   countryId?: string | null;
   language?: UserLanguage;
   theme?: UserTheme;
+};
+
+export interface PaginatedResponse<T> {
+  total: number;
+  data: T[];
+}
+
+export interface GetUsersParams {
+  page?: number;
+  limit?: number;
+  sorting?: SortingState;
+}
+
+export type UserResponseDto = {
+  id: string;
+  email: string;
+  login: string;
+  name: string;
+  role: UserRole;
+  status: boolean;
+  phone: string | null;
+  createdAt: string;
+  country: Country;
 };

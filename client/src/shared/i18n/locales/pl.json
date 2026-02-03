@@ -132,7 +132,11 @@
   },
   "admin": {
     "title": "Panel administracyjny",
-    "stub": "To jest strona administratora (zaślepka)"
+    "stub": "To jest strona administratora (zaślepka)",
+    "description": "Zarządzanie użytkownikami systemu",
+    "loadFailed": "Nie udało się załadować danych",
+    "totalRecords": "Łączna liczba rekordów: {{count}}",
+    "pageSize": "/Str."
   },
   "authRequired": {
     "title": "Wymagane logowanie",
@@ -153,7 +157,12 @@
     "userDeactivated": "Użytkownik dezaktywowany",
     "logoutFailed": "Nie udało się wylogować!",
     "user": "Użytkownik",
-    "guest": "Gość"
+    "guest": "Gość",
+    "admin": "Administrator",
+    "active": "Aktywny",
+    "noActive": "Nieaktywny",
+    "role": "Role",
+    "status": "Status"
   },
   "notifications": {
     "title": "Powiadomienia",

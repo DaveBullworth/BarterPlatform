@@ -12,7 +12,7 @@ export const MobileHeader = () => {
   const isRoot = location.pathname === ROUTES.ROOT;
 
   return (
-    <Group h="100%" px="md" gap="sm" hiddenFrom="sm" wrap="nowrap">
+    <Group h="100%" px={'0.5rem'} gap={'0.5rem'} hiddenFrom="sm" wrap="nowrap">
       {/* HOME */}
 
       <ActionIcon

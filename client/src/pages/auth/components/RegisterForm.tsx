@@ -120,6 +120,7 @@ export const RegisterForm = ({
         <PhoneInput
           phone={form.values.phone}
           countryCode={selectedCountry?.phoneCode}
+          error={form.errors.phone}
           onChange={(v) => form.setFieldValue('phone', v)}
         />
 

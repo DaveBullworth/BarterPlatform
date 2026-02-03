@@ -132,7 +132,11 @@
   },
   "admin": {
     "title": "Admin panel",
-    "stub": "This is an admin page stub"
+    "stub": "This is an admin page stub",
+    "description": "System user management",
+    "loadFailed": "Failed to load data",
+    "totalRecords": "Total records: {{count}}",
+    "pageSize": "/Page"
   },
   "authRequired": {
     "title": "Authentication required",
@@ -153,7 +157,12 @@
     "userDeactivated": "The user is deactivated",
     "logoutFailed": "Unable to log out!",
     "user": "User",
-    "guest": "Guest"
+    "guest": "Guest",
+    "admin": "Administrator",
+    "active": "Active",
+    "noActive": "Inactive",
+    "role": "Role",
+    "status": "Status"
   },
   "notifications": {
     "title": "Notifications",

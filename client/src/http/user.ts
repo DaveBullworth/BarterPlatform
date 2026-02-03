@@ -6,6 +6,9 @@ import type {
   RegisterUserDto,
   RegisterResponse,
   UpdateSelfUserDto,
+  GetUsersParams,
+  PaginatedResponse,
+  UserResponseDto,
 } from '@/types/user';
 
 export const getSelfUser = async (updatedAt?: string) => {
@@ -36,5 +39,20 @@ export const updateSelfUser = async (
   dto: UpdateSelfUserDto,
 ): Promise<SelfUserDto> => {
   const { data } = await $authHost.patch<SelfUserDto>('/user/self', dto);
+  return data;
+};
+
+export const getAllUsers = async (
+  params: GetUsersParams,
+): Promise<PaginatedResponse<UserResponseDto>> => {
+  const { data } = await $authHost.get<PaginatedResponse<UserResponseDto>>(
+    '/user',
+    {
+      params: {
+        ...params,
+      },
+    },
+  );
+
   return data;
 };

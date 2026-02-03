@@ -53,7 +53,7 @@ export const ProfileEditModal = ({
     <Modal
       mt="sm"
       opened={opened}
-      onClose={onClose}
+      onClose={handleClose}
       centered
       title={
         <Text fw={700} size="lg" td="underline">

@@ -60,6 +60,7 @@ export const RegisterScreen = ({ onBackToLogin }: Props) => {
           name: values.name,
           password: values.password,
           countryId: selectedCountry.id,
+          ...(values.phone ? { phone: values.phone } : {}),
         });
 
         notify({

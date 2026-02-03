@@ -126,16 +126,45 @@ export class UsersService {
     };
   }
 
-  async getAll(
-    page: number,
-    limit: number,
-  ): Promise<{ data: UserResponseDto[]; total: number }> {
-    const [users, total] = await this.userRepo.findAndCount({
-      skip: (page - 1) * limit,
-      take: limit,
-      order: { createdAt: 'DESC' },
-      relations: ['country'], // подгружаем связанные страны
-    });
+  async getAll(params: {
+    page: number;
+    limit: number;
+    sorting?: { id: string; desc: boolean }[];
+  }): Promise<{ data: UserResponseDto[]; total: number }> {
+    const { page, limit, sorting } = params;
+
+    const qb = this.userRepo
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.country', 'country')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    // Если сортировка передана
+    if (sorting && sorting.length > 0) {
+      for (const sort of sorting) {
+        // whitelist полей, которые можно сортировать
+        const allowedFields = [
+          'email',
+          'login',
+          'name',
+          'role',
+          'status',
+          'createdAt',
+        ];
+        if (allowedFields.includes(sort.id)) {
+          if (sort.id === 'country') {
+            qb.addOrderBy('country.abbreviation', sort.desc ? 'DESC' : 'ASC');
+          } else {
+            qb.addOrderBy(`user.${sort.id}`, sort.desc ? 'DESC' : 'ASC');
+          }
+        }
+      }
+    } else {
+      // По умолчанию сортировка по дате создания
+      qb.addOrderBy('user.createdAt', 'DESC');
+    }
+
+    const [users, total] = await qb.getManyAndCount();
 
     return {
       total,

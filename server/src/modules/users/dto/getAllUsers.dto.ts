@@ -1,7 +1,8 @@
-import { IsOptional, Min, Max } from 'class-validator';
+import { IsOptional, IsArray, ValidateNested, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { UserRole } from '@/database/entities/user.entity';
+import { SortItemDto } from '@/common/dtos/sort-item.dto';
 
 export class GetUsersQueryDto {
   @IsOptional()
@@ -14,6 +15,13 @@ export class GetUsersQueryDto {
   @Min(1)
   @Max(100)
   limit?: number = 20;
+
+  @ApiPropertyOptional({ type: [SortItemDto] })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SortItemDto)
+  sorting?: SortItemDto[];
 }
 
 export class CountryResponseDto {

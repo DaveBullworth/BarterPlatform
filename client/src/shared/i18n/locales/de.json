@@ -131,7 +131,11 @@
   },
   "admin": {
     "title": "Admin-Bereich",
-    "stub": "Dies ist eine Platzhalter-Seite für den Admin-Bereich"
+    "stub": "Dies ist eine Platzhalter-Seite für den Admin-Bereich",
+    "description": "Verwaltung der Systembenutzer",
+    "loadFailed": "Daten konnten nicht geladen werden",
+    "totalRecords": "Gesamtanzahl der Einträge: {{count}}",
+    "pageSize": "/Se"
   },
   "authRequired": {
     "title": "Anmeldung erforderlich",
@@ -152,7 +156,12 @@
     "userDeactivated": "Der Benutzer ist deaktiviert",
     "logoutFailed": "Konnte nicht abgemeldet werden!",
     "user": "Benutzer",
-    "guest": "Gast"
+    "guest": "Gast",
+    "admin": "Administrator",
+    "active": "Aktiv",
+    "noActive": "Inaktiv",
+    "role": "Rolle",
+    "status": "Zustand"
   },
   "notifications": {
     "title": "Benachrichtigungen",

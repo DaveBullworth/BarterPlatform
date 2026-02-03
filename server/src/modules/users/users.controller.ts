@@ -38,6 +38,7 @@ import { RegisterUserDto } from '../auth/dto/register.dto';
 import type { AppRequest } from '@/common/interfaces/app-request.interface';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { UserErrorCode } from './errors/users-error-codes';
+import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
 import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
@@ -108,17 +109,25 @@ export class UsersController {
   @ApiOperation({
     summary: 'Получение списка пользователей (только для администратора)',
     description: `
-    Возвращает всех пользователей с пагинацией.
-    Доступ только для пользователей с ролью "ADMIN".
-    Каждая запись содержит основные поля пользователя и вложенную информацию о связанной стране.
+Возвращает всех пользователей с пагинацией и сортировкой.
+Доступ только для пользователей с ролью "ADMIN".
+Каждая запись содержит основные поля пользователя и вложенную информацию о связанной стране.
 
-    Параметры запроса:
-    - page — номер страницы (по умолчанию 1)
-    - limit — количество записей на страницу (по умолчанию 20)
-    `,
+Параметры запроса:
+- page — номер страницы (по умолчанию 1)
+- limit — количество записей на страницу (по умолчанию 20)
+- sorting — массив объектов вида { id: string, desc: boolean }, например:
+  [{"id":"email","desc":false},{"id":"createdAt","desc":true}]
+`,
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+  @ApiQuery({
+    name: 'sorting',
+    required: false,
+    type: [SortItemDto],
+    description: 'Массив объектов для множественной сортировки',
+  })
   @ApiExtraModels(UserResponseDto)
   @ApiResponse({
     status: 200,
@@ -146,7 +155,11 @@ export class UsersController {
     description: 'Внутренняя ошибка сервера',
   })
   getAllUsers(@Query() query: GetUsersQueryDto) {
-    return this.usersService.getAll(query.page ?? 1, query.limit ?? 20);
+    return this.usersService.getAll({
+      page: query.page ?? 1,
+      limit: query.limit ?? 20,
+      sorting: query.sorting ?? [],
+    });
   }
 
   // GET-запрос на 'users/self' для получения пользователя отправившего запрос
