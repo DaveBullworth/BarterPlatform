@@ -63,6 +63,7 @@ async function bootstrap() {
       stopAtFirstError: false, //
       // кастомная фабрика оишбок валидации
       exceptionFactory: (errors) => {
+        console.error('VALIDATION ERRORS:', errors);
         // расплющивает все ошибки по всем полям в один массив строк
         const messages = errors.flatMap((err) =>
           err.constraints ? Object.values(err.constraints) : [],

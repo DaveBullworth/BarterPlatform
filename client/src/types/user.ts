@@ -1,5 +1,3 @@
-import type { SortingState } from '@tanstack/react-table';
-
 import type { UserLanguage } from '@/shared/constants/user-language';
 import type { UserTheme } from '@/shared/constants/user-theme';
 import type { UserRole } from '@/shared/constants/user-role';
@@ -60,7 +58,8 @@ export interface PaginatedResponse<T> {
 export interface GetUsersParams {
   page?: number;
   limit?: number;
-  sorting?: SortingState;
+  sorting?: string;
+  filters?: string;
 }
 
 export type UserResponseDto = {

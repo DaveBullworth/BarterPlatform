@@ -1,4 +1,5 @@
 import { Table, ScrollArea, Group } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   useReactTable,
   getCoreRowModel,
@@ -10,6 +11,8 @@ import { ChevronUp, ChevronDown } from 'lucide-react';
 import { TABLE_COLUMNS } from '../tables/index';
 import type { TableKey } from '@/shared/constants/tables';
 import type { AdminColumn } from '../tables/user.columns';
+
+import styles from '../AdminPage.module.scss';
 
 type AdminTableProps<T> = {
   tableKey: TableKey;
@@ -28,6 +31,7 @@ export function AdminTable<T>({
   sorting,
   onSortingChange,
 }: AdminTableProps<T>) {
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const columns = TABLE_COLUMNS[tableKey] as AdminColumn<T>[];
 
   // eslint-disable-next-line
@@ -35,8 +39,10 @@ export function AdminTable<T>({
     data,
     columns: columns.map((col) => ({
       id: col.id,
-      accessorKey: col.id,
-      enableSorting: col.id !== 'index', // № не сортируем
+      accessorFn:
+        col.accessorFn ??
+        ((row) => (row as T & Record<string, unknown>)[col.id]),
+      enableSorting: col.id !== 'index',
     })),
     state: {
       sorting,
@@ -44,11 +50,12 @@ export function AdminTable<T>({
     onSortingChange,
     manualSorting: true,
     getCoreRowModel: getCoreRowModel(),
+    enableMultiSort: true,
   });
 
   return (
     <ScrollArea>
-      <Table striped highlightOnHover withColumnBorders horizontalSpacing="md">
+      <Table striped highlightOnHover withColumnBorders>
         <Table.Thead>
           <Table.Tr>
             {columns.map((col) => {
@@ -61,15 +68,23 @@ export function AdminTable<T>({
               return (
                 <Table.Th
                   key={col.id}
-                  w={col.width}
+                  w={isMobile ? (col.width ?? col.minWidth) : col.width}
                   onClick={header?.column.getToggleSortingHandler()}
                   style={{
-                    textAlign: col.headerAlign ?? 'left',
                     cursor: header?.column.getCanSort() ? 'pointer' : 'default',
                     userSelect: 'none',
                   }}
+                  className={`
+                    ${styles.sortedTh}
+                    ${sortState === 'asc' ? styles.sortedAsc : ''}
+                    ${sortState === 'desc' ? styles.sortedDesc : ''}
+                  `}
                 >
-                  <Group gap={6} wrap="nowrap">
+                  <Group
+                    gap={6}
+                    wrap="nowrap"
+                    justify={col.headerAlign ?? 'left'}
+                  >
                     {col.header}
 
                     {sortState === 'asc' && <ChevronUp size={14} />}

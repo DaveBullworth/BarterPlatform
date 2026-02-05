@@ -37,7 +37,7 @@
     "backToLogin": "Back to login",
     "country": "Country",
     "selectCountry": "Select country",
-    "phone": "phone",
+    "phone": "Phone",
     "phonePlaceholder": "Input phone",
     "emailAlreadyInUse": "Email is already in use",
     "loginAlreadyInUse": "Login is already in use",
@@ -136,7 +136,32 @@
     "description": "System user management",
     "loadFailed": "Failed to load data",
     "totalRecords": "Total records: {{count}}",
-    "pageSize": "/Page"
+    "pageSize": "/Page",
+    "resetSorting": "Reset sorting",
+    "sort": {
+      "multi": "Multiple sort: hold Shift while clicking column headers",
+      "asc": "Click once on header: sort ascending",
+      "desc": "Click second time: sort descending",
+      "reset": "Third click: reset sorting for this column",
+      "pageSizeTip": "Use the PageSize field, to the right of pagination, to change number of rows per page"
+    },
+    "selectOperator": "Specify an operator",
+    "filter": {
+      "login": "Login",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+
+      "role": "Role",
+      "status": "Status",
+
+      "contains": "Contains",
+      "equals": "Equals",
+      "notContains": "Does not contain",
+      "notEquals": "Does not equal",
+
+      "reset": "Reset filters"
+    }
   },
   "authRequired": {
     "title": "Authentication required",

@@ -44,13 +44,13 @@ export const updateSelfUser = async (
 
 export const getAllUsers = async (
   params: GetUsersParams,
+  signal?: AbortSignal,
 ): Promise<PaginatedResponse<UserResponseDto>> => {
   const { data } = await $authHost.get<PaginatedResponse<UserResponseDto>>(
     '/user',
     {
-      params: {
-        ...params,
-      },
+      params,
+      signal,
     },
   );
 

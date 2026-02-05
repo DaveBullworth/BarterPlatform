@@ -1,21 +1,33 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Group, Pagination, Text, NumberInput } from '@mantine/core';
+import {
+  Group,
+  Pagination,
+  Text,
+  NumberInput,
+  Tooltip,
+  ActionIcon,
+} from '@mantine/core';
+import { ListRestart } from 'lucide-react';
 
 type AdminTablePaginationProps = {
   page: number;
   pageSize: number;
   total: number;
+  sortingEmpty?: boolean;
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
+  onResetSorting?: () => void;
 };
 
 export function AdminTablePagination({
   page,
   pageSize,
   total,
+  sortingEmpty,
   onPageChange,
   onPageSizeChange,
+  onResetSorting,
 }: AdminTablePaginationProps) {
   const { t } = useTranslation();
 
@@ -30,6 +42,20 @@ export function AdminTablePagination({
       </Text>
 
       <Group gap="md">
+        {/* Сброс сортировки */}
+        {onResetSorting && (
+          <Tooltip label={t('admin.resetSorting')} withArrow position="top">
+            <ActionIcon
+              variant="light"
+              size="sm"
+              onClick={onResetSorting}
+              disabled={!!sortingEmpty}
+            >
+              <ListRestart size={18} />
+            </ActionIcon>
+          </Tooltip>
+        )}
+
         <Pagination value={page} onChange={onPageChange} total={totalPages} />
 
         <NumberInput

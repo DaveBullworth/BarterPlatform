@@ -135,7 +135,32 @@
     "description": "Verwaltung der Systembenutzer",
     "loadFailed": "Daten konnten nicht geladen werden",
     "totalRecords": "Gesamtanzahl der Einträge: {{count}}",
-    "pageSize": "/Se"
+    "pageSize": "/Se.",
+    "resetSorting": "Sortierung zurücksetzen",
+    "sort": {
+      "multi": "Mehrfachsortierung: Halten Sie Shift gedrückt, während Sie auf Spaltenüberschriften klicken",
+      "asc": "Einmal auf die Überschrift klicken: aufsteigend sortieren",
+      "desc": "Zweimal klicken: absteigend sortieren",
+      "reset": "Dritter Klick: Sortierung für diese Spalte zurücksetzen",
+      "pageSizeTip": "Verwenden Sie das Feld PageSize rechts neben der Paginierung, um die Anzahl der Zeilen pro Seite zu ändern"
+    },
+    "selectOperator": "Operator angeben",
+    "filter": {
+      "login": "Login",
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+
+      "role": "Rolle",
+      "status": "Status",
+
+      "contains": "Enthält",
+      "equals": "Gleich",
+      "notContains": "Enthält nicht",
+      "notEquals": "Ungleich",
+
+      "reset": "Filter zurücksetzen"
+    }
   },
   "authRequired": {
     "title": "Anmeldung erforderlich",

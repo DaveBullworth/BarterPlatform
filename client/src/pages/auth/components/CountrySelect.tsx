@@ -48,6 +48,9 @@ const CountrySelect = ({ value, onChange }: Props) => {
 
   // Load countries — сначала из Redux, если пусто — с сервера
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     if (reduxCountries.length > 0) {
       // откладываем обновление на микротаск
       Promise.resolve().then(() => {
@@ -57,13 +60,20 @@ const CountrySelect = ({ value, onChange }: Props) => {
       return;
     }
 
-    getCountries()
+    getCountries(signal)
       .then((res) => {
         setLocalCountries(res);
         dispatch(setCountries(res));
       })
-      .catch(console.error)
+      .catch((err) => {
+        if (err.name === 'CanceledError') return; // axios / fetch abort
+        console.error(err);
+      })
       .finally(() => setLoading(false));
+
+    return () => {
+      controller.abort(); // отменяем запрос при размонтировании или перезапуске effect
+    };
   }, [dispatch, reduxCountries]);
 
   // Selected country name

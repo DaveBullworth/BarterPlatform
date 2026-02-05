@@ -4,7 +4,7 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import {
@@ -25,6 +25,9 @@ import { CountryEntity } from '@/database/entities/country.entity';
 import { MailConfirmService } from '../mail-confirm/mail-confirm.service';
 import { RedisService } from '@/common/services/redis/redis.service';
 import { UserErrorCode } from './errors/users-error-codes';
+import { UserFiltersDto } from './dto/userFilters.dto';
+import { SortItemDto } from '@/common/dtos/sort-item.dto';
+import { TextFilterDto } from '@/common/dtos/filter-item.dto';
 
 @Injectable()
 export class UsersService {
@@ -49,6 +52,37 @@ export class UsersService {
     if (lang.startsWith('de')) return UserLanguage.DE;
 
     return UserLanguage.EN;
+  }
+
+  private applyTextFilter(
+    qb: SelectQueryBuilder<UserEntity>,
+    field: string,
+    filter: TextFilterDto,
+    paramKey: string,
+  ) {
+    const value = filter.value;
+
+    switch (filter.operator) {
+      case 'contains':
+        qb.andWhere(`${field} ILIKE :${paramKey}`, {
+          [paramKey]: `%${value}%`,
+        });
+        break;
+
+      case 'equals':
+        qb.andWhere(`${field} = :${paramKey}`, { [paramKey]: value });
+        break;
+
+      case 'not_contains':
+        qb.andWhere(`${field} NOT ILIKE :${paramKey}`, {
+          [paramKey]: `%${value}%`,
+        });
+        break;
+
+      case 'not_equals':
+        qb.andWhere(`${field} != :${paramKey}`, { [paramKey]: value });
+        break;
+    }
   }
 
   async register(dto: RegisterUserDto, req: AppRequest) {
@@ -129,15 +163,76 @@ export class UsersService {
   async getAll(params: {
     page: number;
     limit: number;
-    sorting?: { id: string; desc: boolean }[];
+    sorting?: SortItemDto[];
+    filters?: UserFiltersDto;
   }): Promise<{ data: UserResponseDto[]; total: number }> {
-    const { page, limit, sorting } = params;
+    const { page, limit, sorting, filters } = params;
 
     const qb = this.userRepo
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.country', 'country')
       .skip((page - 1) * limit)
       .take(limit);
+
+    // TEXT FILTERS
+    if (filters?.login) {
+      this.applyTextFilter(qb, 'user.login', filters.login, 'login');
+    }
+
+    if (filters?.name) {
+      this.applyTextFilter(qb, 'user.name', filters.name, 'name');
+    }
+
+    if (filters?.email) {
+      this.applyTextFilter(qb, 'user.email', filters.email, 'email');
+    }
+
+    if (filters?.phone) {
+      this.applyTextFilter(qb, 'user.phone', filters.phone, 'phone');
+    }
+
+    // BOOLEAN FILTERS
+    if (filters?.status) {
+      qb.andWhere('user.status = :status', {
+        status: filters.status.value,
+      });
+    }
+
+    if (filters?.role) {
+      qb.andWhere('user.role = :role', {
+        role: filters.role.value ? UserRole.ADMIN : UserRole.USER,
+      });
+    }
+
+    // MULTITEXT FILTERS
+    if (filters?.country) {
+      const { operator, values } = filters.country;
+
+      if (operator === 'contains') {
+        qb.andWhere('country.id IN (:...countryIds)', {
+          countryIds: values,
+        });
+      }
+
+      if (operator === 'not_contains') {
+        qb.andWhere(
+          '(country.id IS NULL OR country.id NOT IN (:...countryIds))',
+          { countryIds: values },
+        );
+      }
+    }
+
+    // DATERANGE FILTERS
+    if (filters?.createdAt) {
+      const [from, to] = filters.createdAt.values;
+
+      if (from && to) {
+        qb.andWhere('user.createdAt BETWEEN :from AND :to', {
+          from: new Date(from),
+          to: new Date(to),
+        });
+      }
+    }
 
     // Если сортировка передана
     if (sorting && sorting.length > 0) {
@@ -148,6 +243,7 @@ export class UsersService {
           'login',
           'name',
           'role',
+          'phone',
           'status',
           'createdAt',
         ];

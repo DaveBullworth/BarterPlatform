@@ -43,6 +43,7 @@ import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
 import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
 import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
+import { UserFiltersDto } from './dto/userFilters.dto';
 
 // Декоратор @Controller связывает класс с маршрутом 'users'
 @Controller('user')
@@ -109,16 +110,29 @@ export class UsersController {
   @ApiOperation({
     summary: 'Получение списка пользователей (только для администратора)',
     description: `
-Возвращает всех пользователей с пагинацией и сортировкой.
-Доступ только для пользователей с ролью "ADMIN".
-Каждая запись содержит основные поля пользователя и вложенную информацию о связанной стране.
+      Возвращает всех пользователей с пагинацией, сортировкой и фильтрацией.
+      Доступ только для пользователей с ролью "ADMIN".
+      Каждая запись содержит основные поля пользователя и вложенную информацию о связанной стране.
 
-Параметры запроса:
-- page — номер страницы (по умолчанию 1)
-- limit — количество записей на страницу (по умолчанию 20)
-- sorting — массив объектов вида { id: string, desc: boolean }, например:
-  [{"id":"email","desc":false},{"id":"createdAt","desc":true}]
-`,
+      Параметры запроса:
+      - page — номер страницы (по умолчанию 1)
+      - limit — количество записей на страницу (по умолчанию 20)
+      - sorting — массив объектов для множественной сортировки вида { id: string, desc: boolean }, например:
+        [{"id":"email","desc":false},{"id":"createdAt","desc":true}]
+      - filters — JSON-объект фильтров по полям пользователя. Пример:
+        {
+          "login": { "operator": "contains", "value": "admin" },
+          "status": { "value": true }
+        }
+        Текстовые поля поддерживают операторы:
+          - contains — содержит
+          - equals — равно
+          - not_contains — не содержит
+          - not_equals — не равно
+        Булевы поля:
+          - true / false — фильтруем по значению
+          - отсутствие ключа — фильтр не применяется
+    `,
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
   @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
@@ -128,7 +142,12 @@ export class UsersController {
     type: [SortItemDto],
     description: 'Массив объектов для множественной сортировки',
   })
-  @ApiExtraModels(UserResponseDto)
+  @ApiQuery({
+    name: 'filters',
+    required: false,
+    description: 'JSON-объект фильтров пользователей',
+  })
+  @ApiExtraModels(UserResponseDto, UserFiltersDto)
   @ApiResponse({
     status: 200,
     description: 'Список пользователей с пагинацией',
@@ -155,10 +174,12 @@ export class UsersController {
     description: 'Внутренняя ошибка сервера',
   })
   getAllUsers(@Query() query: GetUsersQueryDto) {
+    console.log(query.filters);
     return this.usersService.getAll({
       page: query.page ?? 1,
       limit: query.limit ?? 20,
       sorting: query.sorting ?? [],
+      filters: query.filters,
     });
   }
 

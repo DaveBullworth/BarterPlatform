@@ -1,7 +1,27 @@
+@use '../../app/styles/variables.scss' as vars;
+
 .adminContainer {
   display: flex;
-  flex-direction: column;
-  gap: 16px; // расстояние между заголовком и таблицей
+  align-items: center;
+  gap: 8px;
+
+  .pulseIcon {
+    display: inline-block;
+  }
+
+  .pulseIcon[aria-expanded='false'] {
+    animation: pulse 1.2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+  }
 }
 
 .tableWrapper {
@@ -23,6 +43,54 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; /* чтобы длинный текст не переносился */
+    }
+  }
+
+  .sortedAsc {
+    outline: 2px dashed green;
+    outline-offset: -2px; /* рамка не добавляет размер */
+    border-radius: 6px;
+  }
+
+  .sortedDesc {
+    outline: 2px dashed red;
+    outline-offset: -2px;
+    border-radius: 6px;
+  }
+}
+
+.filtersPanel {
+  @media (max-width: vars.$breakpoint-sm) {
+    :global(.mantine-Accordion-content) {
+      padding: 0.5rem;
+    }
+  }
+
+  .textFilter {
+    @media (max-width: vars.$breakpoint-sm) {
+      gap: 0.5rem;
+      div {
+        max-width: unset;
+      }
+    }
+  }
+
+  .booleanFilter {
+    @media (max-width: vars.$breakpoint-sm) {
+      div {
+        max-width: unset;
+      }
+    }
+  }
+
+  .filterAction {
+    justify-content: flex-end;
+    @media (max-width: vars.$breakpoint-sm) {
+      justify-content: space-between;
+      gap: 0;
+      button {
+        width: 50%;
+      }
     }
   }
 }
