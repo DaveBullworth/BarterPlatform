@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { useDisclosure } from '@mantine/hooks';
 import type { TFunction } from 'i18next';
 
-import { setUser } from '@/store/userSlice';
+import { setCurrentUser } from '@/store/userSlice';
 import { updateSelfUser } from '@/http/user';
 import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
 import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
@@ -153,7 +153,7 @@ export const ProfilePreferencesBlock = ({
 
       const updatedUser = await updateSelfUser(payload);
 
-      dispatch(setUser(updatedUser));
+      dispatch(setCurrentUser(updatedUser));
       onPreferencesSaved(updatedUser);
       setConfirmOpened(false);
       setSuccessAlert(t('profile.preferencesSavedSuccessfully'));

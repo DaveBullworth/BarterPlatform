@@ -2,7 +2,7 @@ import { Navigate, type RouteObject } from 'react-router-dom';
 import { RequireAuth } from './guards/RequireAuth';
 import { RequireAdmin } from './guards/RequireAdmin';
 import { AuthorizedPage } from '@/pages/placeholder/AuthorizedPage';
-import { ProfilePage } from '@/pages/profile/ProfilePage';
+import { UserProfilePage } from '@/pages/profile/ProfilePage';
 import { AdminPage } from '@/pages/admin/AdminPage';
 import { AuthPage } from '@/pages/auth/AuthPage';
 import { MailConfirmPage } from '@/pages/mail-confirm/MailConfirmPage';
@@ -23,7 +23,7 @@ export const routes: RouteObject[] = [
         path: ROUTES.PROFILE,
         element: (
           <RequireAuth>
-            <ProfilePage />
+            <UserProfilePage />
           </RequireAuth>
         ),
       },
@@ -35,6 +35,16 @@ export const routes: RouteObject[] = [
           <RequireAdmin>
             <AdminPage />
           </RequireAdmin>
+        ),
+      },
+
+      // Страницы пользователей
+      {
+        path: ROUTES.USERS + '/:id',
+        element: (
+          <RequireAuth>
+            <UserProfilePage />
+          </RequireAuth>
         ),
       },
     ],

@@ -9,6 +9,7 @@ import {
   Body,
   Param,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -44,6 +45,7 @@ import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
 import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { UserFiltersDto } from './dto/userFilters.dto';
+import { UserUpdatedInterceptor } from './interceptors/user.cache.interseptor';
 
 // Декоратор @Controller связывает класс с маршрутом 'users'
 @Controller('user')
@@ -110,8 +112,8 @@ export class UsersController {
   @ApiOperation({
     summary: 'Получение списка пользователей (только для администратора)',
     description: `
-      Возвращает всех пользователей с пагинацией, сортировкой и фильтрацией.
-      Доступ только для пользователей с ролью "ADMIN".
+      Возвращает список пользователей с поддержкой пагинации, сортировки и фильтрации.
+      Доступ разрешён только пользователям с ролью "ADMIN".
       Каждая запись содержит основные поля пользователя и вложенную информацию о связанной стране.
 
       Параметры запроса:
@@ -121,17 +123,38 @@ export class UsersController {
         [{"id":"email","desc":false},{"id":"createdAt","desc":true}]
       - filters — JSON-объект фильтров по полям пользователя. Пример:
         {
-          "login": { "operator": "contains", "value": "admin" },
-          "status": { "value": true }
+          "login": {
+            "operator": "contains",
+            "values": ["admin"]
+          },
+          "status": {
+            "value": true
+          },
+          "country": {
+            "operator": "equals",
+            "values": ["1234", "5678"]
+          },
+          "createdAt": {
+            "values": ["2024-01-01", "2024-12-31"]
+          }
         }
-        Текстовые поля поддерживают операторы:
-          - contains — содержит
-          - equals — равно
-          - not_contains — не содержит
-          - not_equals — не равно
-        Булевы поля:
-          - true / false — фильтруем по значению
-          - отсутствие ключа — фильтр не применяется
+
+      Поддерживаемые фильтры:
+
+      Текстовые поля (login, email, country и др.):
+        - contains — содержит
+        - equals — равно
+        - not_contains — не содержит
+        - not_equals — не равно
+        Значение передаётся в виде массива строк (values).
+
+      Булевы поля (status и др.):
+        - true / false — фильтрация по значению
+        - отсутствие ключа — фильтр не применяется
+
+      Поля даты (createdAt):
+        - фильтрация по диапазону дат
+        - values — массив из двух ISO-дат [from, to]
     `,
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
@@ -174,7 +197,6 @@ export class UsersController {
     description: 'Внутренняя ошибка сервера',
   })
   getAllUsers(@Query() query: GetUsersQueryDto) {
-    console.log(query.filters);
     return this.usersService.getAll({
       page: query.page ?? 1,
       limit: query.limit ?? 20,
@@ -185,6 +207,7 @@ export class UsersController {
 
   // GET-запрос на 'users/self' для получения пользователя отправившего запрос
   @Authenticated()
+  @UseInterceptors(UserUpdatedInterceptor)
   @Get('self')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Получение данных текущего пользователя' })
@@ -218,6 +241,7 @@ export class UsersController {
   // GET-запрос на 'users/:id' для получения конкретного пользователя
   // :id — параметр маршрута
   @Authenticated()
+  @UseInterceptors(UserUpdatedInterceptor)
   @Get(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Получение пользователя по ID' })

@@ -10,3 +10,6 @@ export const goToProfile = (navigate: NavigateFunction) =>
   navigate(ROUTES.PROFILE);
 
 export const goToAdmin = (navigate: NavigateFunction) => navigate(ROUTES.ADMIN);
+
+export const goToUser = (navigate: NavigateFunction, id: string) =>
+  navigate(ROUTES.USERS + '/' + id);

@@ -5,7 +5,7 @@ import { Modal, Text, Alert } from '@mantine/core';
 import { ProfileEditForm } from './ProfileEditForm';
 import { buildAlertProps } from '@/shared/utils/alertPresets';
 import { CountrySelectPlaceholder } from '@/pages/auth/components/СountrySelectPlaceholder';
-import type { SelfUserDto } from '@/types/user';
+import type { AdminUserDto, SelfUserDto } from '@/types/user';
 import type { Country } from '@/types/country';
 
 import styles from '../ProfilePage.module.scss';
@@ -13,7 +13,7 @@ import styles from '../ProfilePage.module.scss';
 type Props = {
   opened: boolean;
   onClose: () => void;
-  user: SelfUserDto;
+  user: SelfUserDto | AdminUserDto;
   onUpdated: (user: SelfUserDto) => void;
 };
 

@@ -3,13 +3,14 @@ import { Mail, Phone, Globe, AtSign, Contact } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 
-import type { SelfUserDto } from '@/types/user';
+import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
+
 import styles from '../ProfilePage.module.scss';
 
 const STATIC_URL = import.meta.env.VITE_API_URL;
 
 type Props = {
-  user: SelfUserDto;
+  user: SelfUserDto | AdminUserDto | PublicUserDto;
 };
 
 const InfoRow = ({
@@ -59,6 +60,12 @@ const InfoRow = ({
 export const ProfileContactsBlock = ({ user }: Props) => {
   const { t } = useTranslation();
 
+  function hasPrivateContacts(
+    user: SelfUserDto | AdminUserDto | PublicUserDto,
+  ): user is SelfUserDto | AdminUserDto {
+    return 'email' in user;
+  }
+
   return (
     <Stack gap="xs" className={styles.contactsBlock}>
       {/* LOGIN */}
@@ -78,12 +85,14 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       />
 
       {/* EMAIL */}
-      <InfoRow
-        icon={<Mail size={14} />}
-        label={t(`auth.email`)}
-        value={<Text size="sm">{user.email}</Text>}
-        t={t}
-      />
+      {hasPrivateContacts(user) && (
+        <InfoRow
+          icon={<Mail size={14} />}
+          label={t(`auth.email`)}
+          value={<Text size="sm">{user.email}</Text>}
+          t={t}
+        />
+      )}
 
       {/* COUNTRY */}
       <InfoRow
@@ -114,21 +123,23 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       />
 
       {/* PHONE */}
-      <InfoRow
-        icon={<Phone size={14} />}
-        label={t(`auth.phone`)}
-        value={
-          user.phone &&
-          user.country && (
-            <Text size="sm">
-              + {'('}
-              {user.country.phoneCode}
-              {')'} {user.phone}
-            </Text>
-          )
-        }
-        t={t}
-      />
+      {hasPrivateContacts(user) && (
+        <InfoRow
+          icon={<Phone size={14} />}
+          label={t(`auth.phone`)}
+          value={
+            user.phone &&
+            user.country && (
+              <Text size="sm">
+                + {'('}
+                {user.country.phoneCode}
+                {')'} {user.phone}
+              </Text>
+            )
+          }
+          t={t}
+        />
+      )}
     </Stack>
   );
 };

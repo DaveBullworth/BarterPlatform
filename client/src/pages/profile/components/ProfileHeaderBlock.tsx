@@ -4,17 +4,20 @@ import { User } from 'lucide-react';
 
 import { getUserAvatarUrl } from '@/http/media';
 import { AvatarEditModal } from './AvatarEditModal';
-import type { SelfUserDto } from '@/types/user';
+import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
+import type { Mode } from '../ProfilePage';
 
 import styles from '../ProfilePage.module.scss';
 
 type Props = {
-  user: SelfUserDto;
+  user: SelfUserDto | AdminUserDto | PublicUserDto;
+  mode: Mode;
 };
 
-export const ProfileHeaderBlock = ({ user }: Props) => {
+export const ProfileHeaderBlock = ({ user, mode }: Props) => {
   const [avatarModalOpen, setAvatarModalOpen] = useState(false);
   const [avatarKey, setAvatarKey] = useState(() => Date.now());
+
   return (
     <Group align="center" gap="lg">
       {/* AVATAR */}
@@ -23,7 +26,14 @@ export const ProfileHeaderBlock = ({ user }: Props) => {
           src={`${getUserAvatarUrl(user.id)}?v=${avatarKey}`}
           size={120}
           radius="md"
-          onClick={() => setAvatarModalOpen(true)}
+          onClick={
+            ['self', 'admin'].includes(mode)
+              ? () => setAvatarModalOpen(true)
+              : undefined
+          }
+          style={{
+            cursor: ['self', 'admin'].includes(mode) ? 'pointer' : 'default',
+          }}
           color="gray"
         >
           <User size={48} />
@@ -40,11 +50,14 @@ export const ProfileHeaderBlock = ({ user }: Props) => {
           @{user.login}
         </Text>
       </Stack>
-      <AvatarEditModal
-        opened={avatarModalOpen}
-        onClose={() => setAvatarModalOpen(false)}
-        onUpdated={() => setAvatarKey(Date.now())}
-      />
+
+      {['self', 'admin'].includes(mode) && (
+        <AvatarEditModal
+          opened={avatarModalOpen}
+          onClose={() => setAvatarModalOpen(false)}
+          onUpdated={() => setAvatarKey(Date.now())}
+        />
+      )}
     </Group>
   );
 };

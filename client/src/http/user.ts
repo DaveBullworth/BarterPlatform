@@ -1,6 +1,8 @@
 import { $host, $authHost } from './index';
 import type {
   SelfUserDto,
+  AdminUserDto,
+  PublicUserDto,
   LoginDto,
   LoginResponse,
   RegisterUserDto,
@@ -53,6 +55,19 @@ export const getAllUsers = async (
       signal,
     },
   );
+
+  return data;
+};
+
+export const getUserById = async (
+  id: string,
+  updatedAt?: string,
+): Promise<SelfUserDto | AdminUserDto | PublicUserDto> => {
+  const { data } = await $authHost.get<
+    SelfUserDto | AdminUserDto | PublicUserDto
+  >(`/users/${id}`, {
+    headers: updatedAt ? { 'If-User-Updated-Since': updatedAt } : undefined,
+  });
 
   return data;
 };

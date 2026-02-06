@@ -17,6 +17,29 @@ export interface SelfUserDto {
   updatedAt: string;
 }
 
+export interface AdminUserDto {
+  id: string;
+  role: UserRole;
+  email: string;
+  login: string;
+  name: string;
+  phone: string | null;
+  country: Country | null;
+  status: boolean;
+  statusEmail: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PublicUserDto {
+  id: string;
+  login: string;
+  name: string;
+  country: Country | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface LoginDto {
   loginOrEmail: string;
   password: string;

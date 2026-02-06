@@ -43,6 +43,20 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; /* чтобы длинный текст не переносился */
+
+      .resizer {
+        position: absolute;
+        right: 0;
+        top: 4px;
+        bottom: 4px;
+        width: 8px;
+        cursor: col-resize;
+      }
+
+      .resizer:hover {
+        background: rgba(0, 0, 0, 0.06);
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
+      }
     }
   }
 

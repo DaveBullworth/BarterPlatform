@@ -20,14 +20,15 @@ export class UserUpdatedInterceptor implements NestInterceptor {
 
     if (!req.user) return next.handle();
 
+    const targetUserId = req.params?.id ?? req.user.sub;
+    if (!targetUserId) return next.handle();
+
     const clientUpdatedAt = req.headers['if-user-updated-since'];
     if (!clientUpdatedAt) return next.handle();
 
-    const userId = req.user.sub;
-
     const redisUpdatedAt = await this.redisService
       .getClient()
-      .get(`user:updated:${userId}`);
+      .get(`user:updated:${targetUserId}`);
 
     if (!redisUpdatedAt) {
       throw new PreconditionFailedException({

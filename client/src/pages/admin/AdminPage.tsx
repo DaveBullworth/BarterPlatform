@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Stack,
@@ -9,9 +9,11 @@ import {
   Popover,
   List,
   ActionIcon,
+  Group,
+  Tooltip,
 } from '@mantine/core';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { BadgeInfo } from 'lucide-react';
+import { BadgeInfo, ListRestart, Save, SaveOff } from 'lucide-react';
 import type { SortingState } from '@tanstack/react-table';
 
 import { AdminTable } from './components/AdminTable';
@@ -19,6 +21,7 @@ import { AdminTablePagination } from './components/AdminTablePagination';
 import { AdminTableFilters } from './components/AdminTableFilters';
 import { getAllUsers } from '@/http/user';
 import { TABLES } from '@/shared/constants/tables';
+import type { AdminTableRef } from './components/AdminTable';
 import type { UserFilters } from '@/types/filters';
 
 import styles from './AdminPage.module.scss';
@@ -29,6 +32,8 @@ const FILTERS_STORAGE_KEY = `adminTable:${TABLES.USERS}:filters`;
 
 export const AdminPage = () => {
   const { t } = useTranslation();
+
+  const tableRef = React.useRef<AdminTableRef>(null);
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -128,21 +133,63 @@ export const AdminPage = () => {
 
       {!isLoading && data && (
         <>
-          <div className={styles.tableWrapper}>
-            <AdminTable
-              tableKey={TABLES.USERS}
-              data={data.data}
-              page={page}
-              pageSize={pageSize}
-              sorting={sorting}
-              onSortingChange={(updater) => {
-                setSorting((old) =>
-                  typeof updater === 'function' ? updater(old) : updater,
-                );
-                setPage(1);
-              }}
-            />
-          </div>
+          <Group justify="flex-start">
+            {/* Сброс сортировки */}
+            {sorting && sorting.length > 0 && (
+              <Tooltip label={t('admin.resetSorting')} withArrow position="top">
+                <ActionIcon
+                  variant="light"
+                  size="sm"
+                  color="lime"
+                  onClick={handleResetSorting}
+                  disabled={!sorting || sorting.length === 0}
+                >
+                  <ListRestart size={18} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+            <Tooltip
+              label={t('admin.saveColumnsPreset')}
+              withArrow
+              position="top"
+            >
+              <ActionIcon
+                variant="light"
+                size="sm"
+                onClick={() => tableRef.current?.saveColumnSizing()}
+              >
+                <Save size={18} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip
+              label={t('admin.resetColumnsPreset')}
+              withArrow
+              position="top"
+            >
+              <ActionIcon
+                variant="light"
+                size="sm"
+                color="red"
+                onClick={() => tableRef.current?.resetColumnSizing()}
+              >
+                <SaveOff size={18} />
+              </ActionIcon>
+            </Tooltip>
+          </Group>
+          <AdminTable
+            ref={tableRef}
+            tableKey={TABLES.USERS}
+            data={data.data}
+            page={page}
+            pageSize={pageSize}
+            sorting={sorting}
+            onSortingChange={(updater) => {
+              setSorting((old) =>
+                typeof updater === 'function' ? updater(old) : updater,
+              );
+              setPage(1);
+            }}
+          />
           <AdminTablePagination
             page={page}
             pageSize={pageSize}
@@ -152,8 +199,6 @@ export const AdminPage = () => {
               setPageSize(size);
               setPage(1); // сброс на первую страницу при смене размера
             }}
-            sortingEmpty={!sorting || sorting.length === 0}
-            onResetSorting={handleResetSorting}
           />
         </>
       )}

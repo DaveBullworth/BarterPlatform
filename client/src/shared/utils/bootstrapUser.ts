@@ -4,7 +4,7 @@ import { getSelfUser } from '@/http/user';
 import { USER_THEMES } from '@/shared/constants/user-theme';
 import type { AppDispatch } from '@/store';
 import type { BootstrapResult } from '@/types/common';
-import { setUser, logout } from '@/store/userSlice';
+import { setCurrentUser, logout } from '@/store/userSlice';
 
 interface BootstrapOptions {
   dispatch: AppDispatch;
@@ -27,12 +27,7 @@ export const bootstrapUser = async ({
     const selfUser = await getSelfUser();
 
     // обновляем Redux
-    dispatch(
-      setUser({
-        ...selfUser,
-        updatedAt: selfUser.updatedAt ?? new Date().toISOString(), // если updatedAt ещё не приходит
-      }),
-    );
+    dispatch(setCurrentUser(selfUser));
 
     // проверка и установка языка
     const storedLang = localStorage.getItem('user-language');

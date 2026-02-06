@@ -135,6 +135,12 @@ export class SelfUserDto {
   })
   createdAt: Date;
 
+  @ApiProperty({
+    example: '2025-12-30T12:00:00.000Z',
+    description: 'Дата последнего изменения пользователя',
+  })
+  updatedAt: Date;
+
   constructor(user: UserEntity) {
     Object.assign(this, {
       id: user.id,
@@ -147,6 +153,7 @@ export class SelfUserDto {
       language: user.language,
       theme: user.theme,
       createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     });
   }
 }
@@ -176,6 +183,12 @@ export class PublicUserDto {
   })
   createdAt: Date;
 
+  @ApiProperty({
+    example: '2025-12-30T12:00:00.000Z',
+    description: 'Дата последнего изменения пользователя',
+  })
+  updatedAt: Date;
+
   constructor(user: UserEntity) {
     Object.assign(this, {
       id: user.id,
@@ -183,6 +196,7 @@ export class PublicUserDto {
       name: user.name,
       country: user.country,
       createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     });
   }
 }

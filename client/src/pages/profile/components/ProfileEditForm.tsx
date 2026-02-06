@@ -13,7 +13,7 @@ import {
   createLengthValidator,
 } from '@/shared/utils/validators';
 
-import type { SelfUserDto } from '@/types/user';
+import type { AdminUserDto, SelfUserDto } from '@/types/user';
 import type { Country } from '@/types/country';
 
 type FormValues = {
@@ -23,7 +23,7 @@ type FormValues = {
 };
 
 type Props = {
-  user: SelfUserDto;
+  user: SelfUserDto | AdminUserDto;
   selectedCountry: Country | null;
   onCountryMissing: () => void;
   onUpdated: (user: SelfUserDto) => void;

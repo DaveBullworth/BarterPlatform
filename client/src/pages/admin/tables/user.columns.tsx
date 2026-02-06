@@ -19,6 +19,7 @@ export type AdminColumn<T> = {
   header: string;
   width?: number;
   minWidth?: number;
+  resizable?: boolean;
   cell: (ctx: AdminCellContext<T>) => React.ReactNode;
   accessorFn?: (row: T) => string | number | null | undefined;
   headerAlign?: 'left' | 'center' | 'right'; // для <Th>
@@ -29,7 +30,8 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
   {
     id: 'index',
     header: '№',
-    width: 80,
+    width: 50,
+    resizable: false,
     headerAlign: 'center',
     cellAlign: 'center',
     cell: ({ rowIndex, page, pageSize }) =>
@@ -38,6 +40,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
 
   {
     id: 'login',
+    width: 200,
     minWidth: 100,
     header: i18n.t(`auth.login`),
     cell: ({ row }) => row.login,
@@ -45,6 +48,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
 
   {
     id: 'email',
+    width: 200,
     minWidth: 100,
     header: i18n.t(`auth.email`),
     cell: ({ row }) => row.email,
@@ -52,6 +56,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
 
   {
     id: 'name',
+    width: 200,
     minWidth: 100,
     header: i18n.t(`auth.name`),
     cell: ({ row }) => row.name ?? '—',
@@ -62,6 +67,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     header: i18n.t(`common.role`),
     headerAlign: 'center',
     width: 80,
+    resizable: false,
     cell: ({ row }) => {
       const isAdmin = row.role === USER_ROLES.ADMIN;
 
@@ -87,6 +93,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     header: i18n.t(`common.status`),
     headerAlign: 'center',
     width: 80,
+    resizable: false,
     cell: ({ row }) => (
       <Center>
         <Tooltip
@@ -145,7 +152,8 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
   {
     id: 'phone',
     header: i18n.t(`auth.phone`),
-    minWidth: 120,
+    width: 140,
+    resizable: false,
     accessorFn: (row) => row.phone ?? '',
     cell: ({ row }) => {
       if (!row.phone || !row.country) return '—';
@@ -163,6 +171,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     header: i18n.t(`common.createdAt`),
     headerAlign: 'center',
     width: 120,
+    resizable: false,
     cell: ({ row }) => {
       if (!row.createdAt) return '—';
       const date = new Date(row.createdAt);

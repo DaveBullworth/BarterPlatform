@@ -1,11 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '.';
 import type { UserRole } from '@/shared/constants/user-role';
 import type { UserTheme } from '@/shared/constants/user-theme';
 import type { UserLanguage } from '@/shared/constants/user-language';
 import type { Country } from '@/types/country';
 
-interface UserState {
-  id?: string;
+export interface UserEntry {
+  id: string;
   login?: string;
   name?: string;
   role?: UserRole;
@@ -16,55 +17,70 @@ interface UserState {
   theme?: UserTheme;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface UsersState {
+  entities: Record<string, UserEntry>;
+  currentUserId?: string;
   isAuthenticated: boolean;
 }
 
-const initialState: UserState = {
-  id: undefined,
-  login: undefined,
-  name: undefined,
-  role: undefined,
-  email: undefined,
-  phone: undefined,
-  country: undefined,
-  language: undefined,
-  theme: undefined,
-  createdAt: undefined,
-  updatedAt: undefined,
+const initialState: UsersState = {
+  entities: {},
+  currentUserId: undefined,
   isAuthenticated: false,
 };
 
-export const userSlice = createSlice({
+const slice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (
-      state,
-      action: PayloadAction<Omit<UserState, 'isAuthenticated'>>,
-    ) => {
-      Object.assign(state, action.payload); // сразу все поля
+    // Устанавливаем/обновляем текущего залогиненного пользователя
+    setCurrentUser: (state, action: PayloadAction<UserEntry>) => {
+      const u = action.payload;
+      state.entities[u.id] = { ...state.entities[u.id], ...u };
+      state.currentUserId = u.id;
       state.isAuthenticated = true;
+      // token management left to thunks/components (localStorage) — как было раньше
     },
-    logout: (state) => {
-      // чистим все поля
-      state.id = undefined;
-      state.login = undefined;
-      state.name = undefined;
-      state.role = undefined;
-      state.email = undefined;
-      state.phone = undefined;
-      state.country = undefined;
-      state.language = undefined;
-      state.theme = undefined;
-      state.createdAt = undefined;
-      state.updatedAt = undefined;
-      state.isAuthenticated = false;
 
-      // чистим токен
+    // Вставка/обновление произвольного пользователя (для view-by-id)
+    upsertUser: (state, action: PayloadAction<UserEntry>) => {
+      const u = action.payload;
+      state.entities[u.id] = { ...state.entities[u.id], ...u };
+    },
+
+    // Удаляем пользователя из entities (редко нужно)
+    removeUser: (state, action: PayloadAction<{ id: string }>) => {
+      delete state.entities[action.payload.id];
+      if (state.currentUserId === action.payload.id) {
+        state.currentUserId = undefined;
+        state.isAuthenticated = false;
+      }
+    },
+
+    // Разлогинивание текущего
+    logout: (state) => {
+      state.currentUserId = undefined;
+      state.isAuthenticated = false;
       localStorage.removeItem('accessToken');
     },
   },
 });
 
-export const { setUser, logout } = userSlice.actions;
-export default userSlice.reducer;
+export const { setCurrentUser, upsertUser, removeUser, logout } = slice.actions;
+export default slice.reducer;
+
+/* ---- Selectors ---- */
+export const selectUsersState = (s: RootState) => s.user;
+
+export const selectCurrentUser = (s: RootState): UserEntry | undefined => {
+  const st = s.user;
+  if (!st.currentUserId) return undefined;
+  return st.entities[st.currentUserId];
+};
+
+export const selectUserById =
+  (id: string) =>
+  (s: RootState): UserEntry | undefined =>
+    s.user.entities[id];
