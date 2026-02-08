@@ -8,16 +8,23 @@ import type { Area } from 'react-easy-crop';
 
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
-import { uploadAvatar, deleteAvatar } from '@/http/media';
 import { getCroppedImg } from '@/shared/utils/cropImage';
 
 type Props = {
   opened: boolean;
   onClose: () => void;
   onUpdated: () => void;
+  uploadFn: (file: File) => Promise<{ message: string }>;
+  deleteFn: () => Promise<{ message: string }>;
 };
 
-export const AvatarEditModal = ({ opened, onClose, onUpdated }: Props) => {
+export const AvatarEditModal = ({
+  opened,
+  onClose,
+  onUpdated,
+  uploadFn,
+  deleteFn,
+}: Props) => {
   const { t } = useTranslation();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -39,7 +46,7 @@ export const AvatarEditModal = ({ opened, onClose, onUpdated }: Props) => {
       const blob = await getCroppedImg(imageSrc, croppedAreaPixels);
       const file = new File([blob], 'avatar.jpg', { type: 'image/jpeg' });
 
-      await uploadAvatar(file);
+      await uploadFn(file);
       onUpdated();
       handleClose();
       // Уведомление об успехе
@@ -69,7 +76,7 @@ export const AvatarEditModal = ({ opened, onClose, onUpdated }: Props) => {
       // Серверный аватар — удаляем через API
       setLoading(true);
       try {
-        await deleteAvatar();
+        await deleteFn();
         onUpdated();
         handleClose();
         // Уведомление об успехе

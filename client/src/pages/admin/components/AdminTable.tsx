@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Table, ScrollArea, Group } from '@mantine/core';
 import {
   useReactTable,
@@ -7,8 +8,12 @@ import {
   type OnChangeFn,
 } from '@tanstack/react-table';
 import { ChevronUp, ChevronDown } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
+import { selectCurrentUser } from '@/store/userSlice';
+import { goToUser, goToProfile } from '@/shared/utils/navigation';
 import { TABLE_COLUMNS } from '../tables/index';
+import type { RootState } from '@/store';
 import type { TableKey } from '@/shared/constants/tables';
 import type { AdminColumn } from '../tables/user.columns';
 
@@ -28,7 +33,9 @@ export type AdminTableRef = {
   resetColumnSizing: () => void;
 };
 
-export const AdminTable = React.forwardRef(function AdminTable<T>(
+export const AdminTable = React.forwardRef(function AdminTable<
+  T extends { id: string },
+>(
   {
     tableKey,
     data,
@@ -39,6 +46,8 @@ export const AdminTable = React.forwardRef(function AdminTable<T>(
   }: AdminTableProps<T>,
   ref: React.ForwardedRef<AdminTableRef>,
 ) {
+  const navigate = useNavigate();
+  const user = useSelector((s: RootState) => selectCurrentUser(s));
   // Функция получения пресета ширины столбцов из LocalStorage
   const getColumnSizingStorageKey = (tableKey: TableKey) =>
     `admin-table:column-sizing:${tableKey}`;
@@ -93,7 +102,7 @@ export const AdminTable = React.forwardRef(function AdminTable<T>(
   }));
 
   const columns = React.useMemo(
-    () => TABLE_COLUMNS[tableKey] as AdminColumn<T>[],
+    () => TABLE_COLUMNS[tableKey] as unknown as AdminColumn<T>[],
     [tableKey],
   );
 
@@ -138,6 +147,14 @@ export const AdminTable = React.forwardRef(function AdminTable<T>(
     }
     return acc;
   }, [columnSizing, columns]);
+
+  const handleRowClick = <T extends { id: string }>(row: T) => {
+    if (row.id === user?.id) {
+      goToProfile(navigate);
+    } else {
+      goToUser(navigate, row.id);
+    }
+  };
 
   return (
     <div className={styles.tableWrapper}>
@@ -207,7 +224,11 @@ export const AdminTable = React.forwardRef(function AdminTable<T>(
 
           <Table.Tbody>
             {data.map((row, rowIndex) => (
-              <Table.Tr key={rowIndex}>
+              <Table.Tr
+                key={rowIndex}
+                style={{ cursor: 'pointer' }} // курсор как ссылка
+                onClick={() => handleRowClick(row)}
+              >
                 {columns.map((col) => (
                   <Table.Td
                     key={col.id}

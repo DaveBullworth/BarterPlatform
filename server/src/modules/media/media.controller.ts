@@ -10,6 +10,8 @@ import {
   Res,
   Param,
   Delete,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
@@ -22,22 +24,35 @@ import {
   ApiOperation,
   ApiResponse,
   ApiTags,
+  ApiQuery,
 } from '@nestjs/swagger';
-import { Authenticated } from '../auth/auth.decorator';
 import { CurrentUser } from '../auth/user.decorator';
-import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { MediaService } from './media.service';
+import { OwnerOrAdminGuard } from './owner.guard';
+import { AuthGuard } from '../auth/auth.guard';
+import { SessionGuard } from '../auth/session.guard';
+import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 
 @ApiTags('Media')
-@ApiBearerAuth()
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @Post('avatar')
-  @Authenticated()
-  @ApiOperation({ summary: 'Загрузка или обновление аватара пользователя' })
+  @UseGuards(AuthGuard, SessionGuard, OwnerOrAdminGuard)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary:
+      'Загрузка или обновление аватара текущего пользователя или другого пользователя (только для администратора)',
+  })
   @ApiConsumes('multipart/form-data')
+  @ApiQuery({
+    name: 'userId',
+    required: false,
+    description:
+      'ID пользователя. Если не указан — загружается аватар текущего пользователя. Доступ к чужому аватару разрешён только администратору.',
+    type: String,
+  })
   @ApiBody({
     schema: {
       type: 'object',
@@ -58,6 +73,10 @@ export class MediaController {
     status: 400,
     description: 'Некорректный файл',
   })
+  @ApiResponse({
+    status: 403,
+    description: 'Недостаточно прав для загрузки аватара другого пользователя',
+  })
   @UseInterceptors(
     FileInterceptor('file', {
       limits: {
@@ -77,14 +96,15 @@ export class MediaController {
   async uploadAvatar(
     @UploadedFile() file: Express.Multer.File,
     @CurrentUser() user: JwtPayload,
+    @Query('userId') targetUserId?: string,
   ) {
     if (!file) {
       throw new BadRequestException('Файл не был загружен');
     }
 
-    const { sub: userId } = user;
+    const userIdToUpload = targetUserId ?? user.sub;
 
-    return this.mediaService.uploadUserAvatar(userId, file);
+    return this.mediaService.uploadUserAvatar(userIdToUpload, file);
   }
 
   @ApiOperation({
@@ -119,19 +139,36 @@ export class MediaController {
   }
 
   @Delete('avatar')
-  @Authenticated()
+  @UseGuards(AuthGuard, SessionGuard, OwnerOrAdminGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Удалить аватар пользователя' })
+  @ApiOperation({
+    summary:
+      'Удалить аватар текущего пользователя или другого пользователя (только для администратора)',
+  })
+  @ApiQuery({
+    name: 'userId',
+    required: false,
+    description:
+      'ID пользователя. Если не указан — удаляется аватар текущего пользователя. Доступ к чужому аватару разрешён только администратору.',
+    type: String,
+  })
   @ApiResponse({
     status: 200,
     description: 'Аватар успешно удалён',
   })
   @ApiResponse({
+    status: 403,
+    description: 'Недостаточно прав для удаления аватара другого пользователя',
+  })
+  @ApiResponse({
     status: 404,
     description: 'Аватар не найден',
   })
-  async deleteAvatar(@CurrentUser() user: JwtPayload) {
-    const { sub: userId } = user;
-    return this.mediaService.deleteUserAvatar(userId);
+  async deleteAvatar(
+    @CurrentUser() user: JwtPayload,
+    @Query('userId') targetUserId?: string,
+  ) {
+    const userIdToDelete = targetUserId ?? user.sub;
+    return this.mediaService.deleteUserAvatar(userIdToDelete);
   }
 }

@@ -73,6 +73,18 @@ export type UpdateSelfUserDto = {
   theme?: UserTheme;
 };
 
+export type AdminUpdateUserDto = {
+  email?: string;
+  login?: string;
+  name?: string;
+  password?: string;
+  role?: UserRole;
+  status?: boolean;
+  statusEmail?: boolean;
+  phone?: string | null;
+  countryId?: string | null;
+};
+
 export interface PaginatedResponse<T> {
   total: number;
   data: T[];

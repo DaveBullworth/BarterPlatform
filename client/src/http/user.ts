@@ -8,6 +8,7 @@ import type {
   RegisterUserDto,
   RegisterResponse,
   UpdateSelfUserDto,
+  AdminUpdateUserDto,
   GetUsersParams,
   PaginatedResponse,
   UserResponseDto,
@@ -44,6 +45,14 @@ export const updateSelfUser = async (
   return data;
 };
 
+export const updateUserByAdmin = async (
+  id: string,
+  dto: AdminUpdateUserDto,
+): Promise<AdminUserDto> => {
+  const { data } = await $authHost.patch<AdminUserDto>(`/user/${id}`, dto);
+  return data;
+};
+
 export const getAllUsers = async (
   params: GetUsersParams,
   signal?: AbortSignal,
@@ -65,7 +74,7 @@ export const getUserById = async (
 ): Promise<SelfUserDto | AdminUserDto | PublicUserDto> => {
   const { data } = await $authHost.get<
     SelfUserDto | AdminUserDto | PublicUserDto
-  >(`/users/${id}`, {
+  >(`/user/${id}`, {
     headers: updatedAt ? { 'If-User-Updated-Since': updatedAt } : undefined,
   });
 

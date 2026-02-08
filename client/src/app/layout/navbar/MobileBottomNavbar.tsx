@@ -13,13 +13,14 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
 
-import type { RootState } from '@/store';
 import { NAV_ITEMS } from './navigation';
 import { NAV_ACCESS } from '@/shared/constants/nav-access';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { ROUTES } from '@/shared/constants/routes';
 import { ProfileDrawer } from './ProfileDrawer';
 import { goToAuth, goToProfile } from '@/shared/utils/navigation';
+import { selectCurrentUser, selectIsAuthenticated } from '@/store/userSlice';
+import type { RootState } from '@/store';
 
 export const MobileBottomNavbar = () => {
   const location = useLocation();
@@ -27,7 +28,10 @@ export const MobileBottomNavbar = () => {
   const { t } = useTranslation();
   const theme = useMantineTheme();
 
-  const { isAuthenticated, role } = useSelector((s: RootState) => s.user);
+  const user = useSelector((s: RootState) => selectCurrentUser(s));
+  const isAuthenticated = useSelector((s: RootState) =>
+    selectIsAuthenticated(s),
+  );
 
   const [drawerOpened, { open, close }] = useDisclosure(false);
 
@@ -41,7 +45,7 @@ export const MobileBottomNavbar = () => {
       case NAV_ACCESS.AUTH:
         return isAuthenticated;
       case NAV_ACCESS.ADMIN:
-        return isAuthenticated && role === USER_ROLES.ADMIN;
+        return isAuthenticated && user?.role === USER_ROLES.ADMIN;
       default:
         return false;
     }

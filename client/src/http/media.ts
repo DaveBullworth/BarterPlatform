@@ -17,6 +17,23 @@ export const uploadAvatar = async (file: File) => {
 };
 
 /**
+ * Загрузка или обновление аватара другого пользователя (admin)
+ */
+export const adminUploadAvatar = async (userId: string, file: File) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const { data } = await $authHost.post('/media/avatar', formData, {
+    params: { userId },
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data;
+};
+
+/**
  * Получить URL аватара пользователя
  * Используется напрямую в <Avatar src="..." />
  */
@@ -29,5 +46,15 @@ export const getUserAvatarUrl = (userId: string) => {
  */
 export const deleteAvatar = async () => {
   const { data } = await $authHost.delete('/media/avatar');
+  return data;
+};
+
+/**
+ * Удалить аватар другого пользователя (админу)
+ */
+export const adminDeleteAvatar = async (userId: string) => {
+  const { data } = await $authHost.delete('/media/avatar', {
+    params: { userId },
+  });
   return data;
 };

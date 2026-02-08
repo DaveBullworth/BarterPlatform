@@ -2,13 +2,18 @@ import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from './useTheme';
 import { bootstrapUser } from '@/shared/utils/bootstrapUser';
+import { selectCurrentUser, selectIsAuthenticated } from '@/store/userSlice';
 import type { RootState, AppDispatch } from '@/store';
 
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { setColorScheme } = useTheme();
   const setColorSchemeRef = useRef(setColorScheme);
-  const user = useSelector((state: RootState) => state.user);
+
+  const user = useSelector((s: RootState) => selectCurrentUser(s));
+  const isAuthenticated = useSelector((s: RootState) =>
+    selectIsAuthenticated(s),
+  );
 
   const [loading, setLoading] = useState(true); // загружается bootstrapUser
   const [rateLimited, setRateLimited] = useState(false);
@@ -41,7 +46,7 @@ export const useAuth = () => {
   }, [dispatch]);
 
   return {
-    isAuth: user.isAuthenticated, // авторизован или нет
+    isAuth: isAuthenticated, // авторизован или нет
     user,
     loading, // true пока идёт bootstrapUser
     rateLimited,

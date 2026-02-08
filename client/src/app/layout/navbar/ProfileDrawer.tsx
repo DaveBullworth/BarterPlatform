@@ -13,11 +13,12 @@ import { useDisclosure } from '@mantine/hooks';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import type { RootState } from '@/store';
 import { NotificationsDrawer } from '../NotificationsDrawer';
 import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
 import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
 import { LogoutModal } from '@/shared/ui/LogoutModal';
+import { selectCurrentUser, selectIsAuthenticated } from '@/store/userSlice';
+import type { RootState } from '@/store';
 
 import styles from '../MainLayout.module.scss';
 
@@ -36,7 +37,10 @@ export const ProfileDrawer = ({
   onProfile,
 }: ProfileDrawerProps) => {
   const { t } = useTranslation();
-  const { isAuthenticated, name } = useSelector((s: RootState) => s.user);
+  const user = useSelector((s: RootState) => selectCurrentUser(s));
+  const isAuthenticated = useSelector((s: RootState) =>
+    selectIsAuthenticated(s),
+  );
 
   const [logoutOpened, { open: openLogout, close: closeLogout }] =
     useDisclosure(false);
@@ -66,7 +70,9 @@ export const ProfileDrawer = ({
           <Group>
             {isAuthenticated ? <User size={20} /> : <HatGlasses size={20} />}
             <Text fw={500}>
-              {isAuthenticated ? (name ?? t('common.user')) : t('common.guest')}
+              {isAuthenticated
+                ? (user?.name ?? t('common.user'))
+                : t('common.guest')}
             </Text>
           </Group>
 

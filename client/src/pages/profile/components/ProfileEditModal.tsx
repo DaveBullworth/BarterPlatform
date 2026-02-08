@@ -14,7 +14,7 @@ type Props = {
   opened: boolean;
   onClose: () => void;
   user: SelfUserDto | AdminUserDto;
-  onUpdated: (user: SelfUserDto) => void;
+  onUpdated: (user: SelfUserDto | AdminUserDto) => void;
 };
 
 const CountrySelectLazy = lazy(

@@ -1,8 +1,20 @@
 import { Stack, Group, Text, Box, Badge, Divider, Image } from '@mantine/core';
-import { Mail, Phone, Globe, AtSign, Contact } from 'lucide-react';
+import {
+  Mail,
+  Phone,
+  Globe,
+  AtSign,
+  Contact,
+  User,
+  Crown,
+  CircleCheck,
+  CircleX,
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 
+import { USER_ROLES } from '@/shared/constants/user-role';
+import { isSelfUser, isAdminUser } from './guard';
 import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
 
 import styles from '../ProfilePage.module.scss';
@@ -60,12 +72,6 @@ const InfoRow = ({
 export const ProfileContactsBlock = ({ user }: Props) => {
   const { t } = useTranslation();
 
-  function hasPrivateContacts(
-    user: SelfUserDto | AdminUserDto | PublicUserDto,
-  ): user is SelfUserDto | AdminUserDto {
-    return 'email' in user;
-  }
-
   return (
     <Stack gap="xs" className={styles.contactsBlock}>
       {/* LOGIN */}
@@ -85,7 +91,7 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       />
 
       {/* EMAIL */}
-      {hasPrivateContacts(user) && (
+      {(isAdminUser(user) || isSelfUser(user)) && (
         <InfoRow
           icon={<Mail size={14} />}
           label={t(`auth.email`)}
@@ -123,7 +129,7 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       />
 
       {/* PHONE */}
-      {hasPrivateContacts(user) && (
+      {(isAdminUser(user) || isSelfUser(user)) && (
         <InfoRow
           icon={<Phone size={14} />}
           label={t(`auth.phone`)}
@@ -139,6 +145,67 @@ export const ProfileContactsBlock = ({ user }: Props) => {
           }
           t={t}
         />
+      )}
+
+      {/* ADMIN ONLY: STATUS, STATUS_EMAIL, ROLE */}
+      {isAdminUser(user) && (
+        <>
+          {/* STATUS */}
+          <InfoRow
+            icon={
+              user.status ? (
+                <CircleCheck size={18} color="green" />
+              ) : (
+                <CircleX size={18} color="red" />
+              )
+            }
+            label={t(`common.status`)}
+            value={
+              <Text size="sm">
+                {user.status ? t(`common.active`) : t(`common.noActive`)}
+              </Text>
+            }
+            t={t}
+          />
+
+          {/* STATUS EMAIL */}
+          <InfoRow
+            icon={
+              user.statusEmail ? (
+                <CircleCheck size={18} color="green" />
+              ) : (
+                <CircleX size={18} color="red" />
+              )
+            }
+            label={t(`common.statusEmail`)}
+            value={
+              <Text size="sm">
+                {user.statusEmail ? t(`common.active`) : t(`common.noActive`)}
+              </Text>
+            }
+            t={t}
+          />
+
+          {/* ROLE */}
+          <InfoRow
+            icon={
+              user.role === USER_ROLES.ADMIN ? (
+                <Crown size={18} color="gold" />
+              ) : (
+                <User size={18} color="blue" />
+              )
+            }
+            label={t(`common.role`)}
+            value={
+              <Text size="sm">
+                {user.role === USER_ROLES.ADMIN
+                  ? t(`common.admin`)
+                  : t(`common.user`)}
+              </Text>
+            }
+            t={t}
+          />
+        </>
       )}
     </Stack>
   );

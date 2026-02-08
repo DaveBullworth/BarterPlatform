@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Title, Stack, Loader, Center, Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import type { AxiosError } from 'axios';
 
 import { getSelfUser, getUserById } from '@/http/user';
 import { ProfileEditModal } from './components/ProfileEditModal';
@@ -11,15 +12,17 @@ import { ProfileContactsBlock } from './components/ProfileContactsBlock';
 import { ProfilePreferencesBlock } from './components/ProfilePreferencesBlock';
 import { AccountDeactivationModal } from './components/AccountDeactivationModal';
 import { handleApiError } from '@/shared/utils/handleApiError';
+import { isSelfUser, isAdminUser } from './components/guard';
 import {
   selectCurrentUser,
   selectUserById,
   setCurrentUser,
   upsertUser,
 } from '@/store/userSlice';
+import { USER_ROLES } from '@/shared/constants/user-role';
+import type { ApiErrorData } from '@/types/error';
 import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
 import type { RootState } from '@/store';
-import { USER_ROLES } from '@/shared/constants/user-role';
 
 export type Mode = 'self' | 'admin' | 'public';
 
@@ -41,7 +44,7 @@ export const UserProfilePage = () => {
 
   // Determine mode with priority: self -> admin -> public
   const mode: Mode = (() => {
-    if (!id) return 'public';
+    if (!id) return 'self';
     if (currentUser && currentUser.id === id) return 'self';
     if (currentUser && currentUser.role === USER_ROLES.ADMIN) return 'admin';
     return 'public';
@@ -61,7 +64,7 @@ export const UserProfilePage = () => {
     }
   }, [mode, currentUser, viewedUser]);
 
-  const handleUserUpdated = (updatedUser: SelfUserDto) => {
+  const handleUserUpdated = (updatedUser: SelfUserDto | AdminUserDto) => {
     // if self — update current user, otherwise upsert
     if (mode === 'self') {
       dispatch(
@@ -84,7 +87,10 @@ export const UserProfilePage = () => {
 
   // Загружаем данные с сервера
   const fetchUser = useCallback(async () => {
-    if (!id && mode !== 'self') return;
+    if (!id && mode === 'public') {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       if (mode === 'self') {
@@ -105,31 +111,28 @@ export const UserProfilePage = () => {
 
       setUser(result);
     } catch (err: unknown) {
-      handleApiError(err, t, {
-        defaultMessage: t('profile.error'),
-      });
+      const axiosError = err as AxiosError<ApiErrorData>;
+
+      // Проверяем, что это ошибка с ответом от сервера
+      if (axiosError.response?.data) {
+        const status = axiosError.response.status;
+
+        // Игнорируем `304` - это попадание в кеш
+        if (status !== 304) {
+          handleApiError(err, t, {
+            defaultMessage: t('profile.error'),
+          });
+        }
+      }
     } finally {
       setLoading(false);
     }
-  }, [id, mode, currentUser, viewedUser, dispatch, t]);
+  }, [id, mode, currentUser?.updatedAt, viewedUser?.updatedAt, dispatch, t]);
 
   useEffect(() => {
     // Always attempt to fetch/validate on mount and when id changes
     fetchUser();
   }, [fetchUser]);
-
-  // Guards чтобы сразу понимать тип `user` сейчас
-  function isSelfUser(
-    user: SelfUserDto | AdminUserDto | PublicUserDto,
-  ): user is SelfUserDto {
-    return 'language' in user && 'theme' in user;
-  }
-
-  function isAdminUser(
-    user: SelfUserDto | AdminUserDto | PublicUserDto,
-  ): user is AdminUserDto {
-    return 'email' in user && 'status' in user;
-  }
 
   if (loading) {
     return (

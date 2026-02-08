@@ -168,7 +168,7 @@ export const handleApiError = (
           break;
       }
     } else {
-      message = 'Сервер недоступен';
+      message = t('auth.serverError');
     }
   } else if (error instanceof Error) {
     message = error.message;

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import { selectCurrentUser, selectIsAuthenticated } from '@/store/userSlice';
 import { NotificationsDrawer } from '../NotificationsDrawer';
 import { goToProfile, goToAuth } from '@/shared/utils/navigation';
 import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
@@ -16,7 +17,10 @@ export const UserMenu = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { isAuthenticated, name } = useSelector((s: RootState) => s.user);
+  const user = useSelector((s: RootState) => selectCurrentUser(s));
+  const isAuthenticated = useSelector((s: RootState) =>
+    selectIsAuthenticated(s),
+  );
 
   // временно, потом Redux
   const unreadCount = 4;
@@ -26,7 +30,8 @@ export const UserMenu = () => {
 
   const [notificationsOpened, notifications] = useDisclosure(false);
 
-  const initial = isAuthenticated && name ? name[0].toUpperCase() : null;
+  const initial =
+    isAuthenticated && user?.name ? user.name[0].toUpperCase() : null;
 
   return (
     <>

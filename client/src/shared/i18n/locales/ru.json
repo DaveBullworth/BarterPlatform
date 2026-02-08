@@ -199,6 +199,7 @@
     "noActive": "Неактивен",
     "role": "Роль",
     "status": "Статус",
+    "statusEmail": "Почта",
     "createdAt": "Создан"
   },
   "notifications": {

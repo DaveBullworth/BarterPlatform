@@ -4,6 +4,12 @@ import { User } from 'lucide-react';
 
 import { getUserAvatarUrl } from '@/http/media';
 import { AvatarEditModal } from './AvatarEditModal';
+import {
+  uploadAvatar,
+  adminUploadAvatar,
+  deleteAvatar,
+  adminDeleteAvatar,
+} from '@/http/media';
 import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
 import type { Mode } from '../ProfilePage';
 
@@ -17,6 +23,15 @@ type Props = {
 export const ProfileHeaderBlock = ({ user, mode }: Props) => {
   const [avatarModalOpen, setAvatarModalOpen] = useState(false);
   const [avatarKey, setAvatarKey] = useState(() => Date.now());
+
+  // строго типизированные функции
+  const uploadFn: (file: File) => Promise<{ message: string }> =
+    mode === 'admin'
+      ? (file) => adminUploadAvatar(user.id, file)
+      : uploadAvatar;
+
+  const deleteFn: () => Promise<{ message: string }> =
+    mode === 'admin' ? () => adminDeleteAvatar(user.id) : deleteAvatar;
 
   return (
     <Group align="center" gap="lg">
@@ -56,6 +71,8 @@ export const ProfileHeaderBlock = ({ user, mode }: Props) => {
           opened={avatarModalOpen}
           onClose={() => setAvatarModalOpen(false)}
           onUpdated={() => setAvatarKey(Date.now())}
+          uploadFn={uploadFn}
+          deleteFn={deleteFn}
         />
       )}
     </Group>

@@ -84,3 +84,5 @@ export const selectUserById =
   (id: string) =>
   (s: RootState): UserEntry | undefined =>
     s.user.entities[id];
+
+export const selectIsAuthenticated = (s: RootState) => s.user.isAuthenticated;

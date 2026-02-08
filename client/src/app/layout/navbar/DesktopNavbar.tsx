@@ -2,18 +2,23 @@ import { Stack, NavLink } from '@mantine/core';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import type { RootState } from '@/store';
+
 import { NAV_ITEMS } from './navigation';
 import { NAV_ACCESS } from '@/shared/constants/nav-access';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { openAuthRequiredModal } from '@/shared/ui/AuthRequiredModal';
+import { selectCurrentUser, selectIsAuthenticated } from '@/store/userSlice';
+import type { RootState } from '@/store';
 
 export const DesktopNavbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { isAuthenticated, role } = useSelector((s: RootState) => s.user);
+  const user = useSelector((s: RootState) => selectCurrentUser(s));
+  const isAuthenticated = useSelector((s: RootState) =>
+    selectIsAuthenticated(s),
+  );
 
   return (
     <Stack gap={4}>
@@ -24,7 +29,7 @@ export const DesktopNavbar = () => {
           case NAV_ACCESS.AUTH:
             return true;
           case NAV_ACCESS.ADMIN:
-            return isAuthenticated && role === USER_ROLES.ADMIN;
+            return isAuthenticated && user?.role === USER_ROLES.ADMIN;
           default:
             return false;
         }
