@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   UserEntity,
   UserRole,
@@ -115,6 +115,18 @@ export class SelfUserDto {
   })
   country: CountryEntity;
 
+  @ApiPropertyOptional({
+    example: true,
+    description: 'Активность пользователя',
+  })
+  status?: boolean;
+
+  @ApiPropertyOptional({
+    example: false,
+    description: 'Подтверждён ли email пользователя',
+  })
+  statusEmail?: boolean;
+
   @ApiProperty({
     enum: UserLanguage,
     example: UserLanguage.RU,
@@ -141,7 +153,7 @@ export class SelfUserDto {
   })
   updatedAt: Date;
 
-  constructor(user: UserEntity) {
+  constructor(user: UserEntity, options?: { includeAdminFields?: boolean }) {
     Object.assign(this, {
       id: user.id,
       role: user.role,
@@ -155,6 +167,11 @@ export class SelfUserDto {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     });
+
+    if (options?.includeAdminFields) {
+      this.status = user.status;
+      this.statusEmail = user.statusEmail;
+    }
   }
 }
 

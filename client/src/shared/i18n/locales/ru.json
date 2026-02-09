@@ -114,7 +114,8 @@
     "avatarDeleted": "Аватар успешно удалён",
     "editData": "Изменить данные",
     "dataUpdated": "Данные успешно обновлены",
-    "countryNotSelected": "Пожалуйста, выберите страну"
+    "countryNotSelected": "Пожалуйста, выберите страну",
+    "lastAdminDeactivation": "Нельзя деактивировать последнего Админа системы!"
   },
   "deactivation": {
     "title": "Деактивация аккаунта",

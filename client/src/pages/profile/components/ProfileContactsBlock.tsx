@@ -13,8 +13,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 
-import { USER_ROLES } from '@/shared/constants/user-role';
+import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
 import { isSelfUser, isAdminUser } from './guard';
+import type { Mode } from '../ProfilePage';
 import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
 
 import styles from '../ProfilePage.module.scss';
@@ -23,6 +24,8 @@ const STATIC_URL = import.meta.env.VITE_API_URL;
 
 type Props = {
   user: SelfUserDto | AdminUserDto | PublicUserDto;
+  role?: UserRole;
+  mode: Mode;
 };
 
 const InfoRow = ({
@@ -69,7 +72,7 @@ const InfoRow = ({
   );
 };
 
-export const ProfileContactsBlock = ({ user }: Props) => {
+export const ProfileContactsBlock = ({ user, role, mode }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -91,7 +94,8 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       />
 
       {/* EMAIL */}
-      {(isAdminUser(user) || isSelfUser(user)) && (
+      {((role === USER_ROLES.ADMIN && isAdminUser(user)) ||
+        (mode === 'self' && isSelfUser(user))) && (
         <InfoRow
           icon={<Mail size={14} />}
           label={t(`auth.email`)}
@@ -129,7 +133,8 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       />
 
       {/* PHONE */}
-      {(isAdminUser(user) || isSelfUser(user)) && (
+      {((role === USER_ROLES.ADMIN && isAdminUser(user)) ||
+        (mode === 'self' && isSelfUser(user))) && (
         <InfoRow
           icon={<Phone size={14} />}
           label={t(`auth.phone`)}
@@ -148,7 +153,7 @@ export const ProfileContactsBlock = ({ user }: Props) => {
       )}
 
       {/* ADMIN ONLY: STATUS, STATUS_EMAIL, ROLE */}
-      {isAdminUser(user) && (
+      {role === USER_ROLES.ADMIN && isAdminUser(user) && (
         <>
           {/* STATUS */}
           <InfoRow

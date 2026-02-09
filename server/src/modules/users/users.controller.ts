@@ -36,8 +36,6 @@ import { CurrentUser } from '../auth/user.decorator';
 import { UserRole } from '@/database/entities/user.entity';
 import { GetUsersQueryDto, UserResponseDto } from './dto/getAllUsers.dto';
 import { RegisterUserDto } from '../auth/dto/register.dto';
-import type { AppRequest } from '@/common/interfaces/app-request.interface';
-import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { UserErrorCode } from './errors/users-error-codes';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
@@ -46,6 +44,8 @@ import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
 import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { UserFiltersDto } from './dto/userFilters.dto';
 import { UserUpdatedInterceptor } from './interceptors/user.cache.interseptor';
+import type { AppRequest } from '@/common/interfaces/app-request.interface';
+import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 
 // Декоратор @Controller связывает класс с маршрутом 'users'
 @Controller('user')
@@ -100,6 +100,9 @@ export class UsersController {
         },
       ],
     },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   register(@Body() dto: RegisterUserDto, @Req() req: AppRequest) {
     return this.usersService.register(dto, req);
@@ -189,8 +192,7 @@ export class UsersController {
     status: 401,
     description: 'Не авторизован (отсутствует или неверный access token)',
   })
-  @ApiResponse({
-    status: 403,
+  @ApiForbiddenResponse({
     description: 'Недостаточно прав (только ADMIN)',
   })
   @ApiInternalServerErrorResponse({
@@ -274,6 +276,9 @@ export class UsersController {
       },
     },
   })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
+  })
   getUserById(
     // @Param('id') извлекает параметр id из маршрута
     @Param('id') id: string,
@@ -311,6 +316,12 @@ export class UsersController {
     schema: {
       oneOf: [
         // --- бизнес-ошибки ---
+        {
+          example: {
+            code: UserErrorCode.LAST_ADMIN_DEACTIVATION_FORBIDDEN,
+            message: 'Cannot deactivate the last active admin',
+          },
+        },
         {
           example: {
             code: UserErrorCode.LOGIN_ALREADY_IN_USE,
@@ -351,6 +362,9 @@ export class UsersController {
         },
       ],
     },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   updateSelf(@Body() dto: UpdateSelfUserDto, @CurrentUser() user: JwtPayload) {
     const { sub: userId } = user;
@@ -404,8 +418,14 @@ export class UsersController {
       ],
     },
   })
+  @ApiForbiddenResponse({
+    description: 'Недостаточно прав (только ADMIN)',
+  })
   @ApiNotFoundResponse({
     description: 'Пользователь не найден',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   updateUser(@Param('id') id: string, @Body() dto: AdminUpdateUserDto) {
     return this.usersService.adminUpdateUser(id, dto);
@@ -438,6 +458,12 @@ export class UsersController {
         message: 'User not found',
       },
     },
+  })
+  @ApiForbiddenResponse({
+    description: 'Недостаточно прав (только ADMIN)',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUserByAdmin(id);
@@ -498,6 +524,12 @@ export class UsersController {
         },
       ],
     },
+  })
+  @ApiForbiddenResponse({
+    description: 'Недостаточно прав (только ADMIN)',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   createUserByAdmin(@Body() dto: AdminCreateUserDto) {
     return this.usersService.createUserByAdmin(dto);

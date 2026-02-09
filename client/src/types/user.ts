@@ -11,6 +11,8 @@ export interface SelfUserDto {
   name: string;
   phone: string | null;
   country: Country | null;
+  status?: boolean; // Admin self
+  statusEmail?: boolean; // Admin self
   language: UserLanguage;
   theme: UserTheme;
   createdAt: string;

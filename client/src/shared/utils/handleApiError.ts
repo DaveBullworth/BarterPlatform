@@ -10,6 +10,7 @@ import {
   UserRoundX,
   UserRoundMinus,
   ImageOff,
+  Crown,
 } from 'lucide-react';
 import type { ApiErrorData } from '@/types/error';
 import { ERROR_TYPES } from '../constants/error-types';
@@ -159,6 +160,13 @@ export const handleApiError = (
           message = t('profile.avatarNotFound'); // "Аватар не найден"
           color = 'yellow';
           icon = React.createElement(ImageOff, { size: 18 });
+          break;
+
+        /** UPDATE USER */
+        case ERROR_TYPES.LAST_ADMIN_DEACTIVATION_FORBIDDEN:
+          message = t('profile.lastAdminDeactivation'); // "Аватар не найден"
+          color = 'yellow';
+          icon = React.createElement(Crown, { size: 18 });
           break;
 
         default:

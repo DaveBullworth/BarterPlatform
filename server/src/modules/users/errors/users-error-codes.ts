@@ -9,4 +9,7 @@ export enum UserErrorCode {
 
   // Связи
   COUNTRY_NOT_FOUND = 'COUNTRY_NOT_FOUND',
+
+  // Бизнес-инварианты
+  LAST_ADMIN_DEACTIVATION_FORBIDDEN = 'LAST_ADMIN_DEACTIVATION_FORBIDDEN',
 }

@@ -7,10 +7,14 @@ import {
   ApiBearerAuth,
   ApiTooManyRequestsResponse,
   ApiBadRequestResponse,
+  ApiForbiddenResponse,
+  ApiInternalServerErrorResponse,
 } from '@nestjs/swagger';
 import { DeactivationService } from './deactivation.service';
 import { CurrentUser } from '../auth/user.decorator';
 import { Authenticated } from '../auth/auth.decorator';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '@/database/entities/user.entity';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 
 @ApiTags('Account Deactivation')
@@ -18,8 +22,9 @@ import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 export class DeactivationController {
   constructor(private readonly deactivationService: DeactivationService) {}
 
-  @Authenticated()
   @Post('request')
+  @Authenticated()
+  @Roles(UserRole.USER)
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Запрос кода для деактивации аккаунта',
@@ -54,16 +59,22 @@ export class DeactivationController {
       ],
     },
   })
+  @ApiForbiddenResponse({
+    description: 'Недостаточно прав (только ADMIN)',
+  })
   @ApiTooManyRequestsResponse({
     description: 'Превышен лимит запросов',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   requestDeactivation(@CurrentUser() user: JwtPayload) {
     const { sub: userId } = user;
     return this.deactivationService.request(userId);
   }
 
-  @Authenticated()
   @Post('confirm')
+  @Authenticated()
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Подтверждение деактивации аккаунта',
@@ -92,6 +103,9 @@ export class DeactivationController {
   })
   @ApiBadRequestResponse({
     description: 'Некорректный или истёкший код',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   async confirmDeactivation(
     @Body('code') code: string,

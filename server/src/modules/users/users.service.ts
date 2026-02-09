@@ -301,13 +301,17 @@ export class UsersService {
       });
     }
 
-    // Админ — видит всё
-    // Доп проверка если админ хочет посмотреть свой профиль
+    // Админ смотрит чужого
     if (requester.role === UserRole.ADMIN && requester.sub !== user.id) {
       return new AdminUserDto(user);
     }
 
-    // Пользователь смотрит сам себя
+    // Админ смотрит себя
+    if (requester.role === UserRole.ADMIN && requester.sub === user.id) {
+      return new SelfUserDto(user, { includeAdminFields: true });
+    }
+
+    // Обычный пользователь смотрит себя
     if (requester.sub === user.id) {
       return new SelfUserDto(user);
     }
@@ -408,6 +412,43 @@ export class UsersService {
         code: UserErrorCode.USER_NOT_FOUND,
         message: 'User not found',
       });
+    }
+
+    // Блок проверки деактивации последнего админа
+    // Запрет деактивации последнего активного админа
+    const isAdmin = user.role === UserRole.ADMIN;
+    const isActive = user.status === true;
+    const isEmailActive = user.statusEmail === true;
+
+    const wantsDeactivateStatus =
+      dto.status !== undefined && user.status === true && dto.status === false;
+
+    const wantsDeactivateStatusEmail =
+      dto.statusEmail !== undefined &&
+      user.statusEmail === true &&
+      dto.statusEmail === false;
+
+    if (
+      isAdmin &&
+      isActive &&
+      isEmailActive &&
+      (wantsDeactivateStatus || wantsDeactivateStatusEmail)
+    ) {
+      const activeAdminsCount = await this.userRepo.count({
+        where: {
+          role: UserRole.ADMIN,
+          status: true,
+          statusEmail: true,
+        },
+      });
+
+      // этот админ — последний
+      if (activeAdminsCount <= 1) {
+        throw new BadRequestException({
+          code: UserErrorCode.LAST_ADMIN_DEACTIVATION_FORBIDDEN,
+          message: 'Cannot deactivate the last active admin',
+        });
+      }
     }
 
     if (dto.email && dto.email !== user.email) {

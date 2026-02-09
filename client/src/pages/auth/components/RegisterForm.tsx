@@ -53,7 +53,20 @@ export const RegisterForm = ({
       agree: false,
     },
     validate: {
-      email: createEmailValidator(t),
+      email: (value) => {
+        if (!value) return null;
+
+        const lengthError = createLengthValidator(t, 'auth.email', {
+          min: 8,
+          max: 200,
+        })(value);
+
+        if (lengthError) {
+          return lengthError;
+        }
+
+        return createEmailValidator(t)(value);
+      },
       login: createLengthValidator(t, 'auth.login', { min: 8, max: 60 }),
       name: createLengthValidator(t, 'auth.name', { min: 5, max: 200 }),
       password: createLengthValidator(t, 'auth.password', {
@@ -73,6 +86,7 @@ export const RegisterForm = ({
           leftSection={<Mail size={16} />}
           label={t('auth.email')}
           placeholder={t('auth.emailPlaceholder')}
+          maxLength={200}
           required
           {...form.getInputProps('email')}
         />
@@ -82,6 +96,7 @@ export const RegisterForm = ({
           leftSection={<AtSign size={16} />}
           label={t('auth.login')}
           placeholder={t('auth.loginPlaceholder')}
+          maxLength={60}
           required
           {...form.getInputProps('login')}
         />
@@ -91,6 +106,7 @@ export const RegisterForm = ({
           leftSection={<User size={16} />}
           label={t('auth.name')}
           placeholder={t('auth.namePlaceholder')}
+          maxLength={200}
           required
           {...form.getInputProps('name')}
         />
@@ -100,6 +116,7 @@ export const RegisterForm = ({
           leftSection={<LockKeyhole size={16} />}
           label={t('auth.password')}
           placeholder={t('auth.passwordPlaceholder')}
+          maxLength={60}
           required
           {...form.getInputProps('password')}
         />

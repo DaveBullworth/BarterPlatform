@@ -25,7 +25,7 @@ import {
 
 import type { AdminUserDto, SelfUserDto } from '@/types/user';
 import type { Country } from '@/types/country';
-import type { UserRole } from '@/shared/constants/user-role';
+import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
 
 type FormValues = {
   name: string;
@@ -40,6 +40,7 @@ type FormValues = {
 
 type Props = {
   user: SelfUserDto | AdminUserDto;
+  role?: UserRole;
   selectedCountry: Country | null;
   onCountryMissing: () => void;
   onUpdated: (user: SelfUserDto | AdminUserDto) => void;
@@ -48,6 +49,7 @@ type Props = {
 
 export const ProfileEditForm = ({
   user,
+  role,
   selectedCountry,
   onCountryMissing,
   onUpdated,
@@ -56,7 +58,7 @@ export const ProfileEditForm = ({
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
-  const isAdminMode = isAdminUser(user);
+  const isAdminMode = role === USER_ROLES.ADMIN && isAdminUser(user);
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -76,6 +78,16 @@ export const ProfileEditForm = ({
       ...(isAdminMode && {
         email: (value) => {
           if (!value) return null;
+
+          const lengthError = createLengthValidator(t, 'auth.email', {
+            min: 8,
+            max: 200,
+          })(value);
+
+          if (lengthError) {
+            return lengthError;
+          }
+
           return createEmailValidator(t)(value);
         },
         password: (value) => {
@@ -169,13 +181,17 @@ export const ProfileEditForm = ({
       <Stack gap="sm">
         <TextInput
           label={t('auth.name')}
+          placeholder={t('auth.namePlaceholder')}
           leftSection={<User size={16} />}
+          maxLength={200}
           {...form.getInputProps('name')}
         />
 
         <TextInput
           label={t('auth.login')}
+          placeholder={t('auth.loginPlaceholder')}
           leftSection={<AtSign size={16} />}
+          maxLength={60}
           {...form.getInputProps('login')}
         />
 
@@ -194,6 +210,7 @@ export const ProfileEditForm = ({
               label={t('auth.email')}
               placeholder={t('auth.emailPlaceholder')}
               required
+              maxLength={200}
               {...form.getInputProps('email')}
             />
 
@@ -201,6 +218,7 @@ export const ProfileEditForm = ({
               leftSection={<LockKeyhole size={16} />}
               label={t('auth.password')}
               placeholder={t('auth.passwordPlaceholder')}
+              maxLength={60}
               {...form.getInputProps('password')}
             />
 

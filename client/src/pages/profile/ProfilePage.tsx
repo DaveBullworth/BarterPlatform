@@ -151,9 +151,9 @@ export const UserProfilePage = () => {
       <Title order={2}>{t('profile.title')}</Title>
 
       <ProfileHeaderBlock user={user} mode={mode} />
-      <ProfileContactsBlock user={user} />
+      <ProfileContactsBlock user={user} role={currentUser?.role} mode={mode} />
 
-      {isSelfUser(user) && (
+      {mode === 'self' && isSelfUser(user) && (
         <ProfilePreferencesBlock
           user={user}
           onPreferencesSaved={handleUserUpdated}
@@ -161,22 +161,25 @@ export const UserProfilePage = () => {
       )}
 
       {/* Кнопка для открытия модалки изменения данных профиля */}
-      {(isSelfUser(user) || isAdminUser(user)) && (
-        <Button onClick={() => setEditProfileModalOpened(true)} maw={600}>
-          {t('profile.editData')}
-        </Button>
-      )}
+      {['self', 'admin'].includes(mode) &&
+        (isSelfUser(user) || isAdminUser(user)) && (
+          <Button onClick={() => setEditProfileModalOpened(true)} maw={600}>
+            {t('profile.editData')}
+          </Button>
+        )}
 
       {/* Кнопка для открытия модалки деактивации */}
-      {isSelfUser(user) && (
-        <Button
-          color="red"
-          onClick={() => setDeactivationModalOpened(true)}
-          maw={600}
-        >
-          {t('deactivation.deactivate')}
-        </Button>
-      )}
+      {currentUser?.role === USER_ROLES.USER &&
+        mode === 'self' &&
+        isSelfUser(user) && (
+          <Button
+            color="red"
+            onClick={() => setDeactivationModalOpened(true)}
+            maw={600}
+          >
+            {t('deactivation.deactivate')}
+          </Button>
+        )}
 
       {/* Модалка деактивации*/}
       <AccountDeactivationModal
@@ -185,14 +188,16 @@ export const UserProfilePage = () => {
       />
 
       {/* Модалка изменения данных профиля*/}
-      {(isSelfUser(user) || isAdminUser(user)) && (
-        <ProfileEditModal
-          user={user}
-          opened={editProfileModalOpened}
-          onClose={() => setEditProfileModalOpened(false)}
-          onUpdated={handleUserUpdated}
-        />
-      )}
+      {['self', 'admin'].includes(mode) &&
+        (isSelfUser(user) || isAdminUser(user)) && (
+          <ProfileEditModal
+            user={user}
+            role={currentUser?.role}
+            opened={editProfileModalOpened}
+            onClose={() => setEditProfileModalOpened(false)}
+            onUpdated={handleUserUpdated}
+          />
+        )}
     </Stack>
   );
 };

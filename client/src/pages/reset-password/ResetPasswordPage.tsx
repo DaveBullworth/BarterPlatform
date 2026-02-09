@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import { useSearchParams, Navigate, useNavigate } from 'react-router-dom';
-import { Button, PasswordInput, Stack, Title, Text } from '@mantine/core';
+import {
+  Button,
+  PasswordInput,
+  Stack,
+  Title,
+  Text,
+  Center,
+  Paper,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import type { AxiosError } from 'axios';
@@ -90,31 +98,42 @@ export const ResetPasswordPage = () => {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack gap="md">
-        <Title order={2}>{t('auth.resetPassword')}</Title>
+    <Center mih="100vh" px={{ base: 'sm', xs: 'md', sm: 'xl' }}>
+      <Paper
+        withBorder
+        radius="md"
+        p={{ base: 'sm', xs: 'md', sm: 'xl' }}
+        w="100%"
+        maw={420}
+        shadow="sm"
+      >
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack gap="md">
+            <Title order={2}>{t('auth.resetPassword')}</Title>
 
-        <Text c="dimmed">{t('auth.resetPasswordDescription')}</Text>
+            <Text c="dimmed">{t('auth.resetPasswordDescription')}</Text>
 
-        <PasswordInput
-          label={t('auth.newPassword')}
-          placeholder={t('auth.passwordPlaceholder')}
-          {...form.getInputProps('password')}
-        />
+            <PasswordInput
+              label={t('auth.newPassword')}
+              placeholder={t('auth.passwordPlaceholder')}
+              {...form.getInputProps('password')}
+            />
 
-        <PasswordInput
-          label={t('auth.repeatPassword')}
-          placeholder={t('auth.repeatPassword')}
-          {...form.getInputProps('passwordRepeat')}
-          onPaste={(e) => e.preventDefault()}
-          onDrop={(e) => e.preventDefault()}
-          onContextMenu={(e) => e.preventDefault()}
-        />
+            <PasswordInput
+              label={t('auth.repeatPassword')}
+              placeholder={t('auth.repeatPassword')}
+              {...form.getInputProps('passwordRepeat')}
+              onPaste={(e) => e.preventDefault()}
+              onDrop={(e) => e.preventDefault()}
+              onContextMenu={(e) => e.preventDefault()}
+            />
 
-        <Button type="submit" loading={loading}>
-          {t('auth.setNewPassword')}
-        </Button>
-      </Stack>
-    </form>
+            <Button type="submit" loading={loading}>
+              {t('auth.setNewPassword')}
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
+    </Center>
   );
 };

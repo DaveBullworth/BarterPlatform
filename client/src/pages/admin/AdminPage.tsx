@@ -56,7 +56,7 @@ export const AdminPage = () => {
     }
   });
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isFetching, isError } = useQuery({
     queryKey: ['admin', 'users', page, pageSize, sorting, filters],
     queryFn: ({ signal }) =>
       getAllUsers(
@@ -115,7 +115,7 @@ export const AdminPage = () => {
         </Popover>
       </div>
 
-      {isLoading && (
+      {(isLoading || isFetching) && (
         <Center py="xl">
           <Loader />
         </Center>
@@ -123,15 +123,17 @@ export const AdminPage = () => {
 
       {isError && <Text c="red">{t('admin.loadFailed')}</Text>}
 
-      <AdminTableFilters
-        value={filters}
-        onChange={(next) => {
-          setFilters(next);
-          setPage(1);
-        }}
-      />
+      {!isLoading && !isFetching && filters && (
+        <AdminTableFilters
+          value={filters}
+          onChange={(next) => {
+            setFilters(next);
+            setPage(1);
+          }}
+        />
+      )}
 
-      {!isLoading && data && (
+      {!isLoading && !isFetching && data && (
         <>
           <Group justify="flex-start">
             {/* Сброс сортировки */}

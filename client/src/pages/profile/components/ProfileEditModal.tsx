@@ -9,11 +9,13 @@ import type { AdminUserDto, SelfUserDto } from '@/types/user';
 import type { Country } from '@/types/country';
 
 import styles from '../ProfilePage.module.scss';
+import type { UserRole } from '@/shared/constants/user-role';
 
 type Props = {
   opened: boolean;
   onClose: () => void;
   user: SelfUserDto | AdminUserDto;
+  role?: UserRole;
   onUpdated: (user: SelfUserDto | AdminUserDto) => void;
 };
 
@@ -25,6 +27,7 @@ export const ProfileEditModal = ({
   opened,
   onClose,
   user,
+  role,
   onUpdated,
 }: Props) => {
   const { t } = useTranslation();
@@ -86,6 +89,7 @@ export const ProfileEditModal = ({
         {/* Form */}
         <ProfileEditForm
           user={user}
+          role={role}
           selectedCountry={selectedCountry}
           onCountryMissing={() => setAlert(t('profile.countryNotSelected'))}
           onUpdated={onUpdated}

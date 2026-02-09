@@ -73,6 +73,14 @@ export class AuthService {
       });
     }
 
+    // пользователь деактивирован
+    if (!user.status) {
+      // НЕ регистрируем brute-force фейл и НЕ сбрасываем счётчик
+      throw new ForbiddenException({
+        code: AuthErrorCode.USER_DEACTIVATED,
+      });
+    }
+
     // БРУТФОРС - успех → сбрасываем счётчик
     await this.loginBruteforcePolicy.reset({ deviceId, ip });
 
