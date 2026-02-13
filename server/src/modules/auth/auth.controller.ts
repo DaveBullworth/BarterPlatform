@@ -14,6 +14,9 @@ import {
   ApiBearerAuth,
   ApiCookieAuth,
   ApiInternalServerErrorResponse,
+  ApiUnauthorizedResponse,
+  ApiBadRequestResponse,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import type { RequestLogin } from '@/common/interfaces/login-request.interface';
@@ -40,6 +43,7 @@ export class AuthController {
     - EMAIL_NOT_CONFIRMED — почта не подтверждена
     - MAX_SESSIONS_EXCEEDED — превышен лимит активных сессий
     - LOGIN_RATE_LIMIT — превышен лимит попыток входа
+    - USER_DEACTIVATED — пользователь деактивирован
     `,
   })
   @ApiBody({ type: LoginDto })
@@ -53,8 +57,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 400,
+  @ApiBadRequestResponse({
     description: 'Ошибка валидации входных данных',
     schema: {
       example: {
@@ -64,8 +67,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 401,
+  @ApiUnauthorizedResponse({
     description: 'Неверный логин или пароль',
     schema: {
       example: {
@@ -73,8 +75,15 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 403,
+  @ApiForbiddenResponse({
+    description: 'Пользователь деактивирован',
+    schema: {
+      example: {
+        code: 'USER_DEACTIVATED',
+      },
+    },
+  })
+  @ApiForbiddenResponse({
     description: 'Почта не подтверждена',
     schema: {
       example: {
@@ -85,8 +94,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 403,
+  @ApiForbiddenResponse({
     description: 'Превышен лимит активных сессий',
     schema: {
       example: {
@@ -163,8 +171,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 401,
+  @ApiUnauthorizedResponse({
     description:
       'Refresh token недействителен, сессия не найдена или не принадлежит ПОЗ',
     schema: {
@@ -244,8 +251,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponse({
-    status: 401,
+  @ApiUnauthorizedResponse({
     description:
       'Пользователь не авторизован, сессия или токен обновления не найдены',
     schema: {
