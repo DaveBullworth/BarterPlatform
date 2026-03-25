@@ -45,7 +45,7 @@ export function AdminTablePagination({
             // корректируем значение только при потере фокуса
             const newSize =
               localPageSize && !isNaN(localPageSize)
-                ? Math.min(Math.max(localPageSize, 1), total)
+                ? Math.min(Math.max(localPageSize, 1), 50)
                 : 1;
 
             setLocalPageSize(newSize);

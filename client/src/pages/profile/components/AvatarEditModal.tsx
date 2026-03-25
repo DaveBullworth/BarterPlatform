@@ -125,6 +125,20 @@ export const AvatarEditModal = ({
             accept={['image/png', 'image/jpeg']}
             maxSize={5 * 1024 * 1024}
             onDrop={(files) => setImageSrc(URL.createObjectURL(files[0]))}
+            onReject={(files) => {
+              const hasLargeFile = files.some(
+                (f) => f.file.size > 5 * 1024 * 1024,
+              );
+
+              if (hasLargeFile) {
+                notify({
+                  title: t('profile.avatarError'),
+                  message: t('profile.sizeLimit', { size: 5 }),
+                  color: 'yellow',
+                  position: 'top-center',
+                });
+              }
+            }}
           >
             <Group justify="center" gap="xl" style={{ pointerEvents: 'none' }}>
               <Dropzone.Accept>

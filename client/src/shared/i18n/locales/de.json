@@ -105,6 +105,8 @@
     "confirmSaveTitle": "Bestätigung",
     "confirmSaveText": "Möchten Sie die folgenden persönlichen Einstellungen wirklich global speichern?",
     "preferencesSavedSuccessfully": "Benutzereinstellungen wurden gespeichert!",
+    "avatarError": "Fehler beim Hochladen des Avatars",
+    "sizeLimit": "Dateigröße darf {{size}} MB nicht überschreiten",
     "avatarDrag": "Bild hierher ziehen oder klicken, um auszuwählen",
     "avatarDragInfo": "Typen [png/jpeg] sind zulässig, Gewicht [< 5 mb]",
     "settingMissmatch": "Die gespeicherte Einstellung unterscheidet sich von der lokalen. Änderungen wurden noch nicht im Profil gespeichert.",

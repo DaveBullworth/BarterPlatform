@@ -106,6 +106,8 @@
     "confirmSaveTitle": "Potwierdzenie",
     "confirmSaveText": "Czy na pewno chcesz zapisać globalnie następujące ustawienia osobiste?",
     "preferencesSavedSuccessfully": "ustawienia użytkownika zapisane!",
+    "avatarError": "Błąd podczas przesyłania awatara",
+    "sizeLimit": "Rozmiar pliku nie może przekraczać {{size}} MB",
     "avatarDrag": "Przeciągnij obraz lub kliknij, aby wybrać",
     "avatarDragInfo": "dozwolone typy [png/jpeg], waga [< 5 MB]",
     "settingMissmatch": "Zapisane ustawienie różni się od lokalnego. Zmiany nie zostały jeszcze zapisane w profilu.",

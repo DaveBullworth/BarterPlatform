@@ -106,6 +106,8 @@
     "confirmSaveTitle": "Confirmation",
     "confirmSaveText": "Are you sure you want to save the following personal settings globally?",
     "preferencesSavedSuccessfully": "User preferences have been saved!",
+    "avatarError": "Error uploading avatar",
+    "sizeLimit": "File size must not exceed {{size}} MB",
     "avatarDrag": "Drag an image here or click to select",
     "avatarDragInfo": "Allowed types [png/jpeg], weight [< 5 mb]",
     "settingMissmatch": "The saved setting differs from the local one. Changes have not been saved to the profile yet.",
