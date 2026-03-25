@@ -24,7 +24,7 @@ import type { AuthenticatedRequest } from '@/common/interfaces/auth-request.inte
 import type { LoginResponse } from './interfaces/loginResponse.interface';
 import { Authenticated } from './auth.decorator';
 import { LoginDto } from './dto/login.dto';
-import { AuthErrorCode } from './errors/auth-error-codes';
+import { AuthErrorCode, SecurityErrorCode } from './errors/auth-error-codes';
 import { RefreshTokenCookieInterceptor } from './interceptors/refreshTokenCookie.interceptor';
 
 @ApiTags('Auth')
@@ -71,7 +71,7 @@ export class AuthController {
     description: 'Неверный логин или пароль',
     schema: {
       example: {
-        code: 'INVALID_CREDENTIALS',
+        code: AuthErrorCode.INVALID_CREDENTIALS,
       },
     },
   })
@@ -79,7 +79,7 @@ export class AuthController {
     description: 'Пользователь деактивирован',
     schema: {
       example: {
-        code: 'USER_DEACTIVATED',
+        code: AuthErrorCode.USER_DEACTIVATED,
       },
     },
   })
@@ -87,7 +87,7 @@ export class AuthController {
     description: 'Почта не подтверждена',
     schema: {
       example: {
-        code: 'EMAIL_NOT_CONFIRMED',
+        code: AuthErrorCode.EMAIL_NOT_CONFIRMED,
         meta: {
           loginOrEmail: 'user@example.com',
         },
@@ -98,7 +98,7 @@ export class AuthController {
     description: 'Превышен лимит активных сессий',
     schema: {
       example: {
-        code: 'MAX_SESSIONS_EXCEEDED',
+        code: AuthErrorCode.MAX_SESSIONS_EXCEEDED,
         meta: {
           maxSessions: 3,
           currentSessions: 3,
@@ -112,7 +112,7 @@ export class AuthController {
     description: 'Слишком много попыток входа',
     schema: {
       example: {
-        code: 'LOGIN_RATE_LIMIT',
+        code: SecurityErrorCode.LOGIN_RATE_LIMIT,
       },
     },
   })
@@ -178,22 +178,22 @@ export class AuthController {
       oneOf: [
         {
           example: {
-            code: 'REFRESH_TOKEN_MISSING',
+            code: AuthErrorCode.REFRESH_TOKEN_MISSING,
           },
         },
         {
           example: {
-            code: 'REFRESH_TOKEN_INVALID',
+            code: AuthErrorCode.REFRESH_TOKEN_INVALID,
           },
         },
         {
           example: {
-            code: 'SESSION_NOT_FOUND',
+            code: AuthErrorCode.SESSION_NOT_FOUND,
           },
         },
         {
           example: {
-            code: 'SESSION_MISMATCH',
+            code: AuthErrorCode.SESSION_MISMATCH,
           },
         },
       ],
@@ -258,12 +258,12 @@ export class AuthController {
       oneOf: [
         {
           example: {
-            code: 'REFRESH_TOKEN_MISSING',
+            code: AuthErrorCode.REFRESH_TOKEN_MISSING,
           },
         },
         {
           example: {
-            code: 'SESSION_NOT_FOUND',
+            code: AuthErrorCode.SESSION_NOT_FOUND,
           },
         },
       ],

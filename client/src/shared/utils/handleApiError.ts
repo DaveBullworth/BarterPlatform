@@ -12,9 +12,9 @@ import {
   ImageOff,
   Crown,
 } from 'lucide-react';
-import type { ApiErrorData } from '@/types/error';
 import { ERROR_TYPES } from '../constants/error-types';
 import { ResendConfirmEmailAction } from '../ui/ResendConfirmEmailAction';
+import type { ApiErrorData } from '@/types/error';
 
 interface ApiErrorOptions {
   defaultMessage?: string | ReactNode; // если неизвестная ошибка

@@ -26,6 +26,7 @@ import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiForbiddenResponse,
+  ApiConflictResponse,
 } from '@nestjs/swagger';
 // Импорт сервиса пользователей — тут будет вся бизнес-логика
 import { UsersService } from './users.service';
@@ -68,6 +69,7 @@ export class UsersController {
       5. Отправляется письмо с подтверждением email
     `,
   })
+  @ApiBody({ type: RegisterUserDto })
   @ApiCreatedResponse({
     description: 'Пользователь успешно зарегистрирован',
     schema: {
@@ -76,8 +78,17 @@ export class UsersController {
       },
     },
   })
-  @ApiBadRequestResponse({
-    description: 'Ошибка валидации или бизнес-логики',
+  @ApiNotFoundResponse({
+    description: 'Страна не найдена',
+    schema: {
+      example: {
+        code: UserErrorCode.COUNTRY_NOT_FOUND,
+        message: 'Country not found',
+      },
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Конфликт бизнес-ограничений',
     schema: {
       oneOf: [
         {
@@ -89,13 +100,7 @@ export class UsersController {
         {
           example: {
             code: UserErrorCode.LOGIN_ALREADY_IN_USE,
-            message: 'Login already in use',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.COUNTRY_NOT_FOUND,
-            message: 'Country not found',
+            message: 'Email is already in use',
           },
         },
       ],
@@ -187,10 +192,6 @@ export class UsersController {
         },
       },
     },
-  })
-  @ApiResponse({
-    status: 401,
-    description: 'Не авторизован (отсутствует или неверный access token)',
   })
   @ApiForbiddenResponse({
     description: 'Недостаточно прав (только ADMIN)',
@@ -312,29 +313,9 @@ export class UsersController {
     type: SelfUserDto,
   })
   @ApiBadRequestResponse({
-    description: 'Ошибка валидации или бизнес-логики',
+    description: 'Ошибка валидации',
     schema: {
       oneOf: [
-        // --- бизнес-ошибки ---
-        {
-          example: {
-            code: UserErrorCode.LAST_ADMIN_DEACTIVATION_FORBIDDEN,
-            message: 'Cannot deactivate the last active admin',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
-            message: 'Login already in use',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.COUNTRY_NOT_FOUND,
-            message: 'Country not found',
-          },
-        },
-
         // --- ошибки валидации DTO ---
         {
           example: {
@@ -358,6 +339,34 @@ export class UsersController {
             statusCode: 400,
             error: 'Bad Request',
             message: ['language must be a valid enum value'],
+          },
+        },
+      ],
+    },
+  })
+  @ApiNotFoundResponse({
+    description: 'Страна не найдена',
+    schema: {
+      example: {
+        code: UserErrorCode.COUNTRY_NOT_FOUND,
+        message: 'Country not found',
+      },
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Конфликт бизнес-ограничений',
+    schema: {
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.LAST_ADMIN_DEACTIVATION_FORBIDDEN,
+            message: 'Cannot deactivate/role downgrade the last active admin',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+            message: 'Email is already in use',
           },
         },
       ],
@@ -387,27 +396,9 @@ export class UsersController {
     type: AdminUserDto,
   })
   @ApiBadRequestResponse({
-    description: 'Ошибка валидации или бизнес-логики',
+    description: 'Ошибка валидации',
     schema: {
       oneOf: [
-        {
-          example: {
-            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
-            message: 'Login already in use',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.EMAIL_ALREADY_IN_USE,
-            message: 'Email already in use',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.COUNTRY_NOT_FOUND,
-            message: 'Country not found',
-          },
-        },
         {
           example: {
             statusCode: 400,
@@ -422,7 +413,42 @@ export class UsersController {
     description: 'Недостаточно прав (только ADMIN)',
   })
   @ApiNotFoundResponse({
-    description: 'Пользователь не найден',
+    description: 'Страна или пользователь не найдены',
+    schema: {
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.USER_NOT_FOUND,
+            message: 'User not found',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.COUNTRY_NOT_FOUND,
+            message: 'Country not found',
+          },
+        },
+      ],
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Конфликт бизнес-ограничений',
+    schema: {
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.EMAIL_ALREADY_IN_USE,
+            message: 'Email already in use',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+            message: 'Email is already in use',
+          },
+        },
+      ],
+    },
   })
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
@@ -490,27 +516,9 @@ export class UsersController {
     type: AdminUserDto,
   })
   @ApiBadRequestResponse({
-    description: 'Ошибка валидации или бизнес-логики',
+    description: 'Ошибка валидации',
     schema: {
       oneOf: [
-        {
-          example: {
-            code: UserErrorCode.EMAIL_ALREADY_IN_USE,
-            message: 'Email already in use',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
-            message: 'Login already in use',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.COUNTRY_NOT_FOUND,
-            message: 'Country not found',
-          },
-        },
         {
           example: {
             statusCode: 400,
@@ -527,6 +535,34 @@ export class UsersController {
   })
   @ApiForbiddenResponse({
     description: 'Недостаточно прав (только ADMIN)',
+  })
+  @ApiNotFoundResponse({
+    description: 'Страна не найдена',
+    schema: {
+      example: {
+        code: UserErrorCode.COUNTRY_NOT_FOUND,
+        message: 'Country not found',
+      },
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Конфликт бизнес-ограничений',
+    schema: {
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.EMAIL_ALREADY_IN_USE,
+            message: 'Email already in use',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.LOGIN_ALREADY_IN_USE,
+            message: 'Email is already in use',
+          },
+        },
+      ],
+    },
   })
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',

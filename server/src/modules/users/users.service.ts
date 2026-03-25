@@ -1,8 +1,8 @@
 import {
   Injectable,
-  BadRequestException,
   ForbiddenException,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -92,7 +92,7 @@ export class UsersService {
     });
 
     if (emailExists) {
-      throw new BadRequestException({
+      throw new ConflictException({
         code: UserErrorCode.EMAIL_ALREADY_IN_USE,
         message: 'Email already in use',
       });
@@ -104,7 +104,7 @@ export class UsersService {
     });
 
     if (loginExists) {
-      throw new BadRequestException({
+      throw new ConflictException({
         code: UserErrorCode.LOGIN_ALREADY_IN_USE,
         message: 'Login already in use',
       });
@@ -116,7 +116,7 @@ export class UsersService {
     });
 
     if (!country) {
-      throw new BadRequestException({
+      throw new NotFoundException({
         code: UserErrorCode.COUNTRY_NOT_FOUND,
         message: 'Country not found',
       });
@@ -170,9 +170,7 @@ export class UsersService {
 
     const qb = this.userRepo
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.country', 'country')
-      .skip((page - 1) * limit)
-      .take(limit);
+      .leftJoinAndSelect('user.country', 'country');
 
     // TEXT FILTERS
     if (filters?.login) {
@@ -259,6 +257,9 @@ export class UsersService {
       // По умолчанию сортировка по дате создания
       qb.addOrderBy('user.createdAt', 'DESC');
     }
+
+    // Пагинация
+    qb.skip((page - 1) * limit).take(limit);
 
     const [users, total] = await qb.getManyAndCount();
 
@@ -348,7 +349,7 @@ export class UsersService {
       });
 
       if (exists) {
-        throw new BadRequestException({
+        throw new ConflictException({
           code: UserErrorCode.LOGIN_ALREADY_IN_USE,
           message: 'Login already in use',
         });
@@ -384,7 +385,7 @@ export class UsersService {
       });
 
       if (!country) {
-        throw new BadRequestException({
+        throw new NotFoundException({
           code: UserErrorCode.COUNTRY_NOT_FOUND,
           message: 'Country not found',
         });
@@ -444,7 +445,7 @@ export class UsersService {
 
       // этот админ — последний
       if (activeAdminsCount <= 1) {
-        throw new BadRequestException({
+        throw new ConflictException({
           code: UserErrorCode.LAST_ADMIN_DEACTIVATION_FORBIDDEN,
           message: 'Cannot deactivate the last active admin',
         });
@@ -456,7 +457,7 @@ export class UsersService {
         where: { email: dto.email },
       });
       if (exists) {
-        throw new BadRequestException({
+        throw new ConflictException({
           code: UserErrorCode.EMAIL_ALREADY_IN_USE,
           message: 'Email already in use',
         });
@@ -469,7 +470,7 @@ export class UsersService {
         where: { login: dto.login },
       });
       if (exists) {
-        throw new BadRequestException({
+        throw new ConflictException({
           code: UserErrorCode.LOGIN_ALREADY_IN_USE,
           message: 'Login already in use',
         });
@@ -493,7 +494,7 @@ export class UsersService {
       });
 
       if (!country) {
-        throw new BadRequestException({
+        throw new NotFoundException({
           code: UserErrorCode.COUNTRY_NOT_FOUND,
           message: 'Country not found',
         });
@@ -538,7 +539,7 @@ export class UsersService {
     });
 
     if (emailExists) {
-      throw new BadRequestException({
+      throw new ConflictException({
         code: UserErrorCode.EMAIL_ALREADY_IN_USE,
         message: 'Email already in use',
       });
@@ -549,7 +550,7 @@ export class UsersService {
     });
 
     if (loginExists) {
-      throw new BadRequestException({
+      throw new ConflictException({
         code: UserErrorCode.LOGIN_ALREADY_IN_USE,
         message: 'Login already in use',
       });
@@ -560,7 +561,7 @@ export class UsersService {
     });
 
     if (!country) {
-      throw new BadRequestException({
+      throw new NotFoundException({
         code: UserErrorCode.COUNTRY_NOT_FOUND,
         message: 'Country not found',
       });
