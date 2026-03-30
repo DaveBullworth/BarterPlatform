@@ -1,0 +1,38 @@
+[
+  {
+    "externalId": 1,
+    "name": "Брестская область",
+    "type": "region",
+    "slug": "brest"
+  },
+  {
+    "externalId": 2,
+    "name": "Гомельская область",
+    "type": "region",
+    "slug": "gomel"
+  },
+  {
+    "externalId": 3,
+    "name": "Гродненская область",
+    "type": "region",
+    "slug": "grodno"
+  },
+  {
+    "externalId": 4,
+    "name": "Могилевская область",
+    "type": "region",
+    "slug": "mogilev"
+  },
+  {
+    "externalId": 5,
+    "name": "Минская область",
+    "type": "region",
+    "slug": "minsk"
+  },
+  {
+    "externalId": 6,
+    "name": "Витебская область",
+    "type": "region",
+    "slug": "vitebsk"
+  }
+]

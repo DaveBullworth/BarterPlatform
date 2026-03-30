@@ -1,0 +1,161 @@
+[
+  {
+    "externalId": 7001,
+    "cityId": 5003,
+    "name": "Заводской",
+    "type": "district",
+    "slug": "zavodskoy"
+  },
+  {
+    "externalId": 7002,
+    "cityId": 5003,
+    "name": "Ленинский",
+    "type": "district",
+    "slug": "leninskiy"
+  },
+  {
+    "externalId": 7003,
+    "cityId": 5003,
+    "name": "Московский",
+    "type": "district",
+    "slug": "moskovskiy"
+  },
+  {
+    "externalId": 7004,
+    "cityId": 5003,
+    "name": "Октябрьский",
+    "type": "district",
+    "slug": "oktyabrskiy"
+  },
+  {
+    "externalId": 7005,
+    "cityId": 5003,
+    "name": "Партизанский",
+    "type": "district",
+    "slug": "partizanskiy"
+  },
+  {
+    "externalId": 7006,
+    "cityId": 5003,
+    "name": "Первомайский",
+    "type": "district",
+    "slug": "pervomayskiy"
+  },
+  {
+    "externalId": 7007,
+    "cityId": 5003,
+    "name": "Советский",
+    "type": "district",
+    "slug": "sovetskiy"
+  },
+  {
+    "externalId": 7008,
+    "cityId": 5003,
+    "name": "Фрунзенский",
+    "type": "district",
+    "slug": "frunzenskiy"
+  },
+  {
+    "externalId": 7009,
+    "cityId": 5003,
+    "name": "Центральный",
+    "type": "district",
+    "slug": "tsentralnyy"
+  },
+
+  {
+    "externalId": 7101,
+    "cityId": 1010,
+    "name": "Ленинский",
+    "type": "district",
+    "slug": "leninskiy"
+  },
+  {
+    "externalId": 7102,
+    "cityId": 1010,
+    "name": "Московский",
+    "type": "district",
+    "slug": "moskovskiy"
+  },
+
+  {
+    "externalId": 7201,
+    "cityId": 2016,
+    "name": "Железнодорожный",
+    "type": "district",
+    "slug": "zheleznodorozhnyy"
+  },
+  {
+    "externalId": 7202,
+    "cityId": 2016,
+    "name": "Новобелицкий",
+    "type": "district",
+    "slug": "novobelitskiy"
+  },
+  {
+    "externalId": 7203,
+    "cityId": 2016,
+    "name": "Советский",
+    "type": "district",
+    "slug": "sovetskiy"
+  },
+  {
+    "externalId": 7204,
+    "cityId": 2016,
+    "name": "Центральный",
+    "type": "district",
+    "slug": "tsentralnyy"
+  },
+
+  {
+    "externalId": 7301,
+    "cityId": 3019,
+    "name": "Ленинский",
+    "type": "district",
+    "slug": "leninskiy"
+  },
+  {
+    "externalId": 7302,
+    "cityId": 3019,
+    "name": "Октябрьский",
+    "type": "district",
+    "slug": "oktyabrskiy"
+  },
+
+  {
+    "externalId": 7401,
+    "cityId": 6019,
+    "name": "Железнодорожный",
+    "type": "district",
+    "slug": "zheleznodorozhnyy"
+  },
+  {
+    "externalId": 7402,
+    "cityId": 6019,
+    "name": "Октябрьский",
+    "type": "district",
+    "slug": "oktyabrskiy"
+  },
+  {
+    "externalId": 7403,
+    "cityId": 6019,
+    "name": "Первомайский",
+    "type": "district",
+    "slug": "pervomayskiy"
+  },
+
+  {
+    "externalId": 7501,
+    "cityId": 4016,
+    "name": "Ленинский",
+    "type": "district",
+    "slug": "leninskiy"
+  },
+  {
+    "externalId": 7502,
+    "cityId": 4016,
+    "name": "Октябрьский",
+    "type": "district",
+    "slug": "oktyabrskiy"
+  }
+]

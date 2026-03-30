@@ -1,0 +1,1204 @@
+[
+  {
+    "externalId": 1001,
+    "regionId": 1,
+    "name": "Барановичи",
+    "type": "city",
+    "slug": "baranovichi"
+  },
+  {
+    "externalId": 1002,
+    "regionId": 1,
+    "name": "Другие города",
+    "type": "city",
+    "slug": "other"
+  },
+  {
+    "externalId": 1003,
+    "regionId": 1,
+    "name": "Пинск",
+    "type": "city",
+    "slug": "pinsk"
+  },
+  {
+    "externalId": 1004,
+    "regionId": 1,
+    "name": "Белоозёрск",
+    "type": "city",
+    "slug": "beloozersk"
+  },
+  {
+    "externalId": 1005,
+    "regionId": 1,
+    "name": "Жабинка",
+    "type": "city",
+    "slug": "zhabinka"
+  },
+  {
+    "externalId": 1006,
+    "regionId": 1,
+    "name": "Береза",
+    "type": "city",
+    "slug": "bereza"
+  },
+  {
+    "externalId": 1007,
+    "regionId": 1,
+    "name": "Иваново",
+    "type": "city",
+    "slug": "ivanovo"
+  },
+  {
+    "externalId": 1008,
+    "regionId": 1,
+    "name": "Пружаны",
+    "type": "city",
+    "slug": "pruzhany"
+  },
+  {
+    "externalId": 1009,
+    "regionId": 1,
+    "name": "Ружаны",
+    "type": "city",
+    "slug": "ruzhany"
+  },
+  {
+    "externalId": 1010,
+    "regionId": 1,
+    "name": "Брест",
+    "type": "city",
+    "slug": "brest"
+  },
+  {
+    "externalId": 1011,
+    "regionId": 1,
+    "name": "Ивацевичи",
+    "type": "city",
+    "slug": "ivatsevichi"
+  },
+  {
+    "externalId": 1012,
+    "regionId": 1,
+    "name": "Столин",
+    "type": "city",
+    "slug": "stolin"
+  },
+  {
+    "externalId": 1013,
+    "regionId": 1,
+    "name": "Брестский район",
+    "type": "city",
+    "slug": "brestskiy-rayon"
+  },
+  {
+    "externalId": 1014,
+    "regionId": 1,
+    "name": "Каменец",
+    "type": "city",
+    "slug": "kamenets"
+  },
+  {
+    "externalId": 1015,
+    "regionId": 1,
+    "name": "Телеханы",
+    "type": "city",
+    "slug": "telekhany"
+  },
+  {
+    "externalId": 1016,
+    "regionId": 1,
+    "name": "Высокое",
+    "type": "city",
+    "slug": "vysokoe"
+  },
+  {
+    "externalId": 1017,
+    "regionId": 1,
+    "name": "Кобрин",
+    "type": "city",
+    "slug": "kobrin"
+  },
+  {
+    "externalId": 1018,
+    "regionId": 1,
+    "name": "Ганцевичи",
+    "type": "city",
+    "slug": "gantsevichi"
+  },
+  {
+    "externalId": 1019,
+    "regionId": 1,
+    "name": "Лунинец",
+    "type": "city",
+    "slug": "luninets"
+  },
+  {
+    "externalId": 1020,
+    "regionId": 1,
+    "name": "Городище",
+    "type": "city",
+    "slug": "gorodishche"
+  },
+  {
+    "externalId": 1021,
+    "regionId": 1,
+    "name": "Ляховичи",
+    "type": "city",
+    "slug": "lyakhovichi"
+  },
+  {
+    "externalId": 1022,
+    "regionId": 1,
+    "name": "Давид - Городок",
+    "type": "city",
+    "slug": "david-gorodok"
+  },
+  {
+    "externalId": 1023,
+    "regionId": 1,
+    "name": "Малорита",
+    "type": "city",
+    "slug": "malorita"
+  },
+  {
+    "externalId": 1024,
+    "regionId": 1,
+    "name": "Дрогичин",
+    "type": "city",
+    "slug": "drogichin"
+  },
+  {
+    "externalId": 1025,
+    "regionId": 1,
+    "name": "Микашевичи",
+    "type": "city",
+    "slug": "mikashevichi"
+  },
+
+  {
+    "externalId": 2001,
+    "regionId": 2,
+    "name": "Большевик",
+    "type": "city",
+    "slug": "bolshevik"
+  },
+  {
+    "externalId": 2002,
+    "regionId": 2,
+    "name": "Брагин",
+    "type": "city",
+    "slug": "bragin"
+  },
+  {
+    "externalId": 2003,
+    "regionId": 2,
+    "name": "Буда-Кошелево",
+    "type": "city",
+    "slug": "buda-koshelevo"
+  },
+  {
+    "externalId": 2004,
+    "regionId": 2,
+    "name": "Василевичи",
+    "type": "city",
+    "slug": "vasilevichi"
+  },
+  {
+    "externalId": 2005,
+    "regionId": 2,
+    "name": "Житковичи",
+    "type": "city",
+    "slug": "zhitkovichi"
+  },
+  {
+    "externalId": 2006,
+    "regionId": 2,
+    "name": "Паричи",
+    "type": "city",
+    "slug": "parichi"
+  },
+  {
+    "externalId": 2007,
+    "regionId": 2,
+    "name": "Жлобин",
+    "type": "city",
+    "slug": "zhlobin"
+  },
+  {
+    "externalId": 2008,
+    "regionId": 2,
+    "name": "Петриков",
+    "type": "city",
+    "slug": "petrikov"
+  },
+  {
+    "externalId": 2009,
+    "regionId": 2,
+    "name": "Калинковичи",
+    "type": "city",
+    "slug": "kalinkovichi"
+  },
+  {
+    "externalId": 2010,
+    "regionId": 2,
+    "name": "Речица",
+    "type": "city",
+    "slug": "rechitsa"
+  },
+  {
+    "externalId": 2011,
+    "regionId": 2,
+    "name": "Корма",
+    "type": "city",
+    "slug": "korma"
+  },
+  {
+    "externalId": 2012,
+    "regionId": 2,
+    "name": "Рогачев",
+    "type": "city",
+    "slug": "rogachev"
+  },
+  {
+    "externalId": 2013,
+    "regionId": 2,
+    "name": "Ветка",
+    "type": "city",
+    "slug": "vetka"
+  },
+  {
+    "externalId": 2014,
+    "regionId": 2,
+    "name": "Костюковка",
+    "type": "city",
+    "slug": "kostyukovka"
+  },
+  {
+    "externalId": 2015,
+    "regionId": 2,
+    "name": "Светлогорск",
+    "type": "city",
+    "slug": "svetlogorsk"
+  },
+  {
+    "externalId": 2016,
+    "regionId": 2,
+    "name": "Гомель",
+    "type": "city",
+    "slug": "gomel"
+  },
+  {
+    "externalId": 2017,
+    "regionId": 2,
+    "name": "Лельчицы",
+    "type": "city",
+    "slug": "lelchitsy"
+  },
+  {
+    "externalId": 2018,
+    "regionId": 2,
+    "name": "Тереховка",
+    "type": "city",
+    "slug": "terekhovka"
+  },
+  {
+    "externalId": 2019,
+    "regionId": 2,
+    "name": "Гомельский район",
+    "type": "city",
+    "slug": "gomelskiy-rayon"
+  },
+  {
+    "externalId": 2020,
+    "regionId": 2,
+    "name": "Лоев",
+    "type": "city",
+    "slug": "loev"
+  },
+  {
+    "externalId": 2021,
+    "regionId": 2,
+    "name": "Туров",
+    "type": "city",
+    "slug": "turov"
+  },
+  {
+    "externalId": 2022,
+    "regionId": 2,
+    "name": "Добруш",
+    "type": "city",
+    "slug": "dobrush"
+  },
+  {
+    "externalId": 2023,
+    "regionId": 2,
+    "name": "Мозырь",
+    "type": "city",
+    "slug": "mozyr"
+  },
+  {
+    "externalId": 2024,
+    "regionId": 2,
+    "name": "Уваровичи",
+    "type": "city",
+    "slug": "uvarovichi"
+  },
+  {
+    "externalId": 2025,
+    "regionId": 2,
+    "name": "Другие города",
+    "type": "city",
+    "slug": "other"
+  },
+  {
+    "externalId": 2026,
+    "regionId": 2,
+    "name": "Наровля",
+    "type": "city",
+    "slug": "narovlya"
+  },
+  {
+    "externalId": 2027,
+    "regionId": 2,
+    "name": "Хойники",
+    "type": "city",
+    "slug": "khoyniki"
+  },
+  {
+    "externalId": 2028,
+    "regionId": 2,
+    "name": "Ельск",
+    "type": "city",
+    "slug": "elsk"
+  },
+  {
+    "externalId": 2029,
+    "regionId": 2,
+    "name": "Октябрьский",
+    "type": "city",
+    "slug": "oktyabrskiy"
+  },
+  {
+    "externalId": 2030,
+    "regionId": 2,
+    "name": "Чечерск",
+    "type": "city",
+    "slug": "chechersk"
+  },
+
+  {
+    "externalId": 3001,
+    "regionId": 3,
+    "name": "Березовка",
+    "type": "city",
+    "slug": "berezovka"
+  },
+  {
+    "externalId": 3002,
+    "regionId": 3,
+    "name": "Берестовица",
+    "type": "city",
+    "slug": "berestovitsa"
+  },
+  {
+    "externalId": 3003,
+    "regionId": 3,
+    "name": "Большая Берестовица",
+    "type": "city",
+    "slug": "bolshaya-berestovitsa"
+  },
+  {
+    "externalId": 3004,
+    "regionId": 3,
+    "name": "Ивье",
+    "type": "city",
+    "slug": "ivye"
+  },
+  {
+    "externalId": 3005,
+    "regionId": 3,
+    "name": "Кореличи",
+    "type": "city",
+    "slug": "korelichi"
+  },
+  {
+    "externalId": 3006,
+    "regionId": 3,
+    "name": "Россь",
+    "type": "city",
+    "slug": "ross"
+  },
+  {
+    "externalId": 3007,
+    "regionId": 3,
+    "name": "Свислочь",
+    "type": "city",
+    "slug": "svisloch"
+  },
+  {
+    "externalId": 3008,
+    "regionId": 3,
+    "name": "Красносельский",
+    "type": "city",
+    "slug": "krasnoselskiy"
+  },
+  {
+    "externalId": 3009,
+    "regionId": 3,
+    "name": "Скидель",
+    "type": "city",
+    "slug": "skidel"
+  },
+  {
+    "externalId": 3010,
+    "regionId": 3,
+    "name": "Волковыск",
+    "type": "city",
+    "slug": "volkovysk"
+  },
+  {
+    "externalId": 3011,
+    "regionId": 3,
+    "name": "Вороново",
+    "type": "city",
+    "slug": "voronovo"
+  },
+  {
+    "externalId": 3012,
+    "regionId": 3,
+    "name": "Лида",
+    "type": "city",
+    "slug": "lida"
+  },
+  {
+    "externalId": 3013,
+    "regionId": 3,
+    "name": "Слоним",
+    "type": "city",
+    "slug": "slonim"
+  },
+  {
+    "externalId": 3014,
+    "regionId": 3,
+    "name": "Мир",
+    "type": "city",
+    "slug": "mir"
+  },
+  {
+    "externalId": 3015,
+    "regionId": 3,
+    "name": "Сморгонь",
+    "type": "city",
+    "slug": "smorgon"
+  },
+  {
+    "externalId": 3016,
+    "regionId": 3,
+    "name": "Гродненский район",
+    "type": "city",
+    "slug": "grodnenskiy-rayon"
+  },
+  {
+    "externalId": 3017,
+    "regionId": 3,
+    "name": "Мосты",
+    "type": "city",
+    "slug": "mosty"
+  },
+  {
+    "externalId": 3018,
+    "regionId": 3,
+    "name": "Щучин",
+    "type": "city",
+    "slug": "shchuchin"
+  },
+  {
+    "externalId": 3019,
+    "regionId": 3,
+    "name": "Гродно",
+    "type": "city",
+    "slug": "grodno"
+  },
+  {
+    "externalId": 3020,
+    "regionId": 3,
+    "name": "Новогрудок",
+    "type": "city",
+    "slug": "novogrudok"
+  },
+  {
+    "externalId": 3021,
+    "regionId": 3,
+    "name": "Другие города",
+    "type": "city",
+    "slug": "other"
+  },
+  {
+    "externalId": 3022,
+    "regionId": 3,
+    "name": "Островец",
+    "type": "city",
+    "slug": "ostrovets"
+  },
+  {
+    "externalId": 3023,
+    "regionId": 3,
+    "name": "Дятлово",
+    "type": "city",
+    "slug": "dyatlovo"
+  },
+  {
+    "externalId": 3024,
+    "regionId": 3,
+    "name": "Ошмяны",
+    "type": "city",
+    "slug": "oshmyany"
+  },
+  {
+    "externalId": 3025,
+    "regionId": 3,
+    "name": "Зельва",
+    "type": "city",
+    "slug": "zelva"
+  },
+  {
+    "externalId": 3026,
+    "regionId": 3,
+    "name": "Радунь",
+    "type": "city",
+    "slug": "radun"
+  },
+
+  {
+    "externalId": 4001,
+    "regionId": 4,
+    "name": "Белыничи",
+    "type": "city",
+    "slug": "belynichi"
+  },
+  {
+    "externalId": 4002,
+    "regionId": 4,
+    "name": "Кличев",
+    "type": "city",
+    "slug": "klichev"
+  },
+  {
+    "externalId": 4003,
+    "regionId": 4,
+    "name": "Хотимск",
+    "type": "city",
+    "slug": "khotimsk"
+  },
+  {
+    "externalId": 4004,
+    "regionId": 4,
+    "name": "Бобруйск",
+    "type": "city",
+    "slug": "bobruysk"
+  },
+  {
+    "externalId": 4005,
+    "regionId": 4,
+    "name": "Костюковичи",
+    "type": "city",
+    "slug": "kostyukovichi"
+  },
+  {
+    "externalId": 4006,
+    "regionId": 4,
+    "name": "Чаусы",
+    "type": "city",
+    "slug": "chausy"
+  },
+  {
+    "externalId": 4007,
+    "regionId": 4,
+    "name": "Быхов",
+    "type": "city",
+    "slug": "bykhov"
+  },
+  {
+    "externalId": 4008,
+    "regionId": 4,
+    "name": "Краснополье",
+    "type": "city",
+    "slug": "krasnopolye"
+  },
+  {
+    "externalId": 4009,
+    "regionId": 4,
+    "name": "Чериков",
+    "type": "city",
+    "slug": "cherikov"
+  },
+  {
+    "externalId": 4010,
+    "regionId": 4,
+    "name": "Глуск",
+    "type": "city",
+    "slug": "glusk"
+  },
+  {
+    "externalId": 4011,
+    "regionId": 4,
+    "name": "Кричев",
+    "type": "city",
+    "slug": "krichev"
+  },
+  {
+    "externalId": 4012,
+    "regionId": 4,
+    "name": "Шклов",
+    "type": "city",
+    "slug": "shklov"
+  },
+  {
+    "externalId": 4013,
+    "regionId": 4,
+    "name": "Горки",
+    "type": "city",
+    "slug": "gorki"
+  },
+  {
+    "externalId": 4014,
+    "regionId": 4,
+    "name": "Круглое",
+    "type": "city",
+    "slug": "krugloe"
+  },
+  {
+    "externalId": 4015,
+    "regionId": 4,
+    "name": "Дрибин",
+    "type": "city",
+    "slug": "dribin"
+  },
+  {
+    "externalId": 4016,
+    "regionId": 4,
+    "name": "Могилев",
+    "type": "city",
+    "slug": "mogilev"
+  },
+  {
+    "externalId": 4017,
+    "regionId": 4,
+    "name": "Другие города",
+    "type": "city",
+    "slug": "other"
+  },
+  {
+    "externalId": 4018,
+    "regionId": 4,
+    "name": "Могилевский район",
+    "type": "city",
+    "slug": "mogilevskiy-rayon"
+  },
+  {
+    "externalId": 4019,
+    "regionId": 4,
+    "name": "Елизово",
+    "type": "city",
+    "slug": "elizovo"
+  },
+  {
+    "externalId": 4020,
+    "regionId": 4,
+    "name": "Мстиславль",
+    "type": "city",
+    "slug": "mstislavl"
+  },
+  {
+    "externalId": 4021,
+    "regionId": 4,
+    "name": "Кировск",
+    "type": "city",
+    "slug": "kirovsk"
+  },
+  {
+    "externalId": 4022,
+    "regionId": 4,
+    "name": "Осиповичи",
+    "type": "city",
+    "slug": "osipovichi"
+  },
+  {
+    "externalId": 4023,
+    "regionId": 4,
+    "name": "Климовичи",
+    "type": "city",
+    "slug": "klimovichi"
+  },
+  {
+    "externalId": 4024,
+    "regionId": 4,
+    "name": "Славгород",
+    "type": "city",
+    "slug": "slavgorod"
+  },
+
+  {
+    "externalId": 5001,
+    "regionId": 5,
+    "name": "Березино",
+    "type": "city",
+    "slug": "berezino"
+  },
+  {
+    "externalId": 5002,
+    "regionId": 5,
+    "name": "Заславль",
+    "type": "city",
+    "slug": "zaslavl"
+  },
+  {
+    "externalId": 5003,
+    "regionId": 5,
+    "name": "Минск",
+    "type": "city",
+    "slug": "minsk"
+  },
+  {
+    "externalId": 5004,
+    "regionId": 5,
+    "name": "Солигорск",
+    "type": "city",
+    "slug": "soligorsk"
+  },
+  {
+    "externalId": 5005,
+    "regionId": 5,
+    "name": "Борисов",
+    "type": "city",
+    "slug": "borisov"
+  },
+  {
+    "externalId": 5006,
+    "regionId": 5,
+    "name": "Зеленый Бор",
+    "type": "city",
+    "slug": "zeleny-bor"
+  },
+  {
+    "externalId": 5007,
+    "regionId": 5,
+    "name": "Молодечно",
+    "type": "city",
+    "slug": "molodechno"
+  },
+  {
+    "externalId": 5008,
+    "regionId": 5,
+    "name": "Старобин",
+    "type": "city",
+    "slug": "starobin"
+  },
+  {
+    "externalId": 5009,
+    "regionId": 5,
+    "name": "Боровляны",
+    "type": "city",
+    "slug": "borovlyany"
+  },
+  {
+    "externalId": 5010,
+    "regionId": 5,
+    "name": "Ивенец",
+    "type": "city",
+    "slug": "ivenets"
+  },
+  {
+    "externalId": 5011,
+    "regionId": 5,
+    "name": "Мядель",
+    "type": "city",
+    "slug": "myadel"
+  },
+  {
+    "externalId": 5012,
+    "regionId": 5,
+    "name": "Старые Дороги",
+    "type": "city",
+    "slug": "starye-dorogi"
+  },
+  {
+    "externalId": 5013,
+    "regionId": 5,
+    "name": "Вилейка",
+    "type": "city",
+    "slug": "vileyka"
+  },
+  {
+    "externalId": 5014,
+    "regionId": 5,
+    "name": "Клецк",
+    "type": "city",
+    "slug": "kletsk"
+  },
+  {
+    "externalId": 5015,
+    "regionId": 5,
+    "name": "Несвиж",
+    "type": "city",
+    "slug": "nesvizh"
+  },
+  {
+    "externalId": 5016,
+    "regionId": 5,
+    "name": "Столбцы",
+    "type": "city",
+    "slug": "stolbtsy"
+  },
+  {
+    "externalId": 5017,
+    "regionId": 5,
+    "name": "Воложин",
+    "type": "city",
+    "slug": "volozhin"
+  },
+  {
+    "externalId": 5018,
+    "regionId": 5,
+    "name": "Копыль",
+    "type": "city",
+    "slug": "kopyl"
+  },
+  {
+    "externalId": 5019,
+    "regionId": 5,
+    "name": "Плещеницы",
+    "type": "city",
+    "slug": "pleshchenitsy"
+  },
+  {
+    "externalId": 5020,
+    "regionId": 5,
+    "name": "Узда",
+    "type": "city",
+    "slug": "uzda"
+  },
+  {
+    "externalId": 5021,
+    "regionId": 5,
+    "name": "Городея",
+    "type": "city",
+    "slug": "gorodeya"
+  },
+  {
+    "externalId": 5022,
+    "regionId": 5,
+    "name": "Крупки",
+    "type": "city",
+    "slug": "krupki"
+  },
+  {
+    "externalId": 5023,
+    "regionId": 5,
+    "name": "Радошковичи",
+    "type": "city",
+    "slug": "radoshkovichi"
+  },
+  {
+    "externalId": 5024,
+    "regionId": 5,
+    "name": "Фаниполь",
+    "type": "city",
+    "slug": "fanipol"
+  },
+  {
+    "externalId": 5025,
+    "regionId": 5,
+    "name": "Дзержинск",
+    "type": "city",
+    "slug": "dzerzhinsk"
+  },
+  {
+    "externalId": 5026,
+    "regionId": 5,
+    "name": "Логойск",
+    "type": "city",
+    "slug": "logoysk"
+  },
+  {
+    "externalId": 5027,
+    "regionId": 5,
+    "name": "Руденск",
+    "type": "city",
+    "slug": "rudensk"
+  },
+  {
+    "externalId": 5028,
+    "regionId": 5,
+    "name": "Червень",
+    "type": "city",
+    "slug": "cherven"
+  },
+  {
+    "externalId": 5029,
+    "regionId": 5,
+    "name": "Другие города",
+    "type": "city",
+    "slug": "other"
+  },
+  {
+    "externalId": 5030,
+    "regionId": 5,
+    "name": "Любань",
+    "type": "city",
+    "slug": "lyuban"
+  },
+  {
+    "externalId": 5031,
+    "regionId": 5,
+    "name": "Слуцк",
+    "type": "city",
+    "slug": "slutsk"
+  },
+  {
+    "externalId": 5032,
+    "regionId": 5,
+    "name": "Ждановичи",
+    "type": "city",
+    "slug": "zhdanovichi"
+  },
+  {
+    "externalId": 5033,
+    "regionId": 5,
+    "name": "Марьина Горка",
+    "type": "city",
+    "slug": "marina-gorka"
+  },
+  {
+    "externalId": 5034,
+    "regionId": 5,
+    "name": "Смиловичи",
+    "type": "city",
+    "slug": "smilovichi"
+  },
+  {
+    "externalId": 5035,
+    "regionId": 5,
+    "name": "Жодино",
+    "type": "city",
+    "slug": "zhodino"
+  },
+  {
+    "externalId": 5036,
+    "regionId": 5,
+    "name": "Мачулищи",
+    "type": "city",
+    "slug": "machulishchi"
+  },
+  {
+    "externalId": 5037,
+    "regionId": 5,
+    "name": "Смолевичи",
+    "type": "city",
+    "slug": "smolevichi"
+  },
+
+  {
+    "externalId": 6001,
+    "regionId": 6,
+    "name": "Барань",
+    "type": "city",
+    "slug": "baran"
+  },
+  {
+    "externalId": 6002,
+    "regionId": 6,
+    "name": "Бешенковичи",
+    "type": "city",
+    "slug": "beshenkovichi"
+  },
+  {
+    "externalId": 6003,
+    "regionId": 6,
+    "name": "Докшицы",
+    "type": "city",
+    "slug": "dokshitsy"
+  },
+  {
+    "externalId": 6004,
+    "regionId": 6,
+    "name": "Полоцк",
+    "type": "city",
+    "slug": "polotsk"
+  },
+  {
+    "externalId": 6005,
+    "regionId": 6,
+    "name": "Другие города",
+    "type": "city",
+    "slug": "other"
+  },
+  {
+    "externalId": 6006,
+    "regionId": 6,
+    "name": "Поставы",
+    "type": "city",
+    "slug": "postavy"
+  },
+  {
+    "externalId": 6007,
+    "regionId": 6,
+    "name": "Браслав",
+    "type": "city",
+    "slug": "braslav"
+  },
+  {
+    "externalId": 6008,
+    "regionId": 6,
+    "name": "Дубровно",
+    "type": "city",
+    "slug": "dubrovno"
+  },
+  {
+    "externalId": 6009,
+    "regionId": 6,
+    "name": "Россоны",
+    "type": "city",
+    "slug": "rossony"
+  },
+  {
+    "externalId": 6010,
+    "regionId": 6,
+    "name": "Браславский район",
+    "type": "city",
+    "slug": "braslavskiy-rayon"
+  },
+  {
+    "externalId": 6011,
+    "regionId": 6,
+    "name": "Коханово",
+    "type": "city",
+    "slug": "kokhanovo"
+  },
+  {
+    "externalId": 6012,
+    "regionId": 6,
+    "name": "Сенно",
+    "type": "city",
+    "slug": "senno"
+  },
+  {
+    "externalId": 6013,
+    "regionId": 6,
+    "name": "Верхнедвинск",
+    "type": "city",
+    "slug": "verkhnedvinsk"
+  },
+  {
+    "externalId": 6014,
+    "regionId": 6,
+    "name": "Лепель",
+    "type": "city",
+    "slug": "lepel"
+  },
+  {
+    "externalId": 6015,
+    "regionId": 6,
+    "name": "Толочин",
+    "type": "city",
+    "slug": "tolochin"
+  },
+  {
+    "externalId": 6016,
+    "regionId": 6,
+    "name": "Ветрино",
+    "type": "city",
+    "slug": "vetrino"
+  },
+  {
+    "externalId": 6017,
+    "regionId": 6,
+    "name": "Лиозно",
+    "type": "city",
+    "slug": "liozno"
+  },
+  {
+    "externalId": 6018,
+    "regionId": 6,
+    "name": "Ушачи",
+    "type": "city",
+    "slug": "ushachi"
+  },
+  {
+    "externalId": 6019,
+    "regionId": 6,
+    "name": "Витебск",
+    "type": "city",
+    "slug": "vitebsk"
+  },
+  {
+    "externalId": 6020,
+    "regionId": 6,
+    "name": "Миоры",
+    "type": "city",
+    "slug": "miory"
+  },
+  {
+    "externalId": 6021,
+    "regionId": 6,
+    "name": "Чашники",
+    "type": "city",
+    "slug": "chashniki"
+  },
+  {
+    "externalId": 6022,
+    "regionId": 6,
+    "name": "Витебский район",
+    "type": "city",
+    "slug": "vitebskiy-rayon"
+  },
+  {
+    "externalId": 6023,
+    "regionId": 6,
+    "name": "Новолукомль",
+    "type": "city",
+    "slug": "novolukoml"
+  },
+  {
+    "externalId": 6024,
+    "regionId": 6,
+    "name": "Шарковщина",
+    "type": "city",
+    "slug": "sharkovshchina"
+  },
+  {
+    "externalId": 6025,
+    "regionId": 6,
+    "name": "Глубокое",
+    "type": "city",
+    "slug": "glubokoe"
+  },
+  {
+    "externalId": 6026,
+    "regionId": 6,
+    "name": "Новополоцк",
+    "type": "city",
+    "slug": "novopolotsk"
+  },
+  {
+    "externalId": 6027,
+    "regionId": 6,
+    "name": "Шумилино",
+    "type": "city",
+    "slug": "shumilino"
+  },
+  {
+    "externalId": 6028,
+    "regionId": 6,
+    "name": "Городок",
+    "type": "city",
+    "slug": "gorodok"
+  },
+  {
+    "externalId": 6029,
+    "regionId": 6,
+    "name": "Орша",
+    "type": "city",
+    "slug": "orsha"
+  }
+]
