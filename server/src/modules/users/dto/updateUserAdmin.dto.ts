@@ -4,9 +4,9 @@ import {
   IsBoolean,
   IsOptional,
   IsString,
-  IsUUID,
   Length,
   IsEmail,
+  IsInt,
 } from 'class-validator';
 import { UserRole } from '@/database/entities/user.entity';
 
@@ -50,19 +50,24 @@ export class AdminUpdateUserDto {
   @IsBoolean()
   statusEmail?: boolean;
 
-  @ApiPropertyOptional({
-    example: '501234567',
-    nullable: true,
-  })
+  @ApiPropertyOptional({ example: '501234567', nullable: true })
   @IsOptional()
   @IsString()
   @Length(7, 11)
   phone?: string | null;
 
-  @ApiPropertyOptional({
-    example: '550e8400-e29b-41d4-a716-446655440000',
-  })
+  @ApiPropertyOptional({ example: 5 })
   @IsOptional()
-  @IsUUID()
-  countryId?: string;
+  @IsInt()
+  regionId?: number;
+
+  @ApiPropertyOptional({ example: 5003 })
+  @IsOptional()
+  @IsInt()
+  cityId?: number;
+
+  @ApiPropertyOptional({ example: 7002, nullable: true })
+  @IsOptional()
+  @IsInt()
+  districtId?: number | null;
 }

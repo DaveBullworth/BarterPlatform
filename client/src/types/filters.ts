@@ -12,7 +12,7 @@ export type TextFilter = {
 
 export type BooleanFilter = {
   type: 'boolean';
-  value: boolean | null; // null = не фильтруем
+  value: boolean | null;
 };
 
 export type MultiTextFilter = {
@@ -23,7 +23,7 @@ export type MultiTextFilter = {
 
 export type DateRangeFilter = {
   type: 'date_range';
-  values: [Date | null, Date | null]; // [from, to], null — если не выбран
+  values: [Date | null, Date | null];
 };
 
 export type UserFilters = {
@@ -31,10 +31,10 @@ export type UserFilters = {
   name?: TextFilter;
   email?: TextFilter;
   phone?: TextFilter;
-
   role?: BooleanFilter;
   status?: BooleanFilter;
-
-  country?: MultiTextFilter;
+  region?: MultiTextFilter;
+  city?: MultiTextFilter;
+  district?: MultiTextFilter;
   createdAt?: DateRangeFilter;
 };

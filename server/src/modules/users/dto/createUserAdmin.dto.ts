@@ -4,8 +4,8 @@ import {
   IsEnum,
   IsOptional,
   IsString,
-  IsUUID,
   Length,
+  IsInt,
 } from 'class-validator';
 import { UserRole } from '@/database/entities/user.entity';
 
@@ -29,19 +29,22 @@ export class AdminCreateUserDto {
   @IsEnum(UserRole)
   role: UserRole;
 
-  @ApiProperty({
-    example: '501234567',
-    nullable: true,
-    required: false,
-  })
+  @ApiProperty({ example: '501234567', nullable: true, required: false })
   @IsOptional()
   @IsString()
   @Length(7, 11)
   phone?: string | null;
 
-  @ApiProperty({
-    example: '550e8400-e29b-41d4-a716-446655440000',
-  })
-  @IsUUID()
-  countryId: string;
+  @ApiProperty({ example: 5 })
+  @IsInt()
+  regionId: number;
+
+  @ApiProperty({ example: 5003 })
+  @IsInt()
+  cityId: number;
+
+  @ApiProperty({ example: 7002, required: false, nullable: true })
+  @IsOptional()
+  @IsInt()
+  districtId?: number | null;
 }

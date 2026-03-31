@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import { AppDataSource } from './data-source';
 import { seedAdmin } from './seeds/admin.seed';
-import { seedCountries } from './seeds/countries.seed';
 
 export async function runSeeds() {
   try {
@@ -11,7 +10,6 @@ export async function runSeeds() {
       console.log('📦 Database connected');
     }
 
-    await seedCountries(AppDataSource);
     await seedAdmin(AppDataSource);
 
     // Если это прод то подключение не надо разрывать вручную, как если бы это было

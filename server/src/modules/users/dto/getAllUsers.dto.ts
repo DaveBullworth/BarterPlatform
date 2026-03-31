@@ -34,94 +34,49 @@ export class GetUsersQueryDto {
   filters?: UserFiltersDto;
 }
 
-export class CountryResponseDto {
-  @ApiProperty({
-    example: '6a8c5b1e-3e42-4e6f-bd22-8b7c2b5c91aa',
-    description: 'Уникальный идентификатор страны',
-  })
-  id: string;
+export class GeographyNodeDto {
+  @ApiProperty({ example: 5 })
+  id: number;
 
-  @ApiProperty({
-    example: 'Germany',
-    description: 'Полное название страны',
-  })
+  @ApiProperty({ example: 'Минская область' })
   name: string;
-
-  @ApiProperty({
-    example: 'BLR',
-    description: 'Трёхбуквенное обозначение страны',
-  })
-  abbreviation: string;
-
-  @ApiProperty({
-    example: 49,
-    description: 'Телефонный код страны',
-  })
-  phoneCode: number;
-
-  @ApiPropertyOptional({
-    example: '/icons/flags/de.svg',
-    description: 'Путь к иконке флага страны',
-  })
-  iconPath?: string | null;
 }
 
 export class UserResponseDto {
-  @ApiProperty({
-    example: '6a8c5b1e-3e42-4e6f-bd22-8b7c2b5c91aa',
-    description: 'Уникальный идентификатор пользователя',
-  })
+  @ApiProperty({ example: '6a8c5b1e-3e42-4e6f-bd22-8b7c2b5c91aa' })
   id: string;
 
-  @ApiProperty({
-    example: 'user@example.com',
-    description: 'Email пользователя',
-  })
+  @ApiProperty({ example: 'user@example.com' })
   email: string;
 
-  @ApiProperty({
-    example: 'john_doe',
-    description: 'Логин пользователя',
-  })
+  @ApiProperty({ example: 'john_doe' })
   login: string;
 
-  @ApiProperty({
-    example: 'John Doe',
-    description: 'Имя пользователя',
-  })
+  @ApiProperty({ example: 'John Doe' })
   name: string;
 
-  @ApiProperty({
-    enum: UserRole,
-    example: UserRole.USER,
-    description: 'Роль пользователя',
-  })
+  @ApiProperty({ enum: UserRole, example: UserRole.USER })
   role: UserRole;
 
-  @ApiProperty({
-    example: true,
-    description: 'Статус аккаунта (true — активен)',
-  })
+  @ApiProperty({ example: true })
   status: boolean;
 
-  @ApiPropertyOptional({
-    example: '+49123456789',
-    nullable: true,
-    description: 'Номер телефона пользователя',
-  })
+  @ApiPropertyOptional({ example: '+375291234567', nullable: true })
   phone: string | null;
+
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  region: GeographyNodeDto | null;
+
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  city: GeographyNodeDto | null;
+
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  district: GeographyNodeDto | null;
 
   @ApiProperty({
     example: '2024-01-01T12:00:00.000Z',
     type: String,
     format: 'date-time',
-    description: 'Дата создания пользователя',
   })
   createdAt: Date;
-
-  @ApiPropertyOptional({
-    type: () => CountryResponseDto,
-    description: 'Страна пользователя',
-  })
-  country: CountryResponseDto;
 }

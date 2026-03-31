@@ -44,6 +44,7 @@ import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
 import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { UserFiltersDto } from './dto/userFilters.dto';
+import { DistrictDto, GeoItemDto } from './dto/geo.dto';
 import { UserUpdatedInterceptor } from './interceptors/user.cache.interseptor';
 import type { AppRequest } from '@/common/interfaces/app-request.interface';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
@@ -55,6 +56,65 @@ export class UsersController {
   // Внедряем UsersService через конструктор (Dependency Injection)
   constructor(private readonly usersService: UsersService) {}
 
+  @Get('geography/regions')
+  @ApiOperation({ summary: 'Список областей' })
+  @ApiOkResponse({
+    description: 'Список областей',
+    type: GeoItemDto,
+    isArray: true,
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
+  })
+  getRegions() {
+    return this.usersService.getRegions();
+  }
+
+  @Get('geography/cities')
+  @ApiOperation({
+    summary: 'Список населённых пунктов',
+    description: 'Можно фильтровать по regionId',
+  })
+  @ApiQuery({
+    name: 'regionId',
+    required: false,
+    example: 1,
+    description: 'ID области',
+  })
+  @ApiOkResponse({
+    description: 'Список городов',
+    type: GeoItemDto,
+    isArray: true,
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
+  })
+  getCities(@Query('regionId') regionId?: string) {
+    const parsed = regionId ? Number(regionId) : undefined;
+    return this.usersService.getCities(parsed);
+  }
+
+  @Get('geography/districts')
+  @ApiOperation({
+    summary: 'Список районов',
+    description: 'Можно фильтровать по cityId',
+  })
+  @ApiQuery({
+    name: 'cityId',
+    required: false,
+    example: 10,
+    description: 'ID города',
+  })
+  @ApiOkResponse({
+    description: 'Список районов',
+    type: DistrictDto,
+    isArray: true,
+  })
+  getDistricts(@Query('cityId') cityId?: string) {
+    const parsed = cityId ? Number(cityId) : undefined;
+    return this.usersService.getDistricts(parsed);
+  }
+
   @Post('register')
   @ApiOperation({
     summary: 'Регистрация пользователя',
@@ -63,7 +123,6 @@ export class UsersController {
 
       Процесс:
       1. Проверяется уникальность email и login
-      2. Проверяется существование страны
       3. Пароль хешируется
       4. Пользователь сохраняется в БД
       5. Отправляется письмо с подтверждением email
@@ -75,15 +134,6 @@ export class UsersController {
     schema: {
       example: {
         message: 'Registration successful. Please confirm your email.',
-      },
-    },
-  })
-  @ApiNotFoundResponse({
-    description: 'Страна не найдена',
-    schema: {
-      example: {
-        code: UserErrorCode.COUNTRY_NOT_FOUND,
-        message: 'Country not found',
       },
     },
   })
@@ -138,10 +188,6 @@ export class UsersController {
           "status": {
             "value": true
           },
-          "country": {
-            "operator": "equals",
-            "values": ["1234", "5678"]
-          },
           "createdAt": {
             "values": ["2024-01-01", "2024-12-31"]
           }
@@ -149,7 +195,7 @@ export class UsersController {
 
       Поддерживаемые фильтры:
 
-      Текстовые поля (login, email, country и др.):
+      Текстовые поля (login, email, phone и др.):
         - contains — содержит
         - equals — равно
         - not_contains — не содержит
@@ -302,8 +348,7 @@ export class UsersController {
     - login
     - name
     - phone (включая null)
-    - country
-    - language
+        - language
     - theme
   `,
   })
@@ -331,7 +376,6 @@ export class UsersController {
           example: {
             statusCode: 400,
             error: 'Bad Request',
-            message: ['countryId must be a UUID'],
           },
         },
         {
@@ -342,15 +386,6 @@ export class UsersController {
           },
         },
       ],
-    },
-  })
-  @ApiNotFoundResponse({
-    description: 'Страна не найдена',
-    schema: {
-      example: {
-        code: UserErrorCode.COUNTRY_NOT_FOUND,
-        message: 'Country not found',
-      },
     },
   })
   @ApiConflictResponse({
@@ -413,22 +448,12 @@ export class UsersController {
     description: 'Недостаточно прав (только ADMIN)',
   })
   @ApiNotFoundResponse({
-    description: 'Страна или пользователь не найдены',
+    description: 'Пользователь не найден',
     schema: {
-      oneOf: [
-        {
-          example: {
-            code: UserErrorCode.USER_NOT_FOUND,
-            message: 'User not found',
-          },
-        },
-        {
-          example: {
-            code: UserErrorCode.COUNTRY_NOT_FOUND,
-            message: 'Country not found',
-          },
-        },
-      ],
+      example: {
+        code: UserErrorCode.USER_NOT_FOUND,
+        message: 'User not found',
+      },
     },
   })
   @ApiConflictResponse({
@@ -526,7 +551,6 @@ export class UsersController {
             message: [
               'email must be an email',
               'login must be longer than or equal to 8 characters',
-              'countryId must be a UUID',
             ],
           },
         },
@@ -535,15 +559,6 @@ export class UsersController {
   })
   @ApiForbiddenResponse({
     description: 'Недостаточно прав (только ADMIN)',
-  })
-  @ApiNotFoundResponse({
-    description: 'Страна не найдена',
-    schema: {
-      example: {
-        code: UserErrorCode.COUNTRY_NOT_FOUND,
-        message: 'Country not found',
-      },
-    },
   })
   @ApiConflictResponse({
     description: 'Конфликт бизнес-ограничений',

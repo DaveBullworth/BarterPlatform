@@ -6,46 +6,42 @@ import React, {
   useRef,
   startTransition,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   Accordion,
   Group,
   TextInput,
   Select,
-  MultiSelect,
   Stack,
   Button,
   Indicator,
   Text,
   CloseButton,
+  MultiSelect,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 
 import { DateRangeDropdownInput } from '@/shared/ui/DateRangeDropdownInput';
-import { getCountries } from '@/http/country';
-import { setCountries } from '@/store/countriesSlice';
-import type { RootState } from '@/store';
-import type { Country } from '@/types/country';
+import { getRegions, getCities, getDistricts } from '@/http/geography';
 import type {
   UserFilters,
   TextOperator,
   TextFilter,
   MultiTextFilter,
 } from '@/types/filters';
+import type { GeoOption, DistrictOption } from '@/types/geo.dto';
 
 import styles from '../AdminPage.module.scss';
 
 type Props = {
-  value: UserFilters; // applied (внешние) фильтры
-  onChange: (filters: UserFilters) => void; // вызывается только при apply/reset
+  value: UserFilters;
+  onChange: (filters: UserFilters) => void;
 };
 
 type MultiTextFilterInputProps = {
   field: keyof UserFilters;
   filter?: MultiTextFilter;
   options: { value: string; label: string }[];
-  loading?: boolean;
   onCommit: (
     field: keyof UserFilters,
     patch: Partial<{ operator: TextOperator; values: string[] }>,
@@ -61,27 +57,14 @@ const TEXT_OPERATORS: { value: TextOperator; labelKey: string }[] = [
   { value: 'not_equals', labelKey: 'admin.filter.notEquals' },
 ];
 
-// ---- утилиты ----
-// Стабильная нормализация/стринга для сравнения фильтров (сортировка ключей)
 function normalizeForCompare(obj: unknown): unknown {
-  if (obj instanceof Date) {
-    return obj.toISOString();
-  }
-
+  if (obj instanceof Date) return obj.toISOString();
   if (obj === null || typeof obj !== 'object') return obj;
-
-  if (Array.isArray(obj)) {
-    return obj.map(normalizeForCompare);
-  }
-
+  if (Array.isArray(obj)) return obj.map(normalizeForCompare);
   const record = obj as Record<string, unknown>;
   const keys = Object.keys(record).sort();
   const out: Record<string, unknown> = {};
-
-  for (const k of keys) {
-    out[k] = normalizeForCompare(record[k]);
-  }
-
+  for (const k of keys) out[k] = normalizeForCompare(record[k]);
   return out;
 }
 
@@ -92,8 +75,6 @@ function filtersEqual(a: unknown, b: unknown): boolean {
   );
 }
 
-// --- компонент одного текстового фильтра ---
-// TextFilterInput (debounced local input, async prop sync)
 export const TextFilterInput = React.memo(
   ({
     field,
@@ -111,25 +92,18 @@ export const TextFilterInput = React.memo(
   }) => {
     const propValue = filter?.value ?? '';
     const propOperator = (filter?.operator ?? 'contains') as TextOperator;
-
-    // локальное значение для мгновенной отзывчивости
     const [localValue, setLocalValue] = useState<string>(propValue);
 
-    // асинхронная синхронизация с пропом (не ставим стейт *синхронно* в useEffect)
     useEffect(() => {
       Promise.resolve().then(() => {
-        // только если реально отличается — чтобы не трeшить рендеры
         setLocalValue((prev) => (prev === propValue ? prev : propValue));
       });
     }, [propValue]);
 
-    // дебаунс/таймер
     const commitTimer = useRef<number | null>(null);
     useEffect(
       () => () => {
-        if (commitTimer.current) {
-          clearTimeout(commitTimer.current);
-        }
+        if (commitTimer.current) clearTimeout(commitTimer.current);
       },
       [],
     );
@@ -137,11 +111,7 @@ export const TextFilterInput = React.memo(
     const scheduleCommit = useCallback(
       (val: string) => {
         setLocalValue(val);
-
-        if (commitTimer.current) {
-          clearTimeout(commitTimer.current);
-        }
-        // 160-250ms — хороший компромисс
+        if (commitTimer.current) clearTimeout(commitTimer.current);
         commitTimer.current = window.setTimeout(() => {
           commitTimer.current = null;
           onCommit(field, { value: val, operator: propOperator });
@@ -169,13 +139,12 @@ export const TextFilterInput = React.memo(
             label: t(op.labelKey),
           }))}
           value={propOperator as unknown as string}
-          onChange={(op) => {
-            // оператор меняем сразу — (можно тоже делать через debounce, но обычно не нужно)
+          onChange={(op) =>
             onCommit(field, {
               operator: (op as TextOperator) ?? 'contains',
               value: localValue,
-            });
-          }}
+            })
+          }
           disabled={selectDisabled}
         />
 
@@ -188,7 +157,6 @@ export const TextFilterInput = React.memo(
               aria-label="Clear input"
               onClick={() => {
                 setLocalValue('');
-                // сразу очищаем значение
                 if (commitTimer.current) {
                   clearTimeout(commitTimer.current);
                   commitTimer.current = null;
@@ -200,22 +168,12 @@ export const TextFilterInput = React.memo(
           }
           onBlur={() => flushNow()}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              flushNow();
-            }
+            if (e.key === 'Enter') flushNow();
           }}
         />
       </Group>
     );
   },
-  // кастомная shallow-проверка: перерисовывать только если реально поменялось value/operator
-  (prev, next) =>
-    prev.field === next.field &&
-    (prev.filter?.value ?? '') === (next.filter?.value ?? '') &&
-    (prev.filter?.operator ?? 'contains') ===
-      (next.filter?.operator ?? 'contains') &&
-    prev.t === next.t &&
-    prev.onCommit === next.onCommit,
 );
 
 export const MultiTextFilterInput = React.memo(
@@ -223,14 +181,12 @@ export const MultiTextFilterInput = React.memo(
     field,
     filter,
     options,
-    loading = false,
     onCommit,
     t,
     placeholder,
   }: MultiTextFilterInputProps) => {
     const values = filter?.values ?? [];
     const operator = (filter?.operator ?? 'contains') as TextOperator;
-
     const operatorDisabled = values.length === 0;
 
     return (
@@ -255,12 +211,10 @@ export const MultiTextFilterInput = React.memo(
           searchable
           clearable
           placeholder={placeholder}
-          nothingFoundMessage={t('admin.filter.noCountries')}
           data={options}
           value={values}
           onChange={(vals) => onCommit(field, { values: vals })}
-          maxValues={10}
-          disabled={loading}
+          maxValues={20}
         />
       </Group>
     );
@@ -269,71 +223,30 @@ export const MultiTextFilterInput = React.memo(
 
 export function AdminTableFilters({ value, onChange }: Props) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const [regions, setRegions] = useState<GeoOption[]>([]);
+  const [cities, setCities] = useState<GeoOption[]>([]);
+  const [districts, setDistricts] = useState<DistrictOption[]>([]);
 
-  // получение стран из redux
-  const reduxCountries = useSelector(
-    (state: RootState) => state.countries.data,
-  );
-
-  // состояния для стран
-  const [localCountries, setLocalCountries] = useState<Country[]>([]);
-  const [loadingCountries, setLoadingCountries] = useState<boolean>(true);
-
-  // localFilters — интерактивное локальное состояние, независящее от внешнего, пока не нажали Apply/Reset.
-  // Инициализируем копией value.
   const [localFilters, setLocalFilters] = useState<UserFilters>(() => ({
     ...value,
   }));
 
-  // Load countries — сначала из Redux, если пусто — с сервера
   useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
+    getRegions().then(setRegions).catch(console.error);
+    getCities().then(setCities).catch(console.error);
+    getDistricts().then(setDistricts).catch(console.error);
+  }, []);
 
-    if (reduxCountries.length > 0) {
-      // откладываем обновление на микротаск
-      Promise.resolve().then(() => {
-        setLocalCountries(reduxCountries);
-        setLoadingCountries(false);
-      });
-      return;
-    }
-
-    getCountries(signal)
-      .then((res) => {
-        setLocalCountries(res);
-        dispatch(setCountries(res));
-      })
-      .catch((err) => {
-        if (err.name === 'CanceledError') return; // axios / fetch abort
-        console.error(err);
-      })
-      .finally(() => setLoadingCountries(false));
-
-    return () => {
-      controller.abort(); // отменяем запрос при размонтировании или перезапуске effect
-    };
-  }, [dispatch, reduxCountries]);
-
-  // Если внешние фильтры (applied) изменились извне — синхронизируем локал,
-  // чтобы UI отражал текущее applied состояние (например, при загрузке или внешнем сбросе).
   useEffect(() => {
-    // синхронизируем только если реально есть различия
-    if (!filtersEqual(localFilters, value)) {
-      setLocalFilters({ ...value });
-    }
-    // deliberately depend on value (applied filters)
+    if (!filtersEqual(localFilters, value)) setLocalFilters({ ...value });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  // Функция обновления текстового фильтра — использует функциональный setState
   const setTextFilter = useCallback(
     (
       field: keyof UserFilters,
       patch: Partial<{ operator: TextOperator; value: string }>,
     ) => {
-      // можно пометить как не срочное:
       startTransition(() => {
         setLocalFilters((prev) => {
           const prevFilter = prev[field] as TextFilter | undefined;
@@ -353,7 +266,7 @@ export function AdminTableFilters({ value, onChange }: Props) {
         });
       });
     },
-    [setLocalFilters],
+    [],
   );
 
   const setBooleanFilter = (field: keyof UserFilters, val: boolean | null) => {
@@ -379,8 +292,7 @@ export function AdminTableFilters({ value, onChange }: Props) {
         values: patch.values ?? prevFilter?.values ?? [],
       };
 
-      // если нет значений — удаляем фильтр
-      if (!next.values || next.values.length === 0) {
+      if (!next.values.length) {
         const rest = { ...prev } as Record<string, unknown>;
         delete rest[field as string];
         return rest as UserFilters;
@@ -394,43 +306,30 @@ export function AdminTableFilters({ value, onChange }: Props) {
     field: keyof UserFilters,
     range: [Date | null, Date | null],
   ) => {
-    const values: [Date | null, Date | null] = range;
-
     setLocalFilters((prev) => {
-      if (!values[0] && !values[1]) {
+      if (!range[0] && !range[1]) {
         const rest = { ...prev } as Record<string, unknown>;
         delete rest[field as string];
         return rest as UserFilters;
       }
-
-      return { ...prev, [field]: { type: 'date_range', values } };
+      return { ...prev, [field]: { type: 'date_range', values: range } };
     });
   };
 
-  // Сброс локальных фильтров — чистим локально и отправляем внешний пустой набор
   const resetLocalFilters = () => {
     const next: UserFilters = {};
-    // если applied (value) уже пуст — не вызываем лишний onChange
-    if (!filtersEqual(value, next)) {
-      onChange(next);
-    }
+    if (!filtersEqual(value, next)) onChange(next);
     setLocalFilters(next);
   };
 
-  // Проверка наличия активных (applied) фильтров — для индикатора
-  const activeFiltersCount = useMemo(() => {
-    return Object.values(value).filter((f) => f !== undefined && f !== null)
-      .length;
-  }, [value]);
+  const activeFiltersCount = useMemo(
+    () =>
+      Object.values(value).filter((f) => f !== undefined && f !== null).length,
+    [value],
+  );
 
-  const hasActiveFilters = activeFiltersCount > 0;
-
-  // Apply: передаём локальные фильтры наружу, только если они отличаются от applied (value).
   const applyFilters = () => {
-    // Нормализуем (удалим пустые/undefined) — в нашем API локальные уже не держат пустые
-    if (!filtersEqual(localFilters, value)) {
-      onChange(localFilters);
-    }
+    if (!filtersEqual(localFilters, value)) onChange(localFilters);
   };
 
   return (
@@ -439,7 +338,7 @@ export function AdminTableFilters({ value, onChange }: Props) {
         color="red"
         offset={5}
         label={activeFiltersCount}
-        disabled={!hasActiveFilters}
+        disabled={activeFiltersCount === 0}
         size={20}
         position="top-end"
       >
@@ -449,7 +348,6 @@ export function AdminTableFilters({ value, onChange }: Props) {
           </Accordion.Control>
           <Accordion.Panel className={styles.filtersPanel}>
             <Stack gap="sm">
-              {/* TEXT FILTERS */}
               {(['login', 'name', 'email', 'phone'] as const).map((field) => (
                 <TextFilterInput
                   key={field}
@@ -460,7 +358,45 @@ export function AdminTableFilters({ value, onChange }: Props) {
                 />
               ))}
 
-              {/* BOOLEAN FILTERS */}
+              <MultiTextFilterInput
+                field="region"
+                filter={localFilters.region}
+                options={[...regions]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((r) => ({ value: String(r.id), label: r.name }))}
+                onCommit={setMultiFilter}
+                t={t}
+                placeholder={t('auth.region')}
+              />
+
+              <MultiTextFilterInput
+                field="city"
+                filter={localFilters.city}
+                options={[...cities]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((с) => ({ value: String(с.id), label: с.name }))}
+                onCommit={setMultiFilter}
+                t={t}
+                placeholder={t('auth.city')}
+              />
+
+              <MultiTextFilterInput
+                field="district"
+                filter={localFilters.district}
+                options={[...districts]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((d) => {
+                    const city = cities.find((c) => c.id === d.cityId);
+                    return {
+                      value: String(d.id),
+                      label: city ? `${d.name} (${city.name})` : d.name,
+                    };
+                  })}
+                onCommit={setMultiFilter}
+                t={t}
+                placeholder={t('auth.district')}
+              />
+
               <Group grow className={styles.booleanFilter}>
                 <Select
                   clearable
@@ -469,7 +405,6 @@ export function AdminTableFilters({ value, onChange }: Props) {
                     { value: 'true', label: t('common.admin') },
                     { value: 'false', label: t('common.user') },
                   ]}
-                  // value: string | null
                   value={
                     localFilters.role === undefined
                       ? null
@@ -501,21 +436,9 @@ export function AdminTableFilters({ value, onChange }: Props) {
                       val === null ? null : val === 'true',
                     )
                   }
+                  comboboxProps={{ withinPortal: false }}
                 />
               </Group>
-
-              <MultiTextFilterInput
-                field="country"
-                filter={localFilters.country}
-                options={localCountries.map((c) => ({
-                  value: c.id,
-                  label: t(`countries.${c.abbreviation}`),
-                }))}
-                loading={loadingCountries}
-                onCommit={setMultiFilter}
-                t={t}
-                placeholder={t('admin.filter.countryPlaceholder')}
-              />
 
               <DateRangeDropdownInput
                 label={t('common.createdAt')}
@@ -524,7 +447,6 @@ export function AdminTableFilters({ value, onChange }: Props) {
                 onChange={(range) => setDateRangeFilter('createdAt', range)}
               />
 
-              {/* ACTIONS */}
               <Group className={styles.filterAction}>
                 <Button variant="subtle" onClick={resetLocalFilters}>
                   {t('admin.filter.reset')}

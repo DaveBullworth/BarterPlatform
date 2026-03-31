@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString, IsUUID, Length } from 'class-validator';
+import { IsEnum, IsOptional, IsString, Length, IsInt } from 'class-validator';
 import { UserLanguage, UserThemes } from '@/database/entities/user.entity';
 
 export class UpdateSelfUserDto {
@@ -25,23 +25,27 @@ export class UpdateSelfUserDto {
   @Length(7, 11)
   phone?: string | null;
 
-  @ApiPropertyOptional({
-    example: '550e8400-e29b-41d4-a716-446655440000',
-  })
+  @ApiPropertyOptional({ example: 5 })
   @IsOptional()
-  @IsUUID()
-  countryId?: string;
+  @IsInt()
+  regionId?: number;
 
-  @ApiPropertyOptional({
-    enum: UserLanguage,
-  })
+  @ApiPropertyOptional({ example: 5003 })
+  @IsOptional()
+  @IsInt()
+  cityId?: number;
+
+  @ApiPropertyOptional({ example: 7002, nullable: true })
+  @IsOptional()
+  @IsInt()
+  districtId?: number | null;
+
+  @ApiPropertyOptional({ enum: UserLanguage })
   @IsOptional()
   @IsEnum(UserLanguage)
   language?: UserLanguage;
 
-  @ApiPropertyOptional({
-    enum: UserThemes,
-  })
+  @ApiPropertyOptional({ enum: UserThemes })
   @IsOptional()
   @IsEnum(UserThemes)
   theme?: UserThemes;

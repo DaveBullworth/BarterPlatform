@@ -1,5 +1,6 @@
 import { TextInput } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
 
 interface Props {
   phone?: string;
@@ -16,7 +17,7 @@ export const PhoneInput = ({ phone, countryCode, error, onChange }: Props) => {
       label={t('auth.phone')}
       placeholder={t('auth.phonePlaceholder')}
       error={error}
-      leftSection={countryCode ? `+${countryCode}` : undefined}
+      leftSection={`+${countryCode ?? BELARUS_PHONE_CODE}`}
       leftSectionWidth={'3rem'}
       value={phone ?? ''}
       onChange={(e) => {

@@ -5,65 +5,55 @@ import {
   UserLanguage,
   UserThemes,
 } from '@/database/entities/user.entity';
-import { CountryEntity } from '@/database/entities/country.entity';
+import { GeographyNodeDto } from './getAllUsers.dto';
+
+type UserGeo = {
+  region: GeographyNodeDto | null;
+  city: GeographyNodeDto | null;
+  district: GeographyNodeDto | null;
+};
 
 export class AdminUserDto {
-  @ApiProperty({
-    example: 'uuid',
-    description: 'Уникальный идентификатор пользователя',
-  })
+  @ApiProperty({ example: 'uuid' })
   id: string;
 
-  @ApiProperty({
-    enum: UserRole,
-    example: UserRole.USER,
-    description: 'Роль пользователя',
-  })
+  @ApiProperty({ enum: UserRole, example: UserRole.USER })
   role: UserRole;
 
-  @ApiProperty({
-    example: 'user@example.com',
-    description: 'Email пользователя',
-  })
+  @ApiProperty({ example: 'user@example.com' })
   email: string;
 
-  @ApiProperty({ example: 'userlogin', description: 'Логин пользователя' })
+  @ApiProperty({ example: 'userlogin' })
   login: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Имя пользователя' })
+  @ApiProperty({ example: 'John Doe' })
   name: string;
 
-  @ApiProperty({ example: '+1234567890', description: 'Телефон пользователя' })
+  @ApiProperty({ example: '+1234567890' })
   phone: string;
 
-  @ApiProperty({
-    type: () => CountryEntity,
-    description: 'Страна пользователя',
-  })
-  country: CountryEntity;
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  region: GeographyNodeDto | null;
 
-  @ApiProperty({ example: true, description: 'Активность пользователя' })
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  city: GeographyNodeDto | null;
+
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  district: GeographyNodeDto | null;
+
+  @ApiProperty({ example: true })
   status: boolean;
 
-  @ApiProperty({
-    example: false,
-    description: 'Подтверждён ли email пользователя',
-  })
+  @ApiProperty({ example: false })
   statusEmail: boolean;
 
-  @ApiProperty({
-    example: '2025-12-30T12:00:00.000Z',
-    description: 'Дата создания пользователя',
-  })
+  @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
   createdAt: Date;
 
-  @ApiProperty({
-    example: '2025-12-30T12:00:00.000Z',
-    description: 'Дата последнего изменения пользователя',
-  })
+  @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
   updatedAt: Date;
 
-  constructor(user: UserEntity) {
+  constructor(user: UserEntity, geo: UserGeo) {
     Object.assign(this, {
       id: user.id,
       role: user.role,
@@ -71,7 +61,9 @@ export class AdminUserDto {
       login: user.login,
       name: user.name,
       phone: user.phone,
-      country: user.country,
+      region: geo.region,
+      city: geo.city,
+      district: geo.district,
       status: user.status,
       statusEmail: user.statusEmail,
       createdAt: user.createdAt,
@@ -81,79 +73,56 @@ export class AdminUserDto {
 }
 
 export class SelfUserDto {
-  @ApiProperty({
-    example: 'uuid',
-    description: 'Уникальный идентификатор пользователя',
-  })
+  @ApiProperty({ example: 'uuid' })
   id: string;
 
-  @ApiProperty({
-    enum: UserRole,
-    example: UserRole.USER,
-    description: 'Роль пользователя',
-  })
+  @ApiProperty({ enum: UserRole, example: UserRole.USER })
   role: UserRole;
 
-  @ApiProperty({
-    example: 'user@example.com',
-    description: 'Email пользователя',
-  })
+  @ApiProperty({ example: 'user@example.com' })
   email: string;
 
-  @ApiProperty({ example: 'userlogin', description: 'Логин пользователя' })
+  @ApiProperty({ example: 'userlogin' })
   login: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Имя пользователя' })
+  @ApiProperty({ example: 'John Doe' })
   name: string;
 
-  @ApiProperty({ example: '+1234567890', description: 'Телефон пользователя' })
+  @ApiProperty({ example: '+1234567890' })
   phone: string;
 
-  @ApiProperty({
-    type: () => CountryEntity,
-    description: 'Страна пользователя',
-  })
-  country: CountryEntity;
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  region: GeographyNodeDto | null;
 
-  @ApiPropertyOptional({
-    example: true,
-    description: 'Активность пользователя',
-  })
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  city: GeographyNodeDto | null;
+
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  district: GeographyNodeDto | null;
+
+  @ApiPropertyOptional({ example: true })
   status?: boolean;
 
-  @ApiPropertyOptional({
-    example: false,
-    description: 'Подтверждён ли email пользователя',
-  })
+  @ApiPropertyOptional({ example: false })
   statusEmail?: boolean;
 
-  @ApiProperty({
-    enum: UserLanguage,
-    example: UserLanguage.RU,
-    description: 'Язык пользователя',
-  })
+  @ApiProperty({ enum: UserLanguage, example: UserLanguage.RU })
   language: UserLanguage;
 
-  @ApiProperty({
-    enum: UserThemes,
-    example: UserThemes.DARK,
-    description: 'Тема пользователя',
-  })
+  @ApiProperty({ enum: UserThemes, example: UserThemes.DARK })
   theme: UserThemes;
 
-  @ApiProperty({
-    example: '2025-12-30T12:00:00.000Z',
-    description: 'Дата создания пользователя',
-  })
+  @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
   createdAt: Date;
 
-  @ApiProperty({
-    example: '2025-12-30T12:00:00.000Z',
-    description: 'Дата последнего изменения пользователя',
-  })
+  @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
   updatedAt: Date;
 
-  constructor(user: UserEntity, options?: { includeAdminFields?: boolean }) {
+  constructor(
+    user: UserEntity,
+    geo: UserGeo,
+    options?: { includeAdminFields?: boolean },
+  ) {
     Object.assign(this, {
       id: user.id,
       role: user.role,
@@ -161,7 +130,9 @@ export class SelfUserDto {
       login: user.login,
       name: user.name,
       phone: user.phone,
-      country: user.country,
+      region: geo.region,
+      city: geo.city,
+      district: geo.district,
       language: user.language,
       theme: user.theme,
       createdAt: user.createdAt,
@@ -176,42 +147,38 @@ export class SelfUserDto {
 }
 
 export class PublicUserDto {
-  @ApiProperty({
-    example: 'uuid',
-    description: 'Уникальный идентификатор пользователя',
-  })
+  @ApiProperty({ example: 'uuid' })
   id: string;
 
-  @ApiProperty({ example: 'userlogin', description: 'Логин пользователя' })
+  @ApiProperty({ example: 'userlogin' })
   login: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Имя пользователя' })
+  @ApiProperty({ example: 'John Doe' })
   name: string;
 
-  @ApiProperty({
-    type: () => CountryEntity,
-    description: 'Страна пользователя',
-  })
-  country: CountryEntity;
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  region: GeographyNodeDto | null;
 
-  @ApiProperty({
-    example: '2025-12-30T12:00:00.000Z',
-    description: 'Дата создания пользователя',
-  })
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  city: GeographyNodeDto | null;
+
+  @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
+  district: GeographyNodeDto | null;
+
+  @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
   createdAt: Date;
 
-  @ApiProperty({
-    example: '2025-12-30T12:00:00.000Z',
-    description: 'Дата последнего изменения пользователя',
-  })
+  @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
   updatedAt: Date;
 
-  constructor(user: UserEntity) {
+  constructor(user: UserEntity, geo: UserGeo) {
     Object.assign(this, {
       id: user.id,
       login: user.login,
       name: user.name,
-      country: user.country,
+      region: geo.region,
+      city: geo.city,
+      district: geo.district,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     });

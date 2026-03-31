@@ -1,12 +1,10 @@
-import { useEffect, useState, Suspense, lazy } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Text, Alert } from '@mantine/core';
 
 import { ProfileEditForm } from './ProfileEditForm';
 import { buildAlertProps } from '@/shared/utils/alertPresets';
-import { CountrySelectPlaceholder } from '@/pages/auth/components/СountrySelectPlaceholder';
 import type { AdminUserDto, SelfUserDto } from '@/types/user';
-import type { Country } from '@/types/country';
 
 import styles from '../ProfilePage.module.scss';
 import type { UserRole } from '@/shared/constants/user-role';
@@ -19,10 +17,6 @@ type Props = {
   onUpdated: (user: SelfUserDto | AdminUserDto) => void;
 };
 
-const CountrySelectLazy = lazy(
-  () => import('@/pages/auth/components/CountrySelect'),
-);
-
 export const ProfileEditModal = ({
   opened,
   onClose,
@@ -31,25 +25,11 @@ export const ProfileEditModal = ({
   onUpdated,
 }: Props) => {
   const { t } = useTranslation();
-
-  const [loadCountrySelect, setLoadCountrySelect] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(
-    user.country ?? null,
-  );
   const [alert, setAlert] = useState<React.ReactNode | null>(null);
 
-  // lazy load CountrySelect
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadCountrySelect(true), 0);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // централизованный handleClose
   const handleClose = () => {
-    setAlert(null); // очищаем alert
-    // сброс selectedCountry к начальному состоянию
-    setSelectedCountry(user.country ?? null);
-    onClose(); // закрываем модалку
+    setAlert(null);
+    onClose();
   };
 
   return (
@@ -74,24 +54,9 @@ export const ProfileEditModal = ({
         />
       )}
       <div className={styles.modalEditForm}>
-        {/* Country */}
-        {loadCountrySelect ? (
-          <Suspense fallback={<CountrySelectPlaceholder />}>
-            <CountrySelectLazy
-              value={selectedCountry?.id ?? null}
-              onChange={setSelectedCountry}
-            />
-          </Suspense>
-        ) : (
-          <CountrySelectPlaceholder />
-        )}
-
-        {/* Form */}
         <ProfileEditForm
           user={user}
           role={role}
-          selectedCountry={selectedCountry}
-          onCountryMissing={() => setAlert(t('profile.countryNotSelected'))}
           onUpdated={onUpdated}
           onClose={handleClose}
         />

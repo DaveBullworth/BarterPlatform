@@ -36,6 +36,9 @@
     "systemCookiesInfo": "Używamy technicznych plików cookie niezbędnych do uwierzytelniania i bezpieczeństwa.",
     "backToLogin": "Powrót do logowania",
     "country": "Kraj",
+    "region": "Region",
+    "city": "Miejscowość",
+    "district": "Dzielnica",
     "selectCountry": "Wybierz kraj",
     "phone": "Telefon",
     "phonePlaceholder": "Wprowadź numer telefonu",
@@ -65,7 +68,11 @@
     "passwordResetSuccessMessage": "Twoje hasło zostało pomyślnie zmienione. Możesz się teraz zalogować.",
     "passwordResetErrorTitle": "Błąd resetowania hasła",
     "passwordResetErrorMessage": "Link do resetowania hasła jest nieprawidłowy lub wygasł.",
-    "passwordResetFailed": "Nie udało się zresetować hasła. Spróbuj ponownie później."
+    "passwordResetFailed": "Nie udało się zresetować hasła. Spróbuj ponownie później.",
+    "selectRegion": "Wybierz obszar",
+    "selectCity": "Wybierz miasto",
+    "cityNotSelected": "Nie wybrano miasta",
+    "selectDistrict": "Wybierz dzielnicę"
   },
   "validation": {
     "required": "Pole „{{field}}” jest wymagane",

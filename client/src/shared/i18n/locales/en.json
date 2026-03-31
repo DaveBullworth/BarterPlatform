@@ -36,6 +36,9 @@
     "systemCookiesInfo": "We use technical cookies necessary for authentication and security.",
     "backToLogin": "Back to login",
     "country": "Country",
+    "region": "Region",
+    "city": "City",
+    "district": "District",
     "selectCountry": "Select country",
     "phone": "Phone",
     "phonePlaceholder": "Input phone",
@@ -65,7 +68,11 @@
     "passwordResetSuccessMessage": "Your password has been successfully updated. You can now sign in.",
     "passwordResetErrorTitle": "Password reset failed",
     "passwordResetErrorMessage": "The password reset link is invalid or has expired.",
-    "passwordResetFailed": "Failed to reset password. Please try again later."
+    "passwordResetFailed": "Failed to reset password. Please try again later.",
+    "selectRegion": "Select a region",
+    "selectCity": "Select a city",
+    "cityNotSelected": "City not selected",
+    "selectDistrict": "Select a district"
   },
   "validation": {
     "required": "{{field}} is required",

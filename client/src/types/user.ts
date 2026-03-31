@@ -1,7 +1,11 @@
 import type { UserLanguage } from '@/shared/constants/user-language';
 import type { UserTheme } from '@/shared/constants/user-theme';
 import type { UserRole } from '@/shared/constants/user-role';
-import type { Country } from './country';
+
+export type GeographyNode = {
+  id: number;
+  name: string;
+};
 
 export interface SelfUserDto {
   id: string;
@@ -10,9 +14,11 @@ export interface SelfUserDto {
   login: string;
   name: string;
   phone: string | null;
-  country: Country | null;
-  status?: boolean; // Admin self
-  statusEmail?: boolean; // Admin self
+  region: GeographyNode | null;
+  city: GeographyNode | null;
+  district: GeographyNode | null;
+  status?: boolean;
+  statusEmail?: boolean;
   language: UserLanguage;
   theme: UserTheme;
   createdAt: string;
@@ -26,7 +32,9 @@ export interface AdminUserDto {
   login: string;
   name: string;
   phone: string | null;
-  country: Country | null;
+  region: GeographyNode | null;
+  city: GeographyNode | null;
+  district: GeographyNode | null;
   status: boolean;
   statusEmail: boolean;
   createdAt: string;
@@ -37,7 +45,9 @@ export interface PublicUserDto {
   id: string;
   login: string;
   name: string;
-  country: Country | null;
+  region: GeographyNode | null;
+  city: GeographyNode | null;
+  district: GeographyNode | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -59,7 +69,9 @@ export interface RegisterUserDto {
   name: string;
   password: string;
   phone?: string;
-  countryId: string;
+  regionId: number;
+  cityId: number;
+  districtId?: number | null;
 }
 
 export interface RegisterResponse {
@@ -70,7 +82,9 @@ export type UpdateSelfUserDto = {
   login?: string;
   name?: string;
   phone?: string | null;
-  countryId?: string | null;
+  regionId?: number;
+  cityId?: number;
+  districtId?: number | null;
   language?: UserLanguage;
   theme?: UserTheme;
 };
@@ -84,7 +98,9 @@ export type AdminUpdateUserDto = {
   status?: boolean;
   statusEmail?: boolean;
   phone?: string | null;
-  countryId?: string | null;
+  regionId?: number;
+  cityId?: number;
+  districtId?: number | null;
 };
 
 export interface PaginatedResponse<T> {
@@ -107,6 +123,8 @@ export type UserResponseDto = {
   role: UserRole;
   status: boolean;
   phone: string | null;
+  region: GeographyNode | null;
+  city: GeographyNode | null;
+  district: GeographyNode | null;
   createdAt: string;
-  country: Country;
 };

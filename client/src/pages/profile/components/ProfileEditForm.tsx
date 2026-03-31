@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Stack,
@@ -24,13 +24,18 @@ import {
 } from '@/shared/utils/validators';
 
 import type { AdminUserDto, SelfUserDto } from '@/types/user';
-import type { Country } from '@/types/country';
 import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
+import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
+import { getRegions, getCities, getDistricts } from '@/http/geography';
+import type { DistrictOption, GeoOption } from '@/types/geo.dto';
 
 type FormValues = {
   name: string;
   login: string;
   phone: string;
+  regionId: string;
+  cityId: string;
+  districtId: string;
   email?: string;
   password?: string;
   status?: boolean;
@@ -41,22 +46,18 @@ type FormValues = {
 type Props = {
   user: SelfUserDto | AdminUserDto;
   role?: UserRole;
-  selectedCountry: Country | null;
-  onCountryMissing: () => void;
   onUpdated: (user: SelfUserDto | AdminUserDto) => void;
   onClose: () => void;
 };
 
-export const ProfileEditForm = ({
-  user,
-  role,
-  selectedCountry,
-  onCountryMissing,
-  onUpdated,
-  onClose,
-}: Props) => {
+export const ProfileEditForm = ({ user, role, onUpdated, onClose }: Props) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [regions, setRegions] = useState<GeoOption[]>([]);
+  const [cities, setCities] = useState<GeoOption[]>([]);
+  const [districts, setDistricts] = useState<DistrictOption[]>([]);
+  const [citySearch, setCitySearch] = useState('');
+  const [districtSearch, setDistrictSearch] = useState('');
 
   const isAdminMode = role === USER_ROLES.ADMIN && isAdminUser(user);
 
@@ -65,6 +66,9 @@ export const ProfileEditForm = ({
       name: user.name ?? '',
       login: user.login ?? '',
       phone: user.phone ?? '',
+      regionId: user.region ? String(user.region.id) : '',
+      cityId: user.city ? String(user.city.id) : '',
+      districtId: user.district ? String(user.district.id) : '',
       email: isAdminMode ? (user.email ?? '') : undefined,
       password: '',
       status: isAdminMode ? user.status : undefined,
@@ -75,6 +79,8 @@ export const ProfileEditForm = ({
       name: createLengthValidator(t, 'auth.name', { min: 5, max: 200 }),
       login: createLengthValidator(t, 'auth.login', { min: 8, max: 60 }),
       phone: phoneValidator(t),
+      regionId: (v) => (!v ? t('auth.region') : null),
+      cityId: (v) => (!v ? t('auth.city') : null),
       ...(isAdminMode && {
         email: (value) => {
           if (!value) return null;
@@ -100,9 +106,36 @@ export const ProfileEditForm = ({
     },
   });
 
+  useEffect(() => {
+    getRegions().then(setRegions).catch(console.error);
+  }, []);
+
+  const regionOptions = useMemo(
+    () =>
+      [...regions]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((r) => ({ value: String(r.id), label: r.name })),
+    [regions],
+  );
+
+  const cityOptions = useMemo(
+    () =>
+      [...cities]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((c) => ({ value: String(c.id), label: c.name })),
+    [cities],
+  );
+
+  const districtOptions = useMemo(
+    () =>
+      [...districts]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((d) => ({ value: String(d.id), label: d.name })),
+    [districts],
+  );
+
   const hasChanges =
     form.isDirty() ||
-    selectedCountry?.id !== user.country?.id ||
     (isAdminMode &&
       (form.values.email !== user.email ||
         form.values.password ||
@@ -111,11 +144,6 @@ export const ProfileEditForm = ({
 
   const handleSubmit = useCallback(
     async (values: FormValues) => {
-      if (!selectedCountry) {
-        onCountryMissing();
-        return;
-      }
-
       const payload: Record<string, unknown> = {};
 
       if (values.name !== (user.name ?? '')) payload.name = values.name;
@@ -124,11 +152,22 @@ export const ProfileEditForm = ({
       const phone = values.phone || null;
       if ((user.phone ?? null) !== phone) payload.phone = phone;
 
-      if (user.country?.id !== selectedCountry.id) {
-        payload.countryId = selectedCountry.id;
+      if (values.regionId !== (user.region ? String(user.region.id) : '')) {
+        payload.regionId = Number(values.regionId);
       }
 
-      // Admin-only fields
+      if (values.cityId !== (user.city ? String(user.city.id) : '')) {
+        payload.cityId = Number(values.cityId);
+      }
+
+      if (
+        values.districtId !== (user.district ? String(user.district.id) : '')
+      ) {
+        payload.districtId = values.districtId
+          ? Number(values.districtId)
+          : null;
+      }
+
       if (isAdminMode) {
         if (values.email !== user.email) payload.email = values.email;
         if (values.password) payload.password = values.password;
@@ -164,21 +203,78 @@ export const ProfileEditForm = ({
         setLoading(false);
       }
     },
-    [
-      user,
-      selectedCountry,
-      onUpdated,
-      onClose,
-      onCountryMissing,
-      t,
-      form,
-      isAdminMode,
-    ],
+    [user, onUpdated, onClose, t, form, isAdminMode],
   );
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="sm">
+        <Select
+          required
+          placeholder={t('auth.selectRegion')}
+          label={t('auth.region')}
+          data={regionOptions}
+          searchable
+          onChange={(value) => {
+            form.setFieldValue('regionId', value || '');
+
+            // сброс зависимостей
+            form.setFieldValue('cityId', '');
+            form.setFieldValue('districtId', '');
+
+            setCities([]);
+            setDistricts([]);
+            setCitySearch('');
+            setDistrictSearch('');
+
+            if (value) {
+              getCities(Number(value)).then(setCities).catch(console.error);
+            }
+          }}
+        />
+        <Select
+          required
+          label={t('auth.city')}
+          placeholder={t('auth.selectCity')}
+          data={cityOptions}
+          searchable
+          disabled={!form.values.regionId}
+          value={form.values.cityId}
+          searchValue={citySearch}
+          onSearchChange={setCitySearch}
+          onChange={(value) => {
+            form.setFieldValue('cityId', value || '');
+
+            // сброс района
+            form.setFieldValue('districtId', '');
+            setDistricts([]);
+            setDistrictSearch('');
+
+            if (value) {
+              getDistricts(Number(value))
+                .then(setDistricts)
+                .catch(console.error);
+            }
+          }}
+        />
+        <Select
+          label={t('auth.district')}
+          placeholder={
+            !form.values.cityId
+              ? t('auth.cityNotSelected') // "Город не выбран"
+              : districtOptions.length === 0
+                ? t('profile.missed') // "Районы отсутствуют"
+                : t('auth.selectDistrict') // "Выберите район"
+          }
+          data={districtOptions}
+          searchable
+          searchValue={districtSearch}
+          onSearchChange={setDistrictSearch}
+          clearable
+          disabled={!form.values.cityId || districtOptions.length === 0}
+          {...form.getInputProps('districtId')}
+        />
+
         <TextInput
           label={t('auth.name')}
           placeholder={t('auth.namePlaceholder')}
@@ -197,12 +293,11 @@ export const ProfileEditForm = ({
 
         <PhoneInput
           phone={form.values.phone}
-          countryCode={selectedCountry?.phoneCode}
+          countryCode={BELARUS_PHONE_CODE}
           error={form.errors.phone}
           onChange={(v) => form.setFieldValue('phone', v)}
         />
 
-        {/* Admin-only fields */}
         {isAdminMode && (
           <>
             <TextInput
@@ -213,7 +308,6 @@ export const ProfileEditForm = ({
               maxLength={200}
               {...form.getInputProps('email')}
             />
-
             <PasswordInput
               leftSection={<LockKeyhole size={16} />}
               label={t('auth.password')}
@@ -221,7 +315,6 @@ export const ProfileEditForm = ({
               maxLength={60}
               {...form.getInputProps('password')}
             />
-
             <Select
               label={t('common.role')}
               placeholder={t('common.role')}
@@ -231,12 +324,10 @@ export const ProfileEditForm = ({
               ]}
               {...form.getInputProps('role')}
             />
-
             <Checkbox
               label={t('common.status')}
               {...form.getInputProps('status', { type: 'checkbox' })}
             />
-
             <Checkbox
               label={t('common.statusEmail')}
               {...form.getInputProps('statusEmail', { type: 'checkbox' })}
@@ -248,7 +339,6 @@ export const ProfileEditForm = ({
           <Button variant="default" onClick={onClose} disabled={loading}>
             {t('authRequired.cancel')}
           </Button>
-
           <Button type="submit" loading={loading} disabled={!hasChanges}>
             {t('common.save')}
           </Button>

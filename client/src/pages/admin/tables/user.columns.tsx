@@ -1,11 +1,10 @@
-import { Tooltip, Image, Text, Group, Center } from '@mantine/core';
+import { Tooltip, Text, Center } from '@mantine/core';
 import { User, Crown, CircleCheck, CircleX } from 'lucide-react';
 import i18n from '@/shared/i18n';
 
 import type { UserResponseDto } from '@/types/user';
 import { USER_ROLES } from '@/shared/constants/user-role';
-
-const STATIC_URL = import.meta.env.VITE_API_URL;
+import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
 
 export type AdminCellContext<T> = {
   row: T;
@@ -113,40 +112,22 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
   },
 
   {
-    id: 'country',
-    header: i18n.t(`auth.country`),
-    headerAlign: 'center',
-    width: 100,
-    cell: ({ row }) => {
-      const country = row.country;
-      if (!country) return '—';
-
-      const label = i18n.t(`countries.${country.abbreviation}`);
-
-      return (
-        <Center>
-          <Group gap={8} wrap="nowrap">
-            {country.iconPath && (
-              <Tooltip label={label} withArrow>
-                <Image
-                  src={`${STATIC_URL}${country.iconPath}`}
-                  w={25}
-                  h={25}
-                  radius="lg"
-                  fit="contain"
-                />
-              </Tooltip>
-            )}
-
-            <Tooltip label={label} withArrow>
-              <Text size="sm" c="dimmed">
-                {country.abbreviation}
-              </Text>
-            </Tooltip>
-          </Group>
-        </Center>
-      );
-    },
+    id: 'region',
+    header: i18n.t(`auth.region`),
+    width: 160,
+    cell: ({ row }) => row.region?.name ?? '—',
+  },
+  {
+    id: 'city',
+    header: i18n.t(`auth.city`),
+    width: 160,
+    cell: ({ row }) => row.city?.name ?? '—',
+  },
+  {
+    id: 'district',
+    header: i18n.t(`auth.district`),
+    width: 160,
+    cell: ({ row }) => row.district?.name ?? '—',
   },
 
   {
@@ -156,11 +137,11 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     resizable: false,
     accessorFn: (row) => row.phone ?? '',
     cell: ({ row }) => {
-      if (!row.phone || !row.country) return '—';
+      if (!row.phone) return '—';
 
       return (
         <Text size="sm">
-          + ({row.country.phoneCode}) {row.phone}
+          + ({BELARUS_PHONE_CODE}) {row.phone}
         </Text>
       );
     },

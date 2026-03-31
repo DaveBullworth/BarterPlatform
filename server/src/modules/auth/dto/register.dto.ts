@@ -4,7 +4,7 @@ import {
   IsString,
   MinLength,
   MaxLength,
-  IsUUID,
+  IsInt,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -40,7 +40,16 @@ export class RegisterUserDto {
   @MaxLength(11)
   phone?: string;
 
-  @ApiProperty({ example: 'uuid-country-id' })
-  @IsUUID()
-  countryId: string;
+  @ApiProperty({ example: 5 })
+  @IsInt()
+  regionId: number;
+
+  @ApiProperty({ example: 5003 })
+  @IsInt()
+  cityId: number;
+
+  @ApiProperty({ example: 7002, required: false, nullable: true })
+  @IsOptional()
+  @IsInt()
+  districtId?: number | null;
 }

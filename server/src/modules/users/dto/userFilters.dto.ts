@@ -4,8 +4,8 @@ import { Type } from 'class-transformer';
 import {
   TextFilterDto,
   BooleanFilterDto,
-  MultiTextFilterDto,
   DateRangeFilterDto,
+  MultiTextFilterDto,
 } from '@/common/dtos/filter-item.dto';
 
 export class UserFiltersDto {
@@ -42,7 +42,17 @@ export class UserFiltersDto {
   @IsOptional()
   @ValidateNested()
   @Type(() => MultiTextFilterDto)
-  country?: MultiTextFilterDto;
+  region?: MultiTextFilterDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => MultiTextFilterDto)
+  city?: MultiTextFilterDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => MultiTextFilterDto)
+  district?: MultiTextFilterDto;
 
   @IsOptional()
   @ValidateNested()

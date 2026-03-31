@@ -36,6 +36,9 @@
     "systemCookiesInfo": "Мы используем технические куки, необходимые для аутентификации и безопасности.",
     "backToLogin": "Вернуться к входу",
     "country": "Страна",
+    "region": "Область",
+    "city": "Населенный пункт",
+    "district": "Район",
     "selectCountry": "Выберите страну",
     "phone": "Телефон",
     "phonePlaceholder": "Введите номер телефона",
@@ -65,7 +68,11 @@
     "passwordResetSuccessMessage": "Ваш пароль был успешно обновлён. Теперь вы можете войти в систему.",
     "passwordResetErrorTitle": "Ошибка сброса пароля",
     "passwordResetErrorMessage": "Ссылка для сброса пароля недействительна или истекла.",
-    "passwordResetFailed": "Не удалось сбросить пароль. Пожалуйста, попробуйте позже."
+    "passwordResetFailed": "Не удалось сбросить пароль. Пожалуйста, попробуйте позже.",
+    "selectRegion": "Выберите область",
+    "selectCity": "Выберите город",
+    "cityNotSelected": "Город не выбран",
+    "selectDistrict": "Выберите район"
   },
   "validation": {
     "required": "Поле «{{field}}» обязательно для заполнения",

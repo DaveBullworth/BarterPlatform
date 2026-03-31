@@ -1,14 +1,14 @@
-import { Stack, Group, Text, Box, Badge, Divider, Image } from '@mantine/core';
+import { Stack, Group, Text, Box, Badge, Divider } from '@mantine/core';
 import {
   Mail,
   Phone,
-  Globe,
   AtSign,
   Contact,
   User,
   Crown,
   CircleCheck,
   CircleX,
+  MapPin,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
@@ -17,10 +17,8 @@ import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
 import { isSelfUser, isAdminUser } from './guard';
 import type { Mode } from '../ProfilePage';
 import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
-
+import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
 import styles from '../ProfilePage.module.scss';
-
-const STATIC_URL = import.meta.env.VITE_API_URL;
 
 type Props = {
   user: SelfUserDto | AdminUserDto | PublicUserDto;
@@ -38,113 +36,85 @@ const InfoRow = ({
   label: string;
   value?: React.ReactNode;
   t: TFunction;
-}) => {
-  return (
-    <Badge
-      variant="light"
-      radius="md"
-      className={styles.contactBadge}
-      fullWidth
-    >
-      <Group gap="sm" wrap="nowrap">
-        {/* LABEL */}
-        <Group gap={6} className={styles.contactLabel} wrap="nowrap">
-          {icon}
-          <Text size="sm" fw={500}>
-            {label}
-          </Text>
-        </Group>
-
-        <Divider orientation="vertical" />
-
-        {/* VALUE */}
-        <Box className={styles.contactValue}>
-          {value ? (
-            value
-          ) : (
-            <Text size="sm" c="dimmed" fs="italic">
-              {t(`profile.missed`)}
-            </Text>
-          )}
-        </Box>
+}) => (
+  <Badge variant="light" radius="md" className={styles.contactBadge} fullWidth>
+    <Group gap="sm" wrap="nowrap">
+      <Group gap={6} className={styles.contactLabel} wrap="nowrap">
+        {icon}
+        <Text size="sm" fw={500}>
+          {label}
+        </Text>
       </Group>
-    </Badge>
-  );
-};
+      <Divider orientation="vertical" />
+      <Box className={styles.contactValue}>
+        {value ? (
+          value
+        ) : (
+          <Text size="sm" c="dimmed" fs="italic">
+            {t('profile.missed')}
+          </Text>
+        )}
+      </Box>
+    </Group>
+  </Badge>
+);
 
 export const ProfileContactsBlock = ({ user, role, mode }: Props) => {
   const { t } = useTranslation();
 
   return (
     <Stack gap="xs" className={styles.contactsBlock}>
-      {/* LOGIN */}
       <InfoRow
         icon={<AtSign size={14} />}
-        label={t(`auth.login`)}
+        label={t('auth.login')}
         value={<Text size="sm">{user.login}</Text>}
         t={t}
       />
-
-      {/* NAME */}
       <InfoRow
         icon={<Contact size={14} />}
-        label={t(`auth.name`)}
+        label={t('auth.name')}
         value={<Text size="sm">{user.name}</Text>}
         t={t}
       />
 
-      {/* EMAIL */}
       {((role === USER_ROLES.ADMIN && isAdminUser(user)) ||
         (mode === 'self' && isSelfUser(user))) && (
         <InfoRow
           icon={<Mail size={14} />}
-          label={t(`auth.email`)}
+          label={t('auth.email')}
           value={<Text size="sm">{user.email}</Text>}
           t={t}
         />
       )}
 
-      {/* COUNTRY */}
       <InfoRow
-        icon={<Globe size={14} />}
-        label={t(`auth.country`)}
-        value={
-          user.country && (
-            <Group gap="xs" wrap="nowrap">
-              <Text size="sm" fw={500}>
-                {t(`countries.${user.country.abbreviation}`)}
-              </Text>
-
-              {user.country.iconPath && (
-                <Image
-                  src={`${STATIC_URL}${user.country.iconPath}`}
-                  width={20}
-                  height={20}
-                  alt={user.country.abbreviation}
-                  radius="lg"
-                  fit="contain"
-                  className={styles.country_image}
-                />
-              )}
-            </Group>
-          )
-        }
+        icon={<MapPin size={14} />}
+        label={t('auth.region')}
+        value={user.region && <Text size="sm">{user.region.name}</Text>}
+        t={t}
+      />
+      <InfoRow
+        icon={<MapPin size={14} />}
+        label={t('auth.city')}
+        value={user.city && <Text size="sm">{user.city.name}</Text>}
+        t={t}
+      />
+      <InfoRow
+        icon={<MapPin size={14} />}
+        label={t('auth.district')}
+        value={user.district && <Text size="sm">{user.district.name}</Text>}
         t={t}
       />
 
-      {/* PHONE */}
       {((role === USER_ROLES.ADMIN && isAdminUser(user)) ||
         (mode === 'self' && isSelfUser(user))) && (
         <InfoRow
           icon={<Phone size={14} />}
-          label={t(`auth.phone`)}
+          label={t('auth.phone')}
           value={
-            user.phone &&
-            user.country && (
+            user.phone && (
               <Text size="sm">
-                + {'('}
-                {user.country.phoneCode}
-                {')'} {user.phone}
+                + ({BELARUS_PHONE_CODE}) {user.phone}
               </Text>
             )
           }
@@ -152,10 +122,8 @@ export const ProfileContactsBlock = ({ user, role, mode }: Props) => {
         />
       )}
 
-      {/* ADMIN ONLY: STATUS, STATUS_EMAIL, ROLE */}
       {role === USER_ROLES.ADMIN && isAdminUser(user) && (
         <>
-          {/* STATUS */}
           <InfoRow
             icon={
               user.status ? (
@@ -164,16 +132,14 @@ export const ProfileContactsBlock = ({ user, role, mode }: Props) => {
                 <CircleX size={18} color="red" />
               )
             }
-            label={t(`common.status`)}
+            label={t('common.status')}
             value={
               <Text size="sm">
-                {user.status ? t(`common.active`) : t(`common.noActive`)}
+                {user.status ? t('common.active') : t('common.noActive')}
               </Text>
             }
             t={t}
           />
-
-          {/* STATUS EMAIL */}
           <InfoRow
             icon={
               user.statusEmail ? (
@@ -182,16 +148,14 @@ export const ProfileContactsBlock = ({ user, role, mode }: Props) => {
                 <CircleX size={18} color="red" />
               )
             }
-            label={t(`common.statusEmail`)}
+            label={t('common.statusEmail')}
             value={
               <Text size="sm">
-                {user.statusEmail ? t(`common.active`) : t(`common.noActive`)}
+                {user.statusEmail ? t('common.active') : t('common.noActive')}
               </Text>
             }
             t={t}
           />
-
-          {/* ROLE */}
           <InfoRow
             icon={
               user.role === USER_ROLES.ADMIN ? (
@@ -200,12 +164,12 @@ export const ProfileContactsBlock = ({ user, role, mode }: Props) => {
                 <User size={18} color="blue" />
               )
             }
-            label={t(`common.role`)}
+            label={t('common.role')}
             value={
               <Text size="sm">
                 {user.role === USER_ROLES.ADMIN
-                  ? t(`common.admin`)
-                  : t(`common.user`)}
+                  ? t('common.admin')
+                  : t('common.user')}
               </Text>
             }
             t={t}

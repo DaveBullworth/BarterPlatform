@@ -36,6 +36,9 @@
     "systemCookiesInfo": "Wir verwenden technische Cookies, die für Authentifizierung und Sicherheit erforderlich sind.",
     "backToLogin": "Zurück zur Anmeldung",
     "country": "Land",
+    "region": "Region",
+    "city": "Ort",
+    "district": "Bezirk",
     "selectCountry": "Land auswählen",
     "phone": "Telefon",
     "phonePlaceholder": "Telefonnummer eingeben",
@@ -65,7 +68,11 @@
     "passwordResetSuccessMessage": "Ihr Passwort wurde erfolgreich aktualisiert. Sie können sich jetzt anmelden.",
     "passwordResetErrorTitle": "Fehler beim Zurücksetzen des Passworts",
     "passwordResetErrorMessage": "Der Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.",
-    "passwordResetFailed": "Das Zurücksetzen des Passworts ist fehlgeschlagen. Bitte versuchen Sie es später erneut."
+    "passwordResetFailed": "Das Zurücksetzen des Passworts ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+    "selectRegion": "Wählen Sie einen Bereich aus",
+    "selectCity": "Wählen Sie eine Stadt aus",
+    "cityNotSelected": "Keine Stadt ausgewählt",
+    "selectDistrict": "Wählen Sie einen Bereich aus"
   },
   "validation": {
     "required": "Das Feld „{{field}}“ ist erforderlich",
