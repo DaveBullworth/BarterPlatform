@@ -1,0 +1,1154 @@
+[
+  {
+    "externalId": 1,
+    "name": "Дом",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "dom"
+  },
+  {
+    "externalId": 2,
+    "name": "Квартира",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "kvartira"
+  },
+  {
+    "externalId": 3,
+    "name": "Коттедж",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "kottedzh"
+  },
+  {
+    "externalId": 4,
+    "name": "Усадьба",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "usadba"
+  },
+  {
+    "externalId": 5,
+    "name": "Участок",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "uchastok"
+  },
+  {
+    "externalId": 6,
+    "name": "Офис",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "ofis"
+  },
+  {
+    "externalId": 7,
+    "name": "Склад",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "sklad"
+  },
+  {
+    "externalId": 8,
+    "name": "Торговый павильон",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "torgovy-pavilon"
+  },
+  {
+    "externalId": 9,
+    "name": "Промышленное помещение",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "promyshlennoe-pomeshchenie"
+  },
+  {
+    "externalId": 10,
+    "name": "Гараж, стоянка",
+    "type": "category",
+    "chapterId": 1,
+    "slug": "garazh-stoyanka"
+  },
+
+  {
+    "externalId": 11,
+    "name": "Легковые авто",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "legkovye-avto"
+  },
+  {
+    "externalId": 12,
+    "name": "Запчасти",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "zapchasti"
+  },
+  {
+    "externalId": 13,
+    "name": "Грузовики и автобусы",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "gruzoviki-i-avtobusy"
+  },
+  {
+    "externalId": 14,
+    "name": "Мототехника",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "mototehnika"
+  },
+  {
+    "externalId": 15,
+    "name": "Шины, диски",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "shiny-diski"
+  },
+  {
+    "externalId": 16,
+    "name": "Аксессуары",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "aksessuary"
+  },
+  {
+    "externalId": 17,
+    "name": "Сельхозтехника",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "selkhoztehnika"
+  },
+  {
+    "externalId": 18,
+    "name": "Спецтехника",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "spectehnika"
+  },
+  {
+    "externalId": 19,
+    "name": "Прицепы",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "pritsepy"
+  },
+  {
+    "externalId": 20,
+    "name": "Водный транспорт",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "vodnyy-transport"
+  },
+  {
+    "externalId": 21,
+    "name": "Инструмент, оборудование",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "instrument-oborudovanie"
+  },
+  {
+    "externalId": 22,
+    "name": "Автохимия и автомасла",
+    "type": "category",
+    "chapterId": 2,
+    "slug": "avtohimiya-i-avtomasla"
+  },
+
+  {
+    "externalId": 23,
+    "chapterId": 3,
+    "name": "Техника для кухни",
+    "type": "category",
+    "slug": "tehnika-dlya-kuhni"
+  },
+  {
+    "externalId": 24,
+    "chapterId": 3,
+    "name": "Крупная техника для кухни",
+    "type": "category",
+    "slug": "krupnaya-tehnika-dlya-kuhni"
+  },
+  {
+    "externalId": 25,
+    "chapterId": 3,
+    "name": "Техника для уборки",
+    "type": "category",
+    "slug": "tehnika-dlya-uborki"
+  },
+  {
+    "externalId": 26,
+    "chapterId": 3,
+    "name": "Уход за одеждой, пошив",
+    "type": "category",
+    "slug": "uhod-za-odejdoj-poshiv"
+  },
+  {
+    "externalId": 27,
+    "chapterId": 3,
+    "name": "Климатическая техника",
+    "type": "category",
+    "slug": "klimaticheskaya-tehnika"
+  },
+  {
+    "externalId": 28,
+    "chapterId": 3,
+    "name": "Техника для красоты и здоровья",
+    "type": "category",
+    "slug": "tehnika-dlya-krasoty-i-zdorovya"
+  },
+
+  {
+    "externalId": 29,
+    "chapterId": 4,
+    "name": "Ноутбуки",
+    "type": "category",
+    "slug": "noutbuki"
+  },
+  {
+    "externalId": 30,
+    "chapterId": 4,
+    "name": "Компьютеры / системные блоки",
+    "type": "category",
+    "slug": "kompyutery-sistemnye-bloki"
+  },
+  {
+    "externalId": 31,
+    "chapterId": 4,
+    "name": "Мониторы",
+    "type": "category",
+    "slug": "monitory"
+  },
+  {
+    "externalId": 32,
+    "chapterId": 4,
+    "name": "Комплектующие",
+    "type": "category",
+    "slug": "komplektuyushchie"
+  },
+  {
+    "externalId": 33,
+    "chapterId": 4,
+    "name": "Оргтехника",
+    "type": "category",
+    "slug": "orgtehnika"
+  },
+  {
+    "externalId": 34,
+    "chapterId": 4,
+    "name": "Периферия и аксессуары",
+    "type": "category",
+    "slug": "periferiya-i-aksessuary"
+  },
+  {
+    "externalId": 35,
+    "chapterId": 4,
+    "name": "Сетевое оборудование",
+    "type": "category",
+    "slug": "setevoe-oborudovanie"
+  },
+  {
+    "externalId": 36,
+    "chapterId": 4,
+    "name": "Прочие компьютерные товары",
+    "type": "category",
+    "slug": "prochie-kompyuternye-tovary"
+  },
+
+  {
+    "externalId": 37,
+    "chapterId": 5,
+    "name": "Мобильные телефоны",
+    "type": "category",
+    "slug": "mobilnye-telefony"
+  },
+  {
+    "externalId": 38,
+    "chapterId": 5,
+    "name": "Комплектующие для телефонов",
+    "type": "category",
+    "slug": "komplektuyushchie-dlya-telefonov"
+  },
+  {
+    "externalId": 39,
+    "chapterId": 5,
+    "name": "Аксессуары для телефонов",
+    "type": "category",
+    "slug": "aksessuary-dlya-telefonov"
+  },
+  {
+    "externalId": 40,
+    "chapterId": 5,
+    "name": "Телефония и связь",
+    "type": "category",
+    "slug": "telefoniya-i-svyaz"
+  },
+  {
+    "externalId": 41,
+    "chapterId": 5,
+    "name": "Планшеты",
+    "type": "category",
+    "slug": "planshety"
+  },
+  {
+    "externalId": 42,
+    "chapterId": 5,
+    "name": "Комплектующие для планшетов",
+    "type": "category",
+    "slug": "komplektuyushchie-dlya-planshetov"
+  },
+  {
+    "externalId": 43,
+    "chapterId": 5,
+    "name": "Графические планшеты",
+    "type": "category",
+    "slug": "graficheskie-planshety"
+  },
+  {
+    "externalId": 44,
+    "chapterId": 5,
+    "name": "Электронные книги",
+    "type": "category",
+    "slug": "elektronnye-knigi"
+  },
+  {
+    "externalId": 45,
+    "chapterId": 5,
+    "name": "Умные часы и фитнес-браслеты",
+    "type": "category",
+    "slug": "umnye-chasy-i-fitnes-braslety"
+  },
+  {
+    "externalId": 46,
+    "chapterId": 5,
+    "name": "Аксессуары для планшетов, книг, часов",
+    "type": "category",
+    "slug": "aksessuary-dlya-planshetov-knig-chasov"
+  },
+  {
+    "externalId": 47,
+    "chapterId": 5,
+    "name": "Наушники",
+    "type": "category",
+    "slug": "naushniki"
+  },
+
+  {
+    "externalId": 48,
+    "chapterId": 6,
+    "name": "Аудиотехника",
+    "type": "category",
+    "slug": "audiotekhnika"
+  },
+  {
+    "externalId": 49,
+    "chapterId": 6,
+    "name": "Наушники",
+    "type": "category",
+    "slug": "naushniki"
+  },
+  {
+    "externalId": 50,
+    "chapterId": 6,
+    "name": "ТВ и видеотехника",
+    "type": "category",
+    "slug": "tv-i-videotekhnika"
+  },
+  {
+    "externalId": 51,
+    "chapterId": 6,
+    "name": "Фототехника и оптика",
+    "type": "category",
+    "slug": "fototekhnika-i-optika"
+  },
+  {
+    "externalId": 52,
+    "chapterId": 6,
+    "name": "Игры и приставки",
+    "type": "category",
+    "slug": "igry-i-pristavki"
+  },
+  {
+    "externalId": 53,
+    "chapterId": 6,
+    "name": "Безопасность и умный дом",
+    "type": "category",
+    "slug": "bezopasnost-i-umny-dom"
+  },
+
+  {
+    "externalId": 54,
+    "chapterId": 13,
+    "name": "Женская одежда",
+    "type": "category",
+    "slug": "zhenskaya-odezhda"
+  },
+  {
+    "externalId": 55,
+    "chapterId": 13,
+    "name": "Женская обувь",
+    "type": "category",
+    "slug": "zhenskaya-obuv"
+  },
+  {
+    "externalId": 56,
+    "chapterId": 13,
+    "name": "Женские аксессуары",
+    "type": "category",
+    "slug": "zhenskie-aksessuary"
+  },
+
+  {
+    "externalId": 57,
+    "chapterId": 8,
+    "name": "Мужская одежда",
+    "type": "category",
+    "slug": "muzhskaya-odezhda"
+  },
+  {
+    "externalId": 58,
+    "chapterId": 8,
+    "name": "Мужская обувь",
+    "type": "category",
+    "slug": "muzhskaya-obuv"
+  },
+  {
+    "externalId": 59,
+    "chapterId": 8,
+    "name": "Мужские аксессуары",
+    "type": "category",
+    "slug": "muzhskie-aksessuary"
+  },
+
+  {
+    "externalId": 60,
+    "name": "Декоративная косметика",
+    "type": "category",
+    "slug": "decorative-cosmetics",
+    "chapterId": 9
+  },
+  {
+    "externalId": 61,
+    "name": "Уходовая косметика",
+    "type": "category",
+    "slug": "care-cosmetics",
+    "chapterId": 9
+  },
+  {
+    "externalId": 62,
+    "name": "Парфюмерия",
+    "type": "category",
+    "slug": "perfume",
+    "chapterId": 9
+  },
+  {
+    "externalId": 63,
+    "name": "Маникюр, педикюр",
+    "type": "category",
+    "slug": "manicure-pedicure",
+    "chapterId": 9
+  },
+  {
+    "externalId": 64,
+    "name": "Средства для волос",
+    "type": "category",
+    "slug": "hair-products",
+    "chapterId": 9
+  },
+  {
+    "externalId": 65,
+    "name": "Средства гигиены, депиляция",
+    "type": "category",
+    "slug": "hygiene-depilation",
+    "chapterId": 9
+  },
+  {
+    "externalId": 66,
+    "name": "Ресницы и брови, татуаж",
+    "type": "category",
+    "slug": "lashes-brows-tattoo",
+    "chapterId": 9
+  },
+  {
+    "externalId": 67,
+    "name": "Косметические аксессуары",
+    "type": "category",
+    "slug": "cosmetic-accessories",
+    "chapterId": 9
+  },
+  {
+    "externalId": 68,
+    "name": "Медицинские товары",
+    "type": "category",
+    "slug": "medical-products",
+    "chapterId": 9
+  },
+  {
+    "externalId": 69,
+    "name": "Техника для красоты и здоровья",
+    "type": "category",
+    "slug": "beauty-health-equipment",
+    "chapterId": 9
+  },
+
+  {
+    "externalId": 70,
+    "name": "Одежда до 1 года",
+    "type": "category",
+    "slug": "clothes-0-1",
+    "chapterId": 10
+  },
+  {
+    "externalId": 71,
+    "name": "Одежда для девочек",
+    "type": "category",
+    "slug": "girls-clothing",
+    "chapterId": 10
+  },
+  {
+    "externalId": 72,
+    "name": "Одежда для мальчиков",
+    "type": "category",
+    "slug": "boys-clothing",
+    "chapterId": 10
+  },
+  {
+    "externalId": 73,
+    "name": "Аксессуары для детей",
+    "type": "category",
+    "slug": "kids-accessories",
+    "chapterId": 10
+  },
+  {
+    "externalId": 74,
+    "name": "Детская обувь",
+    "type": "category",
+    "slug": "kids-shoes",
+    "chapterId": 10
+  },
+  {
+    "externalId": 75,
+    "name": "Ходунки, шезлонги, качели",
+    "type": "category",
+    "slug": "walkers-swings",
+    "chapterId": 10
+  },
+  {
+    "externalId": 76,
+    "name": "Коляски",
+    "type": "category",
+    "slug": "strollers",
+    "chapterId": 10
+  },
+  {
+    "externalId": 77,
+    "name": "Автокресла и бустеры",
+    "type": "category",
+    "slug": "car-seats",
+    "chapterId": 10
+  },
+  {
+    "externalId": 78,
+    "name": "Кормление и уход",
+    "type": "category",
+    "slug": "feeding-care",
+    "chapterId": 10
+  },
+  {
+    "externalId": 79,
+    "name": "Текстиль для детей",
+    "type": "category",
+    "slug": "kids-textile",
+    "chapterId": 10
+  },
+  {
+    "externalId": 80,
+    "name": "Сумки-кенгуру и слинги",
+    "type": "category",
+    "slug": "baby-carriers",
+    "chapterId": 10
+  },
+  {
+    "externalId": 81,
+    "name": "Игрушки и книги",
+    "type": "category",
+    "slug": "toys-books",
+    "chapterId": 10
+  },
+  {
+    "externalId": 82,
+    "name": "Детский транспорт",
+    "type": "category",
+    "slug": "kids-transport",
+    "chapterId": 10
+  },
+  {
+    "externalId": 83,
+    "name": "Товары для мам",
+    "type": "category",
+    "slug": "mom-products",
+    "chapterId": 10
+  },
+  {
+    "externalId": 84,
+    "name": "Одежда для беременных",
+    "type": "category",
+    "slug": "maternity-clothing",
+    "chapterId": 10
+  },
+  {
+    "externalId": 85,
+    "name": "Прочие товары для детей",
+    "type": "category",
+    "slug": "other-kids",
+    "chapterId": 10
+  },
+
+  {
+    "externalId": 86,
+    "name": "Банкетки, пуфики",
+    "type": "category",
+    "slug": "benches-poufs",
+    "chapterId": 11
+  },
+  {
+    "externalId": 87,
+    "name": "Вешалки, прихожие",
+    "type": "category",
+    "slug": "hangers-hallway",
+    "chapterId": 11
+  },
+  {
+    "externalId": 88,
+    "name": "Детская мебель",
+    "type": "category",
+    "slug": "kids-furniture",
+    "chapterId": 11
+  },
+  {
+    "externalId": 89,
+    "name": "Комоды",
+    "type": "category",
+    "slug": "dressers",
+    "chapterId": 11
+  },
+  {
+    "externalId": 90,
+    "name": "Кровати, матрасы",
+    "type": "category",
+    "slug": "beds-mattresses",
+    "chapterId": 11
+  },
+  {
+    "externalId": 91,
+    "name": "Кухни",
+    "type": "category",
+    "slug": "kitchens",
+    "chapterId": 11
+  },
+  {
+    "externalId": 92,
+    "name": "Кухонные уголки",
+    "type": "category",
+    "slug": "kitchen-corners",
+    "chapterId": 11
+  },
+  {
+    "externalId": 93,
+    "name": "Мягкая мебель",
+    "type": "category",
+    "slug": "upholstered-furniture",
+    "chapterId": 11
+  },
+  {
+    "externalId": 94,
+    "name": "Полки, стеллажи, шкафчики",
+    "type": "category",
+    "slug": "shelves-racks-cabinets",
+    "chapterId": 11
+  },
+  {
+    "externalId": 95,
+    "name": "Спальные гарнитуры",
+    "type": "category",
+    "slug": "bedroom-sets",
+    "chapterId": 11
+  },
+  {
+    "externalId": 96,
+    "name": "Стенки, секции, модули",
+    "type": "category",
+    "slug": "wall-units-sections",
+    "chapterId": 11
+  },
+  {
+    "externalId": 97,
+    "name": "Столы и обеденные группы",
+    "type": "category",
+    "slug": "tables-dining",
+    "chapterId": 11
+  },
+  {
+    "externalId": 98,
+    "name": "Стулья",
+    "type": "category",
+    "slug": "chairs",
+    "chapterId": 11
+  },
+  {
+    "externalId": 99,
+    "name": "Тумбы, буфеты",
+    "type": "category",
+    "slug": "cabinets-buffets",
+    "chapterId": 11
+  },
+  {
+    "externalId": 100,
+    "name": "Шкафы",
+    "type": "category",
+    "slug": "wardrobes",
+    "chapterId": 11
+  },
+  {
+    "externalId": 101,
+    "name": "Мебельная фурнитура и составляющие",
+    "type": "category",
+    "slug": "furniture-fittings",
+    "chapterId": 11
+  },
+  {
+    "externalId": 102,
+    "name": "Прочая мебель",
+    "type": "category",
+    "slug": "other-furniture",
+    "chapterId": 11
+  },
+
+  {
+    "externalId": 103,
+    "name": "Предметы интерьера, зеркала",
+    "type": "category",
+    "slug": "interior-mirrors",
+    "chapterId": 12
+  },
+  {
+    "externalId": 104,
+    "name": "Шторы, жалюзи, карнизы",
+    "type": "category",
+    "slug": "curtains-blinds",
+    "chapterId": 12
+  },
+  {
+    "externalId": 105,
+    "name": "Текстиль и ковры",
+    "type": "category",
+    "slug": "textile-carpets",
+    "chapterId": 12
+  },
+  {
+    "externalId": 106,
+    "name": "Освещение",
+    "type": "category",
+    "slug": "lighting",
+    "chapterId": 12
+  },
+  {
+    "externalId": 107,
+    "name": "Хозяйственные товары",
+    "type": "category",
+    "slug": "household-goods",
+    "chapterId": 12
+  },
+  {
+    "externalId": 108,
+    "name": "Посуда и кухонные аксессуары",
+    "type": "category",
+    "slug": "kitchenware",
+    "chapterId": 12
+  },
+  {
+    "externalId": 109,
+    "name": "Комнатные растения",
+    "type": "category",
+    "slug": "house-plants",
+    "chapterId": 12
+  },
+
+  {
+    "externalId": 110,
+    "name": "Строительный инструмент",
+    "type": "category",
+    "slug": "construction-tools",
+    "chapterId": 13
+  },
+  {
+    "externalId": 111,
+    "name": "Строительное оборудование",
+    "type": "category",
+    "slug": "construction-equipment",
+    "chapterId": 13
+  },
+  {
+    "externalId": 112,
+    "name": "Сантехника и отопление",
+    "type": "category",
+    "slug": "plumbing-heating",
+    "chapterId": 13
+  },
+  {
+    "externalId": 113,
+    "name": "Стройматериалы",
+    "type": "category",
+    "slug": "building-materials",
+    "chapterId": 13
+  },
+  {
+    "externalId": 114,
+    "name": "Отделочные материалы",
+    "type": "category",
+    "slug": "finishing-materials",
+    "chapterId": 13
+  },
+  {
+    "externalId": 115,
+    "name": "Окна и двери",
+    "type": "category",
+    "slug": "windows-doors",
+    "chapterId": 13
+  },
+  {
+    "externalId": 116,
+    "name": "Дома, срубы и сооружения",
+    "type": "category",
+    "slug": "houses-structures",
+    "chapterId": 13
+  },
+  {
+    "externalId": 117,
+    "name": "Ворота, заборы",
+    "type": "category",
+    "slug": "gates-fences",
+    "chapterId": 13
+  },
+  {
+    "externalId": 118,
+    "name": "Электроснабжение",
+    "type": "category",
+    "slug": "power-supply",
+    "chapterId": 13
+  },
+  {
+    "externalId": 119,
+    "name": "Средства индивидуальной защиты",
+    "type": "category",
+    "slug": "safety-equipment",
+    "chapterId": 13
+  },
+  {
+    "externalId": 120,
+    "name": "Прочее для ремонта и стройки",
+    "type": "category",
+    "slug": "other-construction",
+    "chapterId": 13
+  },
+
+  {
+    "externalId": 121,
+    "name": "Садовая мебель и бассейны",
+    "type": "category",
+    "slug": "garden-furniture-pools",
+    "chapterId": 14
+  },
+  {
+    "externalId": 122,
+    "name": "Мангалы, аксессуары, топливо",
+    "type": "category",
+    "slug": "barbecues-accessories-fuel",
+    "chapterId": 14
+  },
+  {
+    "externalId": 123,
+    "name": "Мотоблоки и культиваторы",
+    "type": "category",
+    "slug": "motor-blocks-cultivators",
+    "chapterId": 14
+  },
+  {
+    "externalId": 124,
+    "name": "Садовая техника",
+    "type": "category",
+    "slug": "garden-equipment",
+    "chapterId": 14
+  },
+  {
+    "externalId": 125,
+    "name": "Садовый инвентарь",
+    "type": "category",
+    "slug": "garden-tools",
+    "chapterId": 14
+  },
+  {
+    "externalId": 126,
+    "name": "Теплицы и парники",
+    "type": "category",
+    "slug": "greenhouses",
+    "chapterId": 14
+  },
+  {
+    "externalId": 127,
+    "name": "Растения, рассада и семена",
+    "type": "category",
+    "slug": "plants-seeds",
+    "chapterId": 14
+  },
+  {
+    "externalId": 128,
+    "name": "Удобрения и агрохимия",
+    "type": "category",
+    "slug": "fertilizers-agrochemicals",
+    "chapterId": 14
+  },
+  {
+    "externalId": 129,
+    "name": "Все для пчеловода",
+    "type": "category",
+    "slug": "beekeeping",
+    "chapterId": 14
+  },
+  {
+    "externalId": 130,
+    "name": "Бани, хозблоки, санузлы",
+    "type": "category",
+    "slug": "baths-outbuildings",
+    "chapterId": 14
+  },
+  {
+    "externalId": 131,
+    "name": "Прочее для сада и огорода",
+    "type": "category",
+    "slug": "other-garden",
+    "chapterId": 14
+  },
+
+  {
+    "externalId": 132,
+    "name": "CD, DVD, пластинки",
+    "type": "category",
+    "slug": "cd-dvd",
+    "chapterId": 15
+  },
+  {
+    "externalId": 133,
+    "name": "Антиквариат и коллекции",
+    "type": "category",
+    "slug": "antiques-collections",
+    "chapterId": 15
+  },
+  {
+    "externalId": 134,
+    "name": "Билеты",
+    "type": "category",
+    "slug": "tickets",
+    "chapterId": 15
+  },
+  {
+    "externalId": 135,
+    "name": "Книги и журналы",
+    "type": "category",
+    "slug": "books-magazines",
+    "chapterId": 15
+  },
+  {
+    "externalId": 136,
+    "name": "Металлоискатели",
+    "type": "category",
+    "slug": "metal-detectors",
+    "chapterId": 15
+  },
+  {
+    "externalId": 137,
+    "name": "Музыкальные инструменты",
+    "type": "category",
+    "slug": "musical-instruments",
+    "chapterId": 15
+  },
+  {
+    "externalId": 138,
+    "name": "Настольные игры и пазлы",
+    "type": "category",
+    "slug": "board-games-puzzles",
+    "chapterId": 15
+  },
+  {
+    "externalId": 139,
+    "name": "Охота и рыбалка",
+    "type": "category",
+    "slug": "hunting-fishing",
+    "chapterId": 15
+  },
+  {
+    "externalId": 140,
+    "name": "Туристические товары",
+    "type": "category",
+    "slug": "tourist-gear",
+    "chapterId": 15
+  },
+  {
+    "externalId": 141,
+    "name": "Радиоуправляемые модели",
+    "type": "category",
+    "slug": "rc-models",
+    "chapterId": 15
+  },
+  {
+    "externalId": 142,
+    "name": "Рукоделие",
+    "type": "category",
+    "slug": "handmade-crafts",
+    "chapterId": 15
+  },
+  {
+    "externalId": 143,
+    "name": "Спорттовары",
+    "type": "category",
+    "slug": "sports-equipment",
+    "chapterId": 15
+  },
+  {
+    "externalId": 144,
+    "name": "Велосипеды",
+    "type": "category",
+    "slug": "bicycles",
+    "chapterId": 15
+  },
+  {
+    "externalId": 145,
+    "name": "Электротранспорт",
+    "type": "category",
+    "slug": "electric-transport",
+    "chapterId": 15
+  },
+  {
+    "externalId": 146,
+    "name": "Прочее в Хобби,спорт и туризм",
+    "type": "category",
+    "slug": "other-hobby-sports",
+    "chapterId": 15
+  },
+
+  {
+    "externalId": 147,
+    "name": "Свадебные платья",
+    "type": "category",
+    "slug": "wedding-dresses",
+    "chapterId": 16
+  },
+  {
+    "externalId": 148,
+    "name": "Свадебные костюмы",
+    "type": "category",
+    "slug": "wedding-suits",
+    "chapterId": 16
+  },
+  {
+    "externalId": 149,
+    "name": "Свадебная обувь",
+    "type": "category",
+    "slug": "wedding-shoes",
+    "chapterId": 16
+  },
+  {
+    "externalId": 150,
+    "name": "Свадебные аксессуары",
+    "type": "category",
+    "slug": "wedding-accessories",
+    "chapterId": 16
+  },
+  {
+    "externalId": 151,
+    "name": "Подарки и праздничные товары",
+    "type": "category",
+    "slug": "gifts-holiday-items",
+    "chapterId": 16
+  },
+  {
+    "externalId": 152,
+    "name": "Карнавальные костюмы",
+    "type": "category",
+    "slug": "carnival-costumes",
+    "chapterId": 16
+  },
+
+  {
+    "externalId": 153,
+    "name": "Домашние питомцы",
+    "type": "category",
+    "slug": "pets",
+    "chapterId": 17
+  },
+  {
+    "externalId": 154,
+    "name": "Сельхоз животные",
+    "type": "category",
+    "slug": "farm-animals",
+    "chapterId": 17
+  },
+  {
+    "externalId": 155,
+    "name": "Товары для животных",
+    "type": "category",
+    "slug": "pet-products",
+    "chapterId": 17
+  },
+
+  {
+    "externalId": 156,
+    "name": "Готовый бизнес",
+    "type": "category",
+    "slug": "ready-business",
+    "chapterId": 18
+  },
+  {
+    "externalId": 157,
+    "name": "Оборудование для бизнеса",
+    "type": "category",
+    "slug": "business-equipment",
+    "chapterId": 18
+  },
+
+  {
+    "externalId": 158,
+    "name": "Кальяны",
+    "type": "category",
+    "slug": "hookahs",
+    "chapterId": 19
+  },
+  {
+    "externalId": 159,
+    "name": "Канцелярские товары",
+    "type": "category",
+    "slug": "stationery",
+    "chapterId": 19
+  },
+  {
+    "externalId": 160,
+    "name": "Продукты питания",
+    "type": "category",
+    "slug": "food-products",
+    "chapterId": 19
+  },
+  {
+    "externalId": 161,
+    "name": "Ритуальные товары",
+    "type": "category",
+    "slug": "ritual-products",
+    "chapterId": 19
+  },
+  {
+    "externalId": 162,
+    "name": "Электронные парогенераторы",
+    "type": "category",
+    "slug": "steam-generators",
+    "chapterId": 19
+  }
+]

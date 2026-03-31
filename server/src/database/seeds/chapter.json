@@ -1,0 +1,127 @@
+[
+  {
+    "externalId": 1,
+    "name": "Недвижимость",
+    "type": "chapter",
+    "slug": "nedvizhimost"
+  },
+  {
+    "externalId": 2,
+    "name": "Авто и Запчасти",
+    "type": "chapter",
+    "slug": "auto-i-zapchasti"
+  },
+  {
+    "externalId": 3,
+    "name": "Бытовая техника",
+    "type": "chapter",
+    "slug": "bytovaya-tehnika"
+  },
+  {
+    "externalId": 4,
+    "name": "Компьютерная техника",
+    "type": "chapter",
+    "slug": "kompyuternaya-tekhnika"
+  },
+  {
+    "externalId": 5,
+    "name": "Телефоны и планшеты",
+    "type": "chapter",
+    "slug": "telefony-i-planshety"
+  },
+  {
+    "externalId": 6,
+    "name": "Электроника",
+    "type": "chapter",
+    "slug": "elektronika"
+  },
+  {
+    "externalId": 7,
+    "name": "Женский гардероб",
+    "type": "chapter",
+    "slug": "zhenskiy-garderob"
+  },
+  {
+    "externalId": 8,
+    "name": "Мужской гардероб",
+    "type": "chapter",
+    "slug": "muzhskoy-garderob"
+  },
+
+  {
+    "externalId": 9,
+    "name": "Красота и здоровье",
+    "type": "chapter",
+    "slug": "beauty-health"
+  },
+
+  {
+    "externalId": 10,
+    "name": "Всё для детей и мам",
+    "type": "chapter",
+    "slug": "kids-moms"
+  },
+
+  {
+    "externalId": 11,
+    "name": "Мебель",
+    "type": "chapter",
+    "slug": "furniture"
+  },
+
+  {
+    "externalId": 12,
+    "name": "Всё для дома",
+    "type": "chapter",
+    "slug": "home"
+  },
+
+  {
+    "externalId": 13,
+    "name": "Ремонт и стройка",
+    "type": "chapter",
+    "slug": "construction"
+  },
+
+  {
+    "externalId": 14,
+    "name": "Сад и огород",
+    "type": "chapter",
+    "slug": "garden-and-garden"
+  },
+
+  {
+    "externalId": 15,
+    "name": "Хобби, спорт и туризм",
+    "type": "chapter",
+    "slug": "hobby-sports-tourism"
+  },
+
+  {
+    "externalId": 16,
+    "name": "Свадьба и праздники",
+    "type": "chapter",
+    "slug": "weddings-holidays"
+  },
+
+  {
+    "externalId": 17,
+    "name": "Животные",
+    "type": "chapter",
+    "slug": "animals"
+  },
+
+  {
+    "externalId": 18,
+    "name": "Готовый бизнес и оборудование",
+    "type": "chapter",
+    "slug": "business-equipment"
+  },
+
+  {
+    "externalId": 19,
+    "name": "Прочее",
+    "type": "chapter",
+    "slug": "other"
+  }
+]

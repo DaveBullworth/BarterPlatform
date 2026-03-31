@@ -1,0 +1,7058 @@
+[
+  {
+    "externalId": 1,
+    "categoryId": 12,
+    "name": "Запчасти для легковых авто",
+    "type": "subcategory",
+    "slug": "zapchasti-legkovye"
+  },
+  {
+    "externalId": 2,
+    "categoryId": 12,
+    "name": "Запчасти для грузовых авто",
+    "type": "subcategory",
+    "slug": "zapchasti-gruzovye"
+  },
+  {
+    "externalId": 3,
+    "categoryId": 12,
+    "name": "Запчасти для сельхозтехники",
+    "type": "subcategory",
+    "slug": "zapchasti-selhoz"
+  },
+  {
+    "externalId": 4,
+    "categoryId": 12,
+    "name": "Запчасти для спецтехники Мотозапчасти",
+    "type": "subcategory",
+    "slug": "zapchasti-specteh-moto"
+  },
+  {
+    "externalId": 5,
+    "categoryId": 13,
+    "name": "Полуприцеп",
+    "type": "subcategory",
+    "slug": "polupritsep"
+  },
+  {
+    "externalId": 6,
+    "categoryId": 13,
+    "name": "Рефрижератор",
+    "type": "subcategory",
+    "slug": "refriZherator"
+  },
+  {
+    "externalId": 7,
+    "categoryId": 13,
+    "name": "Контейнеровоз",
+    "type": "subcategory",
+    "slug": "konteynerovoz"
+  },
+  {
+    "externalId": 8,
+    "categoryId": 13,
+    "name": "Открытая бортовая",
+    "type": "subcategory",
+    "slug": "otkrytaya-bortovaya"
+  },
+  {
+    "externalId": 9,
+    "categoryId": 13,
+    "name": "Открытая платформа",
+    "type": "subcategory",
+    "slug": "otkrytaya-platforma"
+  },
+  {
+    "externalId": 10,
+    "categoryId": 13,
+    "name": "Автоцистерна",
+    "type": "subcategory",
+    "slug": "avtotsisterna"
+  },
+  {
+    "externalId": 11,
+    "categoryId": 13,
+    "name": "Автовоз",
+    "type": "subcategory",
+    "slug": "avtovoz"
+  },
+  {
+    "externalId": 12,
+    "categoryId": 13,
+    "name": "Зерновоз",
+    "type": "subcategory",
+    "slug": "zernovoz"
+  },
+  {
+    "externalId": 13,
+    "categoryId": 13,
+    "name": "Самосвал",
+    "type": "subcategory",
+    "slug": "samosval"
+  },
+  {
+    "externalId": 14,
+    "categoryId": 13,
+    "name": "Лесовоз",
+    "type": "subcategory",
+    "slug": "lesovoz"
+  },
+  {
+    "externalId": 15,
+    "categoryId": 13,
+    "name": "Автосцепка",
+    "type": "subcategory",
+    "slug": "avtoscepkа"
+  },
+  {
+    "externalId": 16,
+    "categoryId": 13,
+    "name": "Фургон",
+    "type": "subcategory",
+    "slug": "furgon"
+  },
+  {
+    "externalId": 17,
+    "categoryId": 13,
+    "name": "Изотерм",
+    "type": "subcategory",
+    "slug": "izoterm"
+  },
+  {
+    "externalId": 18,
+    "categoryId": 13,
+    "name": "Седельный тягач",
+    "type": "subcategory",
+    "slug": "sedelnyy-tyagach"
+  },
+  {
+    "externalId": 19,
+    "categoryId": 13,
+    "name": "Автобус",
+    "type": "subcategory",
+    "slug": "avtobus"
+  },
+  {
+    "externalId": 20,
+    "categoryId": 13,
+    "name": "Шасси",
+    "type": "subcategory",
+    "slug": "shassi"
+  },
+  {
+    "externalId": 21,
+    "categoryId": 13,
+    "name": "Тентованный",
+    "type": "subcategory",
+    "slug": "tentovannyy"
+  },
+  {
+    "externalId": 22,
+    "categoryId": 14,
+    "name": "Мотоцикл",
+    "type": "subcategory",
+    "slug": "mototsikl"
+  },
+  {
+    "externalId": 23,
+    "categoryId": 14,
+    "name": "Скутер/мопед",
+    "type": "subcategory",
+    "slug": "skuter-moped"
+  },
+  {
+    "externalId": 24,
+    "categoryId": 14,
+    "name": "Квадроцикл",
+    "type": "subcategory",
+    "slug": "kvadrotsikl"
+  },
+  {
+    "externalId": 25,
+    "categoryId": 14,
+    "name": "Снегоход",
+    "type": "subcategory",
+    "slug": "snegohod"
+  },
+  {
+    "externalId": 26,
+    "categoryId": 15,
+    "name": "Легковые шины",
+    "type": "subcategory",
+    "slug": "legkovye-shiny"
+  },
+  {
+    "externalId": 27,
+    "categoryId": 15,
+    "name": "Грузовые шины",
+    "type": "subcategory",
+    "slug": "gruzovye-shiny"
+  },
+  {
+    "externalId": 28,
+    "categoryId": 15,
+    "name": "Мотошины",
+    "type": "subcategory",
+    "slug": "motoshiny"
+  },
+  {
+    "externalId": 29,
+    "categoryId": 15,
+    "name": "Диски",
+    "type": "subcategory",
+    "slug": "diski"
+  },
+  {
+    "externalId": 30,
+    "categoryId": 15,
+    "name": "Колпаки",
+    "type": "subcategory",
+    "slug": "kolpaki"
+  },
+  {
+    "externalId": 31,
+    "categoryId": 15,
+    "name": "Комплект",
+    "type": "subcategory",
+    "slug": "komplekt"
+  },
+
+  {
+    "externalId": 32,
+    "categoryId": 16,
+    "name": "СР5-навигаторы",
+    "type": "subcategory",
+    "slug": "sr5-navigatory"
+  },
+  {
+    "externalId": 33,
+    "categoryId": 16,
+    "name": "Автосигнализация",
+    "type": "subcategory",
+    "slug": "avtosignalizatsiya"
+  },
+  {
+    "externalId": 34,
+    "categoryId": 16,
+    "name": "Автомобильные холодильники",
+    "type": "subcategory",
+    "slug": "avtomobilnye-holodilniki"
+  },
+  {
+    "externalId": 35,
+    "categoryId": 16,
+    "name": "Автомобильные пылесосы",
+    "type": "subcategory",
+    "slug": "avtomobilnye-pylesosy"
+  },
+  {
+    "externalId": 36,
+    "categoryId": 16,
+    "name": "Акустика и магнитолы",
+    "type": "subcategory",
+    "slug": "akustika-i-magnitoly"
+  },
+  {
+    "externalId": 37,
+    "categoryId": 16,
+    "name": "Багажники и крепления",
+    "type": "subcategory",
+    "slug": "bagazhniki-i-krepleniya"
+  },
+  {
+    "externalId": 38,
+    "categoryId": 16,
+    "name": "Видеорегистраторы",
+    "type": "subcategory",
+    "slug": "videoregistratory"
+  },
+  {
+    "externalId": 39,
+    "categoryId": 16,
+    "name": "Коврики",
+    "type": "subcategory",
+    "slug": "kovriki"
+  },
+  {
+    "externalId": 40,
+    "categoryId": 16,
+    "name": "Мотоаксессуары и экипировка",
+    "type": "subcategory",
+    "slug": "motoaksessuary-i-ekipirovka"
+  },
+  {
+    "externalId": 41,
+    "categoryId": 16,
+    "name": "Чехлы",
+    "type": "subcategory",
+    "slug": "chehly"
+  },
+  {
+    "externalId": 42,
+    "categoryId": 16,
+    "name": "Эмблемы, значки",
+    "type": "subcategory",
+    "slug": "emblemy-znachki"
+  },
+  {
+    "externalId": 43,
+    "categoryId": 16,
+    "name": "Прочие аксессуары",
+    "type": "subcategory",
+    "slug": "prochie-aksessuary"
+  },
+
+  {
+    "externalId": 44,
+    "categoryId": 17,
+    "name": "Тракторы",
+    "type": "subcategory",
+    "slug": "traktory"
+  },
+  {
+    "externalId": 45,
+    "categoryId": 17,
+    "name": "Комбайны",
+    "type": "subcategory",
+    "slug": "kombayny"
+  },
+  {
+    "externalId": 46,
+    "categoryId": 17,
+    "name": "Навесное оборудование",
+    "type": "subcategory",
+    "slug": "navesnoe-oborudovanie"
+  },
+  {
+    "externalId": 47,
+    "categoryId": 17,
+    "name": "Прочая сельхозтехника",
+    "type": "subcategory",
+    "slug": "prochaya-selhoztehnika"
+  },
+
+  {
+    "externalId": 48,
+    "categoryId": 18,
+    "name": "Бетоновозы и бетононасосы",
+    "type": "subcategory",
+    "slug": "betonovozy-i-betononasosy"
+  },
+  {
+    "externalId": 49,
+    "categoryId": 18,
+    "name": "Бульдозеры",
+    "type": "subcategory",
+    "slug": "buldozery"
+  },
+  {
+    "externalId": 50,
+    "categoryId": 18,
+    "name": "Буровые установки",
+    "type": "subcategory",
+    "slug": "burovye-ustanovki"
+  },
+  {
+    "externalId": 51,
+    "categoryId": 18,
+    "name": "Дорожно-строительная техника",
+    "type": "subcategory",
+    "slug": "dorozhno-stroitelnaya-tehnika"
+  },
+  {
+    "externalId": 52,
+    "categoryId": 18,
+    "name": "Коммунальная техника",
+    "type": "subcategory",
+    "slug": "kommunalnaya-tehnika"
+  },
+  {
+    "externalId": 53,
+    "categoryId": 18,
+    "name": "Краны",
+    "type": "subcategory",
+    "slug": "krany"
+  },
+  {
+    "externalId": 54,
+    "categoryId": 18,
+    "name": "Лесная техника",
+    "type": "subcategory",
+    "slug": "lesnaya-tehnika"
+  },
+  {
+    "externalId": 55,
+    "categoryId": 18,
+    "name": "Навесное оборудование",
+    "type": "subcategory",
+    "slug": "navesnoe-oborudovanie-special"
+  },
+  {
+    "externalId": 56,
+    "categoryId": 18,
+    "name": "Погрузчики",
+    "type": "subcategory",
+    "slug": "pogruzchiki"
+  },
+  {
+    "externalId": 57,
+    "categoryId": 18,
+    "name": "Подъемники и автовышки",
+    "type": "subcategory",
+    "slug": "podyomniki-i-avtovyshki"
+  },
+  {
+    "externalId": 58,
+    "categoryId": 18,
+    "name": "Экскаваторы",
+    "type": "subcategory",
+    "slug": "ekskavatory"
+  },
+  {
+    "externalId": 59,
+    "categoryId": 18,
+    "name": "Эвакуаторы",
+    "type": "subcategory",
+    "slug": "evakuatory"
+  },
+  {
+    "externalId": 60,
+    "categoryId": 18,
+    "name": "Прочая спецтехника",
+    "type": "subcategory",
+    "slug": "prochaya-spectehnika"
+  },
+
+  {
+    "externalId": 61,
+    "categoryId": 19,
+    "name": "Прицепы",
+    "type": "subcategory",
+    "slug": "pritsepy"
+  },
+  {
+    "externalId": 62,
+    "categoryId": 19,
+    "name": "Полуприцепы",
+    "type": "subcategory",
+    "slug": "polupritsepy"
+  },
+  {
+    "externalId": 63,
+    "categoryId": 19,
+    "name": "Лафет",
+    "type": "subcategory",
+    "slug": "lafet"
+  },
+
+  {
+    "externalId": 64,
+    "categoryId": 20,
+    "name": "Лодки",
+    "type": "subcategory",
+    "slug": "lodki"
+  },
+  {
+    "externalId": 65,
+    "categoryId": 20,
+    "name": "Гидроциклы",
+    "type": "subcategory",
+    "slug": "gidrotsikly"
+  },
+  {
+    "externalId": 66,
+    "categoryId": 20,
+    "name": "Катера и яхты",
+    "type": "subcategory",
+    "slug": "katera-i-yahhty"
+  },
+  {
+    "externalId": 67,
+    "categoryId": 20,
+    "name": "Каяки, каноэ, байдарки",
+    "type": "subcategory",
+    "slug": "kayaki-kanoe-baydarki"
+  },
+  {
+    "externalId": 68,
+    "categoryId": 20,
+    "name": "Прочий водный транспорт",
+    "type": "subcategory",
+    "slug": "prochiy-vodnyy-transport"
+  },
+  {
+    "externalId": 69,
+    "categoryId": 20,
+    "name": "Запчасти для водного транспорта",
+    "type": "subcategory",
+    "slug": "zapchasti-dlya-vodnogo-transporta"
+  },
+  {
+    "externalId": 70,
+    "categoryId": 20,
+    "name": "Лодочные моторы",
+    "type": "subcategory",
+    "slug": "lodochnye-motory"
+  },
+
+  {
+    "externalId": 71,
+    "categoryId": 22,
+    "name": "Моторное масло",
+    "type": "subcategory",
+    "slug": "motornoye-maslo"
+  },
+  {
+    "externalId": 72,
+    "categoryId": 22,
+    "name": "Трансмиссионное масло",
+    "type": "subcategory",
+    "slug": "transmisionnoye-maslo"
+  },
+  {
+    "externalId": 73,
+    "categoryId": 22,
+    "name": "Промывочное масло 2-х тактное",
+    "type": "subcategory",
+    "slug": "promyvochnoe-maslo-2x-taktnoe"
+  },
+  {
+    "externalId": 74,
+    "categoryId": 22,
+    "name": "Масло 4-х тактное",
+    "type": "subcategory",
+    "slug": "maslo-4x-taktnoe"
+  },
+  {
+    "externalId": 75,
+    "categoryId": 22,
+    "name": "Вилочное масло",
+    "type": "subcategory",
+    "slug": "vilochnoe-maslo"
+  },
+  {
+    "externalId": 76,
+    "categoryId": 22,
+    "name": "Индустриальное масло",
+    "type": "subcategory",
+    "slug": "industrialnoe-maslo"
+  },
+  {
+    "externalId": 77,
+    "categoryId": 22,
+    "name": "Автокосметика для кузова и салона",
+    "type": "subcategory",
+    "slug": "avtokosmetika-dlya-kuzova-i-salona"
+  },
+  {
+    "externalId": 78,
+    "categoryId": 22,
+    "name": "Антифризы",
+    "type": "subcategory",
+    "slug": "antifrizy"
+  },
+  {
+    "externalId": 79,
+    "categoryId": 22,
+    "name": "Вода дистиллированная",
+    "type": "subcategory",
+    "slug": "voda-distillirovannaya"
+  },
+  {
+    "externalId": 80,
+    "categoryId": 22,
+    "name": "Материалы для кузовного ремонта",
+    "type": "subcategory",
+    "slug": "materialy-dlya-kuzovnogo-remonta"
+  },
+  {
+    "externalId": 81,
+    "categoryId": 22,
+    "name": "Герметики и клеи",
+    "type": "subcategory",
+    "slug": "germetiki-i-klei"
+  },
+  {
+    "externalId": 82,
+    "categoryId": 22,
+    "name": "Присадки",
+    "type": "subcategory",
+    "slug": "prisadki"
+  },
+  {
+    "externalId": 83,
+    "categoryId": 22,
+    "name": "Смазки",
+    "type": "subcategory",
+    "slug": "smazki"
+  },
+  {
+    "externalId": 84,
+    "categoryId": 22,
+    "name": "Стеклоомывающие жидкости",
+    "type": "subcategory",
+    "slug": "stekloomyvayushchie-zhidkosti"
+  },
+  {
+    "externalId": 85,
+    "categoryId": 22,
+    "name": "Тормозная жидкость",
+    "type": "subcategory",
+    "slug": "tormoznaya-zhidkost"
+  },
+  {
+    "externalId": 86,
+    "categoryId": 22,
+    "name": "Очистители",
+    "type": "subcategory",
+    "slug": "ochistiteli"
+  },
+
+  {
+    "externalId": 88,
+    "categoryId": 23,
+    "name": "Аэрогриль",
+    "type": "subcategory",
+    "slug": "aerogril"
+  },
+  {
+    "externalId": 89,
+    "categoryId": 23,
+    "name": "Блендеры",
+    "type": "subcategory",
+    "slug": "blendere"
+  },
+  {
+    "externalId": 90,
+    "categoryId": 23,
+    "name": "Блинницы",
+    "type": "subcategory",
+    "slug": "blinnicy"
+  },
+  {
+    "externalId": 91,
+    "categoryId": 23,
+    "name": "Вакуумные упаковщики",
+    "type": "subcategory",
+    "slug": "vakumnye-upakovshchiki"
+  },
+  {
+    "externalId": 92,
+    "categoryId": 23,
+    "name": "Вафельницы",
+    "type": "subcategory",
+    "slug": "vafelnicy"
+  },
+  {
+    "externalId": 93,
+    "categoryId": 23,
+    "name": "Весы кухонные",
+    "type": "subcategory",
+    "slug": "vesy-kuhonnie"
+  },
+  {
+    "externalId": 94,
+    "categoryId": 23,
+    "name": "Йогуртницы",
+    "type": "subcategory",
+    "slug": "yogurtnicy"
+  },
+  {
+    "externalId": 95,
+    "categoryId": 23,
+    "name": "Кофеварки и кофемашины",
+    "type": "subcategory",
+    "slug": "kofevarki-i-kofemashiny"
+  },
+  {
+    "externalId": 96,
+    "categoryId": 23,
+    "name": "Кофемолки",
+    "type": "subcategory",
+    "slug": "kofemolki"
+  },
+  {
+    "externalId": 97,
+    "categoryId": 23,
+    "name": "Кухонные комбайны",
+    "type": "subcategory",
+    "slug": "kuhonnie-kombayny"
+  },
+  {
+    "externalId": 98,
+    "categoryId": 23,
+    "name": "Микроволновые печи",
+    "type": "subcategory",
+    "slug": "mikrovolnovye-pechi"
+  },
+  {
+    "externalId": 99,
+    "categoryId": 23,
+    "name": "Миксеры",
+    "type": "subcategory",
+    "slug": "mixery"
+  },
+  {
+    "externalId": 100,
+    "categoryId": 23,
+    "name": "Мультиварки",
+    "type": "subcategory",
+    "slug": "multivarki"
+  },
+  {
+    "externalId": 101,
+    "categoryId": 23,
+    "name": "Мясорубки",
+    "type": "subcategory",
+    "slug": "myasorubki"
+  },
+  {
+    "externalId": 102,
+    "categoryId": 23,
+    "name": "Настольные плиты",
+    "type": "subcategory",
+    "slug": "nastolnye-plity"
+  },
+  {
+    "externalId": 103,
+    "categoryId": 23,
+    "name": "Пароварки",
+    "type": "subcategory",
+    "slug": "parovarki"
+  },
+  {
+    "externalId": 104,
+    "categoryId": 23,
+    "name": "Ростеры, мини-печи",
+    "type": "subcategory",
+    "slug": "rostery-mini-pechi"
+  },
+  {
+    "externalId": 105,
+    "categoryId": 23,
+    "name": "Соковыжималки электрические",
+    "type": "subcategory",
+    "slug": "sokovyzhimalki-elektricheskie"
+  },
+  {
+    "externalId": 106,
+    "categoryId": 23,
+    "name": "Сушилки для овощей и фруктов",
+    "type": "subcategory",
+    "slug": "sushilki-dlya-ovoshchey-i-fruktov"
+  },
+  {
+    "externalId": 107,
+    "categoryId": 23,
+    "name": "Сэндвичницы",
+    "type": "subcategory",
+    "slug": "sendvichnicy"
+  },
+  {
+    "externalId": 108,
+    "categoryId": 23,
+    "name": "Тостеры",
+    "type": "subcategory",
+    "slug": "tostery"
+  },
+  {
+    "externalId": 109,
+    "categoryId": 23,
+    "name": "Фритюрницы",
+    "type": "subcategory",
+    "slug": "friturnicy"
+  },
+  {
+    "externalId": 110,
+    "categoryId": 23,
+    "name": "Хлебопечи",
+    "type": "subcategory",
+    "slug": "hlebapechi"
+  },
+  {
+    "externalId": 111,
+    "categoryId": 23,
+    "name": "Электрогриль",
+    "type": "subcategory",
+    "slug": "elektrogril"
+  },
+  {
+    "externalId": 112,
+    "categoryId": 23,
+    "name": "Электрочайники, термопоты",
+    "type": "subcategory",
+    "slug": "elektrochayniki-termopoty"
+  },
+  {
+    "externalId": 113,
+    "categoryId": 23,
+    "name": "Прочая техника для кухни",
+    "type": "subcategory",
+    "slug": "prochaya-tehnika-dlya-kuhni"
+  },
+
+  {
+    "externalId": 114,
+    "categoryId": 24,
+    "name": "Плиты",
+    "type": "subcategory",
+    "slug": "plity"
+  },
+  {
+    "externalId": 115,
+    "categoryId": 24,
+    "name": "Духовые шкафы",
+    "type": "subcategory",
+    "slug": "duhovye-shkafy"
+  },
+  {
+    "externalId": 116,
+    "categoryId": 24,
+    "name": "Варочные панели",
+    "type": "subcategory",
+    "slug": "varochnye-paneli"
+  },
+  {
+    "externalId": 117,
+    "categoryId": 24,
+    "name": "Вытяжки",
+    "type": "subcategory",
+    "slug": "vytyazhki"
+  },
+  {
+    "externalId": 118,
+    "categoryId": 24,
+    "name": "Холодильники",
+    "type": "subcategory",
+    "slug": "holodilniki"
+  },
+  {
+    "externalId": 119,
+    "categoryId": 24,
+    "name": "Морозильники",
+    "type": "subcategory",
+    "slug": "morozilniki"
+  },
+  {
+    "externalId": 120,
+    "categoryId": 24,
+    "name": "Посудомоечные машины",
+    "type": "subcategory",
+    "slug": "posudomoechnye-mashiny"
+  },
+  {
+    "externalId": 121,
+    "categoryId": 24,
+    "name": "Винные шкафы",
+    "type": "subcategory",
+    "slug": "vinnye-shkafy"
+  },
+  {
+    "externalId": 122,
+    "categoryId": 24,
+    "name": "Прочая крупногабаритная техника",
+    "type": "subcategory",
+    "slug": "prochaya-krupnogabaritnaya-tehnika"
+  },
+
+  {
+    "externalId": 123,
+    "categoryId": 25,
+    "name": "Пылесосы",
+    "type": "subcategory",
+    "slug": "pylesosy"
+  },
+  {
+    "externalId": 124,
+    "categoryId": 25,
+    "name": "Роботы-пылесосы",
+    "type": "subcategory",
+    "slug": "roboty-pylesosy"
+  },
+  {
+    "externalId": 125,
+    "categoryId": 25,
+    "name": "Пароочистители",
+    "type": "subcategory",
+    "slug": "paroocistiteli"
+  },
+  {
+    "externalId": 126,
+    "categoryId": 25,
+    "name": "Прочая техника для уборки",
+    "type": "subcategory",
+    "slug": "prochaya-tehnika-dlya-uborki"
+  },
+
+  {
+    "externalId": 127,
+    "categoryId": 26,
+    "name": "Утюги",
+    "type": "subcategory",
+    "slug": "utyugi"
+  },
+  {
+    "externalId": 128,
+    "categoryId": 26,
+    "name": "Отпариватели",
+    "type": "subcategory",
+    "slug": "otparivateli"
+  },
+  {
+    "externalId": 129,
+    "categoryId": 26,
+    "name": "Швейные машины",
+    "type": "subcategory",
+    "slug": "shveynye-mashiny"
+  },
+  {
+    "externalId": 130,
+    "categoryId": 26,
+    "name": "Оверлоки",
+    "type": "subcategory",
+    "slug": "overloki"
+  },
+  {
+    "externalId": 131,
+    "categoryId": 26,
+    "name": "Стиральные машины",
+    "type": "subcategory",
+    "slug": "stiralnye-mashiny"
+  },
+  {
+    "externalId": 132,
+    "categoryId": 26,
+    "name": "Стирально-сушильные машины",
+    "type": "subcategory",
+    "slug": "stiralno-sushilnye-mashiny"
+  },
+  {
+    "externalId": 133,
+    "categoryId": 26,
+    "name": "Сушильные машины",
+    "type": "subcategory",
+    "slug": "sushilnye-mashiny"
+  },
+  {
+    "externalId": 134,
+    "categoryId": 26,
+    "name": "Машинки для удаления катышков",
+    "type": "subcategory",
+    "slug": "mashinki-dlya-udalenia-katyskov"
+  },
+  {
+    "externalId": 135,
+    "categoryId": 26,
+    "name": "Прочая техника для ухода за одеждой",
+    "type": "subcategory",
+    "slug": "prochaya-tehnika-dlya-uhoda-za-odezhdoy"
+  },
+
+  {
+    "externalId": 136,
+    "categoryId": 27,
+    "name": "Кондиционеры",
+    "type": "subcategory",
+    "slug": "kondicionery"
+  },
+  {
+    "externalId": 137,
+    "categoryId": 27,
+    "name": "Вентиляторы",
+    "type": "subcategory",
+    "slug": "ventilyatory"
+  },
+  {
+    "externalId": 138,
+    "categoryId": 27,
+    "name": "Обогреватели",
+    "type": "subcategory",
+    "slug": "obogrevateli"
+  },
+  {
+    "externalId": 139,
+    "categoryId": 27,
+    "name": "Увлажнитель воздуха",
+    "type": "subcategory",
+    "slug": "uvlazhnitel-vozduha"
+  },
+  {
+    "externalId": 140,
+    "categoryId": 27,
+    "name": "Очистители воздуха",
+    "type": "subcategory",
+    "slug": "ochistiteli-vozduha"
+  },
+  {
+    "externalId": 141,
+    "categoryId": 27,
+    "name": "Электрокамины, биокамины",
+    "type": "subcategory",
+    "slug": "elektrokaminy-biokaminy"
+  },
+  {
+    "externalId": 142,
+    "categoryId": 27,
+    "name": "Прочая климатическая техника",
+    "type": "subcategory",
+    "slug": "prochaya-klimaticheskaya-tehnika"
+  },
+
+  {
+    "externalId": 143,
+    "categoryId": 28,
+    "name": "Приборы для ухода за кожей",
+    "type": "subcategory",
+    "slug": "pribory-dlya-uhoda-za-kozhey"
+  },
+  {
+    "externalId": 144,
+    "categoryId": 28,
+    "name": "Фены",
+    "type": "subcategory",
+    "slug": "feny"
+  },
+  {
+    "externalId": 145,
+    "categoryId": 28,
+    "name": "Стайлеры, плойки, утюжки",
+    "type": "subcategory",
+    "slug": "stailery-ployki-utyuzhki"
+  },
+  {
+    "externalId": 146,
+    "categoryId": 28,
+    "name": "Мужские электробритвы",
+    "type": "subcategory",
+    "slug": "muzhskie-elektrobrity"
+  },
+  {
+    "externalId": 147,
+    "categoryId": 28,
+    "name": "Воскоплавы",
+    "type": "subcategory",
+    "slug": "voskoplavy"
+  },
+  {
+    "externalId": 148,
+    "categoryId": 28,
+    "name": "Эпиляторы и женские электробритвы",
+    "type": "subcategory",
+    "slug": "epilyatory-i-zhenskie-elektrobrity"
+  },
+  {
+    "externalId": 149,
+    "categoryId": 28,
+    "name": "Машинки для стрижки волос",
+    "type": "subcategory",
+    "slug": "mashinki-dlya-strizhki-volos"
+  },
+  {
+    "externalId": 150,
+    "categoryId": 28,
+    "name": "Электрические зубные щётки",
+    "type": "subcategory",
+    "slug": "elektricheskie-zubnye-shchetki"
+  },
+  {
+    "externalId": 151,
+    "categoryId": 28,
+    "name": "Ирригаторы",
+    "type": "subcategory",
+    "slug": "irrigatory"
+  },
+  {
+    "externalId": 152,
+    "categoryId": 28,
+    "name": "Гидромассажеры",
+    "type": "subcategory",
+    "slug": "gidromassazhery"
+  },
+  {
+    "externalId": 153,
+    "categoryId": 28,
+    "name": "Электромассажеры",
+    "type": "subcategory",
+    "slug": "elektromassazhery"
+  },
+  {
+    "externalId": 154,
+    "categoryId": 28,
+    "name": "Массажные кресла",
+    "type": "subcategory",
+    "slug": "massazhnye-kresla"
+  },
+  {
+    "externalId": 155,
+    "categoryId": 28,
+    "name": "Напольные весы",
+    "type": "subcategory",
+    "slug": "napolnye-vesy"
+  },
+  {
+    "externalId": 156,
+    "categoryId": 28,
+    "name": "Тонометры автоматические",
+    "type": "subcategory",
+    "slug": "tonometry-avtomaticheskie"
+  },
+  {
+    "externalId": 157,
+    "categoryId": 28,
+    "name": "Ингаляторы",
+    "type": "subcategory",
+    "slug": "ingalyatory"
+  },
+  {
+    "externalId": 158,
+    "categoryId": 28,
+    "name": "Глюкометры, тест-полоски",
+    "type": "subcategory",
+    "slug": "glyukometry-test-poloski"
+  },
+  {
+    "externalId": 159,
+    "categoryId": 28,
+    "name": "Пульсоксиметры",
+    "type": "subcategory",
+    "slug": "pulsoksimetry"
+  },
+  {
+    "externalId": 160,
+    "categoryId": 28,
+    "name": "Термометры электронные",
+    "type": "subcategory",
+    "slug": "termometry-elektronnye"
+  },
+  {
+    "externalId": 161,
+    "categoryId": 28,
+    "name": "Прочая техника для красоты и здоровья",
+    "type": "subcategory",
+    "slug": "prochaya-tehnika-dlya-krasoty-i-zdorovya"
+  },
+
+  {
+    "externalId": 163,
+    "categoryId": 30,
+    "name": "Компьютеры",
+    "type": "subcategory",
+    "slug": "kompyutery"
+  },
+  {
+    "externalId": 164,
+    "categoryId": 30,
+    "name": "Микрокомпьютеры",
+    "type": "subcategory",
+    "slug": "mikrokompyutery"
+  },
+  {
+    "externalId": 165,
+    "categoryId": 30,
+    "name": "Моноблоки",
+    "type": "subcategory",
+    "slug": "monobloki"
+  },
+
+  {
+    "externalId": 167,
+    "categoryId": 32,
+    "name": "SSD",
+    "type": "subcategory",
+    "slug": "ssd"
+  },
+  {
+    "externalId": 168,
+    "categoryId": 32,
+    "name": "Блоки питания, аккумуляторы",
+    "type": "subcategory",
+    "slug": "bloki-pitaniya-akkumulyatory"
+  },
+  {
+    "externalId": 169,
+    "categoryId": 32,
+    "name": "Жесткие диски",
+    "type": "subcategory",
+    "slug": "zhestkie-diski"
+  },
+  {
+    "externalId": 170,
+    "categoryId": 32,
+    "name": "Видеокарты",
+    "type": "subcategory",
+    "slug": "videokarty"
+  },
+  {
+    "externalId": 171,
+    "categoryId": 32,
+    "name": "Звуковые карты",
+    "type": "subcategory",
+    "slug": "zvukovye-karty"
+  },
+  {
+    "externalId": 172,
+    "categoryId": 32,
+    "name": "Корпуса",
+    "type": "subcategory",
+    "slug": "korpusa"
+  },
+  {
+    "externalId": 173,
+    "categoryId": 32,
+    "name": "Кулеры",
+    "type": "subcategory",
+    "slug": "kulery"
+  },
+  {
+    "externalId": 174,
+    "categoryId": 32,
+    "name": "Материнские платы",
+    "type": "subcategory",
+    "slug": "materinskie-platy"
+  },
+  {
+    "externalId": 175,
+    "categoryId": 32,
+    "name": "Ноутбуки на запчасти",
+    "type": "subcategory",
+    "slug": "noutbuki-na-zapchasti"
+  },
+  {
+    "externalId": 176,
+    "categoryId": 32,
+    "name": "Оперативная память",
+    "type": "subcategory",
+    "slug": "operativnaya-pamyat"
+  },
+  {
+    "externalId": 177,
+    "categoryId": 32,
+    "name": "Оптические приводы",
+    "type": "subcategory",
+    "slug": "opticheskie-privody"
+  },
+  {
+    "externalId": 178,
+    "categoryId": 32,
+    "name": "Процессоры",
+    "type": "subcategory",
+    "slug": "protsessory"
+  },
+  {
+    "externalId": 179,
+    "categoryId": 32,
+    "name": "Прочие компьютерные комплектующие",
+    "type": "subcategory",
+    "slug": "prochie-kompyuternye-komplektuyushchie"
+  },
+
+  {
+    "externalId": 180,
+    "categoryId": 33,
+    "name": "МФУ",
+    "type": "subcategory",
+    "slug": "mfu"
+  },
+  {
+    "externalId": 181,
+    "categoryId": 33,
+    "name": "Принтеры",
+    "type": "subcategory",
+    "slug": "printery"
+  },
+  {
+    "externalId": 182,
+    "categoryId": 33,
+    "name": "Сканеры",
+    "type": "subcategory",
+    "slug": "skanery"
+  },
+  {
+    "externalId": 183,
+    "categoryId": 33,
+    "name": "Уничтожители бумаг",
+    "type": "subcategory",
+    "slug": "unichtozhiteli-bumag"
+  },
+  {
+    "externalId": 184,
+    "categoryId": 33,
+    "name": "Факсы",
+    "type": "subcategory",
+    "slug": "faksy"
+  },
+  {
+    "externalId": 185,
+    "categoryId": 33,
+    "name": "Фотопринтеры",
+    "type": "subcategory",
+    "slug": "fotoprintery"
+  },
+  {
+    "externalId": 186,
+    "categoryId": 33,
+    "name": "3D-принтеры",
+    "type": "subcategory",
+    "slug": "3d-printery"
+  },
+  {
+    "externalId": 187,
+    "categoryId": 33,
+    "name": "Прочая оргтехника",
+    "type": "subcategory",
+    "slug": "prochaya-orgtehnika"
+  },
+  {
+    "externalId": 188,
+    "categoryId": 33,
+    "name": "Комплектующие, расходники",
+    "type": "subcategory",
+    "slug": "komplektuyushchie-rashodniki"
+  },
+
+  {
+    "externalId": 189,
+    "categoryId": 34,
+    "name": "IP-камеры",
+    "type": "subcategory",
+    "slug": "ip-kamery"
+  },
+  {
+    "externalId": 190,
+    "categoryId": 34,
+    "name": "USB Flash",
+    "type": "subcategory",
+    "slug": "usb-flash"
+  },
+  {
+    "externalId": 191,
+    "categoryId": 34,
+    "name": "USB-хабы",
+    "type": "subcategory",
+    "slug": "usb-haby"
+  },
+  {
+    "externalId": 192,
+    "categoryId": 34,
+    "name": "Боксы для жестких дисков",
+    "type": "subcategory",
+    "slug": "boksy-dlya-zhestkikh-diskov"
+  },
+  {
+    "externalId": 193,
+    "categoryId": 34,
+    "name": "Веб-камеры",
+    "type": "subcategory",
+    "slug": "veb-kamery"
+  },
+  {
+    "externalId": 194,
+    "categoryId": 34,
+    "name": "Внешние жесткие диски",
+    "type": "subcategory",
+    "slug": "vneshnie-zhestkie-diski"
+  },
+  {
+    "externalId": 195,
+    "categoryId": 34,
+    "name": "Источники бесперебойного питания",
+    "type": "subcategory",
+    "slug": "istochniki-besprerivnogo-pitaniya"
+  },
+  {
+    "externalId": 196,
+    "categoryId": 34,
+    "name": "Кабели и переходники",
+    "type": "subcategory",
+    "slug": "kabeli-i-perekhodniki"
+  },
+  {
+    "externalId": 197,
+    "categoryId": 34,
+    "name": "Карт-ридеры",
+    "type": "subcategory",
+    "slug": "kart-ridery"
+  },
+  {
+    "externalId": 198,
+    "categoryId": 34,
+    "name": "Клавиатуры",
+    "type": "subcategory",
+    "slug": "klaviatury"
+  },
+  {
+    "externalId": 199,
+    "categoryId": 34,
+    "name": "Мультимедиа, акустика",
+    "type": "subcategory",
+    "slug": "multimedia-akustika"
+  },
+  {
+    "externalId": 200,
+    "categoryId": 34,
+    "name": "Мыши",
+    "type": "subcategory",
+    "slug": "myshi"
+  },
+  {
+    "externalId": 201,
+    "categoryId": 34,
+    "name": "Коврики",
+    "type": "subcategory",
+    "slug": "kovriki"
+  },
+  {
+    "externalId": 202,
+    "categoryId": 34,
+    "name": "Подставки для ноутбуков",
+    "type": "subcategory",
+    "slug": "podstavki-dlya-noutbukov"
+  },
+  {
+    "externalId": 203,
+    "categoryId": 34,
+    "name": "Рюкзаки и сумки для ноутбуков",
+    "type": "subcategory",
+    "slug": "ryukzaki-i-sumki-dlya-noutbukov"
+  },
+  {
+    "externalId": 204,
+    "categoryId": 34,
+    "name": "Сетевые фильтры",
+    "type": "subcategory",
+    "slug": "setevye-filtry"
+  },
+  {
+    "externalId": 205,
+    "categoryId": 34,
+    "name": "Чехлы для ноутбуков",
+    "type": "subcategory",
+    "slug": "chehly-dlya-noutbukov"
+  },
+  {
+    "externalId": 206,
+    "categoryId": 34,
+    "name": "Прочие компьютерные аксессуары",
+    "type": "subcategory",
+    "slug": "prochie-kompyuternye-aksessuary"
+  },
+
+  {
+    "externalId": 207,
+    "categoryId": 35,
+    "name": "Wi-Fi роутеры (маршрутизаторы)",
+    "type": "subcategory",
+    "slug": "wi-fi-routery"
+  },
+  {
+    "externalId": 208,
+    "categoryId": 35,
+    "name": "Модемы",
+    "type": "subcategory",
+    "slug": "modemy"
+  },
+  {
+    "externalId": 209,
+    "categoryId": 35,
+    "name": "Сетевые адаптеры",
+    "type": "subcategory",
+    "slug": "setevye-adaptery"
+  },
+  {
+    "externalId": 210,
+    "categoryId": 35,
+    "name": "Сетевые кабели и принадлежности",
+    "type": "subcategory",
+    "slug": "setevye-kabeli-i-prinadlezhnosti"
+  },
+  {
+    "externalId": 211,
+    "categoryId": 35,
+    "name": "Прочее сетевое оборудование",
+    "type": "subcategory",
+    "slug": "prochee-setevoe-oborudovanie"
+  },
+
+  {
+    "externalId": 87,
+    "categoryId": 38,
+    "name": "Аккумуляторы",
+    "type": "subcategory",
+    "slug": "akkumulyatory"
+  },
+  {
+    "externalId": 88,
+    "categoryId": 38,
+    "name": "Динамики",
+    "type": "subcategory",
+    "slug": "dinamiki"
+  },
+  {
+    "externalId": 89,
+    "categoryId": 38,
+    "name": "Камеры",
+    "type": "subcategory",
+    "slug": "kamery"
+  },
+  {
+    "externalId": 90,
+    "categoryId": 38,
+    "name": "Клавиатуры",
+    "type": "subcategory",
+    "slug": "klaviatury"
+  },
+  {
+    "externalId": 91,
+    "categoryId": 38,
+    "name": "Корпусные части",
+    "type": "subcategory",
+    "slug": "korpusnye-chasti"
+  },
+  {
+    "externalId": 92,
+    "categoryId": 38,
+    "name": "Платы",
+    "type": "subcategory",
+    "slug": "platy"
+  },
+  {
+    "externalId": 93,
+    "categoryId": 38,
+    "name": "Телефоны на запчасти",
+    "type": "subcategory",
+    "slug": "telefony-na-zapchasti"
+  },
+  {
+    "externalId": 94,
+    "categoryId": 38,
+    "name": "Шлейфы",
+    "type": "subcategory",
+    "slug": "shleyfy"
+  },
+  {
+    "externalId": 95,
+    "categoryId": 38,
+    "name": "Экраны, дисплеи",
+    "type": "subcategory",
+    "slug": "ekrany-displei"
+  },
+  {
+    "externalId": 96,
+    "categoryId": 38,
+    "name": "Другой",
+    "type": "subcategory",
+    "slug": "drugoy"
+  },
+
+  {
+    "externalId": 97,
+    "categoryId": 39,
+    "name": "Bluetooth-гарнитура",
+    "type": "subcategory",
+    "slug": "bluetooth-garnitura"
+  },
+  {
+    "externalId": 98,
+    "categoryId": 39,
+    "name": "Автомобильные держатели",
+    "type": "subcategory",
+    "slug": "avtomobilnye-derzhateli"
+  },
+  {
+    "externalId": 99,
+    "categoryId": 39,
+    "name": "Док-станции",
+    "type": "subcategory",
+    "slug": "dok-stancii"
+  },
+  {
+    "externalId": 100,
+    "categoryId": 39,
+    "name": "Зарядные устройства",
+    "type": "subcategory",
+    "slug": "zaryadnye-ustroystva"
+  },
+  {
+    "externalId": 101,
+    "categoryId": 39,
+    "name": "Кабели и переходники",
+    "type": "subcategory",
+    "slug": "kabeli-i-perehodniki"
+  },
+  {
+    "externalId": 102,
+    "categoryId": 39,
+    "name": "Карты памяти",
+    "type": "subcategory",
+    "slug": "karty-pamyati"
+  },
+  {
+    "externalId": 103,
+    "categoryId": 39,
+    "name": "Палки для селфи",
+    "type": "subcategory",
+    "slug": "palki-dlya-selfi"
+  },
+  {
+    "externalId": 104,
+    "categoryId": 39,
+    "name": "Пленки, стекла",
+    "type": "subcategory",
+    "slug": "plenk-i-stekla"
+  },
+  {
+    "externalId": 105,
+    "categoryId": 39,
+    "name": "Портативные зарядные устройства",
+    "type": "subcategory",
+    "slug": "portativnye-zaryadnye-ustroystva"
+  },
+  {
+    "externalId": 106,
+    "categoryId": 39,
+    "name": "Чехлы, кейсы",
+    "type": "subcategory",
+    "slug": "chehly-kejsy"
+  },
+  {
+    "externalId": 107,
+    "categoryId": 39,
+    "name": "Прочие аксессуары",
+    "type": "subcategory",
+    "slug": "prochie-aksessuary"
+  },
+
+  {
+    "externalId": 108,
+    "categoryId": 40,
+    "name": "Проводные телефоны",
+    "type": "subcategory",
+    "slug": "provodnye-telefony"
+  },
+  {
+    "externalId": 109,
+    "categoryId": 40,
+    "name": "Радиотелефоны",
+    "type": "subcategory",
+    "slug": "radiotelefony"
+  },
+  {
+    "externalId": 110,
+    "categoryId": 40,
+    "name": "Рации",
+    "type": "subcategory",
+    "slug": "racij"
+  },
+
+  {
+    "externalId": 111,
+    "categoryId": 42,
+    "name": "Аккумуляторы",
+    "type": "subcategory",
+    "slug": "akkumulyatory"
+  },
+  {
+    "externalId": 112,
+    "categoryId": 42,
+    "name": "Динамики",
+    "type": "subcategory",
+    "slug": "dinamiki"
+  },
+  {
+    "externalId": 113,
+    "categoryId": 42,
+    "name": "Камеры",
+    "type": "subcategory",
+    "slug": "kamery"
+  },
+  {
+    "externalId": 114,
+    "categoryId": 42,
+    "name": "Корпусные части",
+    "type": "subcategory",
+    "slug": "korpusnye-chasti"
+  },
+  {
+    "externalId": 115,
+    "categoryId": 42,
+    "name": "Планшеты на запчасти",
+    "type": "subcategory",
+    "slug": "planshety-na-zapchasti"
+  },
+  {
+    "externalId": 116,
+    "categoryId": 42,
+    "name": "Платы",
+    "type": "subcategory",
+    "slug": "platy"
+  },
+  {
+    "externalId": 117,
+    "categoryId": 42,
+    "name": "Тачскрины, дисплеи, матрицы",
+    "type": "subcategory",
+    "slug": "tachskriny-displei-matricy"
+  },
+  {
+    "externalId": 118,
+    "categoryId": 42,
+    "name": "Шлейфы",
+    "type": "subcategory",
+    "slug": "shleyfy"
+  },
+  {
+    "externalId": 119,
+    "categoryId": 42,
+    "name": "Другой",
+    "type": "subcategory",
+    "slug": "drugoy"
+  },
+
+  {
+    "externalId": 120,
+    "categoryId": 45,
+    "name": "Умные часы",
+    "type": "subcategory",
+    "slug": "umnye-chasy"
+  },
+  {
+    "externalId": 121,
+    "categoryId": 45,
+    "name": "Детские умные часы",
+    "type": "subcategory",
+    "slug": "detskie-umnye-chasy"
+  },
+  {
+    "externalId": 122,
+    "categoryId": 45,
+    "name": "Фитнес-браслеты",
+    "type": "subcategory",
+    "slug": "fitnes-braslety"
+  },
+
+  {
+    "externalId": 123,
+    "categoryId": 46,
+    "name": "Зарядные устройства",
+    "type": "subcategory",
+    "slug": "zaryadnye-ustroystva"
+  },
+  {
+    "externalId": 124,
+    "categoryId": 46,
+    "name": "Пленки, стекла",
+    "type": "subcategory",
+    "slug": "plenk-i-stekla"
+  },
+  {
+    "externalId": 125,
+    "categoryId": 46,
+    "name": "Ремешки для часов",
+    "type": "subcategory",
+    "slug": "remeshki-dlya-chasov"
+  },
+  {
+    "externalId": 126,
+    "categoryId": 46,
+    "name": "Чехлы, кейсы",
+    "type": "subcategory",
+    "slug": "chehly-kejsy"
+  },
+  {
+    "externalId": 127,
+    "categoryId": 46,
+    "name": "Прочие аксессуары",
+    "type": "subcategory",
+    "slug": "prochie-aksessuary"
+  },
+
+  {
+    "externalId": 128,
+    "categoryId": 48,
+    "name": "CD",
+    "type": "subcategory",
+    "slug": "cd"
+  },
+  {
+    "externalId": 129,
+    "categoryId": 48,
+    "name": "МР3-плееры",
+    "type": "subcategory",
+    "slug": "mp3-pleery"
+  },
+  {
+    "externalId": 130,
+    "categoryId": 48,
+    "name": "Акустика Hi-Fi и Hi-End",
+    "type": "subcategory",
+    "slug": "akustika-hi-fi-i-hi-end"
+  },
+  {
+    "externalId": 131,
+    "categoryId": 48,
+    "name": "Беспроводные и портативные колонки",
+    "type": "subcategory",
+    "slug": "besprovodnye-i-portativnye-kolonki"
+  },
+  {
+    "externalId": 132,
+    "categoryId": 48,
+    "name": "Кабели и адаптеры",
+    "type": "subcategory",
+    "slug": "kabeli-i-adaptery"
+  },
+  {
+    "externalId": 133,
+    "categoryId": 48,
+    "name": "Микрофоны",
+    "type": "subcategory",
+    "slug": "mikrofony"
+  },
+  {
+    "externalId": 134,
+    "categoryId": 48,
+    "name": "Музыкальные центры",
+    "type": "subcategory",
+    "slug": "muzykalnye-tsentry"
+  },
+  {
+    "externalId": 135,
+    "categoryId": 48,
+    "name": "Сделано в СССР",
+    "type": "subcategory",
+    "slug": "sdelano-v-sssr"
+  },
+  {
+    "externalId": 136,
+    "categoryId": 48,
+    "name": "Радиоприемники",
+    "type": "subcategory",
+    "slug": "radiopriemniki"
+  },
+  {
+    "externalId": 137,
+    "categoryId": 48,
+    "name": "Радиодетали",
+    "type": "subcategory",
+    "slug": "radiodetali"
+  },
+  {
+    "externalId": 138,
+    "categoryId": 48,
+    "name": "Усилители и ресиверы",
+    "type": "subcategory",
+    "slug": "usiliteli-i-resivery"
+  },
+  {
+    "externalId": 139,
+    "categoryId": 48,
+    "name": "Аксессуары для аудио",
+    "type": "subcategory",
+    "slug": "aksessuary-dlya-audio"
+  },
+  {
+    "externalId": 140,
+    "categoryId": 48,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "prochee"
+  },
+
+  {
+    "externalId": 141,
+    "categoryId": 49,
+    "name": "Внутриканальные",
+    "type": "subcategory",
+    "slug": "vnutrikanalnye"
+  },
+  {
+    "externalId": 142,
+    "categoryId": 49,
+    "name": "Вкладыши",
+    "type": "subcategory",
+    "slug": "vkladyshi"
+  },
+  {
+    "externalId": 143,
+    "categoryId": 49,
+    "name": "Накладные",
+    "type": "subcategory",
+    "slug": "nakladnye"
+  },
+  {
+    "externalId": 144,
+    "categoryId": 49,
+    "name": "Полноразмерные",
+    "type": "subcategory",
+    "slug": "polnorasmernye"
+  },
+
+  {
+    "externalId": 145,
+    "categoryId": 50,
+    "name": "Телевизоры",
+    "type": "subcategory",
+    "slug": "televizory"
+  },
+  {
+    "externalId": 146,
+    "categoryId": 50,
+    "name": "Видео, DVD и Blu-ray плееры",
+    "type": "subcategory",
+    "slug": "video-dvd-i-blu-ray-pleery"
+  },
+  {
+    "externalId": 147,
+    "categoryId": 50,
+    "name": "Видеокамеры",
+    "type": "subcategory",
+    "slug": "videokamery"
+  },
+  {
+    "externalId": 148,
+    "categoryId": 50,
+    "name": "Проекторы",
+    "type": "subcategory",
+    "slug": "proektory"
+  },
+  {
+    "externalId": 149,
+    "categoryId": 50,
+    "name": "Спутниковые ресиверы",
+    "type": "subcategory",
+    "slug": "sputnikovye-resivery"
+  },
+  {
+    "externalId": 150,
+    "categoryId": 50,
+    "name": "ТВ-тюнеры",
+    "type": "subcategory",
+    "slug": "tv-tyunery"
+  },
+  {
+    "externalId": 151,
+    "categoryId": 50,
+    "name": "Аксессуары для ТВ и видео",
+    "type": "subcategory",
+    "slug": "aksessuary-dlya-tv-i-video"
+  },
+  {
+    "externalId": 152,
+    "categoryId": 50,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "prochee"
+  },
+
+  {
+    "externalId": 153,
+    "categoryId": 51,
+    "name": "Фотоаппараты",
+    "type": "subcategory",
+    "slug": "fotoapparaty"
+  },
+  {
+    "externalId": 154,
+    "categoryId": 51,
+    "name": "Объективы",
+    "type": "subcategory",
+    "slug": "obektiv"
+  },
+  {
+    "externalId": 155,
+    "categoryId": 51,
+    "name": "Вспышки, лампы",
+    "type": "subcategory",
+    "slug": "vspyshki-lampy"
+  },
+  {
+    "externalId": 156,
+    "categoryId": 51,
+    "name": "Штативы",
+    "type": "subcategory",
+    "slug": "shtativy"
+  },
+  {
+    "externalId": 157,
+    "categoryId": 51,
+    "name": "Бинокли и телескопы",
+    "type": "subcategory",
+    "slug": "binokli-i-teleskopy"
+  },
+  {
+    "externalId": 158,
+    "categoryId": 51,
+    "name": "Аксессуары для фототехники",
+    "type": "subcategory",
+    "slug": "aksessuary-dlya-fototekhniki"
+  },
+  {
+    "externalId": 159,
+    "categoryId": 51,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "prochee"
+  },
+
+  {
+    "externalId": 160,
+    "categoryId": 52,
+    "name": "Геймпады",
+    "type": "subcategory",
+    "slug": "geympady"
+  },
+  {
+    "externalId": 161,
+    "categoryId": 52,
+    "name": "Игры для приставок, подписки, коды",
+    "type": "subcategory",
+    "slug": "igry-dlya-pristavok-podpisky-kody"
+  },
+  {
+    "externalId": 162,
+    "categoryId": 52,
+    "name": "Приставки",
+    "type": "subcategory",
+    "slug": "pristavki"
+  },
+  {
+    "externalId": 163,
+    "categoryId": 52,
+    "name": "Компьютерные игры",
+    "type": "subcategory",
+    "slug": "kompyuternye-igry"
+  },
+  {
+    "externalId": 164,
+    "categoryId": 52,
+    "name": "Очки VR",
+    "type": "subcategory",
+    "slug": "ochki-vr"
+  },
+  {
+    "externalId": 165,
+    "categoryId": 52,
+    "name": "Рули",
+    "type": "subcategory",
+    "slug": "ruli"
+  },
+  {
+    "externalId": 166,
+    "categoryId": 52,
+    "name": "Запчасти, аксессуары",
+    "type": "subcategory",
+    "slug": "zapchasti-aksessuary"
+  },
+  {
+    "externalId": 167,
+    "categoryId": 52,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "prochee"
+  },
+
+  {
+    "externalId": 168,
+    "categoryId": 53,
+    "name": "Видеонаблюдение",
+    "type": "subcategory",
+    "slug": "videonablyudenie"
+  },
+  {
+    "externalId": 169,
+    "categoryId": 53,
+    "name": "Домофоны, вызывные панели",
+    "type": "subcategory",
+    "slug": "domofony-vyzyvnye-paneli"
+  },
+  {
+    "externalId": 170,
+    "categoryId": 53,
+    "name": "Система умный дом",
+    "type": "subcategory",
+    "slug": "sistema-umny-dom"
+  },
+  {
+    "externalId": 171,
+    "categoryId": 53,
+    "name": "Сигнализации и извещатели",
+    "type": "subcategory",
+    "slug": "signalizatsii-i-izveshchateli"
+  },
+  {
+    "externalId": 172,
+    "categoryId": 53,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "prochee"
+  },
+
+  {
+    "externalId": 173,
+    "chapterId": 54,
+    "name": "Белье",
+    "type": "subcategory",
+    "slug": "bele"
+  },
+  {
+    "externalId": 174,
+    "chapterId": 54,
+    "name": "Блузки",
+    "type": "subcategory",
+    "slug": "bluzki"
+  },
+  {
+    "externalId": 175,
+    "chapterId": 54,
+    "name": "Верхняя одежда",
+    "type": "subcategory",
+    "slug": "verhnyaya-odezhda"
+  },
+  {
+    "externalId": 176,
+    "chapterId": 54,
+    "name": "Джинсы, брюки",
+    "type": "subcategory",
+    "slug": "dzhinsy-bryuki"
+  },
+  {
+    "externalId": 177,
+    "chapterId": 54,
+    "name": "Домашняя одежда",
+    "type": "subcategory",
+    "slug": "domashnyaya-odezhda"
+  },
+  {
+    "externalId": 178,
+    "chapterId": 54,
+    "name": "Колготки, леггинсы, носки",
+    "type": "subcategory",
+    "slug": "kolgotki-legginsy-noski"
+  },
+  {
+    "externalId": 179,
+    "chapterId": 54,
+    "name": "Комбинезоны",
+    "type": "subcategory",
+    "slug": "kombinezony"
+  },
+  {
+    "externalId": 180,
+    "chapterId": 54,
+    "name": "Костюмы, пиджаки и жакеты",
+    "type": "subcategory",
+    "slug": "kostyumy-pidzhaki-i-zhakety"
+  },
+  {
+    "externalId": 181,
+    "chapterId": 54,
+    "name": "Купальники",
+    "type": "subcategory",
+    "slug": "kupalniki"
+  },
+  {
+    "externalId": 182,
+    "chapterId": 54,
+    "name": "Майки, топы, лонгсливы",
+    "type": "subcategory",
+    "slug": "mayki-topy-longslivy"
+  },
+  {
+    "externalId": 183,
+    "chapterId": 54,
+    "name": "Одежда для танцев",
+    "type": "subcategory",
+    "slug": "odezhda-dlya-tantsev"
+  },
+  {
+    "externalId": 184,
+    "chapterId": 54,
+    "name": "Платья, сарафаны",
+    "type": "subcategory",
+    "slug": "platya-sarafany"
+  },
+  {
+    "externalId": 185,
+    "chapterId": 54,
+    "name": "Рубашки",
+    "type": "subcategory",
+    "slug": "rubashki"
+  },
+  {
+    "externalId": 186,
+    "chapterId": 54,
+    "name": "Худи, свитеры, толстовки",
+    "type": "subcategory",
+    "slug": "hudi-svitery-tolstovki"
+  },
+  {
+    "externalId": 187,
+    "chapterId": 54,
+    "name": "Спецодежда, униформа",
+    "type": "subcategory",
+    "slug": "spetsodezhda-uniforma"
+  },
+  {
+    "externalId": 188,
+    "chapterId": 54,
+    "name": "Спортивная одежда",
+    "type": "subcategory",
+    "slug": "sportivnaya-odezhda"
+  },
+  {
+    "externalId": 189,
+    "chapterId": 54,
+    "name": "Туники",
+    "type": "subcategory",
+    "slug": "tuniki"
+  },
+  {
+    "externalId": 190,
+    "chapterId": 54,
+    "name": "Шорты, юбки",
+    "type": "subcategory",
+    "slug": "shorty-yubki"
+  },
+
+  {
+    "externalId": 191,
+    "chapterId": 55,
+    "name": "Балетки",
+    "type": "subcategory",
+    "slug": "baletki"
+  },
+  {
+    "externalId": 192,
+    "chapterId": 55,
+    "name": "Босоножки, сандалии",
+    "type": "subcategory",
+    "slug": "bosonozhki-sandalii"
+  },
+  {
+    "externalId": 193,
+    "chapterId": 55,
+    "name": "Ботильоны",
+    "type": "subcategory",
+    "slug": "botilony"
+  },
+  {
+    "externalId": 194,
+    "chapterId": 55,
+    "name": "Ботинки и полуботинки",
+    "type": "subcategory",
+    "slug": "botinki-i-polubotinki"
+  },
+  {
+    "externalId": 195,
+    "chapterId": 55,
+    "name": "Домашняя обувь",
+    "type": "subcategory",
+    "slug": "domashnyaya-obuv"
+  },
+  {
+    "externalId": 196,
+    "chapterId": 55,
+    "name": "Кроссовки и кеды",
+    "type": "subcategory",
+    "slug": "krossovki-i-kedy"
+  },
+  {
+    "externalId": 197,
+    "chapterId": 55,
+    "name": "Мокасины",
+    "type": "subcategory",
+    "slug": "mokasiny"
+  },
+  {
+    "externalId": 198,
+    "chapterId": 55,
+    "name": "Пляжная обувь",
+    "type": "subcategory",
+    "slug": "plyazhnaya-obuv"
+  },
+  {
+    "externalId": 199,
+    "chapterId": 55,
+    "name": "Полусапожки",
+    "type": "subcategory",
+    "slug": "polusapozhki"
+  },
+  {
+    "externalId": 200,
+    "chapterId": 55,
+    "name": "Резиновая обувь",
+    "type": "subcategory",
+    "slug": "rezinovaya-obuv"
+  },
+  {
+    "externalId": 201,
+    "chapterId": 55,
+    "name": "Сабо",
+    "type": "subcategory",
+    "slug": "sabo"
+  },
+  {
+    "externalId": 202,
+    "chapterId": 55,
+    "name": "Сапоги",
+    "type": "subcategory",
+    "slug": "sapogi"
+  },
+  {
+    "externalId": 203,
+    "chapterId": 55,
+    "name": "Танцевальная обувь",
+    "type": "subcategory",
+    "slug": "tancevalnaya-obuv"
+  },
+  {
+    "externalId": 204,
+    "chapterId": 55,
+    "name": "Туфли",
+    "type": "subcategory",
+    "slug": "tufli"
+  },
+  {
+    "externalId": 205,
+    "chapterId": 55,
+    "name": "Спецобувь",
+    "type": "subcategory",
+    "slug": "spetsobuv"
+  },
+  {
+    "externalId": 206,
+    "chapterId": 55,
+    "name": "Аксессуары для обуви",
+    "type": "subcategory",
+    "slug": "aksessuary-dlya-obuvi"
+  },
+
+  {
+    "externalId": 207,
+    "chapterId": 56,
+    "name": "Головные уборы",
+    "type": "subcategory",
+    "slug": "golovnye-ubory"
+  },
+  {
+    "externalId": 208,
+    "chapterId": 56,
+    "name": "Зонты",
+    "type": "subcategory",
+    "slug": "zonty"
+  },
+  {
+    "externalId": 209,
+    "chapterId": 56,
+    "name": "Кошельки, визитницы, ключницы",
+    "type": "subcategory",
+    "slug": "koshelki-vizitnicy-klyuchnitsy"
+  },
+  {
+    "externalId": 210,
+    "chapterId": 56,
+    "name": "Брелоки",
+    "type": "subcategory",
+    "slug": "breloki"
+  },
+  {
+    "externalId": 211,
+    "chapterId": 56,
+    "name": "Очки",
+    "type": "subcategory",
+    "slug": "ochki"
+  },
+  {
+    "externalId": 212,
+    "chapterId": 56,
+    "name": "Перчатки и варежки",
+    "type": "subcategory",
+    "slug": "perchatki-i-varezhki"
+  },
+  {
+    "externalId": 213,
+    "chapterId": 56,
+    "name": "Ремни и пояса",
+    "type": "subcategory",
+    "slug": "remni-i-poyasa"
+  },
+  {
+    "externalId": 214,
+    "chapterId": 56,
+    "name": "Рюкзаки",
+    "type": "subcategory",
+    "slug": "ryukzaki"
+  },
+  {
+    "externalId": 215,
+    "chapterId": 56,
+    "name": "Сумки",
+    "type": "subcategory",
+    "slug": "sumki"
+  },
+  {
+    "externalId": 216,
+    "chapterId": 56,
+    "name": "Косметички",
+    "type": "subcategory",
+    "slug": "kosmetichki"
+  },
+  {
+    "externalId": 217,
+    "chapterId": 56,
+    "name": "Украшения",
+    "type": "subcategory",
+    "slug": "ukrasheniya"
+  },
+  {
+    "externalId": 218,
+    "chapterId": 56,
+    "name": "Часы",
+    "type": "subcategory",
+    "slug": "chasy"
+  },
+  {
+    "externalId": 219,
+    "chapterId": 56,
+    "name": "Шарфы и платки",
+    "type": "subcategory",
+    "slug": "sharfy-i-platki"
+  },
+  {
+    "externalId": 220,
+    "chapterId": 56,
+    "name": "Парики и шиньоны",
+    "type": "subcategory",
+    "slug": "pariki-i-shinyony"
+  },
+  {
+    "externalId": 221,
+    "chapterId": 56,
+    "name": "Аксессуары для волос",
+    "type": "subcategory",
+    "slug": "aksessuary-dlya-volos"
+  },
+  {
+    "externalId": 223,
+    "chapterId": 56,
+    "name": "Прочие аксессуары",
+    "type": "subcategory",
+    "slug": "prochee"
+  },
+
+  {
+    "externalId": 224,
+    "categoryId": 57,
+    "name": "Джинсы, брюки",
+    "type": "subcategory",
+    "slug": "dzhinsy-bryuki"
+  },
+  {
+    "externalId": 225,
+    "categoryId": 57,
+    "name": "Верхняя одежда",
+    "type": "subcategory",
+    "slug": "verhnyaya-odezhda"
+  },
+  {
+    "externalId": 226,
+    "categoryId": 57,
+    "name": "Майки, футболки, лонгсливы",
+    "type": "subcategory",
+    "slug": "mayki-futbolki-longslivy"
+  },
+  {
+    "externalId": 227,
+    "categoryId": 57,
+    "name": "Костюмы",
+    "type": "subcategory",
+    "slug": "kostyumy"
+  },
+  {
+    "externalId": 228,
+    "categoryId": 57,
+    "name": "Пиджаки",
+    "type": "subcategory",
+    "slug": "pidzhaki"
+  },
+  {
+    "externalId": 229,
+    "categoryId": 57,
+    "name": "Рубашки",
+    "type": "subcategory",
+    "slug": "rubashki"
+  },
+  {
+    "externalId": 230,
+    "categoryId": 57,
+    "name": "Жилеты",
+    "type": "subcategory",
+    "slug": "zhilety"
+  },
+  {
+    "externalId": 231,
+    "categoryId": 57,
+    "name": "Свитеры, кардиганы",
+    "type": "subcategory",
+    "slug": "svitery-kardigany"
+  },
+  {
+    "externalId": 232,
+    "categoryId": 57,
+    "name": "Худи, толстовки, свитшоты",
+    "type": "subcategory",
+    "slug": "hudi-tolstovki-svitshoty"
+  },
+  {
+    "externalId": 233,
+    "categoryId": 57,
+    "name": "Спортивная одежда",
+    "type": "subcategory",
+    "slug": "sportivnaya-odezhda"
+  },
+  {
+    "externalId": 234,
+    "categoryId": 57,
+    "name": "Шорты",
+    "type": "subcategory",
+    "slug": "shorty"
+  },
+  {
+    "externalId": 235,
+    "categoryId": 57,
+    "name": "Спецодежда, роба",
+    "type": "subcategory",
+    "slug": "spetsodezhda-roba"
+  },
+  {
+    "externalId": 236,
+    "categoryId": 57,
+    "name": "Мужские халаты",
+    "type": "subcategory",
+    "slug": "muzhskie-halaty"
+  },
+  {
+    "externalId": 237,
+    "categoryId": 57,
+    "name": "Носки",
+    "type": "subcategory",
+    "slug": "noski"
+  },
+  {
+    "externalId": 238,
+    "categoryId": 57,
+    "name": "Белье",
+    "type": "subcategory",
+    "slug": "bele"
+  },
+  {
+    "externalId": 239,
+    "categoryId": 57,
+    "name": "Плавки и шорты для плавания",
+    "type": "subcategory",
+    "slug": "plavki-i-shorty-dlya-plavaniya"
+  },
+  {
+    "externalId": 240,
+    "categoryId": 57,
+    "name": "Прочая мужская одежда",
+    "type": "subcategory",
+    "slug": "prochaya-muzhskaya-odezhda"
+  },
+
+  {
+    "externalId": 241,
+    "categoryId": 58,
+    "name": "Босоножки, сандалии",
+    "type": "subcategory",
+    "slug": "bosonozhki-sandalii"
+  },
+  {
+    "externalId": 242,
+    "categoryId": 58,
+    "name": "Ботинки и полуботинки",
+    "type": "subcategory",
+    "slug": "botinki-i-polubotinki"
+  },
+  {
+    "externalId": 243,
+    "categoryId": 58,
+    "name": "Берцы",
+    "type": "subcategory",
+    "slug": "bertsy"
+  },
+  {
+    "externalId": 244,
+    "categoryId": 58,
+    "name": "Сапоги",
+    "type": "subcategory",
+    "slug": "sapogi"
+  },
+  {
+    "externalId": 245,
+    "categoryId": 58,
+    "name": "Кроссовки и кеды",
+    "type": "subcategory",
+    "slug": "krossovki-i-kedy"
+  },
+  {
+    "externalId": 246,
+    "categoryId": 58,
+    "name": "Тапочки, сланцы",
+    "type": "subcategory",
+    "slug": "tapochki-slantsy"
+  },
+  {
+    "externalId": 247,
+    "categoryId": 58,
+    "name": "Туфли",
+    "type": "subcategory",
+    "slug": "tufli"
+  },
+  {
+    "externalId": 248,
+    "categoryId": 58,
+    "name": "Спецобувь",
+    "type": "subcategory",
+    "slug": "spetsobuv"
+  },
+  {
+    "externalId": 249,
+    "categoryId": 58,
+    "name": "Аксессуары для обуви",
+    "type": "subcategory",
+    "slug": "aksessuary-dlya-obuvi"
+  },
+
+  {
+    "externalId": 250,
+    "categoryId": 59,
+    "name": "Головные уборы",
+    "type": "subcategory",
+    "slug": "golovnye-ubory"
+  },
+  {
+    "externalId": 251,
+    "categoryId": 59,
+    "name": "Зонты",
+    "type": "subcategory",
+    "slug": "zonty"
+  },
+  {
+    "externalId": 252,
+    "categoryId": 59,
+    "name": "Кошельки, визитницы, ключницы",
+    "type": "subcategory",
+    "slug": "koshelki-vizitnicy-klyuchnicy"
+  },
+  {
+    "externalId": 253,
+    "categoryId": 59,
+    "name": "Брелоки",
+    "type": "subcategory",
+    "slug": "breloki"
+  },
+  {
+    "externalId": 254,
+    "categoryId": 59,
+    "name": "Зажигалки и портсигары",
+    "type": "subcategory",
+    "slug": "zazhigalki-i-portsigary"
+  },
+  {
+    "externalId": 255,
+    "categoryId": 59,
+    "name": "Очки и футляры",
+    "type": "subcategory",
+    "slug": "ochki-i-futlyary"
+  },
+  {
+    "externalId": 256,
+    "categoryId": 59,
+    "name": "Перчатки и варежки",
+    "type": "subcategory",
+    "slug": "perchatki-i-varezhki"
+  },
+  {
+    "externalId": 257,
+    "categoryId": 59,
+    "name": "Ремни и пояса",
+    "type": "subcategory",
+    "slug": "remni-i-poyasa"
+  },
+  {
+    "externalId": 258,
+    "categoryId": 59,
+    "name": "Рюкзаки",
+    "type": "subcategory",
+    "slug": "ryukzaki"
+  },
+  {
+    "externalId": 259,
+    "categoryId": 59,
+    "name": "Сумки, барсетки",
+    "type": "subcategory",
+    "slug": "sumki-barsetki"
+  },
+  {
+    "externalId": 260,
+    "categoryId": 59,
+    "name": "Галстуки и бабочки",
+    "type": "subcategory",
+    "slug": "galstuki-i-babochki"
+  },
+  {
+    "externalId": 261,
+    "categoryId": 59,
+    "name": "Украшения",
+    "type": "subcategory",
+    "slug": "ukrasheniya"
+  },
+  {
+    "externalId": 262,
+    "categoryId": 59,
+    "name": "Часы",
+    "type": "subcategory",
+    "slug": "chasy"
+  },
+  {
+    "externalId": 263,
+    "categoryId": 59,
+    "name": "Шарфы и платки",
+    "type": "subcategory",
+    "slug": "sharfy-i-platki"
+  },
+  {
+    "externalId": 264,
+    "categoryId": 59,
+    "name": "Прочие аксессуары",
+    "type": "subcategory",
+    "slug": "prochie-aksessuary"
+  },
+
+  {
+    "externalId": 265,
+    "name": "Брови",
+    "type": "subcategory",
+    "slug": "brows",
+    "categoryId": 60
+  },
+  {
+    "externalId": 266,
+    "name": "Глаза",
+    "type": "subcategory",
+    "slug": "eyes",
+    "categoryId": 60
+  },
+  {
+    "externalId": 267,
+    "name": "Губы",
+    "type": "subcategory",
+    "slug": "lips",
+    "categoryId": 60
+  },
+  {
+    "externalId": 268,
+    "name": "Лицо",
+    "type": "subcategory",
+    "slug": "face",
+    "categoryId": 60
+  },
+
+  {
+    "externalId": 269,
+    "name": "Лицо",
+    "type": "subcategory",
+    "slug": "face-care",
+    "categoryId": 61
+  },
+  {
+    "externalId": 270,
+    "name": "Руки",
+    "type": "subcategory",
+    "slug": "hands",
+    "categoryId": 61
+  },
+  {
+    "externalId": 271,
+    "name": "Ноги",
+    "type": "subcategory",
+    "slug": "legs",
+    "categoryId": 61
+  },
+  {
+    "externalId": 272,
+    "name": "Тело",
+    "type": "subcategory",
+    "slug": "body",
+    "categoryId": 61
+  },
+
+  {
+    "externalId": 273,
+    "name": "Гель-лаки",
+    "type": "subcategory",
+    "slug": "gel-polish",
+    "categoryId": 63
+  },
+  {
+    "externalId": 274,
+    "name": "Лаки",
+    "type": "subcategory",
+    "slug": "nail-polish",
+    "categoryId": 63
+  },
+  {
+    "externalId": 275,
+    "name": "Средства для ногтей",
+    "type": "subcategory",
+    "slug": "nail-care",
+    "categoryId": 63
+  },
+  {
+    "externalId": 276,
+    "name": "Дизайн ногтей",
+    "type": "subcategory",
+    "slug": "nail-design",
+    "categoryId": 63
+  },
+  {
+    "externalId": 277,
+    "name": "Наращивание ногтей",
+    "type": "subcategory",
+    "slug": "nail-extension",
+    "categoryId": 63
+  },
+  {
+    "externalId": 278,
+    "name": "Инструменты",
+    "type": "subcategory",
+    "slug": "tools",
+    "categoryId": 63
+  },
+  {
+    "externalId": 279,
+    "name": "Наборы",
+    "type": "subcategory",
+    "slug": "kits",
+    "categoryId": 63
+  },
+  {
+    "externalId": 280,
+    "name": "Лампы для маникюра",
+    "type": "subcategory",
+    "slug": "nail-lamps",
+    "categoryId": 63
+  },
+  {
+    "externalId": 281,
+    "name": "Подставки маникюрные",
+    "type": "subcategory",
+    "slug": "manicure-stands",
+    "categoryId": 63
+  },
+  {
+    "externalId": 282,
+    "name": "Пылесосы для маникюра",
+    "type": "subcategory",
+    "slug": "manicure-vacuums",
+    "categoryId": 63
+  },
+  {
+    "externalId": 283,
+    "name": "Аппараты для маникюра и педикюра",
+    "type": "subcategory",
+    "slug": "manicure-devices",
+    "categoryId": 63
+  },
+  {
+    "externalId": 284,
+    "name": "Стерилизаторы",
+    "type": "subcategory",
+    "slug": "sterilizers",
+    "categoryId": 63
+  },
+  {
+    "externalId": 285,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 63
+  },
+
+  {
+    "externalId": 286,
+    "name": "Уход за волосами",
+    "type": "subcategory",
+    "slug": "hair-care",
+    "categoryId": 64
+  },
+  {
+    "externalId": 287,
+    "name": "Средства для укладки",
+    "type": "subcategory",
+    "slug": "styling",
+    "categoryId": 64
+  },
+  {
+    "externalId": 288,
+    "name": "Средства для окрашивания",
+    "type": "subcategory",
+    "slug": "hair-coloring",
+    "categoryId": 64
+  },
+  {
+    "externalId": 289,
+    "name": "Наращивание волос",
+    "type": "subcategory",
+    "slug": "hair-extension",
+    "categoryId": 64
+  },
+  {
+    "externalId": 290,
+    "name": "Расчески и парикмахерские инструменты",
+    "type": "subcategory",
+    "slug": "hair-tools",
+    "categoryId": 64
+  },
+
+  {
+    "externalId": 291,
+    "name": "Гигиена полости рта",
+    "type": "subcategory",
+    "slug": "oral-hygiene",
+    "categoryId": 65
+  },
+  {
+    "externalId": 292,
+    "name": "Средства личной гигиены",
+    "type": "subcategory",
+    "slug": "personal-hygiene",
+    "categoryId": 65
+  },
+  {
+    "externalId": 293,
+    "name": "Дезодоранты,антиперспиранты",
+    "type": "subcategory",
+    "slug": "deodorants",
+    "categoryId": 65
+  },
+  {
+    "externalId": 294,
+    "name": "Товары для бритья",
+    "type": "subcategory",
+    "slug": "shaving",
+    "categoryId": 65
+  },
+  {
+    "externalId": 295,
+    "name": "Средства для депиляции",
+    "type": "subcategory",
+    "slug": "depilation",
+    "categoryId": 65
+  },
+  {
+    "externalId": 296,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 65
+  },
+
+  {
+    "externalId": 297,
+    "name": "Татуировки, татуаж",
+    "type": "subcategory",
+    "slug": "tattoo",
+    "categoryId": 66
+  },
+  {
+    "externalId": 298,
+    "name": "Для ресниц",
+    "type": "subcategory",
+    "slug": "lashes",
+    "categoryId": 66
+  },
+  {
+    "externalId": 299,
+    "name": "Для бровей",
+    "type": "subcategory",
+    "slug": "brows-tools",
+    "categoryId": 66
+  },
+
+  {
+    "externalId": 300,
+    "name": "Зеркала",
+    "type": "subcategory",
+    "slug": "mirrors",
+    "categoryId": 67
+  },
+  {
+    "externalId": 301,
+    "name": "Кисти",
+    "type": "subcategory",
+    "slug": "brushes",
+    "categoryId": 67
+  },
+  {
+    "externalId": 302,
+    "name": "Щипчики",
+    "type": "subcategory",
+    "slug": "tweezers",
+    "categoryId": 67
+  },
+  {
+    "externalId": 303,
+    "name": "Точилки",
+    "type": "subcategory",
+    "slug": "sharpeners",
+    "categoryId": 67
+  },
+  {
+    "externalId": 304,
+    "name": "Органайзеры для косметики",
+    "type": "subcategory",
+    "slug": "organizers",
+    "categoryId": 67
+  },
+  {
+    "externalId": 305,
+    "name": "Спонжи",
+    "type": "subcategory",
+    "slug": "sponges",
+    "categoryId": 67
+  },
+  {
+    "externalId": 306,
+    "name": "Прочие косметические аксессуары",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 67
+  },
+
+  {
+    "externalId": 307,
+    "name": "Бандажи, корсеты",
+    "type": "subcategory",
+    "slug": "bandages",
+    "categoryId": 68
+  },
+  {
+    "externalId": 308,
+    "name": "Брейсы",
+    "type": "subcategory",
+    "slug": "braces",
+    "categoryId": 68
+  },
+  {
+    "externalId": 309,
+    "name": "Инвалидные коляски",
+    "type": "subcategory",
+    "slug": "wheelchairs",
+    "categoryId": 68
+  },
+  {
+    "externalId": 310,
+    "name": "Компрессионный трикотаж",
+    "type": "subcategory",
+    "slug": "compression-wear",
+    "categoryId": 68
+  },
+  {
+    "externalId": 311,
+    "name": "Костыли, ходунки, трости",
+    "type": "subcategory",
+    "slug": "walking-aids",
+    "categoryId": 68
+  },
+  {
+    "externalId": 312,
+    "name": "Медицинские кровати, матрасы",
+    "type": "subcategory",
+    "slug": "medical-beds",
+    "categoryId": 68
+  },
+  {
+    "externalId": 313,
+    "name": "Ортезы",
+    "type": "subcategory",
+    "slug": "orthoses",
+    "categoryId": 68
+  },
+  {
+    "externalId": 314,
+    "name": "Ортопедические стельки",
+    "type": "subcategory",
+    "slug": "insoles",
+    "categoryId": 68
+  },
+  {
+    "externalId": 315,
+    "name": "Очки",
+    "type": "subcategory",
+    "slug": "glasses",
+    "categoryId": 68
+  },
+  {
+    "externalId": 316,
+    "name": "Ручные массажеры, аксессуары",
+    "type": "subcategory",
+    "slug": "massagers",
+    "categoryId": 68
+  },
+  {
+    "externalId": 317,
+    "name": "Слуховые аппараты",
+    "type": "subcategory",
+    "slug": "hearing-aids",
+    "categoryId": 68
+  },
+  {
+    "externalId": 318,
+    "name": "Уход за больными",
+    "type": "subcategory",
+    "slug": "patient-care",
+    "categoryId": 68
+  },
+  {
+    "externalId": 319,
+    "name": "Прочие медицинские товары",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 68
+  },
+
+  {
+    "externalId": 320,
+    "name": "Верхняя одежда",
+    "type": "subcategory",
+    "slug": "outerwear",
+    "categoryId": 70
+  },
+  {
+    "externalId": 321,
+    "name": "Комбинезоны",
+    "type": "subcategory",
+    "slug": "jumpsuits",
+    "categoryId": 70
+  },
+  {
+    "externalId": 322,
+    "name": "Костюмчики",
+    "type": "subcategory",
+    "slug": "sets",
+    "categoryId": 70
+  },
+  {
+    "externalId": 323,
+    "name": "Кофточки",
+    "type": "subcategory",
+    "slug": "sweaters",
+    "categoryId": 70
+  },
+  {
+    "externalId": 324,
+    "name": "Джинсы, брюки, шорты",
+    "type": "subcategory",
+    "slug": "pants-shorts",
+    "categoryId": 70
+  },
+  {
+    "externalId": 325,
+    "name": "Платья, юбки",
+    "type": "subcategory",
+    "slug": "dresses-skirts",
+    "categoryId": 70
+  },
+  {
+    "externalId": 326,
+    "name": "Майки, боди",
+    "type": "subcategory",
+    "slug": "tshirts-bodysuits",
+    "categoryId": 70
+  },
+  {
+    "externalId": 327,
+    "name": "Слипы",
+    "type": "subcategory",
+    "slug": "sleepsuits",
+    "categoryId": 70
+  },
+  {
+    "externalId": 328,
+    "name": "Ползунки",
+    "type": "subcategory",
+    "slug": "rompers",
+    "categoryId": 70
+  },
+  {
+    "externalId": 329,
+    "name": "Белье, пижамы, халаты",
+    "type": "subcategory",
+    "slug": "underwear-sleepwear",
+    "categoryId": 70
+  },
+  {
+    "externalId": 330,
+    "name": "Носки, колготки, леггинсы",
+    "type": "subcategory",
+    "slug": "socks-leggings",
+    "categoryId": 70
+  },
+  {
+    "externalId": 331,
+    "name": "Одежда для крещения",
+    "type": "subcategory",
+    "slug": "christening-clothes",
+    "categoryId": 70
+  },
+  {
+    "externalId": 332,
+    "name": "Прочая одежда до 1 года",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 70
+  },
+
+  {
+    "externalId": 333,
+    "name": "Верхняя одежда",
+    "type": "subcategory",
+    "slug": "outerwear",
+    "categoryId": 71
+  },
+  {
+    "externalId": 334,
+    "name": "Комбинезоны",
+    "type": "subcategory",
+    "slug": "jumpsuits",
+    "categoryId": 71
+  },
+  {
+    "externalId": 335,
+    "name": "Костюмы, пиджаки, блузки",
+    "type": "subcategory",
+    "slug": "suits-blouses",
+    "categoryId": 71
+  },
+  {
+    "externalId": 336,
+    "name": "Кофты, свитеры, жилетки",
+    "type": "subcategory",
+    "slug": "sweaters-vests",
+    "categoryId": 71
+  },
+  {
+    "externalId": 337,
+    "name": "Джинсы, брюки, шорты",
+    "type": "subcategory",
+    "slug": "pants-shorts",
+    "categoryId": 71
+  },
+  {
+    "externalId": 338,
+    "name": "Платья, сарафаны, юбки",
+    "type": "subcategory",
+    "slug": "dresses-skirts",
+    "categoryId": 71
+  },
+  {
+    "externalId": 339,
+    "name": "Рубашки, майки, топы",
+    "type": "subcategory",
+    "slug": "shirts-tops",
+    "categoryId": 71
+  },
+  {
+    "externalId": 340,
+    "name": "Спортивная одежда",
+    "type": "subcategory",
+    "slug": "sportswear",
+    "categoryId": 71
+  },
+  {
+    "externalId": 341,
+    "name": "Белье, пижамы, халаты",
+    "type": "subcategory",
+    "slug": "underwear-sleepwear",
+    "categoryId": 71
+  },
+  {
+    "externalId": 342,
+    "name": "Носки, колготки, леггинсы",
+    "type": "subcategory",
+    "slug": "socks-leggings",
+    "categoryId": 71
+  },
+  {
+    "externalId": 343,
+    "name": "Купальники",
+    "type": "subcategory",
+    "slug": "swimwear",
+    "categoryId": 71
+  },
+  {
+    "externalId": 344,
+    "name": "Прочая одежда для девочек",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 71
+  },
+
+  {
+    "externalId": 345,
+    "name": "Верхняя одежда",
+    "type": "subcategory",
+    "slug": "outerwear",
+    "categoryId": 72
+  },
+  {
+    "externalId": 346,
+    "name": "Комбинезоны",
+    "type": "subcategory",
+    "slug": "jumpsuits",
+    "categoryId": 72
+  },
+  {
+    "externalId": 347,
+    "name": "Костюмы, пиджаки, рубашки",
+    "type": "subcategory",
+    "slug": "suits-shirts",
+    "categoryId": 72
+  },
+  {
+    "externalId": 348,
+    "name": "Кофты, свитеры, жилетки",
+    "type": "subcategory",
+    "slug": "sweaters-vests",
+    "categoryId": 72
+  },
+  {
+    "externalId": 349,
+    "name": "Худи, толстовки, свитшоты",
+    "type": "subcategory",
+    "slug": "hoodies",
+    "categoryId": 72
+  },
+  {
+    "externalId": 350,
+    "name": "Джинсы, брюки, шорты",
+    "type": "subcategory",
+    "slug": "pants-shorts",
+    "categoryId": 72
+  },
+  {
+    "externalId": 351,
+    "name": "Майки, футболки, лонгсливы",
+    "type": "subcategory",
+    "slug": "tshirts",
+    "categoryId": 72
+  },
+  {
+    "externalId": 352,
+    "name": "Спортивная одежда",
+    "type": "subcategory",
+    "slug": "sportswear",
+    "categoryId": 72
+  },
+  {
+    "externalId": 353,
+    "name": "Белье, пижамы, халаты",
+    "type": "subcategory",
+    "slug": "underwear-sleepwear",
+    "categoryId": 72
+  },
+  {
+    "externalId": 354,
+    "name": "Носки, колготки, леггинсы",
+    "type": "subcategory",
+    "slug": "socks-leggings",
+    "categoryId": 72
+  },
+  {
+    "externalId": 355,
+    "name": "Плавки",
+    "type": "subcategory",
+    "slug": "swimwear",
+    "categoryId": 72
+  },
+  {
+    "externalId": 356,
+    "name": "Прочая одежда для мальчиков",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 72
+  },
+
+  {
+    "externalId": 357,
+    "name": "Аксессуары для волос",
+    "type": "subcategory",
+    "slug": "hair-accessories",
+    "categoryId": 73
+  },
+  {
+    "externalId": 358,
+    "name": "Брелоки",
+    "type": "subcategory",
+    "slug": "keychains",
+    "categoryId": 73
+  },
+  {
+    "externalId": 359,
+    "name": "Галстуки и бабочки",
+    "type": "subcategory",
+    "slug": "ties-bowties",
+    "categoryId": 73
+  },
+  {
+    "externalId": 360,
+    "name": "Головные уборы",
+    "type": "subcategory",
+    "slug": "hats",
+    "categoryId": 73
+  },
+  {
+    "externalId": 361,
+    "name": "Шарфы и платки",
+    "type": "subcategory",
+    "slug": "scarves",
+    "categoryId": 73
+  },
+  {
+    "externalId": 362,
+    "name": "Рюкзаки",
+    "type": "subcategory",
+    "slug": "backpacks",
+    "categoryId": 73
+  },
+  {
+    "externalId": 363,
+    "name": "Сумки",
+    "type": "subcategory",
+    "slug": "bags",
+    "categoryId": 73
+  },
+  {
+    "externalId": 364,
+    "name": "Украшения",
+    "type": "subcategory",
+    "slug": "jewelry",
+    "categoryId": 73
+  },
+  {
+    "externalId": 365,
+    "name": "Очки",
+    "type": "subcategory",
+    "slug": "glasses",
+    "categoryId": 73
+  },
+  {
+    "externalId": 366,
+    "name": "Часы",
+    "type": "subcategory",
+    "slug": "watches",
+    "categoryId": 73
+  },
+  {
+    "externalId": 367,
+    "name": "Перчатки и варежки",
+    "type": "subcategory",
+    "slug": "gloves",
+    "categoryId": 73
+  },
+  {
+    "externalId": 368,
+    "name": "Ремни и пояса",
+    "type": "subcategory",
+    "slug": "belts",
+    "categoryId": 73
+  },
+  {
+    "externalId": 369,
+    "name": "Зонтики",
+    "type": "subcategory",
+    "slug": "umbrellas",
+    "categoryId": 73
+  },
+  {
+    "externalId": 370,
+    "name": "Прочие аксессуары для детей",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 73
+  },
+
+  {
+    "externalId": 371,
+    "name": "Босоножки, сандалии",
+    "type": "subcategory",
+    "slug": "sandals",
+    "categoryId": 74
+  },
+  {
+    "externalId": 372,
+    "name": "Туфли",
+    "type": "subcategory",
+    "slug": "shoes",
+    "categoryId": 74
+  },
+  {
+    "externalId": 373,
+    "name": "Ботинки и полуботинки",
+    "type": "subcategory",
+    "slug": "boots",
+    "categoryId": 74
+  },
+  {
+    "externalId": 374,
+    "name": "Полусапожки",
+    "type": "subcategory",
+    "slug": "ankle-boots",
+    "categoryId": 74
+  },
+  {
+    "externalId": 375,
+    "name": "Сапоги, валенки",
+    "type": "subcategory",
+    "slug": "winter-boots",
+    "categoryId": 74
+  },
+  {
+    "externalId": 376,
+    "name": "Тапочки, шлепанцы",
+    "type": "subcategory",
+    "slug": "slippers",
+    "categoryId": 74
+  },
+  {
+    "externalId": 377,
+    "name": "Спортивная обувь",
+    "type": "subcategory",
+    "slug": "sports-shoes",
+    "categoryId": 74
+  },
+  {
+    "externalId": 378,
+    "name": "Пинетки",
+    "type": "subcategory",
+    "slug": "booties",
+    "categoryId": 74
+  },
+  {
+    "externalId": 379,
+    "name": "Прочая детская обувь",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 74
+  },
+
+  {
+    "externalId": 380,
+    "name": "Ходунки",
+    "type": "subcategory",
+    "slug": "walkers",
+    "categoryId": 75
+  },
+  {
+    "externalId": 381,
+    "name": "Шезлонги",
+    "type": "subcategory",
+    "slug": "bouncers",
+    "categoryId": 75
+  },
+  {
+    "externalId": 382,
+    "name": "Качели",
+    "type": "subcategory",
+    "slug": "swings",
+    "categoryId": 75
+  },
+
+  {
+    "externalId": 383,
+    "name": "Люльки",
+    "type": "subcategory",
+    "slug": "carrycots",
+    "categoryId": 76
+  },
+  {
+    "externalId": 384,
+    "name": "Модульные (2 в 1, 3 в 1)",
+    "type": "subcategory",
+    "slug": "modular",
+    "categoryId": 76
+  },
+  {
+    "externalId": 385,
+    "name": "Джипы, трансформеры",
+    "type": "subcategory",
+    "slug": "transformers",
+    "categoryId": 76
+  },
+  {
+    "externalId": 386,
+    "name": "Прогулочные",
+    "type": "subcategory",
+    "slug": "strollers",
+    "categoryId": 76
+  },
+  {
+    "externalId": 387,
+    "name": "Трости",
+    "type": "subcategory",
+    "slug": "umbrella-strollers",
+    "categoryId": 76
+  },
+  {
+    "externalId": 388,
+    "name": "Для двойни",
+    "type": "subcategory",
+    "slug": "double",
+    "categoryId": 76
+  },
+  {
+    "externalId": 389,
+    "name": "Аксессуары для колясок",
+    "type": "subcategory",
+    "slug": "stroller-accessories",
+    "categoryId": 76
+  },
+  {
+    "externalId": 390,
+    "name": "Запчасти для колясок",
+    "type": "subcategory",
+    "slug": "stroller-parts",
+    "categoryId": 76
+  },
+  {
+    "externalId": 391,
+    "name": "Переноски",
+    "type": "subcategory",
+    "slug": "carriers",
+    "categoryId": 76
+  },
+
+  {
+    "externalId": 392,
+    "name": "Люлька",
+    "type": "subcategory",
+    "slug": "infant-seat",
+    "categoryId": 77
+  },
+  {
+    "externalId": 393,
+    "name": "Кресло",
+    "type": "subcategory",
+    "slug": "car-seat",
+    "categoryId": 77
+  },
+  {
+    "externalId": 394,
+    "name": "Бустер",
+    "type": "subcategory",
+    "slug": "booster",
+    "categoryId": 77
+  },
+  {
+    "externalId": 395,
+    "name": "Трансформер",
+    "type": "subcategory",
+    "slug": "transformer",
+    "categoryId": 77
+  },
+
+  {
+    "externalId": 396,
+    "name": "Подгузники и гигиена",
+    "type": "subcategory",
+    "slug": "diapers-hygiene",
+    "categoryId": 78
+  },
+  {
+    "externalId": 397,
+    "name": "Горшки и сиденья",
+    "type": "subcategory",
+    "slug": "potties-seats",
+    "categoryId": 78
+  },
+  {
+    "externalId": 398,
+    "name": "Детское питание",
+    "type": "subcategory",
+    "slug": "baby-food",
+    "categoryId": 78
+  },
+  {
+    "externalId": 399,
+    "name": "Пеленальные столы и матрасы",
+    "type": "subcategory",
+    "slug": "changing-tables-mattresses",
+    "categoryId": 78
+  },
+  {
+    "externalId": 400,
+    "name": "Принадлежности для купания",
+    "type": "subcategory",
+    "slug": "bath-accessories",
+    "categoryId": 78
+  },
+  {
+    "externalId": 401,
+    "name": "Принадлежности для кормления",
+    "type": "subcategory",
+    "slug": "feeding-accessories",
+    "categoryId": 78
+  },
+  {
+    "externalId": 402,
+    "name": "Детские аспираторы",
+    "type": "subcategory",
+    "slug": "baby-aspirators",
+    "categoryId": 78
+  },
+  {
+    "externalId": 403,
+    "name": "Весы для новорожденных",
+    "type": "subcategory",
+    "slug": "baby-scales",
+    "categoryId": 78
+  },
+  {
+    "externalId": 404,
+    "name": "Косметика для детей",
+    "type": "subcategory",
+    "slug": "baby-cosmetics",
+    "categoryId": 78
+  },
+  {
+    "externalId": 405,
+    "name": "Безопасность ребёнка",
+    "type": "subcategory",
+    "slug": "baby-safety",
+    "categoryId": 78
+  },
+  {
+    "externalId": 406,
+    "name": "Прочее для кормления и ухода",
+    "type": "subcategory",
+    "slug": "other-feeding-care",
+    "categoryId": 78
+  },
+
+  {
+    "externalId": 407,
+    "name": "Балдахины",
+    "type": "subcategory",
+    "slug": "canopies",
+    "categoryId": 79
+  },
+  {
+    "externalId": 408,
+    "name": "Бортики",
+    "type": "subcategory",
+    "slug": "crib-bumpers",
+    "categoryId": 79
+  },
+  {
+    "externalId": 409,
+    "name": "Коконы",
+    "type": "subcategory",
+    "slug": "baby-nests",
+    "categoryId": 79
+  },
+  {
+    "externalId": 410,
+    "name": "Конверты",
+    "type": "subcategory",
+    "slug": "envelopes",
+    "categoryId": 79
+  },
+  {
+    "externalId": 411,
+    "name": "Одеяла, подушки",
+    "type": "subcategory",
+    "slug": "blankets-pillows",
+    "categoryId": 79
+  },
+  {
+    "externalId": 412,
+    "name": "Пеленки",
+    "type": "subcategory",
+    "slug": "diapers-cloth",
+    "categoryId": 79
+  },
+  {
+    "externalId": 413,
+    "name": "Пледы",
+    "type": "subcategory",
+    "slug": "plaids",
+    "categoryId": 79
+  },
+  {
+    "externalId": 414,
+    "name": "Полотенца",
+    "type": "subcategory",
+    "slug": "towels",
+    "categoryId": 79
+  },
+  {
+    "externalId": 415,
+    "name": "Постельное белье",
+    "type": "subcategory",
+    "slug": "bed-linen",
+    "categoryId": 79
+  },
+  {
+    "externalId": 416,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-textile",
+    "categoryId": 79
+  },
+
+  {
+    "externalId": 417,
+    "name": "Сумки-кенгуру и слинги",
+    "type": "subcategory",
+    "slug": "baby-carriers-slings",
+    "categoryId": 80
+  },
+
+  {
+    "externalId": 418,
+    "name": "Игрушки",
+    "type": "subcategory",
+    "slug": "toys",
+    "categoryId": 81
+  },
+  {
+    "externalId": 419,
+    "name": "Книги, раскраски",
+    "type": "subcategory",
+    "slug": "books-coloring",
+    "categoryId": 81
+  },
+
+  {
+    "externalId": 420,
+    "name": "Детский транспорт",
+    "type": "subcategory",
+    "slug": "kids-transport",
+    "categoryId": 82
+  },
+
+  {
+    "externalId": 421,
+    "name": "Товары для мам",
+    "type": "subcategory",
+    "slug": "mom-products",
+    "categoryId": 83
+  },
+
+  {
+    "externalId": 422,
+    "name": "Белье",
+    "type": "subcategory",
+    "slug": "underwear",
+    "categoryId": 84
+  },
+  {
+    "externalId": 423,
+    "name": "Блузки",
+    "type": "subcategory",
+    "slug": "blouses",
+    "categoryId": 84
+  },
+  {
+    "externalId": 424,
+    "name": "Верхняя одежда",
+    "type": "subcategory",
+    "slug": "outerwear",
+    "categoryId": 84
+  },
+  {
+    "externalId": 425,
+    "name": "Джинсы, брюки",
+    "type": "subcategory",
+    "slug": "jeans-pants",
+    "categoryId": 84
+  },
+  {
+    "externalId": 426,
+    "name": "Домашняя одежда",
+    "type": "subcategory",
+    "slug": "homewear",
+    "categoryId": 84
+  },
+  {
+    "externalId": 427,
+    "name": "Колготки, леггинсы, носки",
+    "type": "subcategory",
+    "slug": "tights-leggings-socks",
+    "categoryId": 84
+  },
+  {
+    "externalId": 428,
+    "name": "Комбинезоны",
+    "type": "subcategory",
+    "slug": "jumpsuits",
+    "categoryId": 84
+  },
+  {
+    "externalId": 429,
+    "name": "Костюмы, пиджаки и жакеты",
+    "type": "subcategory",
+    "slug": "suits-jackets",
+    "categoryId": 84
+  },
+  {
+    "externalId": 430,
+    "name": "Купальники",
+    "type": "subcategory",
+    "slug": "swimwear",
+    "categoryId": 84
+  },
+  {
+    "externalId": 431,
+    "name": "Майки, топы, лонгсливы",
+    "type": "subcategory",
+    "slug": "tops-longslives",
+    "categoryId": 84
+  },
+  {
+    "externalId": 432,
+    "name": "Платья, сарафаны",
+    "type": "subcategory",
+    "slug": "dresses",
+    "categoryId": 84
+  },
+  {
+    "externalId": 433,
+    "name": "Рубашки",
+    "type": "subcategory",
+    "slug": "shirts",
+    "categoryId": 84
+  },
+  {
+    "externalId": 434,
+    "name": "Худи, свитеры, толстовки",
+    "type": "subcategory",
+    "slug": "hoodies-sweaters",
+    "categoryId": 84
+  },
+  {
+    "externalId": 435,
+    "name": "Спортивная одежда",
+    "type": "subcategory",
+    "slug": "sportswear",
+    "categoryId": 84
+  },
+  {
+    "externalId": 436,
+    "name": "Туники",
+    "type": "subcategory",
+    "slug": "tunics",
+    "categoryId": 84
+  },
+  {
+    "externalId": 437,
+    "name": "Шорты, юбки",
+    "type": "subcategory",
+    "slug": "shorts-skirts",
+    "categoryId": 84
+  },
+
+  {
+    "externalId": 438,
+    "name": "Прочие товары для детей",
+    "type": "subcategory",
+    "slug": "other-kids",
+    "categoryId": 85
+  },
+
+  {
+    "externalId": 439,
+    "name": "Банкетки",
+    "type": "subcategory",
+    "slug": "benches",
+    "categoryId": 86
+  },
+  {
+    "externalId": 440,
+    "name": "Пуфики",
+    "type": "subcategory",
+    "slug": "poufs",
+    "categoryId": 86
+  },
+  {
+    "externalId": 441,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 86
+  },
+
+  {
+    "externalId": 442,
+    "name": "Вешалки",
+    "type": "subcategory",
+    "slug": "hangers",
+    "categoryId": 87
+  },
+  {
+    "externalId": 443,
+    "name": "Наборы для прихожей",
+    "type": "subcategory",
+    "slug": "hallway-sets",
+    "categoryId": 87
+  },
+  {
+    "externalId": 444,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 87
+  },
+
+  {
+    "externalId": 445,
+    "name": "Кроватки для новорожденных",
+    "type": "subcategory",
+    "slug": "baby-cribs",
+    "categoryId": 88
+  },
+  {
+    "externalId": 446,
+    "name": "Детские кровати",
+    "type": "subcategory",
+    "slug": "kids-beds",
+    "categoryId": 88
+  },
+  {
+    "externalId": 447,
+    "name": "Манежи",
+    "type": "subcategory",
+    "slug": "playpens",
+    "categoryId": 88
+  },
+  {
+    "externalId": 448,
+    "name": "Детские матрасы",
+    "type": "subcategory",
+    "slug": "kids-mattresses",
+    "categoryId": 88
+  },
+  {
+    "externalId": 449,
+    "name": "Детские комоды",
+    "type": "subcategory",
+    "slug": "kids-dressers",
+    "categoryId": 88
+  },
+  {
+    "externalId": 450,
+    "name": "Наборы детской мебели",
+    "type": "subcategory",
+    "slug": "kids-furniture-sets",
+    "categoryId": 88
+  },
+  {
+    "externalId": 451,
+    "name": "Детские парты, столы, стулья",
+    "type": "subcategory",
+    "slug": "kids-tables-chairs",
+    "categoryId": 88
+  },
+  {
+    "externalId": 452,
+    "name": "Детские шкафы, стеллажи, полки",
+    "type": "subcategory",
+    "slug": "kids-storage",
+    "categoryId": 88
+  },
+  {
+    "externalId": 453,
+    "name": "Детские диваны и кресла",
+    "type": "subcategory",
+    "slug": "kids-sofas-chairs",
+    "categoryId": 88
+  },
+  {
+    "externalId": 454,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 88
+  },
+
+  {
+    "externalId": 455,
+    "name": "Комоды",
+    "type": "subcategory",
+    "slug": "dressers",
+    "categoryId": 89
+  },
+
+  {
+    "externalId": 456,
+    "name": "Кровати",
+    "type": "subcategory",
+    "slug": "beds",
+    "categoryId": 90
+  },
+  {
+    "externalId": 457,
+    "name": "Матрасы",
+    "type": "subcategory",
+    "slug": "mattresses",
+    "categoryId": 90
+  },
+  {
+    "externalId": 458,
+    "name": "Основания для кроватей",
+    "type": "subcategory",
+    "slug": "bed-bases",
+    "categoryId": 90
+  },
+  {
+    "externalId": 459,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 90
+  },
+
+  {
+    "externalId": 460,
+    "name": "Кухни",
+    "type": "subcategory",
+    "slug": "kitchens",
+    "categoryId": 91
+  },
+
+  {
+    "externalId": 461,
+    "name": "Кухонные уголки",
+    "type": "subcategory",
+    "slug": "kitchen-corners",
+    "categoryId": 92
+  },
+
+  {
+    "externalId": 462,
+    "name": "Диваны",
+    "type": "subcategory",
+    "slug": "sofas",
+    "categoryId": 93
+  },
+  {
+    "externalId": 463,
+    "name": "Кресла",
+    "type": "subcategory",
+    "slug": "armchairs",
+    "categoryId": 93
+  },
+  {
+    "externalId": 464,
+    "name": "Мягкие уголки",
+    "type": "subcategory",
+    "slug": "corner-sofas",
+    "categoryId": 93
+  },
+  {
+    "externalId": 465,
+    "name": "Тахты",
+    "type": "subcategory",
+    "slug": "daybeds",
+    "categoryId": 93
+  },
+  {
+    "externalId": 466,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 93
+  },
+
+  {
+    "externalId": 467,
+    "name": "Полки для вина",
+    "type": "subcategory",
+    "slug": "wine-racks",
+    "categoryId": 94
+  },
+  {
+    "externalId": 468,
+    "name": "Полки для обуви",
+    "type": "subcategory",
+    "slug": "shoe-racks",
+    "categoryId": 94
+  },
+  {
+    "externalId": 469,
+    "name": "Книжные полки",
+    "type": "subcategory",
+    "slug": "bookshelves",
+    "categoryId": 94
+  },
+  {
+    "externalId": 470,
+    "name": "Стеллажи",
+    "type": "subcategory",
+    "slug": "shelving-units",
+    "categoryId": 94
+  },
+  {
+    "externalId": 471,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 94
+  },
+
+  {
+    "externalId": 472,
+    "name": "Спальные гарнитуры",
+    "type": "subcategory",
+    "slug": "bedroom-sets",
+    "categoryId": 95
+  },
+
+  {
+    "externalId": 473,
+    "name": "Стенки",
+    "type": "subcategory",
+    "slug": "wall-units",
+    "categoryId": 96
+  },
+  {
+    "externalId": 474,
+    "name": "Горки",
+    "type": "subcategory",
+    "slug": "display-units",
+    "categoryId": 96
+  },
+  {
+    "externalId": 475,
+    "name": "Секции",
+    "type": "subcategory",
+    "slug": "sections",
+    "categoryId": 96
+  },
+  {
+    "externalId": 476,
+    "name": "Модульная мебель",
+    "type": "subcategory",
+    "slug": "modular-furniture",
+    "categoryId": 96
+  },
+  {
+    "externalId": 477,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 96
+  },
+
+  {
+    "externalId": 478,
+    "name": "Компьютерные и письменные",
+    "type": "subcategory",
+    "slug": "desks",
+    "categoryId": 97
+  },
+  {
+    "externalId": 479,
+    "name": "Журнальные столики",
+    "type": "subcategory",
+    "slug": "coffee-tables",
+    "categoryId": 97
+  },
+  {
+    "externalId": 480,
+    "name": "Обеденные столы и наборы",
+    "type": "subcategory",
+    "slug": "dining-tables",
+    "categoryId": 97
+  },
+  {
+    "externalId": 481,
+    "name": "Туалетные столики",
+    "type": "subcategory",
+    "slug": "vanity-tables",
+    "categoryId": 97
+  },
+  {
+    "externalId": 482,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 97
+  },
+
+  {
+    "externalId": 483,
+    "name": "Обеденные",
+    "type": "subcategory",
+    "slug": "dining-chairs",
+    "categoryId": 98
+  },
+  {
+    "externalId": 484,
+    "name": "Барные",
+    "type": "subcategory",
+    "slug": "bar-chairs",
+    "categoryId": 98
+  },
+  {
+    "externalId": 485,
+    "name": "Мягкие",
+    "type": "subcategory",
+    "slug": "soft-chairs",
+    "categoryId": 98
+  },
+  {
+    "externalId": 486,
+    "name": "Офисные, компьютерные",
+    "type": "subcategory",
+    "slug": "office-chairs",
+    "categoryId": 98
+  },
+  {
+    "externalId": 487,
+    "name": "Детские",
+    "type": "subcategory",
+    "slug": "kids-chairs",
+    "categoryId": 98
+  },
+  {
+    "externalId": 488,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 98
+  },
+
+  {
+    "externalId": 489,
+    "name": "Тумбы под телевизор",
+    "type": "subcategory",
+    "slug": "tv-stands",
+    "categoryId": 99
+  },
+  {
+    "externalId": 490,
+    "name": "Тумбы для обуви",
+    "type": "subcategory",
+    "slug": "shoe-cabinets",
+    "categoryId": 99
+  },
+  {
+    "externalId": 491,
+    "name": "Прикроватные тумбы",
+    "type": "subcategory",
+    "slug": "bedside-tables",
+    "categoryId": 99
+  },
+  {
+    "externalId": 492,
+    "name": "Тумбы для ванной",
+    "type": "subcategory",
+    "slug": "bathroom-cabinets",
+    "categoryId": 99
+  },
+  {
+    "externalId": 493,
+    "name": "Буфет кухонный",
+    "type": "subcategory",
+    "slug": "kitchen-buffets",
+    "categoryId": 99
+  },
+  {
+    "externalId": 494,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 99
+  },
+
+  {
+    "externalId": 495,
+    "name": "Распашные шкафы",
+    "type": "subcategory",
+    "slug": "hinged-wardrobes",
+    "categoryId": 100
+  },
+  {
+    "externalId": 496,
+    "name": "Шкафы-купе",
+    "type": "subcategory",
+    "slug": "sliding-wardrobes",
+    "categoryId": 100
+  },
+  {
+    "externalId": 497,
+    "name": "Шкафы-пеналы",
+    "type": "subcategory",
+    "slug": "cabinet-columns",
+    "categoryId": 100
+  },
+  {
+    "externalId": 498,
+    "name": "Угловые шкафы",
+    "type": "subcategory",
+    "slug": "corner-wardrobes",
+    "categoryId": 100
+  },
+  {
+    "externalId": 499,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 100
+  },
+
+  {
+    "externalId": 500,
+    "name": "Сейфы",
+    "type": "subcategory",
+    "slug": "safes",
+    "categoryId": 101
+  },
+  {
+    "externalId": 501,
+    "name": "Почтовые ящики",
+    "type": "subcategory",
+    "slug": "mailboxes",
+    "categoryId": 101
+  },
+  {
+    "externalId": 502,
+    "name": "Мебельные замки, защелки",
+    "type": "subcategory",
+    "slug": "locks-latches",
+    "categoryId": 101
+  },
+  {
+    "externalId": 503,
+    "name": "Мебельные фасады и двери",
+    "type": "subcategory",
+    "slug": "facades-doors",
+    "categoryId": 101
+  },
+  {
+    "externalId": 504,
+    "name": "Петли, опоры, держатели",
+    "type": "subcategory",
+    "slug": "hinges-supports",
+    "categoryId": 101
+  },
+  {
+    "externalId": 505,
+    "name": "Подстолья и столешницы",
+    "type": "subcategory",
+    "slug": "table-bases-tops",
+    "categoryId": 101
+  },
+  {
+    "externalId": 506,
+    "name": "Крючки, вешалки",
+    "type": "subcategory",
+    "slug": "hooks-hangers",
+    "categoryId": 101
+  },
+  {
+    "externalId": 507,
+    "name": "Фурнитура для шкафов",
+    "type": "subcategory",
+    "slug": "wardrobe-fittings",
+    "categoryId": 101
+  },
+  {
+    "externalId": 508,
+    "name": "Направляющие для ящиков",
+    "type": "subcategory",
+    "slug": "drawer-slides",
+    "categoryId": 101
+  },
+  {
+    "externalId": 509,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 101
+  },
+
+  {
+    "externalId": 510,
+    "name": "Вазы",
+    "type": "subcategory",
+    "slug": "vases",
+    "categoryId": 103
+  },
+  {
+    "externalId": 511,
+    "name": "Зеркала",
+    "type": "subcategory",
+    "slug": "mirrors",
+    "categoryId": 103
+  },
+  {
+    "externalId": 512,
+    "name": "Искусственные цветы",
+    "type": "subcategory",
+    "slug": "artificial-flowers",
+    "categoryId": 103
+  },
+  {
+    "externalId": 513,
+    "name": "Картины, панно",
+    "type": "subcategory",
+    "slug": "paintings-panels",
+    "categoryId": 103
+  },
+  {
+    "externalId": 514,
+    "name": "Ключницы",
+    "type": "subcategory",
+    "slug": "key-holders",
+    "categoryId": 103
+  },
+  {
+    "externalId": 515,
+    "name": "Подставки для цветов",
+    "type": "subcategory",
+    "slug": "plant-stands",
+    "categoryId": 103
+  },
+  {
+    "externalId": 516,
+    "name": "Свечи и подсвечники",
+    "type": "subcategory",
+    "slug": "candles-holders",
+    "categoryId": 103
+  },
+  {
+    "externalId": 517,
+    "name": "Статуэтки",
+    "type": "subcategory",
+    "slug": "figurines",
+    "categoryId": 103
+  },
+  {
+    "externalId": 518,
+    "name": "Фоторамки",
+    "type": "subcategory",
+    "slug": "photo-frames",
+    "categoryId": 103
+  },
+  {
+    "externalId": 519,
+    "name": "Часы и будильники",
+    "type": "subcategory",
+    "slug": "clocks",
+    "categoryId": 103
+  },
+  {
+    "externalId": 520,
+    "name": "Шкатулки и копилки",
+    "type": "subcategory",
+    "slug": "boxes-piggy-banks",
+    "categoryId": 103
+  },
+  {
+    "externalId": 521,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 103
+  },
+
+  {
+    "externalId": 522,
+    "name": "Карнизы",
+    "type": "subcategory",
+    "slug": "curtain-rods",
+    "categoryId": 104
+  },
+  {
+    "externalId": 523,
+    "name": "Шторы",
+    "type": "subcategory",
+    "slug": "curtains",
+    "categoryId": 104
+  },
+  {
+    "externalId": 524,
+    "name": "Гардины, тюль",
+    "type": "subcategory",
+    "slug": "tulle",
+    "categoryId": 104
+  },
+  {
+    "externalId": 525,
+    "name": "Рулонные шторы",
+    "type": "subcategory",
+    "slug": "roller-blinds",
+    "categoryId": 104
+  },
+  {
+    "externalId": 526,
+    "name": "Жалюзи",
+    "type": "subcategory",
+    "slug": "blinds",
+    "categoryId": 104
+  },
+  {
+    "externalId": 527,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 104
+  },
+
+  {
+    "externalId": 528,
+    "name": "Ковры",
+    "type": "subcategory",
+    "slug": "carpets",
+    "categoryId": 105
+  },
+  {
+    "externalId": 529,
+    "name": "Декоративные подушки",
+    "type": "subcategory",
+    "slug": "decor-pillows",
+    "categoryId": 105
+  },
+  {
+    "externalId": 530,
+    "name": "Наматрасники",
+    "type": "subcategory",
+    "slug": "mattress-covers",
+    "categoryId": 105
+  },
+  {
+    "externalId": 531,
+    "name": "Одеяла",
+    "type": "subcategory",
+    "slug": "blankets",
+    "categoryId": 105
+  },
+  {
+    "externalId": 532,
+    "name": "Пледы",
+    "type": "subcategory",
+    "slug": "plaids",
+    "categoryId": 105
+  },
+  {
+    "externalId": 533,
+    "name": "Подушки для сна",
+    "type": "subcategory",
+    "slug": "sleep-pillows",
+    "categoryId": 105
+  },
+  {
+    "externalId": 534,
+    "name": "Покрывала",
+    "type": "subcategory",
+    "slug": "bedspreads",
+    "categoryId": 105
+  },
+  {
+    "externalId": 535,
+    "name": "Постельное белье",
+    "type": "subcategory",
+    "slug": "bed-linen",
+    "categoryId": 105
+  },
+  {
+    "externalId": 536,
+    "name": "Чехлы для мебели",
+    "type": "subcategory",
+    "slug": "furniture-covers",
+    "categoryId": 105
+  },
+  {
+    "externalId": 537,
+    "name": "Прочий текстиль",
+    "type": "subcategory",
+    "slug": "other-textile",
+    "categoryId": 105
+  },
+
+  {
+    "externalId": 538,
+    "name": "Люстры",
+    "type": "subcategory",
+    "slug": "chandeliers",
+    "categoryId": 106
+  },
+  {
+    "externalId": 539,
+    "name": "Светильники",
+    "type": "subcategory",
+    "slug": "lamps",
+    "categoryId": 106
+  },
+  {
+    "externalId": 540,
+    "name": "Бра",
+    "type": "subcategory",
+    "slug": "wall-lamps",
+    "categoryId": 106
+  },
+  {
+    "externalId": 541,
+    "name": "Торшеры",
+    "type": "subcategory",
+    "slug": "floor-lamps",
+    "categoryId": 106
+  },
+  {
+    "externalId": 542,
+    "name": "Настольные лампы",
+    "type": "subcategory",
+    "slug": "desk-lamps",
+    "categoryId": 106
+  },
+  {
+    "externalId": 543,
+    "name": "Ночники",
+    "type": "subcategory",
+    "slug": "night-lamps",
+    "categoryId": 106
+  },
+  {
+    "externalId": 544,
+    "name": "Споты и трек-системы",
+    "type": "subcategory",
+    "slug": "spotlights",
+    "categoryId": 106
+  },
+  {
+    "externalId": 545,
+    "name": "Плафоны",
+    "type": "subcategory",
+    "slug": "lamp-shades",
+    "categoryId": 106
+  },
+  {
+    "externalId": 546,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 106
+  },
+
+  {
+    "externalId": 547,
+    "name": "Аккумуляторы, батарейки, подзарядки",
+    "type": "subcategory",
+    "slug": "batteries",
+    "categoryId": 107
+  },
+  {
+    "externalId": 548,
+    "name": "Банки, бутылки",
+    "type": "subcategory",
+    "slug": "jars-bottles",
+    "categoryId": 107
+  },
+  {
+    "externalId": 549,
+    "name": "Ведра, тазы, емкости для мусора",
+    "type": "subcategory",
+    "slug": "buckets",
+    "categoryId": 107
+  },
+  {
+    "externalId": 550,
+    "name": "Вешалки, чехлы для одежды",
+    "type": "subcategory",
+    "slug": "hangers",
+    "categoryId": 107
+  },
+  {
+    "externalId": 551,
+    "name": "Газовые баллоны",
+    "type": "subcategory",
+    "slug": "gas-cylinders",
+    "categoryId": 107
+  },
+  {
+    "externalId": 552,
+    "name": "Гладильные доски",
+    "type": "subcategory",
+    "slug": "ironing-boards",
+    "categoryId": 107
+  },
+  {
+    "externalId": 553,
+    "name": "Губки, салфетки, тряпки",
+    "type": "subcategory",
+    "slug": "cleaning-cloths",
+    "categoryId": 107
+  },
+  {
+    "externalId": 554,
+    "name": "Канистры, бидоны",
+    "type": "subcategory",
+    "slug": "canisters",
+    "categoryId": 107
+  },
+  {
+    "externalId": 555,
+    "name": "Крючки, держатели",
+    "type": "subcategory",
+    "slug": "hooks-holders",
+    "categoryId": 107
+  },
+  {
+    "externalId": 556,
+    "name": "Метла, совки, швабры, щетки",
+    "type": "subcategory",
+    "slug": "cleaning-tools",
+    "categoryId": 107
+  },
+  {
+    "externalId": 557,
+    "name": "Мешки, пакеты, упаковка",
+    "type": "subcategory",
+    "slug": "bags-packaging",
+    "categoryId": 107
+  },
+  {
+    "externalId": 558,
+    "name": "Моющие и чистящие средства",
+    "type": "subcategory",
+    "slug": "cleaning-products",
+    "categoryId": 107
+  },
+  {
+    "externalId": 559,
+    "name": "Перчатки резиновые, хозяйственные",
+    "type": "subcategory",
+    "slug": "gloves",
+    "categoryId": 107
+  },
+  {
+    "externalId": 560,
+    "name": "Полотенца банные",
+    "type": "subcategory",
+    "slug": "towels",
+    "categoryId": 107
+  },
+  {
+    "externalId": 561,
+    "name": "Сумки, торбы, тележки",
+    "type": "subcategory",
+    "slug": "shopping-bags",
+    "categoryId": 107
+  },
+  {
+    "externalId": 562,
+    "name": "Сушилки для белья",
+    "type": "subcategory",
+    "slug": "drying-racks",
+    "categoryId": 107
+  },
+  {
+    "externalId": 563,
+    "name": "Уход и хранение обуви",
+    "type": "subcategory",
+    "slug": "shoe-care",
+    "categoryId": 107
+  },
+  {
+    "externalId": 564,
+    "name": "Ящики, коробки, корзины",
+    "type": "subcategory",
+    "slug": "storage-boxes",
+    "categoryId": 107
+  },
+  {
+    "externalId": 565,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 107
+  },
+
+  {
+    "externalId": 566,
+    "name": "Столовая посуда",
+    "type": "subcategory",
+    "slug": "tableware",
+    "categoryId": 108
+  },
+  {
+    "externalId": 567,
+    "name": "Кухонная посуда",
+    "type": "subcategory",
+    "slug": "cookware",
+    "categoryId": 108
+  },
+  {
+    "externalId": 568,
+    "name": "Кофе и чай",
+    "type": "subcategory",
+    "slug": "coffee-tea",
+    "categoryId": 108
+  },
+  {
+    "externalId": 569,
+    "name": "Стаканы, бокалы, кувшины",
+    "type": "subcategory",
+    "slug": "glasses",
+    "categoryId": 108
+  },
+  {
+    "externalId": 570,
+    "name": "Столовые приборы",
+    "type": "subcategory",
+    "slug": "cutlery",
+    "categoryId": 108
+  },
+  {
+    "externalId": 571,
+    "name": "Ножи и разделочные доски",
+    "type": "subcategory",
+    "slug": "knives-boards",
+    "categoryId": 108
+  },
+  {
+    "externalId": 572,
+    "name": "Принадлежности для выпечки",
+    "type": "subcategory",
+    "slug": "baking-tools",
+    "categoryId": 108
+  },
+  {
+    "externalId": 573,
+    "name": "Контейнеры и емкости для хранения",
+    "type": "subcategory",
+    "slug": "containers",
+    "categoryId": 108
+  },
+  {
+    "externalId": 574,
+    "name": "Текстиль для кухни",
+    "type": "subcategory",
+    "slug": "kitchen-textile",
+    "categoryId": 108
+  },
+  {
+    "externalId": 575,
+    "name": "Тёрки, измельчители, овощерезки",
+    "type": "subcategory",
+    "slug": "graters",
+    "categoryId": 108
+  },
+  {
+    "externalId": 576,
+    "name": "Аксессуары для сервировки",
+    "type": "subcategory",
+    "slug": "serving-accessories",
+    "categoryId": 108
+  },
+  {
+    "externalId": 577,
+    "name": "Сушилки",
+    "type": "subcategory",
+    "slug": "dryers",
+    "categoryId": 108
+  },
+  {
+    "externalId": 578,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other",
+    "categoryId": 108
+  },
+
+  {
+    "externalId": 579,
+    "name": "Растения",
+    "type": "subcategory",
+    "slug": "plants",
+    "categoryId": 109
+  },
+  {
+    "externalId": 580,
+    "name": "Кашпо, горшки",
+    "type": "subcategory",
+    "slug": "pots",
+    "categoryId": 109
+  },
+  {
+    "externalId": 581,
+    "name": "Уход за комнатными растениями",
+    "type": "subcategory",
+    "slug": "plant-care",
+    "categoryId": 109
+  },
+
+  {
+    "externalId": 582,
+    "name": "Бензо и электрорезы",
+    "type": "subcategory",
+    "slug": "cutting-tools",
+    "categoryId": 110
+  },
+  {
+    "externalId": 583,
+    "name": "Дрели",
+    "type": "subcategory",
+    "slug": "drills",
+    "categoryId": 110
+  },
+  {
+    "externalId": 584,
+    "name": "Зарядные устройства, аккумуляторы",
+    "type": "subcategory",
+    "slug": "chargers-batteries",
+    "categoryId": 110
+  },
+  {
+    "externalId": 585,
+    "name": "Измерительный инструмент",
+    "type": "subcategory",
+    "slug": "measuring-tools",
+    "categoryId": 110
+  },
+  {
+    "externalId": 586,
+    "name": "Ключи, отвертки",
+    "type": "subcategory",
+    "slug": "wrenches-screwdrivers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 587,
+    "name": "Краскораспылители, краскопульты",
+    "type": "subcategory",
+    "slug": "paint-sprayers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 588,
+    "name": "Кусачки, плоскогубцы, пассатижи",
+    "type": "subcategory",
+    "slug": "pliers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 589,
+    "name": "Лобзики",
+    "type": "subcategory",
+    "slug": "jigsaws",
+    "categoryId": 110
+  },
+  {
+    "externalId": 590,
+    "name": "Миксеры строительные",
+    "type": "subcategory",
+    "slug": "construction-mixers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 591,
+    "name": "Наборы инструментов",
+    "type": "subcategory",
+    "slug": "tool-kits",
+    "categoryId": 110
+  },
+  {
+    "externalId": 592,
+    "name": "Ножницы по металлу",
+    "type": "subcategory",
+    "slug": "metal-shears",
+    "categoryId": 110
+  },
+  {
+    "externalId": 593,
+    "name": "Отбойные молотки, топоры, кувалды",
+    "type": "subcategory",
+    "slug": "demolition-tools",
+    "categoryId": 110
+  },
+  {
+    "externalId": 594,
+    "name": "Паяльники",
+    "type": "subcategory",
+    "slug": "soldering-irons",
+    "categoryId": 110
+  },
+  {
+    "externalId": 595,
+    "name": "Перфораторы",
+    "type": "subcategory",
+    "slug": "rotary-hammers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 596,
+    "name": "Пистолеты для клея, пены, герметиков",
+    "type": "subcategory",
+    "slug": "glue-guns",
+    "categoryId": 110
+  },
+  {
+    "externalId": 597,
+    "name": "Плиткорезы, стеклорезы, захваты",
+    "type": "subcategory",
+    "slug": "tile-glass-cutters",
+    "categoryId": 110
+  },
+  {
+    "externalId": 598,
+    "name": "Рубанки",
+    "type": "subcategory",
+    "slug": "planers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 599,
+    "name": "Степлеры, гвоздезабиватели",
+    "type": "subcategory",
+    "slug": "staplers-nailers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 600,
+    "name": "Тиски",
+    "type": "subcategory",
+    "slug": "vices",
+    "categoryId": 110
+  },
+  {
+    "externalId": 601,
+    "name": "Фены строительные",
+    "type": "subcategory",
+    "slug": "heat-guns",
+    "categoryId": 110
+  },
+  {
+    "externalId": 602,
+    "name": "Фрезеры",
+    "type": "subcategory",
+    "slug": "routers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 603,
+    "name": "Шлифовальные машины, болгарки",
+    "type": "subcategory",
+    "slug": "grinders",
+    "categoryId": 110
+  },
+  {
+    "externalId": 604,
+    "name": "Шпатели, валики, кисти",
+    "type": "subcategory",
+    "slug": "painting-tools",
+    "categoryId": 110
+  },
+  {
+    "externalId": 605,
+    "name": "Шуруповерты",
+    "type": "subcategory",
+    "slug": "screwdrivers",
+    "categoryId": 110
+  },
+  {
+    "externalId": 606,
+    "name": "Ведра, емкости",
+    "type": "subcategory",
+    "slug": "buckets",
+    "categoryId": 110
+  },
+  {
+    "externalId": 607,
+    "name": "Оснастка для инструмента",
+    "type": "subcategory",
+    "slug": "tool-accessories",
+    "categoryId": 110
+  },
+  {
+    "externalId": 608,
+    "name": "Циркулярные, сабельные пилы",
+    "type": "subcategory",
+    "slug": "saws",
+    "categoryId": 110
+  },
+  {
+    "externalId": 609,
+    "name": "Ящики, сумки для инструментов",
+    "type": "subcategory",
+    "slug": "tool-storage",
+    "categoryId": 110
+  },
+  {
+    "externalId": 610,
+    "name": "Прочие инструменты",
+    "type": "subcategory",
+    "slug": "other-tools",
+    "categoryId": 110
+  },
+
+  {
+    "externalId": 611,
+    "name": "Бетономешалки",
+    "type": "subcategory",
+    "slug": "concrete-mixers",
+    "categoryId": 111
+  },
+  {
+    "externalId": 612,
+    "name": "Виброоборудование",
+    "type": "subcategory",
+    "slug": "vibration-equipment",
+    "categoryId": 111
+  },
+  {
+    "externalId": 613,
+    "name": "Генераторы",
+    "type": "subcategory",
+    "slug": "generators",
+    "categoryId": 111
+  },
+  {
+    "externalId": 614,
+    "name": "Компрессоры",
+    "type": "subcategory",
+    "slug": "compressors",
+    "categoryId": 111
+  },
+  {
+    "externalId": 615,
+    "name": "Лестницы и стремянки",
+    "type": "subcategory",
+    "slug": "ladders",
+    "categoryId": 111
+  },
+  {
+    "externalId": 616,
+    "name": "Пылесосы промышленные, очистители",
+    "type": "subcategory",
+    "slug": "industrial-vacuums",
+    "categoryId": 111
+  },
+  {
+    "externalId": 617,
+    "name": "Сварочное оборудование",
+    "type": "subcategory",
+    "slug": "welding-equipment",
+    "categoryId": 111
+  },
+  {
+    "externalId": 618,
+    "name": "Станки",
+    "type": "subcategory",
+    "slug": "machines",
+    "categoryId": 111
+  },
+  {
+    "externalId": 619,
+    "name": "Строительные леса, вышки, опалубка",
+    "type": "subcategory",
+    "slug": "scaffolding",
+    "categoryId": 111
+  },
+  {
+    "externalId": 620,
+    "name": "Тепловые пушки",
+    "type": "subcategory",
+    "slug": "heat-guns",
+    "categoryId": 111
+  },
+  {
+    "externalId": 621,
+    "name": "Запчасти для станков",
+    "type": "subcategory",
+    "slug": "machine-parts",
+    "categoryId": 111
+  },
+  {
+    "externalId": 622,
+    "name": "Прочее строительное оборудование",
+    "type": "subcategory",
+    "slug": "other-equipment",
+    "categoryId": 111
+  },
+
+  {
+    "externalId": 623,
+    "name": "Батареи, радиаторы",
+    "type": "subcategory",
+    "slug": "radiators",
+    "categoryId": 112
+  },
+  {
+    "externalId": 624,
+    "name": "Биде, писсуары",
+    "type": "subcategory",
+    "slug": "bidets-urinals",
+    "categoryId": 112
+  },
+  {
+    "externalId": 625,
+    "name": "Бойлеры и водонагреватели",
+    "type": "subcategory",
+    "slug": "water-heaters",
+    "categoryId": 112
+  },
+  {
+    "externalId": 626,
+    "name": "Ванны",
+    "type": "subcategory",
+    "slug": "bathtubs",
+    "categoryId": 112
+  },
+  {
+    "externalId": 627,
+    "name": "Все для вентиляции",
+    "type": "subcategory",
+    "slug": "ventilation",
+    "categoryId": 112
+  },
+  {
+    "externalId": 628,
+    "name": "Газовые счетчики",
+    "type": "subcategory",
+    "slug": "gas-meters",
+    "categoryId": 112
+  },
+  {
+    "externalId": 629,
+    "name": "Душевые кабины",
+    "type": "subcategory",
+    "slug": "shower-cabins",
+    "categoryId": 112
+  },
+  {
+    "externalId": 630,
+    "name": "Камины и печи",
+    "type": "subcategory",
+    "slug": "fireplaces-stoves",
+    "categoryId": 112
+  },
+  {
+    "externalId": 631,
+    "name": "Краны, шланги, лейки",
+    "type": "subcategory",
+    "slug": "faucets-hoses",
+    "categoryId": 112
+  },
+  {
+    "externalId": 632,
+    "name": "Люки, дверки",
+    "type": "subcategory",
+    "slug": "hatches-doors",
+    "categoryId": 112
+  },
+  {
+    "externalId": 633,
+    "name": "Мойки",
+    "type": "subcategory",
+    "slug": "sinks",
+    "categoryId": 112
+  },
+  {
+    "externalId": 634,
+    "name": "Насосы",
+    "type": "subcategory",
+    "slug": "pumps",
+    "categoryId": 112
+  },
+  {
+    "externalId": 635,
+    "name": "Отопительные котлы",
+    "type": "subcategory",
+    "slug": "heating-boilers",
+    "categoryId": 112
+  },
+  {
+    "externalId": 636,
+    "name": "Полотенцесушители",
+    "type": "subcategory",
+    "slug": "towel-heaters",
+    "categoryId": 112
+  },
+  {
+    "externalId": 637,
+    "name": "Сифоны",
+    "type": "subcategory",
+    "slug": "siphons",
+    "categoryId": 112
+  },
+  {
+    "externalId": 638,
+    "name": "Смесители",
+    "type": "subcategory",
+    "slug": "mixers",
+    "categoryId": 112
+  },
+  {
+    "externalId": 639,
+    "name": "Счетчики воды",
+    "type": "subcategory",
+    "slug": "water-meters",
+    "categoryId": 112
+  },
+  {
+    "externalId": 640,
+    "name": "Теплый пол и комплектующие",
+    "type": "subcategory",
+    "slug": "underfloor-heating",
+    "categoryId": 112
+  },
+  {
+    "externalId": 641,
+    "name": "Трубы, фитинг, арматура",
+    "type": "subcategory",
+    "slug": "pipes-fittings",
+    "categoryId": 112
+  },
+  {
+    "externalId": 642,
+    "name": "Умывальники",
+    "type": "subcategory",
+    "slug": "washbasins",
+    "categoryId": 112
+  },
+  {
+    "externalId": 643,
+    "name": "Унитазы",
+    "type": "subcategory",
+    "slug": "toilets",
+    "categoryId": 112
+  },
+  {
+    "externalId": 644,
+    "name": "Фильтры",
+    "type": "subcategory",
+    "slug": "filters",
+    "categoryId": 112
+  },
+  {
+    "externalId": 645,
+    "name": "Аксессуары для ванной",
+    "type": "subcategory",
+    "slug": "bathroom-accessories",
+    "categoryId": 112
+  },
+  {
+    "externalId": 646,
+    "name": "Прочая сантехника",
+    "type": "subcategory",
+    "slug": "other-plumbing",
+    "categoryId": 112
+  },
+
+  {
+    "externalId": 647,
+    "name": "Гипсокартон, профили",
+    "type": "subcategory",
+    "slug": "drywall-profiles",
+    "categoryId": 113
+  },
+  {
+    "externalId": 648,
+    "name": "Деревозащитные средства",
+    "type": "subcategory",
+    "slug": "wood-protection",
+    "categoryId": 113
+  },
+  {
+    "externalId": 649,
+    "name": "Древесные и пиломатериалы",
+    "type": "subcategory",
+    "slug": "lumber",
+    "categoryId": 113
+  },
+  {
+    "externalId": 650,
+    "name": "Железобетонные изделия",
+    "type": "subcategory",
+    "slug": "reinforced-concrete",
+    "categoryId": 113
+  },
+  {
+    "externalId": 651,
+    "name": "Кирпичи и блоки",
+    "type": "subcategory",
+    "slug": "bricks-blocks",
+    "categoryId": 113
+  },
+  {
+    "externalId": 652,
+    "name": "Крепежные изделия и метизы",
+    "type": "subcategory",
+    "slug": "fasteners",
+    "categoryId": 113
+  },
+  {
+    "externalId": 653,
+    "name": "Кровля и доборные элементы",
+    "type": "subcategory",
+    "slug": "roofing",
+    "categoryId": 113
+  },
+  {
+    "externalId": 654,
+    "name": "Лестницы и перила",
+    "type": "subcategory",
+    "slug": "stairs-railings",
+    "categoryId": 113
+  },
+  {
+    "externalId": 655,
+    "name": "Металлоизделия, металлопрокат",
+    "type": "subcategory",
+    "slug": "metal-products",
+    "categoryId": 113
+  },
+  {
+    "externalId": 656,
+    "name": "Пены и герметики",
+    "type": "subcategory",
+    "slug": "foams-sealants",
+    "categoryId": 113
+  },
+  {
+    "externalId": 657,
+    "name": "Поликарбонат",
+    "type": "subcategory",
+    "slug": "polycarbonate",
+    "categoryId": 113
+  },
+  {
+    "externalId": 658,
+    "name": "Септики и канализация",
+    "type": "subcategory",
+    "slug": "septic-systems",
+    "categoryId": 113
+  },
+  {
+    "externalId": 659,
+    "name": "Стеклообои, сетка, серпянка",
+    "type": "subcategory",
+    "slug": "glass-fibers",
+    "categoryId": 113
+  },
+  {
+    "externalId": 660,
+    "name": "Строительные клеи",
+    "type": "subcategory",
+    "slug": "construction-adhesives",
+    "categoryId": 113
+  },
+  {
+    "externalId": 661,
+    "name": "Строительные смеси, грунтовка, фуга",
+    "type": "subcategory",
+    "slug": "building-mixtures",
+    "categoryId": 113
+  },
+  {
+    "externalId": 662,
+    "name": "Тепло, шумо и гидроизоляция",
+    "type": "subcategory",
+    "slug": "insulation",
+    "categoryId": 113
+  },
+  {
+    "externalId": 663,
+    "name": "Тротуарная плитка, бордюры",
+    "type": "subcategory",
+    "slug": "paving",
+    "categoryId": 113
+  },
+  {
+    "externalId": 664,
+    "name": "Цемент, керамзит, песок",
+    "type": "subcategory",
+    "slug": "cement-sand",
+    "categoryId": 113
+  },
+  {
+    "externalId": 665,
+    "name": "Прочие стройматериалы",
+    "type": "subcategory",
+    "slug": "other-materials",
+    "categoryId": 113
+  },
+  {
+    "externalId": 739,
+    "name": "Стены, внутренняя отделка",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 740,
+    "name": "Лакокрасочная продукция",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 741,
+    "name": "Напольные покрытия",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 742,
+    "name": "Плитка",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 743,
+    "name": "Потолки",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 744,
+    "name": "Фасады",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 745,
+    "name": "Прочие отделочные материалы",
+    "type": "subcategory",
+    "categoryId": 114
+  },
+  {
+    "externalId": 666,
+    "name": "Окна",
+    "type": "subcategory",
+    "slug": "windows",
+    "categoryId": 115
+  },
+  {
+    "externalId": 667,
+    "name": "Подоконники",
+    "type": "subcategory",
+    "slug": "window-sills",
+    "categoryId": 115
+  },
+  {
+    "externalId": 668,
+    "name": "Откосы на окна и двери",
+    "type": "subcategory",
+    "slug": "window-door-slopes",
+    "categoryId": 115
+  },
+  {
+    "externalId": 669,
+    "name": "Оконная фурнитура",
+    "type": "subcategory",
+    "slug": "window-accessories",
+    "categoryId": 115
+  },
+  {
+    "externalId": 670,
+    "name": "Москитные сетки",
+    "type": "subcategory",
+    "slug": "mosquito-nets",
+    "categoryId": 115
+  },
+  {
+    "externalId": 671,
+    "name": "Межкомнатные двери",
+    "type": "subcategory",
+    "slug": "interior-doors",
+    "categoryId": 115
+  },
+  {
+    "externalId": 672,
+    "name": "Входные двери",
+    "type": "subcategory",
+    "slug": "entrance-doors",
+    "categoryId": 115
+  },
+  {
+    "externalId": 673,
+    "name": "Дверная фурнитура и аксессуары",
+    "type": "subcategory",
+    "slug": "door-accessories",
+    "categoryId": 115
+  },
+  {
+    "externalId": 674,
+    "name": "Доводчики",
+    "type": "subcategory",
+    "slug": "door-closers",
+    "categoryId": 115
+  },
+  {
+    "externalId": 675,
+    "name": "Дверные системы",
+    "type": "subcategory",
+    "slug": "door-systems",
+    "categoryId": 115
+  },
+  {
+    "externalId": 676,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-windows-doors",
+    "categoryId": 115
+  },
+
+  {
+    "externalId": 677,
+    "name": "Срубы",
+    "type": "subcategory",
+    "slug": "log-houses",
+    "categoryId": 116
+  },
+  {
+    "externalId": 678,
+    "name": "Каркасные дома",
+    "type": "subcategory",
+    "slug": "frame-houses",
+    "categoryId": 116
+  },
+  {
+    "externalId": 679,
+    "name": "Дома из кирпича, блока",
+    "type": "subcategory",
+    "slug": "brick-block-houses",
+    "categoryId": 116
+  },
+  {
+    "externalId": 680,
+    "name": "Бытовки, кунги, контейнеры",
+    "type": "subcategory",
+    "slug": "cabins-containers",
+    "categoryId": 116
+  },
+  {
+    "externalId": 681,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-houses",
+    "categoryId": 116
+  },
+
+  {
+    "externalId": 682,
+    "name": "Ворота",
+    "type": "subcategory",
+    "slug": "gates",
+    "categoryId": 117
+  },
+  {
+    "externalId": 683,
+    "name": "Заборы",
+    "type": "subcategory",
+    "slug": "fences",
+    "categoryId": 117
+  },
+  {
+    "externalId": 684,
+    "name": "Сетка рабица",
+    "type": "subcategory",
+    "slug": "chain-link-fence",
+    "categoryId": 117
+  },
+  {
+    "externalId": 685,
+    "name": "Прочее для ворот и заборов",
+    "type": "subcategory",
+    "slug": "other-gates-fences",
+    "categoryId": 117
+  },
+
+  {
+    "externalId": 686,
+    "name": "Кабели и провода",
+    "type": "subcategory",
+    "slug": "cables-wires",
+    "categoryId": 118
+  },
+  {
+    "externalId": 687,
+    "name": "Лампочки и светодиодные ленты",
+    "type": "subcategory",
+    "slug": "bulbs-led-strips",
+    "categoryId": 118
+  },
+  {
+    "externalId": 688,
+    "name": "Трубы, кабель-каналы, крепёж",
+    "type": "subcategory",
+    "slug": "pipes-cable-channels",
+    "categoryId": 118
+  },
+  {
+    "externalId": 689,
+    "name": "Электроматериалы",
+    "type": "subcategory",
+    "slug": "electrical-materials",
+    "categoryId": 118
+  },
+  {
+    "externalId": 690,
+    "name": "Электрооборудование и приборы",
+    "type": "subcategory",
+    "slug": "electrical-equipment",
+    "categoryId": 118
+  },
+  {
+    "externalId": 691,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-electrics",
+    "categoryId": 118
+  },
+
+  {
+    "externalId": 692,
+    "name": "Бассейны",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 693,
+    "name": "Беседки, шатры, тенты",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 694,
+    "name": "Детские площадки",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 695,
+    "name": "Качели садовые",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 696,
+    "name": "Мебель для сада",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 697,
+    "name": "Садовый интерьер и аксессуары",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 698,
+    "name": "Уличное освещение",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 699,
+    "name": "Прочее",
+    "type": "subcategory",
+    "categoryId": 121
+  },
+  {
+    "externalId": 700,
+    "name": "Мангалы",
+    "type": "subcategory",
+    "categoryId": 122
+  },
+  {
+    "externalId": 701,
+    "name": "Казаны",
+    "type": "subcategory",
+    "categoryId": 122
+  },
+  {
+    "externalId": 702,
+    "name": "Коптильни",
+    "type": "subcategory",
+    "categoryId": 122
+  },
+  {
+    "externalId": 703,
+    "name": "Аксессуары",
+    "type": "subcategory",
+    "categoryId": 122
+  },
+  {
+    "externalId": 704,
+    "name": "Топливо",
+    "type": "subcategory",
+    "categoryId": 122
+  },
+  {
+    "externalId": 705,
+    "name": "Мотоблоки",
+    "type": "subcategory",
+    "categoryId": 123
+  },
+  {
+    "externalId": 706,
+    "name": "Культиваторы",
+    "type": "subcategory",
+    "categoryId": 123
+  },
+  {
+    "externalId": 707,
+    "name": "Запчасти и сопутствующие товары",
+    "type": "subcategory",
+    "categoryId": 123
+  },
+  {
+    "externalId": 708,
+    "name": "Электро- и бензопилы",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 709,
+    "name": "Газонокосилки",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 710,
+    "name": "Измельчители",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 711,
+    "name": "Насосы",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 712,
+    "name": "Триммеры",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 713,
+    "name": "Запчасти и аксессуары",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 714,
+    "name": "Прочее",
+    "type": "subcategory",
+    "categoryId": 124
+  },
+  {
+    "externalId": 715,
+    "name": "Еврокубы, баки и бочки",
+    "type": "subcategory",
+    "categoryId": 125
+  },
+  {
+    "externalId": 716,
+    "name": "Садовый инструмент",
+    "type": "subcategory",
+    "categoryId": 125
+  },
+  {
+    "externalId": 717,
+    "name": "Тачки и тележки",
+    "type": "subcategory",
+    "categoryId": 125
+  },
+  {
+    "externalId": 718,
+    "name": "Шланги и полив",
+    "type": "subcategory",
+    "categoryId": 125
+  },
+  {
+    "externalId": 719,
+    "name": "Прочее",
+    "type": "subcategory",
+    "categoryId": 125
+  },
+  {
+    "externalId": 720,
+    "name": "Саженцы, рассада",
+    "type": "subcategory",
+    "categoryId": 127
+  },
+  {
+    "externalId": 721,
+    "name": "Семена, луковицы",
+    "type": "subcategory",
+    "categoryId": 127
+  },
+  {
+    "externalId": 722,
+    "name": "Прочее",
+    "type": "subcategory",
+    "categoryId": 127
+  },
+  {
+    "externalId": 723,
+    "name": "Органические удобрения",
+    "type": "subcategory",
+    "categoryId": 128
+  },
+  {
+    "externalId": 724,
+    "name": "Минеральные удобрения",
+    "type": "subcategory",
+    "categoryId": 128
+  },
+  {
+    "externalId": 725,
+    "name": "Калийные удобрения",
+    "type": "subcategory",
+    "categoryId": 128
+  },
+  {
+    "externalId": 726,
+    "name": "Средства для защиты растений",
+    "type": "subcategory",
+    "categoryId": 128
+  },
+  {
+    "externalId": 727,
+    "name": "Инструменты и аксессуары",
+    "type": "subcategory",
+    "categoryId": 129
+  },
+  {
+    "externalId": 728,
+    "name": "Одежда для защиты",
+    "type": "subcategory",
+    "categoryId": 129
+  },
+  {
+    "externalId": 729,
+    "name": "Пчелы, пчелопакеты",
+    "type": "subcategory",
+    "categoryId": 129
+  },
+  {
+    "externalId": 730,
+    "name": "Продукты пчеловодства",
+    "type": "subcategory",
+    "categoryId": 129
+  },
+  {
+    "externalId": 731,
+    "name": "Ульи",
+    "type": "subcategory",
+    "categoryId": 129
+  },
+  {
+    "externalId": 732,
+    "name": "Прочее",
+    "type": "subcategory",
+    "categoryId": 129
+  },
+  {
+    "externalId": 733,
+    "name": "Бани",
+    "type": "subcategory",
+    "categoryId": 130
+  },
+  {
+    "externalId": 734,
+    "name": "Туалеты и санузлы",
+    "type": "subcategory",
+    "categoryId": 130
+  },
+  {
+    "externalId": 735,
+    "name": "Хозблоки",
+    "type": "subcategory",
+    "categoryId": 130
+  },
+  {
+    "externalId": 736,
+    "name": "Печи для бани",
+    "type": "subcategory",
+    "categoryId": 130
+  },
+  {
+    "externalId": 737,
+    "name": "Аксессуары для бань",
+    "type": "subcategory",
+    "categoryId": 130
+  },
+  {
+    "externalId": 738,
+    "name": "Прочее",
+    "type": "subcategory",
+    "categoryId": 130
+  },
+
+  {
+    "externalId": 746,
+    "name": "Антиквариат",
+    "type": "subcategory",
+    "slug": "antiques",
+    "categoryId": 133
+  },
+  {
+    "externalId": 747,
+    "name": "Коллекции",
+    "type": "subcategory",
+    "slug": "collections",
+    "categoryId": 133
+  },
+  {
+    "externalId": 748,
+    "name": "Живопись",
+    "type": "subcategory",
+    "slug": "paintings",
+    "categoryId": 133
+  },
+  {
+    "externalId": 749,
+    "name": "Предметы искусства",
+    "type": "subcategory",
+    "slug": "art-objects",
+    "categoryId": 133
+  },
+  {
+    "externalId": 750,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-antiques",
+    "categoryId": 133
+  },
+  {
+    "externalId": 751,
+    "name": "Художественная литература",
+    "type": "subcategory",
+    "slug": "fiction",
+    "categoryId": 135
+  },
+  {
+    "externalId": 752,
+    "name": "Научно-популярная литература",
+    "type": "subcategory",
+    "slug": "popular-science",
+    "categoryId": 135
+  },
+  {
+    "externalId": 753,
+    "name": "Техническая литература",
+    "type": "subcategory",
+    "slug": "technical-books",
+    "categoryId": 135
+  },
+  {
+    "externalId": 754,
+    "name": "Учебная литература",
+    "type": "subcategory",
+    "slug": "textbooks",
+    "categoryId": 135
+  },
+  {
+    "externalId": 755,
+    "name": "Энциклопедии и словари",
+    "type": "subcategory",
+    "slug": "encyclopedias-dictionaries",
+    "categoryId": 135
+  },
+  {
+    "externalId": 756,
+    "name": "Журналы и комиксы",
+    "type": "subcategory",
+    "slug": "magazines-comics",
+    "categoryId": 135
+  },
+  {
+    "externalId": 757,
+    "name": "Прочая литература",
+    "type": "subcategory",
+    "slug": "other-books",
+    "categoryId": 135
+  },
+  {
+    "externalId": 758,
+    "name": "Гитары",
+    "type": "subcategory",
+    "slug": "guitars",
+    "categoryId": 137
+  },
+  {
+    "externalId": 759,
+    "name": "Клавишные",
+    "type": "subcategory",
+    "slug": "keyboards",
+    "categoryId": 137
+  },
+  {
+    "externalId": 760,
+    "name": "Струнные",
+    "type": "subcategory",
+    "slug": "string-instruments",
+    "categoryId": 137
+  },
+  {
+    "externalId": 761,
+    "name": "Ударные",
+    "type": "subcategory",
+    "slug": "percussion",
+    "categoryId": 137
+  },
+  {
+    "externalId": 762,
+    "name": "Духовые",
+    "type": "subcategory",
+    "slug": "wind-instruments",
+    "categoryId": 137
+  },
+  {
+    "externalId": 763,
+    "name": "Аксессуары",
+    "type": "subcategory",
+    "slug": "music-accessories",
+    "categoryId": 137
+  },
+  {
+    "externalId": 764,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-music",
+    "categoryId": 137
+  },
+  {
+    "externalId": 794,
+    "name": "Чемоданы и дорожные сумки",
+    "type": "subcategory",
+    "slug": "suitcases-bags",
+    "categoryId": 140
+  },
+  {
+    "externalId": 795,
+    "name": "Туристические и тактические рюкзаки",
+    "type": "subcategory",
+    "slug": "backpacks",
+    "categoryId": 140
+  },
+  {
+    "externalId": 796,
+    "name": "Ножи туристические и мультитулы",
+    "type": "subcategory",
+    "slug": "knives-multitools",
+    "categoryId": 140
+  },
+  {
+    "externalId": 797,
+    "name": "Палатки",
+    "type": "subcategory",
+    "slug": "tents",
+    "categoryId": 140
+  },
+  {
+    "externalId": 798,
+    "name": "Спальные мешки и коврики",
+    "type": "subcategory",
+    "slug": "sleeping-bags-mats",
+    "categoryId": 140
+  },
+  {
+    "externalId": 799,
+    "name": "Горелки и туристические плиты",
+    "type": "subcategory",
+    "slug": "stoves-burners",
+    "categoryId": 140
+  },
+  {
+    "externalId": 800,
+    "name": "Фонари и освещение",
+    "type": "subcategory",
+    "slug": "flashlights-lighting",
+    "categoryId": 140
+  },
+  {
+    "externalId": 801,
+    "name": "Походная посуда",
+    "type": "subcategory",
+    "slug": "camping-dishes",
+    "categoryId": 140
+  },
+  {
+    "externalId": 802,
+    "name": "Прочее туристическое снаряжение",
+    "type": "subcategory",
+    "slug": "other-tourist-gear",
+    "categoryId": 140
+  },
+  {
+    "externalId": 765,
+    "name": "Материалы и инструменты для рукоделия",
+    "type": "subcategory",
+    "slug": "craft-supplies",
+    "categoryId": 142
+  },
+  {
+    "externalId": 766,
+    "name": "Готовые изделия (hand-made)",
+    "type": "subcategory",
+    "slug": "handmade-products",
+    "categoryId": 142
+  },
+  {
+    "externalId": 767,
+    "name": "Альпинизм, пеший туризм",
+    "type": "subcategory",
+    "slug": "hiking-climbing",
+    "categoryId": 143
+  },
+  {
+    "externalId": 768,
+    "name": "Бадминтон",
+    "type": "subcategory",
+    "slug": "badminton",
+    "categoryId": 143
+  },
+  {
+    "externalId": 769,
+    "name": "Батуты",
+    "type": "subcategory",
+    "slug": "trampolines",
+    "categoryId": 143
+  },
+  {
+    "externalId": 770,
+    "name": "Бильярд",
+    "type": "subcategory",
+    "slug": "billiards",
+    "categoryId": 143
+  },
+  {
+    "externalId": 771,
+    "name": "Водный спорт",
+    "type": "subcategory",
+    "slug": "water-sports",
+    "categoryId": 143
+  },
+  {
+    "externalId": 772,
+    "name": "Гири, гантели",
+    "type": "subcategory",
+    "slug": "weights-dumbbells",
+    "categoryId": 143
+  },
+  {
+    "externalId": 773,
+    "name": "Единоборства и бокс",
+    "type": "subcategory",
+    "slug": "martial-arts-boxing",
+    "categoryId": 143
+  },
+  {
+    "externalId": 774,
+    "name": "Коньки",
+    "type": "subcategory",
+    "slug": "skates",
+    "categoryId": 143
+  },
+  {
+    "externalId": 775,
+    "name": "Лыжи и сноуборды",
+    "type": "subcategory",
+    "slug": "ski-snowboard",
+    "categoryId": 143
+  },
+  {
+    "externalId": 776,
+    "name": "Мячи",
+    "type": "subcategory",
+    "slug": "balls",
+    "categoryId": 143
+  },
+  {
+    "externalId": 777,
+    "name": "Ролики",
+    "type": "subcategory",
+    "slug": "rollerskates",
+    "categoryId": 143
+  },
+  {
+    "externalId": 778,
+    "name": "Самокаты",
+    "type": "subcategory",
+    "slug": "scooters",
+    "categoryId": 143
+  },
+  {
+    "externalId": 779,
+    "name": "Скейтборды",
+    "type": "subcategory",
+    "slug": "skateboards",
+    "categoryId": 143
+  },
+  {
+    "externalId": 780,
+    "name": "Теннис",
+    "type": "subcategory",
+    "slug": "tennis",
+    "categoryId": 143
+  },
+  {
+    "externalId": 781,
+    "name": "Тренажеры, спортивные комплексы",
+    "type": "subcategory",
+    "slug": "gym-equipment",
+    "categoryId": 143
+  },
+  {
+    "externalId": 782,
+    "name": "Фитнес, йога",
+    "type": "subcategory",
+    "slug": "fitness-yoga",
+    "categoryId": 143
+  },
+  {
+    "externalId": 783,
+    "name": "Футбол",
+    "type": "subcategory",
+    "slug": "football",
+    "categoryId": 143
+  },
+  {
+    "externalId": 784,
+    "name": "Хоккей",
+    "type": "subcategory",
+    "slug": "hockey",
+    "categoryId": 143
+  },
+  {
+    "externalId": 785,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-sports",
+    "categoryId": 143
+  },
+  {
+    "externalId": 786,
+    "name": "Велосипеды",
+    "type": "subcategory",
+    "slug": "bicycles",
+    "categoryId": 144
+  },
+  {
+    "externalId": 787,
+    "name": "Велозапчасти",
+    "type": "subcategory",
+    "slug": "bicycle-parts",
+    "categoryId": 144
+  },
+  {
+    "externalId": 788,
+    "name": "Велоаксессуары",
+    "type": "subcategory",
+    "slug": "bicycle-accessories",
+    "categoryId": 144
+  },
+  {
+    "externalId": 789,
+    "name": "Велоэкипировка",
+    "type": "subcategory",
+    "slug": "bicycle-gear",
+    "categoryId": 144
+  },
+  {
+    "externalId": 790,
+    "name": "Электросамокаты",
+    "type": "subcategory",
+    "slug": "electric-scooters",
+    "categoryId": 145
+  },
+  {
+    "externalId": 791,
+    "name": "Гироскутеры",
+    "type": "subcategory",
+    "slug": "hoverboards",
+    "categoryId": 145
+  },
+  {
+    "externalId": 792,
+    "name": "Электроскутеры",
+    "type": "subcategory",
+    "slug": "e-scooters",
+    "categoryId": 145
+  },
+  {
+    "externalId": 793,
+    "name": "Прочий электротранспорт",
+    "type": "subcategory",
+    "slug": "other-electric-transport",
+    "categoryId": 145
+  },
+
+  {
+    "externalId": 803,
+    "name": "Подарочные наборы",
+    "type": "subcategory",
+    "slug": "gift-sets",
+    "categoryId": 151
+  },
+  {
+    "externalId": 804,
+    "name": "Подарочные сертификаты",
+    "type": "subcategory",
+    "slug": "gift-certificates",
+    "categoryId": 151
+  },
+  {
+    "externalId": 805,
+    "name": "Съедобные букеты и фудбоксы",
+    "type": "subcategory",
+    "slug": "edible-bouquets-foodboxes",
+    "categoryId": 151
+  },
+  {
+    "externalId": 806,
+    "name": "Букеты ручной работы",
+    "type": "subcategory",
+    "slug": "handmade-bouquets",
+    "categoryId": 151
+  },
+  {
+    "externalId": 807,
+    "name": "Букеты из свежих цветов",
+    "type": "subcategory",
+    "slug": "fresh-flower-bouquets",
+    "categoryId": 151
+  },
+  {
+    "externalId": 808,
+    "name": "Подарочная упаковка",
+    "type": "subcategory",
+    "slug": "gift-packaging",
+    "categoryId": 151
+  },
+  {
+    "externalId": 809,
+    "name": "Воздушные шары и фигуры",
+    "type": "subcategory",
+    "slug": "balloons-figures",
+    "categoryId": 151
+  },
+  {
+    "externalId": 810,
+    "name": "Фотобутафория",
+    "type": "subcategory",
+    "slug": "photo-props",
+    "categoryId": 151
+  },
+  {
+    "externalId": 811,
+    "name": "Праздничный декор",
+    "type": "subcategory",
+    "slug": "holiday-decor",
+    "categoryId": 151
+  },
+  {
+    "externalId": 812,
+    "name": "Открытки",
+    "type": "subcategory",
+    "slug": "greeting-cards",
+    "categoryId": 151
+  },
+  {
+    "externalId": 813,
+    "name": "Новый год и Рождество",
+    "type": "subcategory",
+    "slug": "newyear-christmas",
+    "categoryId": 151
+  },
+  {
+    "externalId": 814,
+    "name": "Прочие праздничные товары",
+    "type": "subcategory",
+    "slug": "other-holiday-items",
+    "categoryId": 151
+  },
+
+  {
+    "externalId": 815,
+    "name": "Детский",
+    "type": "subcategory",
+    "slug": "kids-carnival-costumes",
+    "categoryId": 152
+  },
+  {
+    "externalId": 816,
+    "name": "Взрослый",
+    "type": "subcategory",
+    "slug": "adult-carnival-costumes",
+    "categoryId": 152
+  },
+
+  {
+    "externalId": 817,
+    "name": "Кошки",
+    "type": "subcategory",
+    "slug": "cats",
+    "categoryId": 153
+  },
+  {
+    "externalId": 818,
+    "name": "Собаки",
+    "type": "subcategory",
+    "slug": "dogs",
+    "categoryId": 153
+  },
+  {
+    "externalId": 819,
+    "name": "Грызуны",
+    "type": "subcategory",
+    "slug": "rodents",
+    "categoryId": 153
+  },
+  {
+    "externalId": 820,
+    "name": "Рыбки",
+    "type": "subcategory",
+    "slug": "fish",
+    "categoryId": 153
+  },
+  {
+    "externalId": 821,
+    "name": "Птицы",
+    "type": "subcategory",
+    "slug": "birds",
+    "categoryId": 153
+  },
+  {
+    "externalId": 822,
+    "name": "Рептилии",
+    "type": "subcategory",
+    "slug": "reptiles",
+    "categoryId": 153
+  },
+  {
+    "externalId": 823,
+    "name": "Прочие питомцы",
+    "type": "subcategory",
+    "slug": "other-pets",
+    "categoryId": 153
+  },
+
+  {
+    "externalId": 824,
+    "name": "Лошади",
+    "type": "subcategory",
+    "slug": "horses",
+    "categoryId": 154
+  },
+  {
+    "externalId": 825,
+    "name": "Кролики",
+    "type": "subcategory",
+    "slug": "rabbits",
+    "categoryId": 154
+  },
+  {
+    "externalId": 826,
+    "name": "Крупный рогатый скот",
+    "type": "subcategory",
+    "slug": "cattle",
+    "categoryId": 154
+  },
+  {
+    "externalId": 827,
+    "name": "Мелкий рогатый скот",
+    "type": "subcategory",
+    "slug": "small-livestock",
+    "categoryId": 154
+  },
+  {
+    "externalId": 828,
+    "name": "Птицы",
+    "type": "subcategory",
+    "slug": "farm-birds",
+    "categoryId": 154
+  },
+  {
+    "externalId": 829,
+    "name": "Свиньи и поросята",
+    "type": "subcategory",
+    "slug": "pigs",
+    "categoryId": 154
+  },
+  {
+    "externalId": 830,
+    "name": "Прочие сельхоз животные",
+    "type": "subcategory",
+    "slug": "other-farm-animals",
+    "categoryId": 154
+  },
+  {
+    "externalId": 831,
+    "name": "Аквариумистика",
+    "type": "subcategory",
+    "slug": "aquarium-supplies",
+    "categoryId": 155
+  },
+  {
+    "externalId": 832,
+    "name": "Корма",
+    "type": "subcategory",
+    "slug": "pet-food",
+    "categoryId": 155
+  },
+  {
+    "externalId": 833,
+    "name": "Одежда и обувь",
+    "type": "subcategory",
+    "slug": "pet-clothing-shoes",
+    "categoryId": 155
+  },
+  {
+    "externalId": 834,
+    "name": "Ошейники, поводки, намордники",
+    "type": "subcategory",
+    "slug": "collars-leashes-muzzles",
+    "categoryId": 155
+  },
+  {
+    "externalId": 835,
+    "name": "Лотки и наполнители",
+    "type": "subcategory",
+    "slug": "trays-litter",
+    "categoryId": 155
+  },
+  {
+    "externalId": 836,
+    "name": "Клетки и переноски",
+    "type": "subcategory",
+    "slug": "cages-carriers",
+    "categoryId": 155
+  },
+  {
+    "externalId": 837,
+    "name": "Домики и лежанки",
+    "type": "subcategory",
+    "slug": "houses-beds",
+    "categoryId": 155
+  },
+  {
+    "externalId": 838,
+    "name": "Миски, кормушки, поильники",
+    "type": "subcategory",
+    "slug": "bowls-feeders-drinkers",
+    "categoryId": 155
+  },
+  {
+    "externalId": 839,
+    "name": "Косметика, средства по уходу, груминг",
+    "type": "subcategory",
+    "slug": "grooming-products",
+    "categoryId": 155
+  },
+  {
+    "externalId": 840,
+    "name": "Игрушки",
+    "type": "subcategory",
+    "slug": "pet-toys",
+    "categoryId": 155
+  },
+  {
+    "externalId": 841,
+    "name": "Когтеточки",
+    "type": "subcategory",
+    "slug": "scratching-posts",
+    "categoryId": 155
+  },
+  {
+    "externalId": 842,
+    "name": "Инвентарь для сельхоз животных",
+    "type": "subcategory",
+    "slug": "farm-animal-inventory",
+    "categoryId": 155
+  },
+  {
+    "externalId": 843,
+    "name": "Будки и вольеры",
+    "type": "subcategory",
+    "slug": "kennels-aviaries",
+    "categoryId": 155
+  },
+  {
+    "externalId": 844,
+    "name": "Прочие товары для животных",
+    "type": "subcategory",
+    "slug": "other-pet-products",
+    "categoryId": 155
+  },
+
+  {
+    "externalId": 845,
+    "name": "Бизнес в сфере услуг",
+    "type": "subcategory",
+    "slug": "service-business",
+    "categoryId": 156
+  },
+  {
+    "externalId": 846,
+    "name": "Досуг и развлечения",
+    "type": "subcategory",
+    "slug": "leisure-entertainment",
+    "categoryId": 156
+  },
+  {
+    "externalId": 847,
+    "name": "Интернет-магазины, бизнес в интернете",
+    "type": "subcategory",
+    "slug": "online-business",
+    "categoryId": 156
+  },
+  {
+    "externalId": 848,
+    "name": "Общественное питание",
+    "type": "subcategory",
+    "slug": "food-services",
+    "categoryId": 156
+  },
+  {
+    "externalId": 849,
+    "name": "Производство",
+    "type": "subcategory",
+    "slug": "production",
+    "categoryId": 156
+  },
+  {
+    "externalId": 850,
+    "name": "Салоны красоты, парикмахерские, фитнес",
+    "type": "subcategory",
+    "slug": "beauty-fitness-salons",
+    "categoryId": 156
+  },
+  {
+    "externalId": 851,
+    "name": "СТО, автомойки, автобизнес",
+    "type": "subcategory",
+    "slug": "car-service-business",
+    "categoryId": 156
+  },
+  {
+    "externalId": 852,
+    "name": "Строительство",
+    "type": "subcategory",
+    "slug": "construction-business",
+    "categoryId": 156
+  },
+  {
+    "externalId": 853,
+    "name": "Торговля, магазины",
+    "type": "subcategory",
+    "slug": "trade-shops",
+    "categoryId": 156
+  },
+  {
+    "externalId": 854,
+    "name": "Туризм, гостиницы",
+    "type": "subcategory",
+    "slug": "tourism-hotels",
+    "categoryId": 156
+  },
+  {
+    "externalId": 855,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-business",
+    "categoryId": 156
+  },
+  {
+    "externalId": 856,
+    "name": "Аттракционы, вендинговые автоматы",
+    "type": "subcategory",
+    "slug": "amusement-vending",
+    "categoryId": 157
+  },
+  {
+    "externalId": 857,
+    "name": "Оборудование для СТО, автосервисов",
+    "type": "subcategory",
+    "slug": "car-service-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 858,
+    "name": "Оборудование для салонов красоты",
+    "type": "subcategory",
+    "slug": "beauty-salon-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 859,
+    "name": "Оборудование для кафе и ресторанов",
+    "type": "subcategory",
+    "slug": "cafe-restaurant-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 860,
+    "name": "Оборудование для офисов",
+    "type": "subcategory",
+    "slug": "office-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 861,
+    "name": "Производственное оборудование",
+    "type": "subcategory",
+    "slug": "production-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 862,
+    "name": "Рекламное оборудование",
+    "type": "subcategory",
+    "slug": "advertising-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 863,
+    "name": "Сельхозоборудование",
+    "type": "subcategory",
+    "slug": "agriculture-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 864,
+    "name": "Торговое и складское оборудование",
+    "type": "subcategory",
+    "slug": "trade-warehouse-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 865,
+    "name": "Холодильное оборудование",
+    "type": "subcategory",
+    "slug": "refrigeration-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 866,
+    "name": "Прочее оборудование",
+    "type": "subcategory",
+    "slug": "other-equipment",
+    "categoryId": 157
+  },
+  {
+    "externalId": 867,
+    "name": "Грибы и ягоды",
+    "type": "subcategory",
+    "slug": "mushrooms-berries",
+    "categoryId": 160
+  },
+  {
+    "externalId": 868,
+    "name": "Закатки и консервация",
+    "type": "subcategory",
+    "slug": "canned-food",
+    "categoryId": 160
+  },
+  {
+    "externalId": 869,
+    "name": "Крупы, зерно",
+    "type": "subcategory",
+    "slug": "cereals-grains",
+    "categoryId": 160
+  },
+  {
+    "externalId": 870,
+    "name": "Мед",
+    "type": "subcategory",
+    "slug": "honey",
+    "categoryId": 160
+  },
+  {
+    "externalId": 871,
+    "name": "Молочные продукты",
+    "type": "subcategory",
+    "slug": "dairy-products",
+    "categoryId": 160
+  },
+  {
+    "externalId": 872,
+    "name": "Масло, соусы",
+    "type": "subcategory",
+    "slug": "oil-sauces",
+    "categoryId": 160
+  },
+  {
+    "externalId": 873,
+    "name": "Мясо",
+    "type": "subcategory",
+    "slug": "meat",
+    "categoryId": 160
+  },
+  {
+    "externalId": 874,
+    "name": "Овощи, зелень",
+    "type": "subcategory",
+    "slug": "vegetables-greens",
+    "categoryId": 160
+  },
+  {
+    "externalId": 875,
+    "name": "Рыба и морепродукты",
+    "type": "subcategory",
+    "slug": "fish-seafood",
+    "categoryId": 160
+  },
+  {
+    "externalId": 876,
+    "name": "Сладости, кондитерские изделия",
+    "type": "subcategory",
+    "slug": "sweets-confectionery",
+    "categoryId": 160
+  },
+  {
+    "externalId": 877,
+    "name": "Сухофрукты, орехи, приправы",
+    "type": "subcategory",
+    "slug": "dried-fruits-nuts-spices",
+    "categoryId": 160
+  },
+  {
+    "externalId": 878,
+    "name": "Фрукты",
+    "type": "subcategory",
+    "slug": "fruits",
+    "categoryId": 160
+  },
+  {
+    "externalId": 879,
+    "name": "Чай, кофе и напитки",
+    "type": "subcategory",
+    "slug": "tea-coffee-drinks",
+    "categoryId": 160
+  },
+  {
+    "externalId": 880,
+    "name": "Яйца",
+    "type": "subcategory",
+    "slug": "eggs",
+    "categoryId": 160
+  },
+  {
+    "externalId": 881,
+    "name": "Прочее",
+    "type": "subcategory",
+    "slug": "other-food",
+    "categoryId": 160
+  }
+]
