@@ -20,12 +20,8 @@ import {
   phoneValidator,
 } from '@/shared/utils/validators';
 import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
-import {
-  getRegions,
-  getCities,
-  getDistricts,
-  type GeoOption,
-} from '@/http/geography';
+import { getRegions, getCities, getDistricts } from '@/http/geography';
+import type { DistrictOption, GeoOption } from '@/types/geo.dto';
 
 type RegisterFormValues = {
   email: string;
@@ -53,7 +49,7 @@ export const RegisterForm = ({
   const { t } = useTranslation();
   const [regions, setRegions] = useState<GeoOption[]>([]);
   const [cities, setCities] = useState<GeoOption[]>([]);
-  const [districts, setDistricts] = useState<GeoOption[]>([]);
+  const [districts, setDistricts] = useState<DistrictOption[]>([]);
   const [citySearch, setCitySearch] = useState('');
   const [districtSearch, setDistrictSearch] = useState('');
 

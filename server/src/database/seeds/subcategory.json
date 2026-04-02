@@ -2089,126 +2089,126 @@
 
   {
     "externalId": 173,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Белье",
     "type": "subcategory",
     "slug": "bele"
   },
   {
     "externalId": 174,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Блузки",
     "type": "subcategory",
     "slug": "bluzki"
   },
   {
     "externalId": 175,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Верхняя одежда",
     "type": "subcategory",
     "slug": "verhnyaya-odezhda"
   },
   {
     "externalId": 176,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Джинсы, брюки",
     "type": "subcategory",
     "slug": "dzhinsy-bryuki"
   },
   {
     "externalId": 177,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Домашняя одежда",
     "type": "subcategory",
     "slug": "domashnyaya-odezhda"
   },
   {
     "externalId": 178,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Колготки, леггинсы, носки",
     "type": "subcategory",
     "slug": "kolgotki-legginsy-noski"
   },
   {
     "externalId": 179,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Комбинезоны",
     "type": "subcategory",
     "slug": "kombinezony"
   },
   {
     "externalId": 180,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Костюмы, пиджаки и жакеты",
     "type": "subcategory",
     "slug": "kostyumy-pidzhaki-i-zhakety"
   },
   {
     "externalId": 181,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Купальники",
     "type": "subcategory",
     "slug": "kupalniki"
   },
   {
     "externalId": 182,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Майки, топы, лонгсливы",
     "type": "subcategory",
     "slug": "mayki-topy-longslivy"
   },
   {
     "externalId": 183,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Одежда для танцев",
     "type": "subcategory",
     "slug": "odezhda-dlya-tantsev"
   },
   {
     "externalId": 184,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Платья, сарафаны",
     "type": "subcategory",
     "slug": "platya-sarafany"
   },
   {
     "externalId": 185,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Рубашки",
     "type": "subcategory",
     "slug": "rubashki"
   },
   {
     "externalId": 186,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Худи, свитеры, толстовки",
     "type": "subcategory",
     "slug": "hudi-svitery-tolstovki"
   },
   {
     "externalId": 187,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Спецодежда, униформа",
     "type": "subcategory",
     "slug": "spetsodezhda-uniforma"
   },
   {
     "externalId": 188,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Спортивная одежда",
     "type": "subcategory",
     "slug": "sportivnaya-odezhda"
   },
   {
     "externalId": 189,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Туники",
     "type": "subcategory",
     "slug": "tuniki"
   },
   {
     "externalId": 190,
-    "chapterId": 54,
+    "categoryId": 54,
     "name": "Шорты, юбки",
     "type": "subcategory",
     "slug": "shorty-yubki"
@@ -2216,112 +2216,112 @@
 
   {
     "externalId": 191,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Балетки",
     "type": "subcategory",
     "slug": "baletki"
   },
   {
     "externalId": 192,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Босоножки, сандалии",
     "type": "subcategory",
     "slug": "bosonozhki-sandalii"
   },
   {
     "externalId": 193,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Ботильоны",
     "type": "subcategory",
     "slug": "botilony"
   },
   {
     "externalId": 194,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Ботинки и полуботинки",
     "type": "subcategory",
     "slug": "botinki-i-polubotinki"
   },
   {
     "externalId": 195,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Домашняя обувь",
     "type": "subcategory",
     "slug": "domashnyaya-obuv"
   },
   {
     "externalId": 196,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Кроссовки и кеды",
     "type": "subcategory",
     "slug": "krossovki-i-kedy"
   },
   {
     "externalId": 197,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Мокасины",
     "type": "subcategory",
     "slug": "mokasiny"
   },
   {
     "externalId": 198,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Пляжная обувь",
     "type": "subcategory",
     "slug": "plyazhnaya-obuv"
   },
   {
     "externalId": 199,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Полусапожки",
     "type": "subcategory",
     "slug": "polusapozhki"
   },
   {
     "externalId": 200,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Резиновая обувь",
     "type": "subcategory",
     "slug": "rezinovaya-obuv"
   },
   {
     "externalId": 201,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Сабо",
     "type": "subcategory",
     "slug": "sabo"
   },
   {
     "externalId": 202,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Сапоги",
     "type": "subcategory",
     "slug": "sapogi"
   },
   {
     "externalId": 203,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Танцевальная обувь",
     "type": "subcategory",
     "slug": "tancevalnaya-obuv"
   },
   {
     "externalId": 204,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Туфли",
     "type": "subcategory",
     "slug": "tufli"
   },
   {
     "externalId": 205,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Спецобувь",
     "type": "subcategory",
     "slug": "spetsobuv"
   },
   {
     "externalId": 206,
-    "chapterId": 55,
+    "categoryId": 55,
     "name": "Аксессуары для обуви",
     "type": "subcategory",
     "slug": "aksessuary-dlya-obuvi"
@@ -2329,112 +2329,112 @@
 
   {
     "externalId": 207,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Головные уборы",
     "type": "subcategory",
     "slug": "golovnye-ubory"
   },
   {
     "externalId": 208,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Зонты",
     "type": "subcategory",
     "slug": "zonty"
   },
   {
     "externalId": 209,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Кошельки, визитницы, ключницы",
     "type": "subcategory",
     "slug": "koshelki-vizitnicy-klyuchnitsy"
   },
   {
     "externalId": 210,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Брелоки",
     "type": "subcategory",
     "slug": "breloki"
   },
   {
     "externalId": 211,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Очки",
     "type": "subcategory",
     "slug": "ochki"
   },
   {
     "externalId": 212,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Перчатки и варежки",
     "type": "subcategory",
     "slug": "perchatki-i-varezhki"
   },
   {
     "externalId": 213,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Ремни и пояса",
     "type": "subcategory",
     "slug": "remni-i-poyasa"
   },
   {
     "externalId": 214,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Рюкзаки",
     "type": "subcategory",
     "slug": "ryukzaki"
   },
   {
     "externalId": 215,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Сумки",
     "type": "subcategory",
     "slug": "sumki"
   },
   {
     "externalId": 216,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Косметички",
     "type": "subcategory",
     "slug": "kosmetichki"
   },
   {
     "externalId": 217,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Украшения",
     "type": "subcategory",
     "slug": "ukrasheniya"
   },
   {
     "externalId": 218,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Часы",
     "type": "subcategory",
     "slug": "chasy"
   },
   {
     "externalId": 219,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Шарфы и платки",
     "type": "subcategory",
     "slug": "sharfy-i-platki"
   },
   {
     "externalId": 220,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Парики и шиньоны",
     "type": "subcategory",
     "slug": "pariki-i-shinyony"
   },
   {
     "externalId": 221,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Аксессуары для волос",
     "type": "subcategory",
     "slug": "aksessuary-dlya-volos"
   },
   {
     "externalId": 223,
-    "chapterId": 56,
+    "categoryId": 56,
     "name": "Прочие аксессуары",
     "type": "subcategory",
     "slug": "prochee"

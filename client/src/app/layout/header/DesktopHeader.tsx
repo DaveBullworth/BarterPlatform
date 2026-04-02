@@ -9,21 +9,26 @@ import {
 import { Search, Plus, ChartColumnStacked } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { UserMenu } from './UserMenu';
 import { goToRoot } from '@/shared/utils/navigation';
+import { selectCategorySelection } from '@/store/categoryFilterSlice';
 
 type DesktopHeaderProps = {
   desktopOpened: boolean;
   onToggleDesktop: () => void;
+  onOpenCategories: () => void;
 };
 
 export const DesktopHeader = ({
   desktopOpened,
   onToggleDesktop,
+  onOpenCategories,
 }: DesktopHeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const selectedCategory = useSelector(selectCategorySelection);
 
   return (
     <Group h="100%" px="md" justify="space-between" visibleFrom="sm">
@@ -47,7 +52,12 @@ export const DesktopHeader = ({
         </UnstyledButton>
 
         {/* CATEGORIES */}
-        <Button variant="light" leftSection={<ChartColumnStacked size={16} />}>
+        <Button
+          variant={selectedCategory ? 'filled' : 'light'}
+          color={selectedCategory ? 'red' : undefined}
+          leftSection={<ChartColumnStacked size={16} />}
+          onClick={onOpenCategories}
+        >
           {t('header.categories')}
         </Button>
 

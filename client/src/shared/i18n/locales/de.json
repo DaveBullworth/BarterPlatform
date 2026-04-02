@@ -159,15 +159,12 @@
       "name": "Name",
       "email": "E-Mail",
       "phone": "Telefon",
-
       "role": "Rolle",
       "status": "Status",
-
       "contains": "Enthält",
       "equals": "Gleich",
       "notContains": "Enthält nicht",
       "notEquals": "Ungleich",
-
       "reset": "Filter zurücksetzen"
     }
   },
@@ -439,5 +436,10 @@
     "YEM": "Jemen",
     "ZMB": "Sambia",
     "ZWE": "Simbabwe"
+  },
+  "categories": {
+    "title": "Kategorien",
+    "hint": "Wählen Sie eine Filterebene",
+    "reset": "Zurücksetzen"
   }
 }

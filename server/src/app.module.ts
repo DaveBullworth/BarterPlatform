@@ -11,6 +11,7 @@ import { RedisModule } from './modules/redis/redis.module';
 import { MediaModule } from './modules/media/media.module';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
 import { DeactivationModule } from './modules/deactivation/deactivation.module';
+import { LotsModule } from './modules/lots/lots.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { DeactivationModule } from './modules/deactivation/deactivation.module';
     MediaModule,
     PasswordResetModule,
     DeactivationModule,
+    LotsModule,
   ],
 })
 export class AppModule {}

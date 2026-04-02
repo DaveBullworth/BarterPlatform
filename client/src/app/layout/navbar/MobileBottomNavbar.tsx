@@ -6,12 +6,14 @@ import {
   UnstyledButton,
   Box,
   useMantineTheme,
+  Indicator,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
+import { ChartColumnStacked } from 'lucide-react';
 
 import { NAV_ITEMS } from './navigation';
 import { NAV_ACCESS } from '@/shared/constants/nav-access';
@@ -20,9 +22,16 @@ import { ROUTES } from '@/shared/constants/routes';
 import { ProfileDrawer } from './ProfileDrawer';
 import { goToAuth, goToProfile } from '@/shared/utils/navigation';
 import { selectCurrentUser, selectIsAuthenticated } from '@/store/userSlice';
+import { selectCategorySelection } from '@/store/categoryFilterSlice';
 import type { RootState } from '@/store';
 
-export const MobileBottomNavbar = () => {
+type MobileBottomNavbarProps = {
+  onOpenCategories: () => void;
+};
+
+export const MobileBottomNavbar = ({
+  onOpenCategories,
+}: MobileBottomNavbarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -32,6 +41,7 @@ export const MobileBottomNavbar = () => {
   const isAuthenticated = useSelector((s: RootState) =>
     selectIsAuthenticated(s),
   );
+  const selectedCategory = useSelector(selectCategorySelection);
 
   const [drawerOpened, { open, close }] = useDisclosure(false);
 
@@ -103,6 +113,23 @@ export const MobileBottomNavbar = () => {
             </React.Fragment>
           );
         })}
+
+        <Box w={1} h="50%" bg="gray.4" style={{ alignSelf: 'center' }} />
+        <BottomNavItem
+          label={t('header.categories')}
+          icon={
+            <Indicator
+              disabled={!selectedCategory}
+              size={14}
+              color="red"
+              offset={3}
+            >
+              <ChartColumnStacked size={20} />
+            </Indicator>
+          }
+          color={selectedCategory ? theme.colors.red[6] : undefined}
+          onClick={onOpenCategories}
+        />
       </Group>
 
       {/* PROFILE DRAWER */}

@@ -159,25 +159,19 @@
     "selectOperator": "Укажите оператор",
     "filter": {
       "title": "Панель фильтров",
-
       "login": "Логин",
       "name": "Имя",
       "email": "Email",
       "phone": "Телефон",
-
       "role": "Роль",
       "status": "Статус",
-
       "countryPlaceholder": "Выберите страны",
       "noCountries": "Страны отсутствуют",
-
       "createdAtPlaceholder": "Укажите диапазон",
-
       "contains": "Содержит",
       "equals": "Равно",
       "notContains": "Не содержит",
       "notEquals": "Не равно",
-
       "apply": "Применить фильтры",
       "reset": "Сбросить фильтры"
     },
@@ -454,5 +448,10 @@
     "YEM": "Йемен",
     "ZMB": "Замбия",
     "ZWE": "Зимбабве"
+  },
+  "categories": {
+    "title": "Категории",
+    "hint": "Выберите один уровень фильтра",
+    "reset": "Сбросить"
   }
 }

@@ -1,0 +1,14 @@
+export enum LotErrorCode {
+  // Общие
+  CHAPTER_NOT_FOUND = 'CHAPTER_NOT_FOUND',
+  CATEGORY_NOT_FOUND = 'CATEGORY_NOT_FOUND',
+  SUBCATEGORY_NOT_FOUND = 'SUBCATEGORY_NOT_FOUND',
+  LOT_NOT_FOND = 'LOT_NOT_FOND',
+
+  // Права доступа
+  NO_ACCESS = 'NO_ACCESS',
+
+  // Обновление
+  NOT_OWNER = 'NOT_OWNER',
+  USER_ARCHIVED = 'USER_ARCHIVED',
+}

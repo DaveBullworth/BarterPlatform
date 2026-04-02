@@ -378,21 +378,21 @@
 
   {
     "externalId": 54,
-    "chapterId": 13,
+    "chapterId": 7,
     "name": "Женская одежда",
     "type": "category",
     "slug": "zhenskaya-odezhda"
   },
   {
     "externalId": 55,
-    "chapterId": 13,
+    "chapterId": 7,
     "name": "Женская обувь",
     "type": "category",
     "slug": "zhenskaya-obuv"
   },
   {
     "externalId": 56,
-    "chapterId": 13,
+    "chapterId": 7,
     "name": "Женские аксессуары",
     "type": "category",
     "slug": "zhenskie-aksessuary"

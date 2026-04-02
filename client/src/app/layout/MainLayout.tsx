@@ -5,11 +5,14 @@ import { DesktopHeader } from './header/DesktopHeader';
 import { MobileHeader } from './header/MobileHeader';
 import { DesktopNavbar } from './navbar/DesktopNavbar';
 import { MobileBottomNavbar } from './navbar/MobileBottomNavbar';
+import { CategoriesDrawer } from './CategoriesDrawer';
 
 import styles from './MainLayout.module.scss';
 
 export const MainLayout = () => {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+  const [categoriesOpened, { open: openCategories, close: closeCategories }] =
+    useDisclosure(false);
 
   return (
     <AppShell
@@ -27,6 +30,7 @@ export const MainLayout = () => {
         <DesktopHeader
           desktopOpened={desktopOpened}
           onToggleDesktop={toggleDesktop}
+          onOpenCategories={openCategories}
         />
         <MobileHeader />
       </AppShell.Header>
@@ -38,8 +42,10 @@ export const MainLayout = () => {
 
       {/* MOBILE FOOTER NAVBAR */}
       <AppShell.Footer hiddenFrom="sm">
-        <MobileBottomNavbar />
+        <MobileBottomNavbar onOpenCategories={openCategories} />
       </AppShell.Footer>
+
+      <CategoriesDrawer opened={categoriesOpened} onClose={closeCategories} />
 
       <AppShell.Main className={styles.mainLayout}>
         <Outlet />

@@ -160,15 +160,12 @@
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
-
       "role": "Role",
       "status": "Status",
-
       "contains": "Contains",
       "equals": "Equals",
       "notContains": "Does not contain",
       "notEquals": "Does not equal",
-
       "reset": "Reset filters"
     }
   },
@@ -440,5 +437,10 @@
     "YEM": "Yemen",
     "ZMB": "Zambia",
     "ZWE": "Zimbabwe"
+  },
+  "categories": {
+    "title": "Categories",
+    "hint": "Select one filter level",
+    "reset": "Reset"
   }
 }
