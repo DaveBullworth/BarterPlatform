@@ -1,5 +1,5 @@
 import {
-  IsEnum,
+  IsIn,
   IsInt,
   IsOptional,
   IsString,
@@ -53,21 +53,17 @@ export class CreateLotDto {
   @ApiProperty({
     example: 1,
     description: 'Количество товара (по умолчанию 1)',
-    required: false,
     minimum: 1,
   })
-  @IsOptional()
   @IsInt()
   @Min(1)
-  quantity?: number;
+  quantity: number;
 
   @ApiProperty({
-    enum: LotVisibilityStatus,
+    enum: [LotVisibilityStatus.HIDDEN, LotVisibilityStatus.ACTIVE],
     example: LotVisibilityStatus.HIDDEN,
     description: 'Статус видимости лота',
-    required: false,
   })
-  @IsOptional()
-  @IsEnum(LotVisibilityStatus)
-  visibilityStatus?: LotVisibilityStatus;
+  @IsIn([LotVisibilityStatus.HIDDEN, LotVisibilityStatus.ACTIVE])
+  visibilityStatus: LotVisibilityStatus;
 }

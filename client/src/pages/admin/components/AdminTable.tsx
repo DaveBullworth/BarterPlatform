@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Table, ScrollArea, Group } from '@mantine/core';
 import {
   useReactTable,
@@ -12,10 +13,9 @@ import { useSelector } from 'react-redux';
 
 import { selectCurrentUser } from '@/store/userSlice';
 import { goToUser, goToProfile } from '@/shared/utils/navigation';
-import { TABLE_COLUMNS } from '../tables/index';
+import { getUserColumns, type AdminColumn } from '../tables/user.columns';
 import type { RootState } from '@/store';
 import type { TableKey } from '@/shared/constants/tables';
-import type { AdminColumn } from '../tables/user.columns';
 
 import styles from '../AdminPage.module.scss';
 
@@ -46,6 +46,7 @@ export const AdminTable = React.forwardRef(function AdminTable<
   }: AdminTableProps<T>,
   ref: React.ForwardedRef<AdminTableRef>,
 ) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const user = useSelector((s: RootState) => selectCurrentUser(s));
   // Функция получения пресета ширины столбцов из LocalStorage
@@ -102,8 +103,8 @@ export const AdminTable = React.forwardRef(function AdminTable<
   }));
 
   const columns = React.useMemo(
-    () => TABLE_COLUMNS[tableKey] as unknown as AdminColumn<T>[],
-    [tableKey],
+    () => getUserColumns(t) as unknown as AdminColumn<T>[],
+    [t],
   );
 
   const columnDefs = React.useMemo(

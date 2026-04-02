@@ -20,16 +20,24 @@ import {
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { DateRangeDropdownInput } from '@/shared/ui/DateRangeDropdownInput';
-import { getRegions, getCities, getDistricts } from '@/http/geography';
 import type {
   UserFilters,
   TextOperator,
   TextFilter,
   MultiTextFilter,
 } from '@/types/filters';
-import type { GeoOption, DistrictOption } from '@/types/geo.dto';
+import type { AppDispatch } from '@/store';
+import {
+  fetchCitiesIfNeeded,
+  fetchDistrictsIfNeeded,
+  fetchRegionsIfNeeded,
+  selectCities,
+  selectDistricts,
+  selectRegions,
+} from '@/store/geographySlice';
 
 import styles from '../AdminPage.module.scss';
 
@@ -48,6 +56,7 @@ type MultiTextFilterInputProps = {
   ) => void;
   t: TFunction;
   placeholder: string;
+  onDropdownOpen?: () => void;
 };
 
 const TEXT_OPERATORS: { value: TextOperator; labelKey: string }[] = [
@@ -184,6 +193,7 @@ export const MultiTextFilterInput = React.memo(
     onCommit,
     t,
     placeholder,
+    onDropdownOpen,
   }: MultiTextFilterInputProps) => {
     const values = filter?.values ?? [];
     const operator = (filter?.operator ?? 'contains') as TextOperator;
@@ -214,6 +224,7 @@ export const MultiTextFilterInput = React.memo(
           data={options}
           value={values}
           onChange={(vals) => onCommit(field, { values: vals })}
+          onDropdownOpen={onDropdownOpen}
           maxValues={20}
         />
       </Group>
@@ -223,19 +234,14 @@ export const MultiTextFilterInput = React.memo(
 
 export function AdminTableFilters({ value, onChange }: Props) {
   const { t } = useTranslation();
-  const [regions, setRegions] = useState<GeoOption[]>([]);
-  const [cities, setCities] = useState<GeoOption[]>([]);
-  const [districts, setDistricts] = useState<DistrictOption[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const regions = useSelector(selectRegions);
+  const cities = useSelector(selectCities);
+  const districts = useSelector(selectDistricts);
 
   const [localFilters, setLocalFilters] = useState<UserFilters>(() => ({
     ...value,
   }));
-
-  useEffect(() => {
-    getRegions().then(setRegions).catch(console.error);
-    getCities().then(setCities).catch(console.error);
-    getDistricts().then(setDistricts).catch(console.error);
-  }, []);
 
   useEffect(() => {
     if (!filtersEqual(localFilters, value)) setLocalFilters({ ...value });
@@ -367,6 +373,7 @@ export function AdminTableFilters({ value, onChange }: Props) {
                 onCommit={setMultiFilter}
                 t={t}
                 placeholder={t('auth.region')}
+                onDropdownOpen={() => dispatch(fetchRegionsIfNeeded())}
               />
 
               <MultiTextFilterInput
@@ -378,6 +385,7 @@ export function AdminTableFilters({ value, onChange }: Props) {
                 onCommit={setMultiFilter}
                 t={t}
                 placeholder={t('auth.city')}
+                onDropdownOpen={() => dispatch(fetchCitiesIfNeeded())}
               />
 
               <MultiTextFilterInput
@@ -395,6 +403,7 @@ export function AdminTableFilters({ value, onChange }: Props) {
                 onCommit={setMultiFilter}
                 t={t}
                 placeholder={t('auth.district')}
+                onDropdownOpen={() => dispatch(fetchDistrictsIfNeeded())}
               />
 
               <Group grow className={styles.booleanFilter}>

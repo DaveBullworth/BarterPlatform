@@ -40,13 +40,18 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import styles from './MainLayout.module.scss';
-import { getTaxonomy } from '@/http/taxonomy';
-import type { CategorySelection, TaxonomyChapter } from '@/types/taxonomy';
+import type { CategorySelection } from '@/types/taxonomy';
+import type { AppDispatch } from '@/store';
 import {
   clearCategorySelection,
   selectCategorySelection,
   setCategorySelection,
 } from '@/store/categoryFilterSlice';
+import {
+  fetchTaxonomyIfNeeded,
+  selectTaxonomy,
+  selectTaxonomyLoading,
+} from '@/store/taxonomySlice';
 
 type Props = {
   opened: boolean;
@@ -105,11 +110,10 @@ const isSameSelection = (
 
 export const CategoriesDrawer = ({ opened, onClose }: Props) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const selected = useSelector(selectCategorySelection);
-
-  const [data, setData] = useState<TaxonomyChapter[]>([]);
-  const [loading, setLoading] = useState(false);
+  const data = useSelector(selectTaxonomy);
+  const loading = useSelector(selectTaxonomyLoading);
   const [expandedChapters, setExpandedChapters] = useState<Set<number>>(
     new Set(),
   );
@@ -148,32 +152,8 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
 
   useEffect(() => {
     if (!opened) return;
-
-    let cancelled = false;
-
-    const load = async () => {
-      setLoading(true);
-      try {
-        const result = await getTaxonomy();
-        if (!cancelled) setData(result);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-
-    load();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [opened]);
-
-  useEffect(() => {
-    if (!opened) return;
-
-    setExpandedChapters(new Set());
-    setExpandedCategories(new Set());
-  }, [opened]);
+    dispatch(fetchTaxonomyIfNeeded());
+  }, [dispatch, opened]);
 
   return (
     <Drawer
@@ -258,115 +238,121 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
                 </UnstyledButton>
 
                 <Collapse in={chapterExpanded}>
-                  <Stack pl="md" gap={4}>
-                    {chapter.categories.map((category) => {
-                      const hasSubcategories =
-                        category.subcategories.length > 0;
-                      const categoryExpanded = expandedCategories.has(
-                        getCategoryKey(chapter.id, category.id),
-                      );
-                      const categorySelected =
-                        selected?.level === 'category' &&
-                        selected.chapterId === chapter.id &&
-                        selected.categoryId === category.id;
+                  {chapterExpanded && (
+                    <Stack pl="md" gap={4}>
+                      {chapter.categories.map((category) => {
+                        const hasSubcategories =
+                          category.subcategories.length > 0;
+                        const categoryExpanded = expandedCategories.has(
+                          getCategoryKey(chapter.id, category.id),
+                        );
+                        const categorySelected =
+                          selected?.level === 'category' &&
+                          selected.chapterId === chapter.id &&
+                          selected.categoryId === category.id;
 
-                      return (
-                        <Stack key={category.id} gap={4}>
-                          <UnstyledButton
-                            onClick={() => {
-                              if (!hasSubcategories) return;
-                              toggleCategory(chapter.id, category.id);
-                            }}
-                            style={{
-                              borderRadius: 8,
-                              border: '1px solid var(--mantine-color-gray-2)',
-                              padding: '6px 10px',
-                              cursor: hasSubcategories ? 'pointer' : 'default',
-                              backgroundColor: categorySelected
-                                ? 'var(--mantine-color-blue-0)'
-                                : 'var(--mantine-color-white)',
-                            }}
-                          >
-                            <Group justify="space-between" wrap="nowrap">
-                              <Text size="sm">{category.name}</Text>
-                              <Group gap="xs" wrap="nowrap">
-                                {hasSubcategories ? (
-                                  <ChevronRight
-                                    size={14}
-                                    style={{
-                                      transform: categoryExpanded
-                                        ? 'rotate(90deg)'
-                                        : 'rotate(0deg)',
-                                      transition: 'transform 150ms ease',
-                                    }}
-                                  />
-                                ) : (
-                                  <Box w={14} />
-                                )}
-                                <Checkbox
-                                  checked={categorySelected}
-                                  onChange={() =>
-                                    toggleSelection({
-                                      level: 'category',
-                                      chapterId: chapter.id,
-                                      categoryId: category.id,
-                                    })
-                                  }
-                                  onClick={(event) => event.stopPropagation()}
-                                  aria-label={category.name}
-                                />
-                              </Group>
-                            </Group>
-                          </UnstyledButton>
-
-                          {hasSubcategories && (
-                            <Collapse in={categoryExpanded}>
-                              <Stack pl="md" gap={4}>
-                                {category.subcategories.map((subcategory) => {
-                                  const subcategorySelected =
-                                    selected?.level === 'subcategory' &&
-                                    selected.chapterId === chapter.id &&
-                                    selected.categoryId === category.id &&
-                                    selected.subcategoryId === subcategory.id;
-
-                                  return (
-                                    <Group
-                                      key={subcategory.id}
-                                      justify="space-between"
-                                      wrap="nowrap"
+                        return (
+                          <Stack key={category.id} gap={4}>
+                            <UnstyledButton
+                              onClick={() => {
+                                if (!hasSubcategories) return;
+                                toggleCategory(chapter.id, category.id);
+                              }}
+                              style={{
+                                borderRadius: 8,
+                                border: '1px solid var(--mantine-color-gray-2)',
+                                padding: '6px 10px',
+                                cursor: hasSubcategories
+                                  ? 'pointer'
+                                  : 'default',
+                                backgroundColor: categorySelected
+                                  ? 'var(--mantine-color-blue-0)'
+                                  : 'var(--mantine-color-white)',
+                              }}
+                            >
+                              <Group justify="space-between" wrap="nowrap">
+                                <Text size="sm">{category.name}</Text>
+                                <Group gap="xs" wrap="nowrap">
+                                  {hasSubcategories ? (
+                                    <ChevronRight
+                                      size={14}
                                       style={{
-                                        borderRadius: 8,
-                                        border:
-                                          '1px solid var(--mantine-color-gray-2)',
-                                        padding: '4px 10px',
-                                        backgroundColor: subcategorySelected
-                                          ? 'var(--mantine-color-blue-0)'
-                                          : 'var(--mantine-color-white)',
+                                        transform: categoryExpanded
+                                          ? 'rotate(90deg)'
+                                          : 'rotate(0deg)',
+                                        transition: 'transform 150ms ease',
                                       }}
-                                    >
-                                      <Text size="sm">{subcategory.name}</Text>
-                                      <Checkbox
-                                        checked={subcategorySelected}
-                                        onChange={() =>
-                                          toggleSelection({
-                                            level: 'subcategory',
-                                            chapterId: chapter.id,
-                                            categoryId: category.id,
-                                            subcategoryId: subcategory.id,
-                                          })
-                                        }
-                                        aria-label={subcategory.name}
-                                      />
-                                    </Group>
-                                  );
-                                })}
-                              </Stack>
-                            </Collapse>
-                          )}
-                        </Stack>
-                      );
-                    })}
-                  </Stack>
+                                    />
+                                  ) : (
+                                    <Box w={14} />
+                                  )}
+                                  <Checkbox
+                                    checked={categorySelected}
+                                    onChange={() =>
+                                      toggleSelection({
+                                        level: 'category',
+                                        chapterId: chapter.id,
+                                        categoryId: category.id,
+                                      })
+                                    }
+                                    onClick={(event) => event.stopPropagation()}
+                                    aria-label={category.name}
+                                  />
+                                </Group>
+                              </Group>
+                            </UnstyledButton>
+
+                            {hasSubcategories && categoryExpanded && (
+                              <Collapse in={categoryExpanded}>
+                                <Stack pl="md" gap={4}>
+                                  {category.subcategories.map((subcategory) => {
+                                    const subcategorySelected =
+                                      selected?.level === 'subcategory' &&
+                                      selected.chapterId === chapter.id &&
+                                      selected.categoryId === category.id &&
+                                      selected.subcategoryId === subcategory.id;
+
+                                    return (
+                                      <Group
+                                        key={subcategory.id}
+                                        justify="space-between"
+                                        wrap="nowrap"
+                                        style={{
+                                          borderRadius: 8,
+                                          border:
+                                            '1px solid var(--mantine-color-gray-2)',
+                                          padding: '4px 10px',
+                                          backgroundColor: subcategorySelected
+                                            ? 'var(--mantine-color-blue-0)'
+                                            : 'var(--mantine-color-white)',
+                                        }}
+                                      >
+                                        <Text size="sm">
+                                          {subcategory.name}
+                                        </Text>
+                                        <Checkbox
+                                          checked={subcategorySelected}
+                                          onChange={() =>
+                                            toggleSelection({
+                                              level: 'subcategory',
+                                              chapterId: chapter.id,
+                                              categoryId: category.id,
+                                              subcategoryId: subcategory.id,
+                                            })
+                                          }
+                                          aria-label={subcategory.name}
+                                        />
+                                      </Group>
+                                    );
+                                  })}
+                                </Stack>
+                              </Collapse>
+                            )}
+                          </Stack>
+                        );
+                      })}
+                    </Stack>
+                  )}
                 </Collapse>
               </Stack>
             );

@@ -8,6 +8,8 @@ import type { RedisSession } from '@/common/interfaces/redis-session.interface';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
+  private static readonly ARCHIVED_LOTS_SET_KEY = 'lot:archived:index';
+  // private static readonly ARCHIVED_LOT_KEY_PREFIX = 'lot:archived:';
   private client!: RedisClientType;
 
   constructor(private readonly dataSource: DataSource) {}
@@ -205,6 +207,60 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   async deleteUserTimestamp(userId: string) {
     const client = this.getClient();
     await client.del(`user:updated:${userId}`);
+  }
+
+  async markLotArchived(lotId: string, archivedAt: Date = new Date()) {
+    const client = this.getClient();
+    // const key = `${RedisService.ARCHIVED_LOT_KEY_PREFIX}${lotId}`;
+    // const payload = JSON.stringify({
+    //   lotId,
+    //   archivedAt: archivedAt.toISOString(),
+    // });
+    // const ttlSeconds = 30 * 24 * 60 * 60;
+
+    await client
+      .multi()
+      // .set(key, payload, { EX: ttlSeconds })
+      .zAdd(RedisService.ARCHIVED_LOTS_SET_KEY, {
+        score: archivedAt.getTime(),
+        value: lotId,
+      })
+      .exec();
+  }
+
+  async unmarkLotArchived(lotId: string) {
+    const client = this.getClient();
+
+    await client
+      .multi()
+      // .del(`${RedisService.ARCHIVED_LOT_KEY_PREFIX}${lotId}`)
+      .zRem(RedisService.ARCHIVED_LOTS_SET_KEY, lotId)
+      .exec();
+  }
+
+  async getArchivedLotIdsDueForDeletion(before: Date, limit = 200) {
+    const client = this.getClient();
+
+    return client.zRangeByScore(
+      RedisService.ARCHIVED_LOTS_SET_KEY,
+      0,
+      before.getTime(),
+      { LIMIT: { offset: 0, count: limit } },
+    );
+  }
+
+  async unmarkArchivedLots(lotIds: string[]) {
+    if (!lotIds.length) return;
+
+    const client = this.getClient();
+    const pipeline = client.multi();
+
+    pipeline.zRem(RedisService.ARCHIVED_LOTS_SET_KEY, lotIds);
+    // lotIds.forEach((lotId) => {
+    //   pipeline.del(`${RedisService.ARCHIVED_LOT_KEY_PREFIX}${lotId}`);
+    // });
+
+    await pipeline.exec();
   }
 
   async onModuleDestroy() {

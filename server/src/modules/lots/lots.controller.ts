@@ -217,8 +217,7 @@ export class LotsController {
   @Delete(':id')
   @ApiOperation({
     summary: 'Delete lot',
-    description:
-      'Admin can delete any lot. Regular user can delete only own non-archived lots.',
+    description: 'Only admin can delete lots.',
   })
   @ApiParam({
     name: 'id',
@@ -236,20 +235,10 @@ export class LotsController {
   @ApiForbiddenResponse({
     description: 'No rights to delete this lot',
     schema: {
-      oneOf: [
-        {
-          example: {
-            code: LotErrorCode.NOT_OWNER,
-            message: 'Only owner can delete lot',
-          },
-        },
-        {
-          example: {
-            code: LotErrorCode.USER_ARCHIVED,
-            message: 'Archived lots cannot be deleted by user',
-          },
-        },
-      ],
+      example: {
+        code: LotErrorCode.NO_ACCESS,
+        message: 'Only admin can delete lot',
+      },
     },
   })
   @ApiNotFoundResponse({

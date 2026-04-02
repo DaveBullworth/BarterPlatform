@@ -2,6 +2,8 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  OnModuleDestroy,
+  OnModuleInit,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { readFileSync } from 'node:fs';
@@ -18,6 +20,7 @@ import type {
   SubcategorySeed,
 } from './types/taxonomy.types';
 import { LotErrorCode } from './errors/lots-error-codes';
+import { RedisService } from '@/common/services/redis/redis.service';
 
 function loadSeed<T>(filename: string): T[] {
   return JSON.parse(readFileSync(join(process.cwd(), filename), 'utf8')) as T[];
@@ -30,11 +33,71 @@ const subcategories = loadSeed<SubcategorySeed>(
 );
 
 @Injectable()
-export class LotsService {
+export class LotsService implements OnModuleInit, OnModuleDestroy {
+  private static readonly ARCHIVE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+  private static readonly CLEANUP_INTERVAL_MS = 60 * 60 * 1000;
+  private cleanupTimer: NodeJS.Timeout | null = null;
+
   constructor(
     @InjectRepository(LotEntity)
     private readonly lotsRepo: Repository<LotEntity>,
+    private readonly redisService: RedisService,
   ) {}
+
+  onModuleInit() {
+    this.cleanupArchivedLots().catch(() => undefined);
+    this.cleanupTimer = setInterval(() => {
+      this.cleanupArchivedLots().catch(() => undefined);
+    }, LotsService.CLEANUP_INTERVAL_MS);
+  }
+
+  onModuleDestroy() {
+    if (this.cleanupTimer) {
+      clearInterval(this.cleanupTimer);
+      this.cleanupTimer = null;
+    }
+  }
+
+  private async syncArchiveTracking(
+    lotId: string,
+    previousStatus: LotVisibilityStatus,
+    nextStatus: LotVisibilityStatus,
+  ) {
+    if (
+      previousStatus !== LotVisibilityStatus.ARCHIVED &&
+      nextStatus === LotVisibilityStatus.ARCHIVED
+    ) {
+      await this.redisService.markLotArchived(lotId);
+      return;
+    }
+
+    if (
+      previousStatus === LotVisibilityStatus.ARCHIVED &&
+      nextStatus !== LotVisibilityStatus.ARCHIVED
+    ) {
+      await this.redisService.unmarkLotArchived(lotId);
+    }
+  }
+
+  private async cleanupArchivedLots() {
+    const threshold = new Date(Date.now() - LotsService.ARCHIVE_TTL_MS);
+    const lotIds =
+      await this.redisService.getArchivedLotIdsDueForDeletion(threshold);
+
+    if (!lotIds.length) return;
+
+    await this.lotsRepo
+      .createQueryBuilder()
+      .delete()
+      .from(LotEntity)
+      .where('id IN (:...ids)', { ids: lotIds })
+      .andWhere('visibilityStatus = :status', {
+        status: LotVisibilityStatus.ARCHIVED,
+      })
+      .execute();
+
+    await this.redisService.unmarkArchivedLots(lotIds);
+  }
 
   getTaxonomy() {
     return chapters.map((chapter) => ({
@@ -103,11 +166,13 @@ export class LotsService {
       subcategoryId: dto.subcategoryId ?? null,
       generalDescription: dto.generalDescription,
       characteristicsDescription: dto.characteristicsDescription,
-      quantity: dto.quantity ?? 1,
-      visibilityStatus: dto.visibilityStatus ?? LotVisibilityStatus.HIDDEN,
+      quantity: dto.quantity,
+      visibilityStatus: dto.visibilityStatus,
     });
 
-    return this.lotsRepo.save(lot);
+    const createdLot = await this.lotsRepo.save(lot);
+
+    return createdLot;
   }
 
   async getAll(user: JwtPayload) {
@@ -172,6 +237,7 @@ export class LotsService {
       }
     }
 
+    const previousStatus = lot.visibilityStatus;
     const chapterId = dto.chapterId ?? lot.chapterId;
     const categoryId = dto.categoryId ?? lot.categoryId;
     const subcategoryId = dto.subcategoryId ?? lot.subcategoryId ?? undefined;
@@ -188,7 +254,14 @@ export class LotsService {
       visibilityStatus: dto.visibilityStatus ?? lot.visibilityStatus,
     });
 
-    return this.lotsRepo.save(lot);
+    const savedLot = await this.lotsRepo.save(lot);
+    await this.syncArchiveTracking(
+      savedLot.id,
+      previousStatus,
+      savedLot.visibilityStatus,
+    );
+
+    return savedLot;
   }
 
   async remove(id: string, user: JwtPayload) {
@@ -200,23 +273,14 @@ export class LotsService {
       });
 
     const isAdmin = user.role === UserRole.ADMIN;
-    if (!isAdmin) {
-      if (lot.userId !== user.sub) {
-        throw new ForbiddenException({
-          code: LotErrorCode.NOT_OWNER,
-          message: 'Only owner can delete lot',
-        });
-      }
-
-      if (lot.visibilityStatus === LotVisibilityStatus.ARCHIVED) {
-        throw new ForbiddenException({
-          code: LotErrorCode.USER_ARCHIVED,
-          message: 'Archived lots cannot be deleted by user',
-        });
-      }
-    }
+    if (!isAdmin)
+      throw new ForbiddenException({
+        code: LotErrorCode.NO_ACCESS,
+        message: 'Only admin can delete lot',
+      });
 
     await this.lotsRepo.remove(lot);
+    await this.redisService.unmarkLotArchived(lot.id);
 
     return { success: true };
   }

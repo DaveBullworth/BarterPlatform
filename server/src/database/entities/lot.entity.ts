@@ -57,7 +57,7 @@ export class LotEntity {
     example: 'Продам MacBook Pro 14"',
     description: 'Краткое общее описание лота',
   })
-  @Column({ type: 'varchar', length: 255 })
+  @Column()
   generalDescription: string;
 
   @ApiProperty({

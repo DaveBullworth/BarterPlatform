@@ -1,10 +1,10 @@
 import { Tooltip, Text, Center } from '@mantine/core';
 import { User, Crown, CircleCheck, CircleX } from 'lucide-react';
-import i18n from '@/shared/i18n';
 
 import type { UserResponseDto } from '@/types/user';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
+import type { TFunction } from 'i18next';
 
 export type AdminCellContext<T> = {
   row: T;
@@ -25,7 +25,9 @@ export type AdminColumn<T> = {
   cellAlign?: 'left' | 'center' | 'right'; // для <Td>
 };
 
-export const userColumns: AdminColumn<UserResponseDto>[] = [
+export const getUserColumns = (
+  t: TFunction,
+): AdminColumn<UserResponseDto>[] => [
   {
     id: 'index',
     header: '№',
@@ -41,7 +43,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     id: 'login',
     width: 200,
     minWidth: 100,
-    header: i18n.t(`auth.login`),
+    header: t(`auth.login`),
     cell: ({ row }) => row.login,
   },
 
@@ -49,7 +51,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     id: 'email',
     width: 200,
     minWidth: 100,
-    header: i18n.t(`auth.email`),
+    header: t(`auth.email`),
     cell: ({ row }) => row.email,
   },
 
@@ -57,13 +59,13 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
     id: 'name',
     width: 200,
     minWidth: 100,
-    header: i18n.t(`auth.name`),
+    header: t(`auth.name`),
     cell: ({ row }) => row.name ?? '—',
   },
 
   {
     id: 'role',
-    header: i18n.t(`common.role`),
+    header: t(`common.role`),
     headerAlign: 'center',
     width: 80,
     resizable: false,
@@ -73,7 +75,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
       return (
         <Center>
           <Tooltip
-            label={isAdmin ? i18n.t(`common.admin`) : i18n.t(`common.user`)}
+            label={isAdmin ? t(`common.admin`) : t(`common.user`)}
             withArrow
           >
             {isAdmin ? (
@@ -89,16 +91,14 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
 
   {
     id: 'status',
-    header: i18n.t(`common.status`),
+    header: t(`common.status`),
     headerAlign: 'center',
     width: 80,
     resizable: false,
     cell: ({ row }) => (
       <Center>
         <Tooltip
-          label={
-            row.status ? i18n.t(`common.active`) : i18n.t(`common.noActive`)
-          }
+          label={row.status ? t(`common.active`) : t(`common.noActive`)}
           withArrow
         >
           {row.status ? (
@@ -113,26 +113,26 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
 
   {
     id: 'region',
-    header: i18n.t(`auth.region`),
+    header: t(`auth.region`),
     width: 160,
     cell: ({ row }) => row.region?.name ?? '—',
   },
   {
     id: 'city',
-    header: i18n.t(`auth.city`),
+    header: t(`auth.city`),
     width: 160,
     cell: ({ row }) => row.city?.name ?? '—',
   },
   {
     id: 'district',
-    header: i18n.t(`auth.district`),
+    header: t(`auth.district`),
     width: 160,
     cell: ({ row }) => row.district?.name ?? '—',
   },
 
   {
     id: 'phone',
-    header: i18n.t(`auth.phone`),
+    header: t(`auth.phone`),
     width: 140,
     resizable: false,
     accessorFn: (row) => row.phone ?? '',
@@ -149,7 +149,7 @@ export const userColumns: AdminColumn<UserResponseDto>[] = [
 
   {
     id: 'createdAt',
-    header: i18n.t(`common.createdAt`),
+    header: t(`common.createdAt`),
     headerAlign: 'center',
     width: 120,
     resizable: false,
