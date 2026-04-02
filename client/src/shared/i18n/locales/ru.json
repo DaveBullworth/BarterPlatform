@@ -204,7 +204,9 @@
     "role": "Роль",
     "status": "Статус",
     "statusEmail": "Почта",
-    "createdAt": "Создан"
+    "createdAt": "Создан",
+    "loading": "Загрузка...",
+    "others": "Другие"
   },
   "notifications": {
     "title": "Уведомления",

@@ -1,13 +1,13 @@
 import { $host } from './index';
-import type { GeoOption, DistrictOption } from '@/types/geo.dto';
+import type { DistrictOption, RegionOption, CityOption } from '@/types/geo.dto';
 
-export const getRegions = async (): Promise<GeoOption[]> => {
-  const { data } = await $host.get<GeoOption[]>('/user/geography/regions');
+export const getRegions = async (): Promise<RegionOption[]> => {
+  const { data } = await $host.get<RegionOption[]>('/user/geography/regions');
   return data;
 };
 
-export const getCities = async (regionId?: number): Promise<GeoOption[]> => {
-  const { data } = await $host.get<GeoOption[]>('/user/geography/cities', {
+export const getCities = async (regionId?: number): Promise<CityOption[]> => {
+  const { data } = await $host.get<CityOption[]>('/user/geography/cities', {
     params: regionId ? { regionId } : undefined,
   });
   return data;

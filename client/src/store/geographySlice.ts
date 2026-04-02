@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getCities, getDistricts, getRegions } from '@/http/geography';
-import type { DistrictOption, GeoOption } from '@/types/geo.dto';
+import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
 import type { RootState } from '.';
 
 type GeographyState = {
-  regions: GeoOption[];
-  cities: GeoOption[];
+  regions: RegionOption[];
+  cities: CityOption[];
   districts: DistrictOption[];
   regionsLoaded: boolean;
   citiesLoaded: boolean;
@@ -31,7 +31,8 @@ export const fetchRegionsIfNeeded = createAsyncThunk(
   'geography/fetchRegionsIfNeeded',
   async (_, { getState }) => {
     const state = getState() as RootState;
-    if (state.geography.regionsLoaded || state.geography.regionsLoading) {
+
+    if (state.geography.regionsLoaded) {
       return null;
     }
 
@@ -43,7 +44,7 @@ export const fetchCitiesIfNeeded = createAsyncThunk(
   'geography/fetchCitiesIfNeeded',
   async (_, { getState }) => {
     const state = getState() as RootState;
-    if (state.geography.citiesLoaded || state.geography.citiesLoading) {
+    if (state.geography.citiesLoaded) {
       return null;
     }
 
@@ -55,7 +56,7 @@ export const fetchDistrictsIfNeeded = createAsyncThunk(
   'geography/fetchDistrictsIfNeeded',
   async (_, { getState }) => {
     const state = getState() as RootState;
-    if (state.geography.districtsLoaded || state.geography.districtsLoading) {
+    if (state.geography.districtsLoaded) {
       return null;
     }
 

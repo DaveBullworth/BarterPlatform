@@ -17,6 +17,7 @@ import {
   Text,
   CloseButton,
   MultiSelect,
+  Loader,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
@@ -29,7 +30,7 @@ import type {
   TextFilter,
   MultiTextFilter,
 } from '@/types/filters';
-import type { AppDispatch } from '@/store';
+import type { AppDispatch, RootState } from '@/store';
 import {
   fetchCitiesIfNeeded,
   fetchDistrictsIfNeeded,
@@ -199,6 +200,23 @@ export const MultiTextFilterInput = React.memo(
     const operator = (filter?.operator ?? 'contains') as TextOperator;
     const operatorDisabled = values.length === 0;
 
+    // --- выбираем loading в зависимости от field ---
+    const loading = useSelector((state: RootState) => {
+      switch (field) {
+        case 'region':
+          return state.geography.regionsLoading;
+        case 'city':
+          return state.geography.citiesLoading;
+        case 'district':
+          return state.geography.districtsLoading;
+        default:
+          return false;
+      }
+    });
+
+    // --- отображаем placeholder в зависимости от loading ---
+    const displayedPlaceholder = loading ? t('common.loading') : placeholder;
+
     return (
       <Group grow className={styles.textFilter}>
         <Select
@@ -218,9 +236,10 @@ export const MultiTextFilterInput = React.memo(
         />
 
         <MultiSelect
+          rightSection={loading ? <Loader size="xs" /> : null}
           searchable
           clearable
-          placeholder={placeholder}
+          placeholder={displayedPlaceholder}
           data={options}
           value={values}
           onChange={(vals) => onCommit(field, { values: vals })}
@@ -242,11 +261,6 @@ export function AdminTableFilters({ value, onChange }: Props) {
   const [localFilters, setLocalFilters] = useState<UserFilters>(() => ({
     ...value,
   }));
-
-  useEffect(() => {
-    if (!filtersEqual(localFilters, value)) setLocalFilters({ ...value });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
 
   const setTextFilter = useCallback(
     (
@@ -381,7 +395,18 @@ export function AdminTableFilters({ value, onChange }: Props) {
                 filter={localFilters.city}
                 options={[...cities]
                   .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((с) => ({ value: String(с.id), label: с.name }))}
+                  .map((c) => {
+                    let region = null;
+                    if (c.slug === 'other')
+                      region = regions.find((r) => r.id === c.regionId);
+
+                    return {
+                      value: String(c.id),
+                      label: region
+                        ? `${region.name} (${t('common.others')})`
+                        : c.name,
+                    };
+                  })}
                 onCommit={setMultiFilter}
                 t={t}
                 placeholder={t('auth.city')}

@@ -12,7 +12,7 @@
   ThemeIcon,
   UnstyledButton,
 } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -39,9 +39,6 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './MainLayout.module.scss';
-import type { CategorySelection } from '@/types/taxonomy';
-import type { AppDispatch } from '@/store';
 import {
   clearCategorySelection,
   selectCategorySelection,
@@ -52,6 +49,9 @@ import {
   selectTaxonomy,
   selectTaxonomyLoading,
 } from '@/store/taxonomySlice';
+import type { CategorySelection } from '@/types/taxonomy';
+import type { AppDispatch } from '@/store';
+import styles from './MainLayout.module.scss';
 
 type Props = {
   opened: boolean;
@@ -121,6 +121,34 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
     new Set(),
   );
 
+  const initExpandedFromSelection = useCallback(() => {
+    if (!selected) {
+      setExpandedChapters(new Set());
+      setExpandedCategories(new Set());
+      return;
+    }
+
+    const chapters = new Set<number>();
+    const categories = new Set<string>();
+
+    if (selected.level === 'chapter') {
+      chapters.add(selected.chapterId);
+    }
+
+    if (selected.level === 'category') {
+      chapters.add(selected.chapterId);
+      categories.add(getCategoryKey(selected.chapterId, selected.categoryId));
+    }
+
+    if (selected.level === 'subcategory') {
+      chapters.add(selected.chapterId);
+      categories.add(getCategoryKey(selected.chapterId, selected.categoryId));
+    }
+
+    setExpandedChapters(chapters);
+    setExpandedCategories(categories);
+  }, [selected]);
+
   const toggleChapter = (chapterId: number) => {
     setExpandedChapters((prev) => {
       const next = new Set(prev);
@@ -150,21 +178,38 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
     dispatch(setCategorySelection(next));
   };
 
+  const handleClose = () => {
+    setExpandedChapters(new Set());
+    setExpandedCategories(new Set());
+    onClose();
+  };
+
   useEffect(() => {
     if (!opened) return;
     dispatch(fetchTaxonomyIfNeeded());
   }, [dispatch, opened]);
 
+  useEffect(() => {
+    if (opened) {
+      // асинхронно вызываем функцию
+      const timeout = setTimeout(() => {
+        initExpandedFromSelection();
+      }, 0);
+
+      return () => clearTimeout(timeout); // очистка на unmount / закрытие
+    }
+  }, [opened, initExpandedFromSelection]);
+
   return (
     <Drawer
       opened={opened}
-      onClose={onClose}
+      onClose={handleClose}
       position="left"
       size="lg"
       title={t('categories.title')}
       className={styles.notificationsDrawer}
     >
-      <Group mb="sm" justify="space-between">
+      <Group mb="sm" justify="space-between" px="sm">
         <Text size="sm" c="dimmed">
           {t('categories.hint')}
         </Text>
@@ -191,7 +236,12 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
               selected.chapterId === chapter.id;
 
             return (
-              <Stack key={chapter.id} gap={6}>
+              <Stack
+                key={chapter.id}
+                // gap={6}
+                gap={chapterExpanded ? 'sm' : 0}
+                px="sm"
+              >
                 <UnstyledButton
                   onClick={() => toggleChapter(chapter.id)}
                   style={{

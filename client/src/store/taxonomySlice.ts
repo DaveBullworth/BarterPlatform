@@ -19,11 +19,19 @@ export const fetchTaxonomyIfNeeded = createAsyncThunk(
   'taxonomy/fetchTaxonomyIfNeeded',
   async (_, { getState }) => {
     const state = getState() as RootState;
-    if (state.taxonomy.loaded || state.taxonomy.loading) {
+    /* 
+      Полный идиотизм, но поддерживая искусственно асинхронность
+      CategoriesDrawer в своём useEffect успевает понять что есть загрузка
+      И отображает Drawer мгновенно так как внутри его только Loader
+      без него он не успевает счесть состояние pending
+      и сразу пытается отрендерить всё дерево категорий
+    */
+    await new Promise((r) => setTimeout(r, 100));
+    if (state.taxonomy.loaded) {
       return null;
     }
 
-    return getTaxonomy();
+    return await getTaxonomy();
   },
 );
 

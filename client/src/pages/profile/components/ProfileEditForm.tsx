@@ -27,7 +27,7 @@ import type { AdminUserDto, SelfUserDto } from '@/types/user';
 import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
 import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
 import { getRegions, getCities, getDistricts } from '@/http/geography';
-import type { DistrictOption, GeoOption } from '@/types/geo.dto';
+import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
 
 type FormValues = {
   name: string;
@@ -53,8 +53,8 @@ type Props = {
 export const ProfileEditForm = ({ user, role, onUpdated, onClose }: Props) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [regions, setRegions] = useState<GeoOption[]>([]);
-  const [cities, setCities] = useState<GeoOption[]>([]);
+  const [regions, setRegions] = useState<RegionOption[]>([]);
+  const [cities, setCities] = useState<CityOption[]>([]);
   const [districts, setDistricts] = useState<DistrictOption[]>([]);
   const [citySearch, setCitySearch] = useState('');
   const [districtSearch, setDistrictSearch] = useState('');

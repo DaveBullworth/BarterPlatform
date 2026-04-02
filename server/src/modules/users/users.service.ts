@@ -30,9 +30,21 @@ import { UserFiltersDto } from './dto/userFilters.dto';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { TextFilterDto } from '@/common/dtos/filter-item.dto';
 
-type Region = { externalId: number; name: string };
-type City = { externalId: number; regionId: number; name: string };
-type District = { externalId: number; cityId: number; name: string };
+type Region = { externalId: number; name: string; slug: string };
+
+type City = {
+  externalId: number;
+  regionId: number;
+  name: string;
+  slug: string;
+};
+
+type District = {
+  externalId: number;
+  cityId: number;
+  name: string;
+  slug: string;
+};
 
 function loadSeed<T>(filename: string): T[] {
   return JSON.parse(readFileSync(join(process.cwd(), filename), 'utf8')) as T[];
@@ -57,6 +69,7 @@ export class UsersService {
     return regions.map((region) => ({
       id: region.externalId,
       name: region.name,
+      slug: region.slug,
     }));
   }
 
@@ -67,7 +80,9 @@ export class UsersService {
 
     return regionCities.map((city) => ({
       id: city.externalId,
+      regionId: city.regionId,
       name: city.name,
+      slug: city.slug,
     }));
   }
 
@@ -80,6 +95,7 @@ export class UsersService {
       id: district.externalId,
       cityId: district.cityId,
       name: district.name,
+      slug: district.slug,
     }));
   }
 

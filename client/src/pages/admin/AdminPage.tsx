@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Stack,
@@ -35,6 +35,7 @@ export const AdminPage = () => {
 
   const tableRef = React.useRef<AdminTableRef>(null);
 
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sorting, setSorting] = useState<SortingState>(() => {
@@ -77,6 +78,16 @@ export const AdminPage = () => {
     setSorting([]); // очищаем состояние сортировки в компоненте
   };
 
+  useEffect(() => {
+    if (!isLoading && data) {
+      const id = requestAnimationFrame(() => setLoading(false));
+      return () => cancelAnimationFrame(id); // чистка
+    } else {
+      const id = setTimeout(() => setLoading(true), 0);
+      return () => clearTimeout(id);
+    }
+  }, [isLoading, data]);
+
   // Сохраняем в localStorage только при размонтировании страницы
   useEffect(() => {
     return () => {
@@ -115,7 +126,7 @@ export const AdminPage = () => {
         </Popover>
       </div>
 
-      {isLoading && (
+      {loading && (
         <Center py="xl">
           <Loader />
         </Center>
@@ -123,15 +134,17 @@ export const AdminPage = () => {
 
       {isError && <Text c="red">{t('admin.loadFailed')}</Text>}
 
-      <AdminTableFilters
-        value={filters}
-        onChange={(next) => {
-          setFilters(next);
-          setPage(1);
-        }}
-      />
+      {!loading && (
+        <AdminTableFilters
+          value={filters}
+          onChange={(next) => {
+            setFilters(next);
+            setPage(1);
+          }}
+        />
+      )}
 
-      {data && (
+      {!loading && data && (
         <>
           <Group justify="flex-start">
             {/* Сброс сортировки */}

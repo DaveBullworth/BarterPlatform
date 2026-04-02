@@ -120,7 +120,7 @@ export const MobileBottomNavbar = ({
           icon={
             <Indicator
               disabled={!selectedCategory}
-              size={14}
+              size={10}
               color="red"
               offset={3}
             >
