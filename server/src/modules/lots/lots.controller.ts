@@ -10,6 +10,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
@@ -89,6 +90,15 @@ export class LotsController {
           },
         },
       ],
+    },
+  })
+  @ApiConflictResponse({
+    description: 'Если подкатегории есть, выбор обязателен',
+    schema: {
+      example: {
+        code: LotErrorCode.SUBCATEGORY_REQUIRED,
+        message: 'Subcategory must be selected for this category',
+      },
     },
   })
   @ApiInternalServerErrorResponse({
@@ -203,6 +213,18 @@ export class LotsController {
         message: 'Lot not found',
       },
     },
+  })
+  @ApiConflictResponse({
+    description: 'Если подкатегории есть, выбор обязателен',
+    schema: {
+      example: {
+        code: LotErrorCode.SUBCATEGORY_REQUIRED,
+        message: 'Subcategory must be selected for this category',
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Внутренняя ошибка сервера',
   })
   update(
     @Param('id') id: string,

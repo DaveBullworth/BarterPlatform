@@ -15,43 +15,43 @@ type UserGeo = {
 
 export class AdminUserDto {
   @ApiProperty({ example: 'uuid' })
-  id: string;
+  id!: string;
 
   @ApiProperty({ enum: UserRole, example: UserRole.USER })
-  role: UserRole;
+  role!: UserRole;
 
   @ApiProperty({ example: 'user@example.com' })
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'userlogin' })
-  login: string;
+  login!: string;
 
   @ApiProperty({ example: 'John Doe' })
-  name: string;
+  name!: string;
 
   @ApiProperty({ example: '+1234567890' })
-  phone: string;
+  phone!: string;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  region: GeographyNodeDto | null;
+  region!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  city: GeographyNodeDto | null;
+  city!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  district: GeographyNodeDto | null;
+  district!: GeographyNodeDto | null;
 
   @ApiProperty({ example: true })
-  status: boolean;
+  status!: boolean;
 
   @ApiProperty({ example: false })
-  statusEmail: boolean;
+  statusEmail!: boolean;
 
   @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   constructor(user: UserEntity, geo: UserGeo) {
     Object.assign(this, {
@@ -74,31 +74,31 @@ export class AdminUserDto {
 
 export class SelfUserDto {
   @ApiProperty({ example: 'uuid' })
-  id: string;
+  id!: string;
 
   @ApiProperty({ enum: UserRole, example: UserRole.USER })
-  role: UserRole;
+  role!: UserRole;
 
   @ApiProperty({ example: 'user@example.com' })
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'userlogin' })
-  login: string;
+  login!: string;
 
   @ApiProperty({ example: 'John Doe' })
-  name: string;
+  name!: string;
 
   @ApiProperty({ example: '+1234567890' })
-  phone: string;
+  phone!: string;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  region: GeographyNodeDto | null;
+  region!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  city: GeographyNodeDto | null;
+  city!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  district: GeographyNodeDto | null;
+  district!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ example: true })
   status?: boolean;
@@ -107,16 +107,16 @@ export class SelfUserDto {
   statusEmail?: boolean;
 
   @ApiProperty({ enum: UserLanguage, example: UserLanguage.RU })
-  language: UserLanguage;
+  language!: UserLanguage;
 
   @ApiProperty({ enum: UserThemes, example: UserThemes.DARK })
-  theme: UserThemes;
+  theme!: UserThemes;
 
   @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   constructor(
     user: UserEntity,
@@ -148,28 +148,28 @@ export class SelfUserDto {
 
 export class PublicUserDto {
   @ApiProperty({ example: 'uuid' })
-  id: string;
+  id!: string;
 
   @ApiProperty({ example: 'userlogin' })
-  login: string;
+  login!: string;
 
   @ApiProperty({ example: 'John Doe' })
-  name: string;
+  name!: string;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  region: GeographyNodeDto | null;
+  region!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  city: GeographyNodeDto | null;
+  city!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  district: GeographyNodeDto | null;
+  district!: GeographyNodeDto | null;
 
   @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({ example: '2025-12-30T12:00:00.000Z' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   constructor(user: UserEntity, geo: UserGeo) {
     Object.assign(this, {

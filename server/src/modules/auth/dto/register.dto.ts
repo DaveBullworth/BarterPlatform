@@ -13,25 +13,25 @@ export class RegisterUserDto {
   @IsEmail()
   @MinLength(8)
   @MaxLength(200)
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'cool_user' })
   @IsString()
   @MinLength(8)
   @MaxLength(60)
-  login: string;
+  login!: string;
 
   @ApiProperty({ example: 'John Doe' })
   @IsString()
   @MinLength(5)
   @MaxLength(200)
-  name: string;
+  name!: string;
 
   @ApiProperty({ example: 'StrongPassword123!' })
   @IsString()
   @MinLength(8)
   @MaxLength(60)
-  password: string;
+  password!: string;
 
   @ApiProperty({ example: '123456789', required: false })
   @IsOptional()
@@ -42,11 +42,11 @@ export class RegisterUserDto {
 
   @ApiProperty({ example: 5 })
   @IsInt()
-  regionId: number;
+  regionId!: number;
 
   @ApiProperty({ example: 5003 })
   @IsInt()
-  cityId: number;
+  cityId!: number;
 
   @ApiProperty({ example: 7002, required: false, nullable: true })
   @IsOptional()

@@ -13,21 +13,21 @@ export class AdminCreateUserDto {
   @ApiProperty({ example: 'user@example.com' })
   @IsEmail()
   @Length(8, 200)
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'john_doe' })
   @IsString()
   @Length(8, 60)
-  login: string;
+  login!: string;
 
   @ApiProperty({ example: 'John Doe' })
   @IsString()
   @Length(5, 200)
-  name: string;
+  name!: string;
 
   @ApiProperty({ enum: UserRole, example: UserRole.USER })
   @IsEnum(UserRole)
-  role: UserRole;
+  role!: UserRole;
 
   @ApiProperty({ example: '501234567', nullable: true, required: false })
   @IsOptional()
@@ -37,11 +37,11 @@ export class AdminCreateUserDto {
 
   @ApiProperty({ example: 5 })
   @IsInt()
-  regionId: number;
+  regionId!: number;
 
   @ApiProperty({ example: 5003 })
   @IsInt()
-  cityId: number;
+  cityId!: number;
 
   @ApiProperty({ example: 7002, required: false, nullable: true })
   @IsOptional()

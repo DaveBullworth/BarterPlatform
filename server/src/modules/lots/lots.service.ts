@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -143,16 +144,29 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       });
     }
 
-    if (subcategoryId == null) return;
-
-    const subcategory = subcategories.find(
-      (item) => item.externalId === subcategoryId,
+    // Проверяем, есть ли у категории подкатегории
+    const categorySubcategories = subcategories.filter(
+      (item) => item.categoryId === categoryId,
     );
-    if (!subcategory || subcategory.categoryId !== categoryId) {
-      throw new NotFoundException({
-        code: LotErrorCode.SUBCATEGORY_NOT_FOUND,
-        message: 'Subcategory not found in category',
-      });
+
+    if (categorySubcategories.length > 0) {
+      // Если подкатегории есть, subcategoryId обязателен
+      if (subcategoryId == null) {
+        throw new ConflictException({
+          code: LotErrorCode.SUBCATEGORY_REQUIRED,
+          message: 'Subcategory must be selected for this category',
+        });
+      }
+
+      const subcategory = subcategories.find(
+        (item) => item.externalId === subcategoryId,
+      );
+      if (!subcategory || subcategory.categoryId !== categoryId) {
+        throw new NotFoundException({
+          code: LotErrorCode.SUBCATEGORY_NOT_FOUND,
+          message: 'Subcategory not found in category',
+        });
+      }
     }
   }
 

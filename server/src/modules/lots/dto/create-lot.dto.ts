@@ -15,14 +15,14 @@ export class CreateLotDto {
     description: 'ID раздела (chapter)',
   })
   @IsInt()
-  chapterId: number;
+  chapterId!: number;
 
   @ApiProperty({
     example: 10,
     description: 'ID категории',
   })
   @IsInt()
-  categoryId: number;
+  categoryId!: number;
 
   @ApiProperty({
     example: 101,
@@ -41,14 +41,14 @@ export class CreateLotDto {
   })
   @IsString()
   @MaxLength(255)
-  generalDescription: string;
+  generalDescription!: string;
 
   @ApiProperty({
     example: 'M1 Pro, 16GB RAM, 512GB SSD, отличное состояние',
     description: 'Подробное описание характеристик товара',
   })
   @IsString()
-  characteristicsDescription: string;
+  characteristicsDescription!: string;
 
   @ApiProperty({
     example: 1,
@@ -57,7 +57,7 @@ export class CreateLotDto {
   })
   @IsInt()
   @Min(1)
-  quantity: number;
+  quantity!: number;
 
   @ApiProperty({
     enum: [LotVisibilityStatus.HIDDEN, LotVisibilityStatus.ACTIVE],
@@ -65,5 +65,5 @@ export class CreateLotDto {
     description: 'Статус видимости лота',
   })
   @IsIn([LotVisibilityStatus.HIDDEN, LotVisibilityStatus.ACTIVE])
-  visibilityStatus: LotVisibilityStatus;
+  visibilityStatus!: LotVisibilityStatus;
 }

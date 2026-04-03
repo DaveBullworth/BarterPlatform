@@ -36,47 +36,47 @@ export class GetUsersQueryDto {
 
 export class GeographyNodeDto {
   @ApiProperty({ example: 5 })
-  id: number;
+  id!: number;
 
   @ApiProperty({ example: 'Минская область' })
-  name: string;
+  name!: string;
 }
 
 export class UserResponseDto {
   @ApiProperty({ example: '6a8c5b1e-3e42-4e6f-bd22-8b7c2b5c91aa' })
-  id: string;
+  id!: string;
 
   @ApiProperty({ example: 'user@example.com' })
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: 'john_doe' })
-  login: string;
+  login!: string;
 
   @ApiProperty({ example: 'John Doe' })
-  name: string;
+  name!: string;
 
   @ApiProperty({ enum: UserRole, example: UserRole.USER })
-  role: UserRole;
+  role!: UserRole;
 
   @ApiProperty({ example: true })
-  status: boolean;
+  status!: boolean;
 
   @ApiPropertyOptional({ example: '+375291234567', nullable: true })
-  phone: string | null;
+  phone!: string | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  region: GeographyNodeDto | null;
+  region!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  city: GeographyNodeDto | null;
+  city!: GeographyNodeDto | null;
 
   @ApiPropertyOptional({ type: () => GeographyNodeDto, nullable: true })
-  district: GeographyNodeDto | null;
+  district!: GeographyNodeDto | null;
 
   @ApiProperty({
     example: '2024-01-01T12:00:00.000Z',
     type: String,
     format: 'date-time',
   })
-  createdAt: Date;
+  createdAt!: Date;
 }
