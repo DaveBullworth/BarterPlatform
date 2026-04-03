@@ -93,7 +93,8 @@
     "title": "Tauschgeschäft",
     "categories": "Kategorien",
     "createLot": "Anzeige erstellen",
-    "lotSearch": "Lose suchen"
+    "lotSearch": "Lose suchen",
+    "geoFilter": "Geo-Filter"
   },
   "nav": {
     "main": "Startseite",

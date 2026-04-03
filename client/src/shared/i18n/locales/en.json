@@ -94,7 +94,8 @@
     "title": "Barter",
     "categories": "Categories",
     "createLot": "Create listing",
-    "lotSearch": "Search for lots"
+    "lotSearch": "Search for lots",
+    "geoFilter": "Geo filter"
   },
   "nav": {
     "main": "Main",

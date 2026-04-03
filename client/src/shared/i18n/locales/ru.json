@@ -94,7 +94,8 @@
     "title": "Бартер",
     "categories": "Категории",
     "createLot": "Создать лот",
-    "lotSearch": "Поиск лотов"
+    "lotSearch": "Поиск лотов",
+    "geoFilter": "Гео-фильтр"
   },
   "nav": {
     "main": "Главная",

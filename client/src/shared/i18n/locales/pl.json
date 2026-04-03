@@ -94,7 +94,8 @@
     "title": "Barter",
     "categories": "Kategorie",
     "createLot": "Utwórz ofertę",
-    "lotSearch": "Szukaj partii"
+    "lotSearch": "Szukaj partii",
+    "geoFilter": "Filtr geograficzny"
   },
   "nav": {
     "main": "Główna",

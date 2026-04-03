@@ -7,6 +7,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { Search, Plus, ChartColumnStacked } from 'lucide-react';
+
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -14,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { UserMenu } from './UserMenu';
 import { goToRoot } from '@/shared/utils/navigation';
 import { selectCategorySelection } from '@/store/categoryFilterSlice';
+import { GeoFilterControl } from './GeoFilterControl';
 
 type DesktopHeaderProps = {
   desktopOpened: boolean;
@@ -62,11 +64,14 @@ export const DesktopHeader = ({
         </Button>
 
         {/* SEARCH */}
-        <TextInput
-          placeholder={t('header.lotSearch')}
-          rightSection={<Search size={16} />}
-          w={320}
-        />
+        <Group gap="xs" wrap="nowrap">
+          <TextInput
+            placeholder={t('header.lotSearch')}
+            rightSection={<Search size={16} />}
+            w={320}
+          />
+          <GeoFilterControl />
+        </Group>
       </Group>
 
       {/* RIGHT PART */}

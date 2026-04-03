@@ -1,9 +1,11 @@
 import { Group, ActionIcon, TextInput } from '@mantine/core';
 import { Home, Plus, Search } from 'lucide-react';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
 import { goToRoot } from '@/shared/utils/navigation';
+import { GeoFilterControl } from './GeoFilterControl';
 
 export const MobileHeader = () => {
   const location = useLocation();
@@ -33,6 +35,8 @@ export const MobileHeader = () => {
         rightSection={<Search size={16} />}
         w="100%"
       />
+
+      <GeoFilterControl />
 
       {/* CREATE LOT */}
       <ActionIcon variant="filled" size="lg">
