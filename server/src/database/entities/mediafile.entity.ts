@@ -30,7 +30,7 @@ export class MediaFileEntity {
     description: 'Уникальный идентификатор файла',
   })
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @ApiProperty({
     example: MediaFileType.AVATAR,
@@ -41,7 +41,7 @@ export class MediaFileEntity {
     type: 'enum',
     enum: MediaFileType,
   })
-  type: MediaFileType;
+  type!: MediaFileType;
 
   @ApiProperty({
     example: MediaFileVisibility.PUBLIC,
@@ -53,28 +53,28 @@ export class MediaFileEntity {
     enum: MediaFileVisibility,
     default: MediaFileVisibility.PRIVATE,
   })
-  visibility: MediaFileVisibility;
+  visibility!: MediaFileVisibility;
 
   @ApiProperty({
     example: 'image/webp',
     description: 'MIME-тип файла',
   })
   @Column()
-  mimeType: string;
+  mimeType!: string;
 
   @ApiProperty({
     example: 24567,
     description: 'Размер файла в байтах',
   })
   @Column({ type: 'int' })
-  size: number;
+  size!: number;
 
   @ApiProperty({
     example: 'avatars/550e8400/avatar.webp',
     description: 'Относительный путь к файлу в хранилище',
   })
   @Column()
-  path: string;
+  path!: string;
 
   @ApiProperty({
     type: () => UserEntity,
@@ -83,19 +83,19 @@ export class MediaFileEntity {
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   @Index()
-  user: UserEntity;
+  user!: UserEntity;
 
   @ApiProperty({
     example: '2026-01-11T10:30:00.000Z',
     description: 'Дата загрузки файла',
   })
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({
     example: '2026-01-11T12:00:00.000Z',
     description: 'Дата последнего обновления файла',
   })
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

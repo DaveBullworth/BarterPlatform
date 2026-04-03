@@ -16,7 +16,7 @@ export class SessionEntity {
     description: 'Уникальный идентификатор сессии',
   })
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @ApiProperty({
     type: () => UserEntity,
@@ -24,7 +24,7 @@ export class SessionEntity {
   })
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user!: UserEntity;
 
   @ApiProperty({
     example: 'b1a2c3d4e5f6...',
@@ -32,7 +32,7 @@ export class SessionEntity {
     nullable: true,
   })
   @Column({ type: 'text', nullable: true })
-  refreshTokenHash: string | null;
+  refreshTokenHash!: string | null;
 
   @ApiProperty({
     example: '192.168.1.1',
@@ -40,7 +40,7 @@ export class SessionEntity {
     nullable: true,
   })
   @Column({ type: 'varchar', nullable: true })
-  ip: string | null;
+  ip!: string | null;
 
   @ApiProperty({
     example: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)...',
@@ -48,7 +48,7 @@ export class SessionEntity {
     nullable: true,
   })
   @Column({ type: 'varchar', nullable: true })
-  userAgent: string | null;
+  userAgent!: string | null;
 
   @ApiProperty({
     example: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
@@ -56,26 +56,26 @@ export class SessionEntity {
     nullable: true,
   })
   @Column({ type: 'uuid', nullable: true })
-  deviceId: string | null;
+  deviceId!: string | null;
 
   @ApiProperty({
     example: '2026-01-11T10:30:00.000Z',
     description: 'Дата и время создания сессии',
   })
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({
     example: '2026-01-18T10:30:00.000Z',
     description: 'Дата и время окончания сессии',
   })
   @Column({ type: 'timestamptz', nullable: false })
-  expiresAt: Date;
+  expiresAt!: Date;
 
   @ApiProperty({
     example: true,
     description: 'Статус сессии: true = активна, false = неактивна',
   })
   @Column({ default: true })
-  status: boolean;
+  status!: boolean;
 }

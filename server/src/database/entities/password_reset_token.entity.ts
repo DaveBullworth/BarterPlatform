@@ -16,7 +16,7 @@ export class PasswordResetTokenEntity {
     description: 'Уникальный идентификатор токена сброса пароля',
   })
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @ApiProperty({
     type: () => UserEntity,
@@ -24,7 +24,7 @@ export class PasswordResetTokenEntity {
   })
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user!: UserEntity;
 
   @ApiProperty({
     example: '5e884898da28047151d0e56f8dc6292773603d0d6aabbddf...',
@@ -32,14 +32,14 @@ export class PasswordResetTokenEntity {
       'Хеш токена сброса пароля (оригинальный токен никогда не хранится)',
   })
   @Column()
-  tokenHash: string;
+  tokenHash!: string;
 
   @ApiProperty({
     example: '2026-01-11T12:30:00.000Z',
     description: 'Дата и время, до которых токен считается валидным',
   })
   @Column({ type: 'timestamp' })
-  expiresAt: Date;
+  expiresAt!: Date;
 
   @ApiProperty({
     example: false,
@@ -47,12 +47,12 @@ export class PasswordResetTokenEntity {
       'Флаг, указывающий был ли токен использован (true — токен более невалиден)',
   })
   @Column({ default: false })
-  used: boolean;
+  used!: boolean;
 
   @ApiProperty({
     example: '2026-01-11T10:15:00.000Z',
     description: 'Дата и время создания токена сброса пароля',
   })
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }

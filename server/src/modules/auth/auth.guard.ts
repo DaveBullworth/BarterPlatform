@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express'; // тип для req
 import { TokenExpiredError } from 'jsonwebtoken';
+import { AppRequest } from '@/common/interfaces/app-request.interface';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     // Привязываем к Request
-    const request = context.switchToHttp().getRequest<Request>();
+    const request = context.switchToHttp().getRequest<AppRequest>();
 
     // Достаём заголовок Authorization
     const authHeader = request.headers['authorization'];

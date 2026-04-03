@@ -21,7 +21,7 @@ export class LotEntity {
     description: 'Уникальный идентификатор лота',
   })
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @ApiProperty({
     example: '550e8400-e29b-41d4-a716-446655440000',
@@ -29,21 +29,21 @@ export class LotEntity {
   })
   @Index()
   @Column({ type: 'uuid' })
-  userId: string;
+  userId!: string;
 
   @ApiProperty({
     example: 1,
     description: 'ID раздела (chapter)',
   })
   @Column({ type: 'int' })
-  chapterId: number;
+  chapterId!: number;
 
   @ApiProperty({
     example: 10,
     description: 'ID категории',
   })
   @Column({ type: 'int' })
-  categoryId: number;
+  categoryId!: number;
 
   @ApiProperty({
     example: 101,
@@ -51,21 +51,21 @@ export class LotEntity {
     nullable: true,
   })
   @Column({ type: 'int', nullable: true })
-  subcategoryId: number | null;
+  subcategoryId!: number | null;
 
   @ApiProperty({
     example: 'Продам MacBook Pro 14"',
     description: 'Краткое общее описание лота',
   })
   @Column()
-  generalDescription: string;
+  generalDescription!: string;
 
   @ApiProperty({
     example: 'M1 Pro, 16GB RAM, 512GB SSD, отличное состояние',
     description: 'Подробное описание характеристик',
   })
   @Column({ type: 'text' })
-  characteristicsDescription: string;
+  characteristicsDescription!: string;
 
   @ApiProperty({
     example: 1,
@@ -73,7 +73,7 @@ export class LotEntity {
     default: 1,
   })
   @Column({ type: 'int', default: 1 })
-  quantity: number;
+  quantity!: number;
 
   @ApiProperty({
     enum: LotVisibilityStatus,
@@ -85,19 +85,19 @@ export class LotEntity {
     enum: LotVisibilityStatus,
     default: LotVisibilityStatus.HIDDEN,
   })
-  visibilityStatus: LotVisibilityStatus;
+  visibilityStatus!: LotVisibilityStatus;
 
   @ApiProperty({
     example: '2026-01-11T10:30:00.000Z',
     description: 'Дата создания лота',
   })
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({
     example: '2026-01-11T12:00:00.000Z',
     description: 'Дата последнего обновления лота',
   })
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

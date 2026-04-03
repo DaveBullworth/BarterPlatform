@@ -18,7 +18,7 @@ export class AccountDeactivationCodeEntity {
     description: 'Уникальный идентификатор кода деактивации аккаунта',
   })
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @ApiProperty({
     type: () => UserEntity,
@@ -26,7 +26,7 @@ export class AccountDeactivationCodeEntity {
   })
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  user!: UserEntity;
 
   @ApiProperty({
     example: '9f86d081884c7d659a2feaa0c55ad015...',
@@ -34,26 +34,26 @@ export class AccountDeactivationCodeEntity {
       'Хеш 6-значного кода деактивации (оригинальный код не хранится)',
   })
   @Column()
-  codeHash: string;
+  codeHash!: string;
 
   @ApiProperty({
     example: '2026-01-29T12:00:00.000Z',
     description: 'Дата и время, до которых код считается валидным',
   })
   @Column({ type: 'timestamp' })
-  expiresAt: Date;
+  expiresAt!: Date;
 
   @ApiProperty({
     example: false,
     description: 'Флаг, указывающий был ли код использован',
   })
   @Column({ default: false })
-  used: boolean;
+  used!: boolean;
 
   @ApiProperty({
     example: '2026-01-29T10:00:00.000Z',
     description: 'Дата и время создания кода деактивации',
   })
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }
