@@ -100,4 +100,16 @@ export class LotEntity {
   })
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @ApiProperty({
+    example: [
+      '/media/lots/images/8fb8f722-44b0-4f7a-beb5-4dcfcbce84d2/original',
+      '/media/lots/images/2865784c-1761-4f87-b397-22e2c0ec429f/original',
+    ],
+    description:
+      'Массив ссылок на изображения лота. Первым элементом всегда идёт главное изображение.',
+    isArray: true,
+  })
+  @Column('text', { array: true, default: () => "'{}'" })
+  imageLinks!: string[];
 }

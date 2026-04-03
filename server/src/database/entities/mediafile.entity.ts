@@ -77,6 +77,23 @@ export class MediaFileEntity {
   path!: string;
 
   @ApiProperty({
+    example: 'c2a1e2a5-8b44-4c71-aee4-0d2c2e7b0c01',
+    description: 'ID лота (для изображений лотов)',
+    nullable: true,
+  })
+  @Column({ type: 'uuid', nullable: true })
+  @Index()
+  lotId!: string | null;
+
+  @ApiProperty({
+    example: true,
+    description: 'Является ли изображение главным внутри лота',
+    default: false,
+  })
+  @Column({ type: 'boolean', default: false })
+  isPrimary!: boolean;
+
+  @ApiProperty({
     type: () => UserEntity,
     description: 'Пользователь — владелец файла',
   })
