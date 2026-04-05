@@ -1,10 +1,12 @@
-import { BrowserRouter } from 'react-router-dom';
-import { AppRoutes } from '../routes';
+import { useMemo } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider as ReactRouterProvider,
+} from 'react-router-dom';
+import { routes } from '../routes/routes';
 
 export const RouterProvider = () => {
-  return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  );
+  const router = useMemo(() => createBrowserRouter(routes), []);
+
+  return <ReactRouterProvider router={router} />;
 };

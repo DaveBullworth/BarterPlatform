@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { UserMenu } from './UserMenu';
-import { goToRoot } from '@/shared/utils/navigation';
+import { goToRoot, gotToLotCreate } from '@/shared/utils/navigation';
 import { selectCategorySelection } from '@/store/categoryFilterSlice';
 import { GeoFilterControl } from './GeoFilterControl';
 
@@ -77,7 +77,10 @@ export const DesktopHeader = ({
       {/* RIGHT PART */}
       <Group gap="sm">
         {/* CREATE LOT */}
-        <Button leftSection={<Plus size={16} />}>
+        <Button
+          leftSection={<Plus size={16} />}
+          onClick={() => gotToLotCreate(navigate)}
+        >
           {t('header.createLot')}
         </Button>
 

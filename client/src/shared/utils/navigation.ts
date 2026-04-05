@@ -13,3 +13,6 @@ export const goToAdmin = (navigate: NavigateFunction) => navigate(ROUTES.ADMIN);
 
 export const goToUser = (navigate: NavigateFunction, id: string) =>
   navigate(ROUTES.USERS + '/' + id);
+
+export const gotToLotCreate = (navigate: NavigateFunction) =>
+  navigate(ROUTES.LOT_CREATE);

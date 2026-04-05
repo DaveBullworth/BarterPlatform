@@ -5,33 +5,33 @@ import type { RootState } from '.';
 
 type TaxonomyState = {
   items: TaxonomyChapter[];
-  loaded: boolean;
-  loading: boolean;
+  status: 'idle' | 'loading' | 'success' | 'error';
 };
 
 const initialState: TaxonomyState = {
   items: [],
-  loaded: false,
-  loading: false,
+  status: 'idle',
 };
 
 export const fetchTaxonomyIfNeeded = createAsyncThunk(
   'taxonomy/fetchTaxonomyIfNeeded',
-  async (_, { getState }) => {
-    const state = getState() as RootState;
-    /* 
-      Полный идиотизм, но поддерживая искусственно асинхронность
-      CategoriesDrawer в своём useEffect успевает понять что есть загрузка
-      И отображает Drawer мгновенно так как внутри его только Loader
-      без него он не успевает счесть состояние pending
-      и сразу пытается отрендерить всё дерево категорий
-    */
-    await new Promise((r) => setTimeout(r, 100));
-    if (state.taxonomy.loaded) {
-      return null;
-    }
-
+  async () => {
     return await getTaxonomy();
+  },
+  {
+    condition: (_, { getState }) => {
+      const state = getState() as RootState;
+
+      // не запускаем если уже грузится или уже загружено
+      if (
+        state.taxonomy.status === 'loading' ||
+        state.taxonomy.status === 'success'
+      ) {
+        return false;
+      }
+
+      return true;
+    },
   },
 );
 
@@ -42,16 +42,16 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTaxonomyIfNeeded.pending, (state) => {
-        state.loading = true;
+        state.status = 'loading';
       })
       .addCase(fetchTaxonomyIfNeeded.fulfilled, (state, action) => {
-        state.loading = false;
-        if (!action.payload) return;
-        state.items = action.payload;
-        state.loaded = true;
+        if (action.payload) {
+          state.items = action.payload;
+        }
+        state.status = 'success';
       })
       .addCase(fetchTaxonomyIfNeeded.rejected, (state) => {
-        state.loading = false;
+        state.status = 'error';
       });
   },
 });
@@ -59,5 +59,4 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const selectTaxonomy = (state: RootState) => state.taxonomy.items;
-export const selectTaxonomyLoading = (state: RootState) =>
-  state.taxonomy.loading;
+export const selectTaxonomyStatus = (state: RootState) => state.taxonomy.status;

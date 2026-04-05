@@ -1,16 +1,12 @@
 ﻿import {
-  Box,
   Button,
   Center,
-  Checkbox,
   Collapse,
   Drawer,
   Group,
   Loader,
   Stack,
   Text,
-  ThemeIcon,
-  UnstyledButton,
 } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +16,6 @@ import {
   BriefcaseBusiness,
   Building2,
   Car,
-  ChevronRight,
   CircleEllipsis,
   Cpu,
   Dumbbell,
@@ -47,11 +42,15 @@ import {
 import {
   fetchTaxonomyIfNeeded,
   selectTaxonomy,
-  selectTaxonomyLoading,
+  selectTaxonomyStatus,
 } from '@/store/taxonomySlice';
 import type { CategorySelection } from '@/types/taxonomy';
 import type { AppDispatch } from '@/store';
-import styles from './MainLayout.module.scss';
+import { ChapterItem } from './ChapterItem';
+import { CategoryItem } from './CategoryItem';
+import { SubcategoryItem } from './SubcategoryItem';
+
+import styles from '../MainLayout.module.scss';
 
 type Props = {
   opened: boolean;
@@ -113,13 +112,14 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const selected = useSelector(selectCategorySelection);
   const data = useSelector(selectTaxonomy);
-  const loading = useSelector(selectTaxonomyLoading);
+  const taxonomyStatus = useSelector(selectTaxonomyStatus);
   const [expandedChapters, setExpandedChapters] = useState<Set<number>>(
     new Set(),
   );
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set(),
   );
+  const [showContent, setShowContent] = useState(false);
 
   const initExpandedFromSelection = useCallback(() => {
     if (!selected) {
@@ -203,6 +203,8 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
   return (
     <Drawer
       opened={opened}
+      onEnterTransitionEnd={() => setShowContent(true)}
+      onExitTransitionEnd={() => setShowContent(false)}
       onClose={handleClose}
       position="left"
       size="lg"
@@ -222,7 +224,7 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
         </Button>
       </Group>
 
-      {loading ? (
+      {!showContent || taxonomyStatus === 'loading' ? (
         <Center py="xl">
           <Loader size="sm" />
         </Center>
@@ -236,57 +238,20 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
               selected.chapterId === chapter.id;
 
             return (
-              <Stack
+              <ChapterItem
                 key={chapter.id}
-                // gap={6}
-                gap={chapterExpanded ? 'sm' : 0}
-                px="sm"
+                chapter={chapter}
+                ChapterIcon={ChapterIcon}
+                expanded={chapterExpanded}
+                selected={chapterSelected}
+                onToggle={toggleChapter}
+                onSelect={() =>
+                  toggleSelection({
+                    level: 'chapter',
+                    chapterId: chapter.id,
+                  })
+                }
               >
-                <UnstyledButton
-                  onClick={() => toggleChapter(chapter.id)}
-                  style={{
-                    borderRadius: 10,
-                    border: '1px solid var(--mantine-color-gray-3)',
-                    padding: '8px 10px',
-                    backgroundColor: chapterSelected
-                      ? 'var(--mantine-color-blue-0)'
-                      : 'var(--mantine-color-white)',
-                  }}
-                >
-                  <Group justify="space-between" wrap="nowrap" gap="sm">
-                    <Group wrap="nowrap" gap="xs">
-                      <ThemeIcon variant="light" size="sm">
-                        <ChapterIcon size={15} />
-                      </ThemeIcon>
-                      <Text size="sm" fw={600}>
-                        {chapter.name}
-                      </Text>
-                    </Group>
-                    <Group gap="xs" wrap="nowrap">
-                      <ChevronRight
-                        size={16}
-                        style={{
-                          transform: chapterExpanded
-                            ? 'rotate(90deg)'
-                            : 'rotate(0deg)',
-                          transition: 'transform 150ms ease',
-                        }}
-                      />
-                      <Checkbox
-                        checked={chapterSelected}
-                        onChange={() =>
-                          toggleSelection({
-                            level: 'chapter',
-                            chapterId: chapter.id,
-                          })
-                        }
-                        onClick={(event) => event.stopPropagation()}
-                        aria-label={chapter.name}
-                      />
-                    </Group>
-                  </Group>
-                </UnstyledButton>
-
                 <Collapse in={chapterExpanded}>
                   {chapterExpanded && (
                     <Stack pl="md" gap={4}>
@@ -302,56 +267,23 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
                           selected.categoryId === category.id;
 
                         return (
-                          <Stack key={category.id} gap={4}>
-                            <UnstyledButton
-                              onClick={() => {
-                                if (!hasSubcategories) return;
-                                toggleCategory(chapter.id, category.id);
-                              }}
-                              style={{
-                                borderRadius: 8,
-                                border: '1px solid var(--mantine-color-gray-2)',
-                                padding: '6px 10px',
-                                cursor: hasSubcategories
-                                  ? 'pointer'
-                                  : 'default',
-                                backgroundColor: categorySelected
-                                  ? 'var(--mantine-color-blue-0)'
-                                  : 'var(--mantine-color-white)',
-                              }}
-                            >
-                              <Group justify="space-between" wrap="nowrap">
-                                <Text size="sm">{category.name}</Text>
-                                <Group gap="xs" wrap="nowrap">
-                                  {hasSubcategories ? (
-                                    <ChevronRight
-                                      size={14}
-                                      style={{
-                                        transform: categoryExpanded
-                                          ? 'rotate(90deg)'
-                                          : 'rotate(0deg)',
-                                        transition: 'transform 150ms ease',
-                                      }}
-                                    />
-                                  ) : (
-                                    <Box w={14} />
-                                  )}
-                                  <Checkbox
-                                    checked={categorySelected}
-                                    onChange={() =>
-                                      toggleSelection({
-                                        level: 'category',
-                                        chapterId: chapter.id,
-                                        categoryId: category.id,
-                                      })
-                                    }
-                                    onClick={(event) => event.stopPropagation()}
-                                    aria-label={category.name}
-                                  />
-                                </Group>
-                              </Group>
-                            </UnstyledButton>
-
+                          <CategoryItem
+                            key={category.id}
+                            category={category}
+                            expanded={categoryExpanded}
+                            selected={categorySelected}
+                            hasSubcategories={hasSubcategories}
+                            onToggle={() =>
+                              toggleCategory(chapter.id, category.id)
+                            }
+                            onSelect={() =>
+                              toggleSelection({
+                                level: 'category',
+                                chapterId: chapter.id,
+                                categoryId: category.id,
+                              })
+                            }
+                          >
                             {hasSubcategories && categoryExpanded && (
                               <Collapse in={categoryExpanded}>
                                 <Stack pl="md" gap={4}>
@@ -363,48 +295,31 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
                                       selected.subcategoryId === subcategory.id;
 
                                     return (
-                                      <Group
+                                      <SubcategoryItem
                                         key={subcategory.id}
-                                        justify="space-between"
-                                        wrap="nowrap"
-                                        style={{
-                                          borderRadius: 8,
-                                          border:
-                                            '1px solid var(--mantine-color-gray-2)',
-                                          padding: '4px 10px',
-                                          backgroundColor: subcategorySelected
-                                            ? 'var(--mantine-color-blue-0)'
-                                            : 'var(--mantine-color-white)',
-                                        }}
-                                      >
-                                        <Text size="sm">
-                                          {subcategory.name}
-                                        </Text>
-                                        <Checkbox
-                                          checked={subcategorySelected}
-                                          onChange={() =>
-                                            toggleSelection({
-                                              level: 'subcategory',
-                                              chapterId: chapter.id,
-                                              categoryId: category.id,
-                                              subcategoryId: subcategory.id,
-                                            })
-                                          }
-                                          aria-label={subcategory.name}
-                                        />
-                                      </Group>
+                                        subcategory={subcategory}
+                                        selected={subcategorySelected}
+                                        onSelect={() =>
+                                          toggleSelection({
+                                            level: 'subcategory',
+                                            chapterId: chapter.id,
+                                            categoryId: category.id,
+                                            subcategoryId: subcategory.id,
+                                          })
+                                        }
+                                      />
                                     );
                                   })}
                                 </Stack>
                               </Collapse>
                             )}
-                          </Stack>
+                          </CategoryItem>
                         );
                       })}
                     </Stack>
                   )}
                 </Collapse>
-              </Stack>
+              </ChapterItem>
             );
           })}
         </Stack>

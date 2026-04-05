@@ -203,5 +203,57 @@
     "title": "Kategorien",
     "hint": "Wählen Sie eine Filterebene",
     "reset": "Zurücksetzen"
+  },
+  "lotForm": {
+    "title": {
+      "edit": "Anzeige bearbeiten",
+      "create": "Neue Anzeige"
+    },
+    "status": {
+      "unsaved": "Nicht gespeicherte Änderungen",
+      "saved": "Gespeichert"
+    },
+    "taxonomy": {
+      "title": "1. Kategorie",
+      "selected": "Ausgewählte Kategorie",
+      "selectButton": "Kategorie auswählen"
+    },
+    "images": {
+      "title": "2. Bilder",
+      "primary": "Hauptbild",
+      "setPrimary": "Als Hauptbild setzen",
+      "add": "Hinzufügen"
+    },
+    "fields": {
+      "title": "3. Anzeigendaten",
+      "generalDescriptionPlaceholder": "Kurze Beschreibung",
+      "characteristicsPlaceholder": "Detaillierte Eigenschaften",
+      "quantityPlaceholder": "Menge angeben",
+      "generalDescription": "Allgemeine Beschreibung",
+      "characteristicsDescription": "Charakteristik-Beschreibung",
+      "quantity": "Menge"
+    },
+    "visibility": {
+      "visible": "Sichtbarkeit: sichtbar",
+      "hidden": "Sichtbarkeit: verborgen"
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "continue": "Fortfahren"
+    },
+    "modal": {
+      "selectCategory": "Kategorie auswählen",
+      "unsavedWarning": "Sie haben nicht gespeicherte Änderungen. Beim Verlassen gehen sie verloren."
+    },
+    "validation": {
+      "taxonomyRequired": "Kategorie auswählen",
+      "generalDescriptionRequired": "Beschreibung eingeben",
+      "characteristicsRequired": "Eigenschaften eingeben",
+      "minQuantity": "Minimum ist 1"
+    },
+    "success": {
+      "updated": "Anzeige aktualisiert",
+      "created": "Anzeige erstellt"
+    }
   }
 }

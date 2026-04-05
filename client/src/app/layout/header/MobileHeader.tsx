@@ -4,7 +4,7 @@ import { Home, Plus, Search } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
-import { goToRoot } from '@/shared/utils/navigation';
+import { goToRoot, gotToLotCreate } from '@/shared/utils/navigation';
 import { GeoFilterControl } from './GeoFilterControl';
 
 export const MobileHeader = () => {
@@ -39,7 +39,11 @@ export const MobileHeader = () => {
       <GeoFilterControl />
 
       {/* CREATE LOT */}
-      <ActionIcon variant="filled" size="lg">
+      <ActionIcon
+        variant="filled"
+        size="lg"
+        onClick={() => gotToLotCreate(navigate)}
+      >
         <Plus size={18} />
       </ActionIcon>
     </Group>

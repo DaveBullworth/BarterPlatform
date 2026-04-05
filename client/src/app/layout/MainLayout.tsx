@@ -5,7 +5,7 @@ import { DesktopHeader } from './header/DesktopHeader';
 import { MobileHeader } from './header/MobileHeader';
 import { DesktopNavbar } from './navbar/DesktopNavbar';
 import { MobileBottomNavbar } from './navbar/MobileBottomNavbar';
-import { CategoriesDrawer } from './CategoriesDrawer';
+import { CategoriesDrawer } from './categoriesDrawer/CategoriesDrawer';
 
 import styles from './MainLayout.module.scss';
 

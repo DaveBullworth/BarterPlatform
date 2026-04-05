@@ -205,5 +205,57 @@
     "title": "Categories",
     "hint": "Select one filter level",
     "reset": "Reset"
+  },
+  "lotForm": {
+    "title": {
+      "edit": "Edit lot",
+      "create": "New lot"
+    },
+    "status": {
+      "unsaved": "Unsaved changes",
+      "saved": "Saved"
+    },
+    "taxonomy": {
+      "title": "1. Taxonomy",
+      "selected": "Selected category",
+      "selectButton": "Select taxonomy"
+    },
+    "images": {
+      "title": "2. Images",
+      "primary": "Primary",
+      "setPrimary": "Set as primary",
+      "add": "Add"
+    },
+    "fields": {
+      "title": "3. Lot details",
+      "generalDescriptionPlaceholder": "Short description",
+      "characteristicsPlaceholder": "Detailed characteristics",
+      "quantityPlaceholder": "Specify the quantity of the item",
+      "generalDescription": "General description",
+      "characteristicsDescription": "Characteristics description",
+      "quantity": "Quantity"
+    },
+    "visibility": {
+      "visible": "visibility: visible",
+      "hidden": "visibility: hidden"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "continue": "Continue"
+    },
+    "modal": {
+      "selectCategory": "Select category",
+      "unsavedWarning": "You have unsaved changes. If you leave, they will be lost."
+    },
+    "validation": {
+      "taxonomyRequired": "Select taxonomy",
+      "generalDescriptionRequired": "Enter general description",
+      "characteristicsRequired": "Enter characteristics",
+      "minQuantity": "Minimum is 1"
+    },
+    "success": {
+      "updated": "Lot updated",
+      "created": "Lot created"
+    }
   }
 }
