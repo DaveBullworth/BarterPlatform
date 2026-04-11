@@ -1,37 +1,15 @@
 ﻿import {
   Button,
-  Center,
+  Checkbox,
   Collapse,
   Drawer,
   Group,
-  Loader,
   Stack,
   Text,
 } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { LucideIcon } from 'lucide-react';
-import {
-  Baby,
-  BriefcaseBusiness,
-  Building2,
-  Car,
-  CircleEllipsis,
-  Cpu,
-  Dumbbell,
-  Hammer,
-  HeartPulse,
-  House,
-  Laptop,
-  PartyPopper,
-  PawPrint,
-  Shirt,
-  ShirtIcon,
-  Smartphone,
-  Sofa,
-  Trees,
-  WashingMachine,
-} from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -44,39 +22,19 @@ import {
   selectTaxonomy,
   selectTaxonomyStatus,
 } from '@/store/taxonomySlice';
-import type { CategorySelection } from '@/types/taxonomy';
-import type { AppDispatch } from '@/store';
 import { ChapterItem } from './ChapterItem';
 import { CategoryItem } from './CategoryItem';
 import { SubcategoryItem } from './SubcategoryItem';
+import { chapterIcons } from '@/shared/utils/chapterIcons';
+import type { AppDispatch } from '@/store';
+import type { CategorySelection } from '@/types/taxonomy';
 
 import styles from '../MainLayout.module.scss';
+import { SkeletonList } from './ChapterItemSkeleton';
 
 type Props = {
   opened: boolean;
   onClose: () => void;
-};
-
-const chapterIcons: Record<string, LucideIcon> = {
-  nedvizhimost: Building2,
-  'auto-i-zapchasti': Car,
-  'bytovaya-tehnika': WashingMachine,
-  'kompyuternaya-tekhnika': Laptop,
-  'telefony-i-planshety': Smartphone,
-  elektronika: Cpu,
-  'zhenskiy-garderob': Shirt,
-  'muzhskoy-garderob': ShirtIcon,
-  'beauty-health': HeartPulse,
-  'kids-moms': Baby,
-  furniture: Sofa,
-  home: House,
-  construction: Hammer,
-  'garden-and-garden': Trees,
-  'hobby-sports-tourism': Dumbbell,
-  'weddings-holidays': PartyPopper,
-  animals: PawPrint,
-  'business-equipment': BriefcaseBusiness,
-  other: CircleEllipsis,
 };
 
 const getCategoryKey = (chapterId: number, categoryId: number) =>
@@ -225,11 +183,9 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
       </Group>
 
       {!showContent || taxonomyStatus === 'loading' ? (
-        <Center py="xl">
-          <Loader size="sm" />
-        </Center>
+        <SkeletonList />
       ) : (
-        <Stack gap="md">
+        <Stack gap="sm">
           {data.map((chapter) => {
             const ChapterIcon = chapterIcons[chapter.slug] ?? Building2;
             const chapterExpanded = expandedChapters.has(chapter.id);
@@ -245,11 +201,17 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
                 expanded={chapterExpanded}
                 selected={chapterSelected}
                 onToggle={toggleChapter}
-                onSelect={() =>
-                  toggleSelection({
-                    level: 'chapter',
-                    chapterId: chapter.id,
-                  })
+                rightSection={
+                  <Checkbox
+                    checked={chapterSelected}
+                    onChange={() =>
+                      toggleSelection({
+                        level: 'chapter',
+                        chapterId: chapter.id,
+                      })
+                    }
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 }
               >
                 <Collapse in={chapterExpanded}>
@@ -276,12 +238,18 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
                             onToggle={() =>
                               toggleCategory(chapter.id, category.id)
                             }
-                            onSelect={() =>
-                              toggleSelection({
-                                level: 'category',
-                                chapterId: chapter.id,
-                                categoryId: category.id,
-                              })
+                            rightSection={
+                              <Checkbox
+                                checked={categorySelected}
+                                onChange={() =>
+                                  toggleSelection({
+                                    level: 'category',
+                                    chapterId: chapter.id,
+                                    categoryId: category.id,
+                                  })
+                                }
+                                onClick={(e) => e.stopPropagation()}
+                              />
                             }
                           >
                             {hasSubcategories && categoryExpanded && (

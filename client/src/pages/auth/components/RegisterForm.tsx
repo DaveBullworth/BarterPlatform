@@ -50,8 +50,6 @@ export const RegisterForm = ({
   const [regions, setRegions] = useState<RegionOption[]>([]);
   const [cities, setCities] = useState<CityOption[]>([]);
   const [districts, setDistricts] = useState<DistrictOption[]>([]);
-  const [citySearch, setCitySearch] = useState('');
-  const [districtSearch, setDistrictSearch] = useState('');
 
   const form = useForm<RegisterFormValues>({
     initialValues: {
@@ -132,8 +130,6 @@ export const RegisterForm = ({
 
             setCities([]);
             setDistricts([]);
-            setCitySearch('');
-            setDistrictSearch('');
 
             if (value) {
               getCities(Number(value)).then(setCities).catch(console.error);
@@ -141,6 +137,7 @@ export const RegisterForm = ({
           }}
         />
         <Select
+          key={`city-${form.values.regionId || 'empty'}`}
           required
           label={t('auth.city')}
           placeholder={t('auth.selectCity')}
@@ -148,15 +145,12 @@ export const RegisterForm = ({
           searchable
           disabled={!form.values.regionId}
           value={form.values.cityId}
-          searchValue={citySearch}
-          onSearchChange={setCitySearch}
           onChange={(value) => {
             form.setFieldValue('cityId', value || '');
 
             // сброс района
             form.setFieldValue('districtId', '');
             setDistricts([]);
-            setDistrictSearch('');
 
             if (value) {
               getDistricts(Number(value))
@@ -166,6 +160,7 @@ export const RegisterForm = ({
           }}
         />
         <Select
+          key={`district-${form.values.cityId || 'empty'}`}
           label={t('auth.district')}
           placeholder={
             !form.values.cityId
@@ -177,8 +172,6 @@ export const RegisterForm = ({
           data={districtOptions}
           clearable
           searchable
-          searchValue={districtSearch}
-          onSearchChange={setDistrictSearch}
           disabled={!form.values.cityId || districtOptions.length === 0}
           {...form.getInputProps('districtId')}
         />

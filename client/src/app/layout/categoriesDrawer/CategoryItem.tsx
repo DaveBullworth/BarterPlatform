@@ -1,12 +1,5 @@
 import { memo } from 'react';
-import {
-  Stack,
-  UnstyledButton,
-  Group,
-  Text,
-  Checkbox,
-  Box,
-} from '@mantine/core';
+import { Stack, UnstyledButton, Group, Text, Box } from '@mantine/core';
 import { ChevronRight } from 'lucide-react';
 
 type Props = {
@@ -23,10 +16,12 @@ type Props = {
   selected: boolean;
   hasSubcategories: boolean;
 
-  onToggle: () => void;
-  onSelect: () => void;
+  onToggle?: () => void;
+  onClick?: () => void;
 
   children?: React.ReactNode;
+
+  rightSection?: React.ReactNode;
 };
 
 export const CategoryItem = memo(
@@ -36,21 +31,25 @@ export const CategoryItem = memo(
     selected,
     hasSubcategories,
     onToggle,
-    onSelect,
+    onClick,
     children,
+    rightSection,
   }: Props) => {
     return (
       <Stack gap={4}>
         <UnstyledButton
           onClick={() => {
-            if (!hasSubcategories) return;
-            onToggle();
+            if (hasSubcategories) {
+              onToggle?.();
+            } else {
+              onClick?.();
+            }
           }}
           style={{
             borderRadius: 8,
             border: '1px solid var(--mantine-color-gray-2)',
             padding: '6px 10px',
-            cursor: hasSubcategories ? 'pointer' : 'default',
+            cursor: hasSubcategories || onClick ? 'pointer' : 'default',
             backgroundColor: selected
               ? 'var(--mantine-color-blue-0)'
               : 'var(--mantine-color-white)',
@@ -72,12 +71,7 @@ export const CategoryItem = memo(
                 <Box w={14} />
               )}
 
-              <Checkbox
-                checked={selected}
-                onChange={onSelect}
-                onClick={(e) => e.stopPropagation()}
-                aria-label={category.name}
-              />
+              {rightSection}
             </Group>
           </Group>
         </UnstyledButton>

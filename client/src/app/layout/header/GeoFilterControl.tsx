@@ -62,9 +62,6 @@ export const GeoFilterControl = () => {
   const [cities, setCities] = useState<CityOption[]>([]);
   const [districts, setDistricts] = useState<DistrictOption[]>([]);
 
-  const [citySearch, setCitySearch] = useState('');
-  const [districtSearch, setDistrictSearch] = useState('');
-
   useEffect(() => {
     getRegions().then(setRegions).catch(console.error);
   }, []);
@@ -112,8 +109,6 @@ export const GeoFilterControl = () => {
 
   const onOpen = () => {
     setDraftFilter(appliedFilter);
-    setCitySearch('');
-    setDistrictSearch('');
     setOpened(true);
   };
 
@@ -128,8 +123,6 @@ export const GeoFilterControl = () => {
 
     setCities([]);
     setDistricts([]);
-    setCitySearch('');
-    setDistrictSearch('');
 
     if (regionId) {
       getCities(Number(regionId)).then(setCities).catch(console.error);
@@ -146,7 +139,6 @@ export const GeoFilterControl = () => {
     }));
 
     setDistricts([]);
-    setDistrictSearch('');
 
     if (cityId) {
       getDistricts(Number(cityId)).then(setDistricts).catch(console.error);
@@ -170,8 +162,6 @@ export const GeoFilterControl = () => {
     setAppliedFilter(EMPTY_FILTER);
     setCities([]);
     setDistricts([]);
-    setCitySearch('');
-    setDistrictSearch('');
     localStorage.removeItem(GEO_FILTER_STORAGE_KEY);
   };
 
@@ -207,6 +197,7 @@ export const GeoFilterControl = () => {
           />
 
           <Select
+            key={`city-${draftFilter.regionId || 'empty'}`}
             label={t('auth.city')}
             placeholder={t('auth.selectCity')}
             data={cityOptions}
@@ -214,12 +205,11 @@ export const GeoFilterControl = () => {
             clearable
             disabled={!draftFilter.regionId}
             value={draftFilter.cityId}
-            searchValue={citySearch}
-            onSearchChange={setCitySearch}
             onChange={handleCityChange}
           />
 
           <Select
+            key={`district-${draftFilter.cityId || 'empty'}`}
             label={t('auth.district')}
             placeholder={
               !draftFilter.cityId
@@ -231,8 +221,6 @@ export const GeoFilterControl = () => {
             data={districtOptions}
             searchable
             clearable
-            searchValue={districtSearch}
-            onSearchChange={setDistrictSearch}
             disabled={!draftFilter.cityId || districtOptions.length === 0}
             value={draftFilter.districtId}
             onChange={(value) =>

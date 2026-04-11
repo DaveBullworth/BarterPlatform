@@ -1,12 +1,5 @@
 import { memo } from 'react';
-import {
-  Stack,
-  UnstyledButton,
-  Group,
-  ThemeIcon,
-  Text,
-  Checkbox,
-} from '@mantine/core';
+import { Stack, UnstyledButton, Group, ThemeIcon, Text } from '@mantine/core';
 import { ChevronRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -19,12 +12,12 @@ type Props = {
   ChapterIcon: LucideIcon;
 
   expanded: boolean;
-  selected: boolean;
+  selected?: boolean;
 
   onToggle: (chapterId: number) => void;
-  onSelect: () => void;
 
   children?: React.ReactNode;
+  rightSection?: React.ReactNode;
 };
 
 export const ChapterItem = memo(
@@ -34,11 +27,11 @@ export const ChapterItem = memo(
     expanded,
     selected,
     onToggle,
-    onSelect,
     children,
+    rightSection,
   }: Props) => {
     return (
-      <Stack gap={expanded ? 'sm' : 0} px="sm">
+      <Stack gap={expanded ? 'sm' : 0}>
         <UnstyledButton
           onClick={() => onToggle(chapter.id)}
           style={{
@@ -69,12 +62,7 @@ export const ChapterItem = memo(
                 }}
               />
 
-              <Checkbox
-                checked={selected}
-                onChange={onSelect}
-                onClick={(e) => e.stopPropagation()}
-                aria-label={chapter.name}
-              />
+              {rightSection}
             </Group>
           </Group>
         </UnstyledButton>

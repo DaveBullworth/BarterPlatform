@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Card,
-  Center,
   Checkbox,
   Collapse,
   Group,
@@ -16,7 +15,6 @@ import {
   Text,
   TextInput,
   Textarea,
-  ThemeIcon,
   Title,
   Tooltip,
   UnstyledButton,
@@ -25,15 +23,14 @@ import { Dropzone } from '@mantine/dropzone';
 import { useForm } from '@mantine/form';
 import {
   BadgeQuestionMark,
+  Building2,
   Check,
-  ChevronRight,
   ImagePlus,
   Plus,
-  Star,
   Trash2,
   X,
 } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { useBlocker, useNavigate, useParams } from 'react-router-dom';
@@ -57,6 +54,10 @@ import { LOT_VISIBILITY_STATUS, type CreateLotDto } from '@/types/lot';
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { goToRoot } from '@/shared/utils/navigation';
+import { chapterIcons } from '@/shared/utils/chapterIcons';
+import { ChapterItem } from '@/app/layout/categoriesDrawer/ChapterItem';
+import { CategoryItem } from '@/app/layout/categoriesDrawer/CategoryItem';
+import { SkeletonList } from '@/app/layout/categoriesDrawer/ChapterItemSkeleton';
 
 type FormValues = {
   taxonomyPath: string;
@@ -119,10 +120,20 @@ export const LotFormPage = () => {
     string | null
   >(null);
   const [showContent, setShowContent] = useState(false);
+  const [shouldNavigate, setShouldNavigate] = useState(false);
 
-  const allowNavigationRef = useRef(false);
-
-  const form = useForm<FormValues>({
+  const {
+    values,
+    getInputProps,
+    setValues,
+    setFieldValue,
+    setFieldError,
+    setDirty,
+    resetDirty,
+    isDirty,
+    onSubmit,
+    errors,
+  } = useForm<FormValues>({
     initialValues: {
       taxonomyPath: '',
       chapterId: null,
@@ -149,34 +160,29 @@ export const LotFormPage = () => {
     },
   });
 
-  const blocker = useBlocker(!allowNavigationRef.current && form.isDirty());
+  const blocker = useBlocker(isDirty());
 
-  useEffect(() => {
-    if (blocker.state !== 'blocked') {
+  const initExpandedFromForm = useCallback(() => {
+    const { chapterId, categoryId } = values;
+
+    if (!chapterId) {
+      setExpandedChapters(new Set());
+      setExpandedCategories(new Set());
       return;
     }
 
-    setUnsavedChangesModalOpen(true);
-  }, [blocker.state]);
+    const chapters = new Set<number>();
+    const categories = new Set<string>();
 
-  useEffect(() => {
-    const beforeUnload = (event: BeforeUnloadEvent) => {
-      if (!form.isDirty()) return;
-      event.preventDefault();
-      event.returnValue = '';
-    };
+    chapters.add(chapterId);
 
-    window.addEventListener('beforeunload', beforeUnload);
+    if (categoryId) {
+      categories.add(getCategoryKey(chapterId, categoryId));
+    }
 
-    return () => {
-      window.removeEventListener('beforeunload', beforeUnload);
-      newImages.forEach((image) => URL.revokeObjectURL(image.previewUrl));
-    };
-  }, [form, newImages]);
-
-  useEffect(() => {
-    dispatch(fetchTaxonomyIfNeeded());
-  }, [dispatch]);
+    setExpandedChapters(chapters);
+    setExpandedCategories(categories);
+  }, [values]);
 
   const resolveTaxonomyPath = useCallback(
     (chapterId: number, categoryId: number, subcategoryId: number | null) => {
@@ -198,6 +204,37 @@ export const LotFormPage = () => {
   );
 
   useEffect(() => {
+    if (blocker.state === 'blocked') {
+      setUnsavedChangesModalOpen(true);
+    }
+  }, [blocker.state]);
+
+  useEffect(() => {
+    const beforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isDirty()) return;
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', beforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', beforeUnload);
+      newImages.forEach((image) => URL.revokeObjectURL(image.previewUrl));
+    };
+  }, [isDirty, newImages]);
+
+  useEffect(() => {
+    dispatch(fetchTaxonomyIfNeeded());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (taxonomyOpened) {
+      initExpandedFromForm();
+    }
+  }, [taxonomyOpened, initExpandedFromForm]);
+
+  useEffect(() => {
     const load = async () => {
       if (!id) return;
 
@@ -213,7 +250,7 @@ export const LotFormPage = () => {
           lot.subcategoryId,
         );
 
-        form.setValues({
+        setValues({
           taxonomyPath: path,
           chapterId: lot.chapterId,
           categoryId: lot.categoryId,
@@ -224,7 +261,7 @@ export const LotFormPage = () => {
           visibilityStatus:
             lot.visibilityStatus === LOT_VISIBILITY_STATUS.ACTIVE,
         });
-        form.resetDirty();
+        resetDirty();
 
         setExistingImages(images.images);
       } catch (error) {
@@ -236,7 +273,14 @@ export const LotFormPage = () => {
     };
 
     void load();
-  }, [form, id, navigate, resolveTaxonomyPath, t]);
+  }, [id, navigate, resolveTaxonomyPath, setValues, resetDirty, t]);
+
+  useEffect(() => {
+    if (!shouldNavigate) return;
+
+    // TODO: заменить на страницу лота после её реализации
+    goToRoot(navigate);
+  }, [shouldNavigate, navigate]);
 
   const totalImagesCount = existingImages.length + newImages.length;
 
@@ -256,14 +300,14 @@ export const LotFormPage = () => {
       ? `${chapter.name} -> ${category.name} -> ${subcategory.name}`
       : `${chapter.name} -> ${category.name}`;
 
-    form.setValues({
+    setValues({
       chapterId,
       categoryId: category.id,
       subcategoryId,
       taxonomyPath: path,
     });
 
-    form.setDirty({
+    setDirty({
       chapterId: true,
       categoryId: true,
       subcategoryId: true,
@@ -286,7 +330,7 @@ export const LotFormPage = () => {
     }));
 
     setNewImages((prev) => [...prev, ...nextImages]);
-    form.setDirty({});
+    setDirty({});
   };
 
   const setExistingImagePrimary = (imageId: string) => {
@@ -295,7 +339,7 @@ export const LotFormPage = () => {
     );
 
     setPendingPrimaryImageId(imageId);
-    form.setDirty({});
+    setDirty({});
   };
 
   const setNewImagePrimary = (id: string) => {
@@ -309,7 +353,7 @@ export const LotFormPage = () => {
       prev.map((image) => ({ ...image, isPrimary: false })),
     );
     setPendingPrimaryImageId(null);
-    form.setDirty({});
+    setDirty({});
   };
 
   const removeExistingImage = (imageId: string) => {
@@ -320,7 +364,7 @@ export const LotFormPage = () => {
     if (pendingPrimaryImageId === imageId) {
       setPendingPrimaryImageId(null);
     }
-    form.setDirty({});
+    setDirty({});
   };
 
   const removeNewImage = (imageId: string) => {
@@ -331,15 +375,12 @@ export const LotFormPage = () => {
       }
       return prev.filter((item) => item.id !== imageId);
     });
-    form.setDirty({});
+    setDirty({});
   };
 
-  const onSubmit = form.onSubmit(async (values) => {
+  const onSubmitForm = onSubmit(async (values) => {
     if (!values.chapterId || !values.categoryId) {
-      form.setFieldError(
-        'taxonomyPath',
-        t('lotForm.validation.taxonomyRequired'),
-      );
+      setFieldError('taxonomyPath', t('lotForm.validation.taxonomyRequired'));
       return;
     }
 
@@ -382,19 +423,35 @@ export const LotFormPage = () => {
         icon: <Check size={16} />,
       });
 
-      form.resetDirty();
+      resetDirty();
 
-      // Разрешаем навигацию
-      allowNavigationRef.current = true;
-
-      // TODO: заменить на страницу лота после её реализации
-      goToRoot(navigate);
+      setShouldNavigate(true);
     } catch (error) {
       handleApiError(error, t);
     } finally {
       setLoading(false);
     }
   });
+
+  const toggleChapter = (chapterId: number) => {
+    setExpandedChapters((prev) => {
+      const next = new Set(prev);
+      if (next.has(chapterId)) next.delete(chapterId);
+      else next.add(chapterId);
+      return next;
+    });
+  };
+
+  const toggleCategory = (chapterId: number, categoryId: number) => {
+    const key = getCategoryKey(chapterId, categoryId);
+
+    setExpandedCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
   const renderedImages = useMemo(() => {
     const existing = existingImages.map((image) => ({
@@ -434,14 +491,12 @@ export const LotFormPage = () => {
         <Title order={2}>
           {isEditMode ? t('lotForm.title.edit') : t('lotForm.title.create')}
         </Title>
-        <Badge color={form.isDirty() ? 'yellow' : 'green'}>
-          {form.isDirty()
-            ? t('lotForm.status.unsaved')
-            : t('lotForm.status.saved')}
+        <Badge color={isDirty() ? 'yellow' : 'green'}>
+          {isDirty() ? t('lotForm.status.unsaved') : t('lotForm.status.saved')}
         </Badge>
       </Group>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmitForm}>
         <Stack>
           <Card withBorder radius="md" p="md">
             <Stack>
@@ -450,8 +505,8 @@ export const LotFormPage = () => {
                 label={t('lotForm.taxonomy.selected')}
                 placeholder={t('lotForm.taxonomy.placeholder')}
                 readOnly
-                value={form.values.taxonomyPath}
-                error={form.errors.taxonomyPath}
+                value={values.taxonomyPath}
+                error={errors.taxonomyPath}
                 styles={{
                   input: {
                     fontStyle: 'italic',
@@ -570,20 +625,20 @@ export const LotFormPage = () => {
               <TextInput
                 label={t('lotForm.fields.generalDescription')}
                 placeholder={t('lotForm.fields.generalDescriptionPlaceholder')}
-                {...form.getInputProps('generalDescription')}
+                {...getInputProps('generalDescription')}
               />
               <Textarea
                 label={t('lotForm.fields.characteristics')}
                 minRows={6}
                 placeholder={t('lotForm.fields.characteristicsPlaceholder')}
-                {...form.getInputProps('characteristicsDescription')}
+                {...getInputProps('characteristicsDescription')}
               />
               <NumberInput
                 label={t('lotForm.fields.quantity')}
                 placeholder={t('lotForm.fields.quantityPlaceholder')}
                 min={1}
                 allowDecimal={false}
-                {...form.getInputProps('quantity')}
+                {...getInputProps('quantity')}
               />
               <Group gap="xs" align="center">
                 <Tooltip label={t('lotForm.visibility.tooltip')}>
@@ -591,17 +646,17 @@ export const LotFormPage = () => {
                 </Tooltip>
                 <Switch
                   label={
-                    form.values.visibilityStatus
+                    values.visibilityStatus
                       ? t('lotForm.visibility.visible')
                       : t('lotForm.visibility.hidden')
                   }
-                  checked={form.values.visibilityStatus}
+                  checked={values.visibilityStatus}
                   onChange={(event) => {
-                    form.setFieldValue(
+                    setFieldValue(
                       'visibilityStatus',
                       event.currentTarget.checked,
                     );
-                    form.setDirty({ visibilityStatus: true });
+                    setDirty({ visibilityStatus: true });
                   }}
                 />
               </Group>
@@ -631,158 +686,111 @@ export const LotFormPage = () => {
         size="lg"
       >
         {!showContent ? (
-          <Center py="xl">
-            <Loader size="sm" />
-          </Center>
+          <SkeletonList />
         ) : (
           <Stack gap="sm">
             {taxonomy.map((chapter) => {
+              const ChapterIcon = chapterIcons[chapter.slug] ?? Building2;
               const chapterExpanded = expandedChapters.has(chapter.id);
+
               return (
-                <Stack key={chapter.id} gap={4}>
-                  <UnstyledButton
-                    onClick={() => {
-                      setExpandedChapters((prev) => {
-                        const next = new Set(prev);
-                        if (next.has(chapter.id)) {
-                          next.delete(chapter.id);
-                        } else {
-                          next.add(chapter.id);
-                        }
-                        return next;
-                      });
-                    }}
-                  >
-                    <Group
-                      justify="space-between"
-                      style={{
-                        border: '1px solid #eee',
-                        borderRadius: 8,
-                        padding: 8,
-                      }}
-                    >
-                      <Group gap={8}>
-                        <ThemeIcon variant="light" size="sm">
-                          <Star size={14} />
-                        </ThemeIcon>
-                        <Text fw={600}>{chapter.name}</Text>
-                      </Group>
-                      <ChevronRight
-                        size={16}
-                        style={{
-                          transform: chapterExpanded
-                            ? 'rotate(90deg)'
-                            : 'rotate(0deg)',
-                          transition: 'transform 150ms ease',
-                        }}
-                      />
-                    </Group>
-                  </UnstyledButton>
-
+                <ChapterItem
+                  key={chapter.id}
+                  chapter={chapter}
+                  ChapterIcon={ChapterIcon}
+                  expanded={chapterExpanded}
+                  onToggle={toggleChapter}
+                >
                   <Collapse in={chapterExpanded}>
-                    <Stack pl="md" gap={4}>
-                      {chapter.categories.map((category) => {
-                        const hasSubcategories =
-                          category.subcategories.length > 0;
-                        const categoryKey = getCategoryKey(
-                          chapter.id,
-                          category.id,
-                        );
-                        const categoryExpanded =
-                          expandedCategories.has(categoryKey);
+                    {chapterExpanded && (
+                      <Stack pl="md" gap={4}>
+                        {chapter.categories.map((category) => {
+                          const hasSubcategories =
+                            category.subcategories.length > 0;
+                          const categoryExpanded = expandedCategories.has(
+                            getCategoryKey(chapter.id, category.id),
+                          );
+                          const categorySelected =
+                            values.categoryId === category.id &&
+                            values.chapterId === chapter.id &&
+                            values.subcategoryId == null;
 
-                        return (
-                          <Stack key={category.id} gap={4}>
-                            <UnstyledButton
-                              onClick={() => {
-                                if (hasSubcategories) {
-                                  setExpandedCategories((prev) => {
-                                    const next = new Set(prev);
-                                    if (next.has(categoryKey))
-                                      next.delete(categoryKey);
-                                    else next.add(categoryKey);
-                                    return next;
-                                  });
-                                  return;
-                                }
-
-                                handlePickTaxonomy(chapter.id, category, null);
-                              }}
-                            >
-                              <Group
-                                justify="space-between"
-                                style={{
-                                  border: '1px solid #f0f0f0',
-                                  borderRadius: 8,
-                                  padding: 8,
-                                }}
-                              >
-                                <Text>{category.name}</Text>
-                                {hasSubcategories ? (
-                                  <ChevronRight
-                                    size={16}
-                                    style={{
-                                      transform: categoryExpanded
-                                        ? 'rotate(90deg)'
-                                        : 'rotate(0deg)',
-                                      transition: 'transform 150ms ease',
-                                    }}
-                                  />
-                                ) : (
+                          return (
+                            <CategoryItem
+                              key={category.id}
+                              category={category}
+                              expanded={categoryExpanded}
+                              selected={categorySelected}
+                              hasSubcategories={hasSubcategories}
+                              onToggle={() =>
+                                toggleCategory(chapter.id, category.id)
+                              }
+                              onClick={() =>
+                                handlePickTaxonomy(chapter.id, category, null)
+                              }
+                              rightSection={
+                                !hasSubcategories && (
                                   <Checkbox
-                                    checked={
-                                      form.values.categoryId === category.id &&
-                                      form.values.chapterId === chapter.id &&
-                                      form.values.subcategoryId == null
-                                    }
+                                    checked={categorySelected}
                                     readOnly
                                   />
-                                )}
-                              </Group>
-                            </UnstyledButton>
-
-                            {hasSubcategories && (
-                              <Collapse in={categoryExpanded}>
-                                <Stack pl="md" gap={4}>
-                                  {category.subcategories.map((subcategory) => (
-                                    <UnstyledButton
-                                      key={subcategory.id}
-                                      onClick={() =>
-                                        handlePickTaxonomy(
-                                          chapter.id,
-                                          category,
-                                          subcategory.id,
-                                        )
-                                      }
-                                    >
-                                      <Group
-                                        justify="space-between"
-                                        style={{
-                                          border: '1px solid #f5f5f5',
-                                          borderRadius: 8,
-                                          padding: 8,
-                                        }}
-                                      >
-                                        <Text>{subcategory.name}</Text>
-                                        <Checkbox
-                                          checked={
-                                            form.values.subcategoryId ===
-                                            subcategory.id
+                                )
+                              }
+                            >
+                              {hasSubcategories && categoryExpanded && (
+                                <Collapse in={categoryExpanded}>
+                                  <Stack pl="md" gap={4}>
+                                    {category.subcategories.map(
+                                      (subcategory) => (
+                                        <UnstyledButton
+                                          key={subcategory.id}
+                                          onClick={() =>
+                                            handlePickTaxonomy(
+                                              chapter.id,
+                                              category,
+                                              subcategory.id,
+                                            )
                                           }
-                                          readOnly
-                                        />
-                                      </Group>
-                                    </UnstyledButton>
-                                  ))}
-                                </Stack>
-                              </Collapse>
-                            )}
-                          </Stack>
-                        );
-                      })}
-                    </Stack>
+                                        >
+                                          <Group
+                                            justify="space-between"
+                                            wrap="nowrap"
+                                            style={{
+                                              borderRadius: 8,
+                                              border:
+                                                '1px solid var(--mantine-color-gray-2)',
+                                              padding: '4px 10px',
+                                              backgroundColor:
+                                                values.subcategoryId ===
+                                                subcategory.id
+                                                  ? 'var(--mantine-color-blue-0)'
+                                                  : 'var(--mantine-color-white)',
+                                            }}
+                                          >
+                                            <Text size="sm">
+                                              {subcategory.name}
+                                            </Text>
+                                            <Checkbox
+                                              checked={
+                                                values.subcategoryId ===
+                                                subcategory.id
+                                              }
+                                              readOnly
+                                            />
+                                          </Group>
+                                        </UnstyledButton>
+                                      ),
+                                    )}
+                                  </Stack>
+                                </Collapse>
+                              )}
+                            </CategoryItem>
+                          );
+                        })}
+                      </Stack>
+                    )}
                   </Collapse>
-                </Stack>
+                </ChapterItem>
               );
             })}
           </Stack>
@@ -821,7 +829,6 @@ export const LotFormPage = () => {
                   return;
                 }
 
-                allowNavigationRef.current = true;
                 blocker.proceed?.();
               }}
             >
