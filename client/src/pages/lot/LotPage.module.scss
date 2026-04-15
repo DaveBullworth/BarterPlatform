@@ -1,0 +1,14 @@
+.carouselRow {
+  padding-bottom: 6px;
+}
+
+.carouselImageWrapper {
+  min-width: 260px;
+  width: 260px;
+  cursor: pointer;
+}
+
+.carouselImage {
+  border-radius: 8px;
+  border: 1px solid var(--mantine-color-gray-3);
+}

@@ -16,3 +16,9 @@ export const goToUser = (navigate: NavigateFunction, id: string) =>
 
 export const gotToLotCreate = (navigate: NavigateFunction) =>
   navigate(ROUTES.LOT_CREATE);
+
+export const gotToLotEdit = (navigate: NavigateFunction, id: string) =>
+  navigate(ROUTES.LOT_EDIT + '/' + id);
+
+export const goToLotView = (navigate: NavigateFunction, id: string) =>
+  navigate(ROUTES.LOT_VIEW + '/' + id);

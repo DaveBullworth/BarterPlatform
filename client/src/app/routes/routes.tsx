@@ -8,6 +8,7 @@ import { AuthPage } from '@/pages/auth/AuthPage';
 import { MailConfirmPage } from '@/pages/mail-confirm/MailConfirmPage';
 import { ResetPasswordPage } from '@/pages/reset-password/ResetPasswordPage';
 import { LotFormPage } from '@/pages/lot-form/LotFormPage';
+import { LotPage } from '@/pages/lot/LotPage';
 import { MainLayout } from '../layout/MainLayout';
 import { ROUTES } from '@/shared/constants/routes';
 
@@ -62,6 +63,14 @@ export const routes: RouteObject[] = [
         element: (
           <RequireAuth>
             <LotFormPage />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: ROUTES.LOT_VIEW + '/:id',
+        element: (
+          <RequireAuth>
+            <LotPage />
           </RequireAuth>
         ),
       },
