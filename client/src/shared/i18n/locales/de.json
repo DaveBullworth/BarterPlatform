@@ -239,11 +239,16 @@
     },
     "actions": {
       "cancel": "Abbrechen",
-      "continue": "Fortfahren"
+      "continue": "Fortfahren",
+      "confirm": "Bestätigen",
+      "deactivate": "Deaktivieren",
+      "unarchive": "Entarchivieren"
     },
     "modal": {
       "selectCategory": "Kategorie auswählen",
-      "unsavedWarning": "Sie haben nicht gespeicherte Änderungen. Beim Verlassen gehen sie verloren."
+      "unsavedWarning": "Sie haben nicht gespeicherte Änderungen. Beim Verlassen gehen sie verloren.",
+      "deactivateQuestion": "Möchten Sie diese Anzeige wirklich deaktivieren?",
+      "unarchiveQuestion": "Möchten Sie diese Anzeige wirklich entarchivieren?"
     },
     "validation": {
       "taxonomyRequired": "Kategorie auswählen",
@@ -253,7 +258,23 @@
     },
     "success": {
       "updated": "Anzeige aktualisiert",
-      "created": "Anzeige erstellt"
+      "created": "Anzeige erstellt",
+      "deactivated": "Anzeige deaktiviert",
+      "unarchived": "Anzeige entarchiviert"
     }
+  },
+  "lot": {
+    "visibility": {
+      "active": "Aktiv",
+      "hidden": "Verborgen",
+      "archived": "Archiviert"
+    },
+    "description": "Beschreibung",
+    "quantity": "Menge",
+    "owner": "Besitzer",
+    "edit": "Bearbeiten",
+    "createdAt": "Erstellt am",
+    "notFound": "Anzeige nicht gefunden",
+    "noImages": "Keine Bilder vorhanden"
   }
 }

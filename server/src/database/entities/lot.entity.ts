@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -100,6 +100,14 @@ export class LotEntity {
   })
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  // Функциональное поле, не в БД, а из redis
+  @ApiPropertyOptional({
+    example: '2026-02-11T12:00:00.000Z',
+    nullable: true,
+    description: 'Date when the lot was archived (for archived lots only).',
+  })
+  archivationDate?: string | null;
 
   @ApiProperty({
     example: [

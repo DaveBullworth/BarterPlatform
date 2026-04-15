@@ -240,11 +240,16 @@
     },
     "actions": {
       "cancel": "Anuluj",
-      "continue": "Kontynuuj"
+      "continue": "Kontynuuj",
+      "confirm": "Potwierdź",
+      "deactivate": "Dezaktywuj",
+      "unarchive": "Przywróć z archiwum"
     },
     "modal": {
       "selectCategory": "Wybierz kategorię",
-      "unsavedWarning": "Masz niezapisane zmiany. Jeśli wyjdziesz, zostaną utracone."
+      "unsavedWarning": "Masz niezapisane zmiany. Jeśli wyjdziesz, zostaną utracone.",
+      "deactivateQuestion": "Czy na pewno chcesz dezaktywować tę ofertę?",
+      "unarchiveQuestion": "Czy na pewno chcesz przywrócić tę ofertę z archiwum?"
     },
     "validation": {
       "taxonomyRequired": "Wybierz kategorię",
@@ -254,7 +259,23 @@
     },
     "success": {
       "updated": "Oferta zaktualizowana",
-      "created": "Oferta utworzona"
+      "created": "Oferta utworzona",
+      "deactivated": "Oferta została dezaktywowana",
+      "unarchived": "Oferta została przywrócona z archiwum"
     }
+  },
+  "lot": {
+    "visibility": {
+      "active": "Aktywny",
+      "hidden": "Ukryty",
+      "archived": "Zarchiwizowany"
+    },
+    "description": "Opis",
+    "quantity": "Ilość",
+    "owner": "Właściciel",
+    "edit": "Edytuj",
+    "createdAt": "Utworzony",
+    "notFound": "Oferta nie znaleziona",
+    "noImages": "Brak obrazów"
   }
 }

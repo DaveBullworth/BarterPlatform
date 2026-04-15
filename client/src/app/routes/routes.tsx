@@ -54,7 +54,7 @@ export const routes: RouteObject[] = [
         path: ROUTES.LOT_CREATE,
         element: (
           <RequireAuth>
-            <LotFormPage />
+            <LotFormPage key="create" />
           </RequireAuth>
         ),
       },
@@ -62,7 +62,7 @@ export const routes: RouteObject[] = [
         path: ROUTES.LOT_EDIT + '/:id',
         element: (
           <RequireAuth>
-            <LotFormPage />
+            <LotFormPage key="edit" />
           </RequireAuth>
         ),
       },

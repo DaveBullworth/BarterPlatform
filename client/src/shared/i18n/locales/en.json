@@ -241,11 +241,16 @@
     },
     "actions": {
       "cancel": "Cancel",
-      "continue": "Continue"
+      "continue": "Continue",
+      "confirm": "Confirm",
+      "deactivate": "Deactivate",
+      "unarchive": "Unarchive"
     },
     "modal": {
       "selectCategory": "Select category",
-      "unsavedWarning": "You have unsaved changes. If you leave, they will be lost."
+      "unsavedWarning": "You have unsaved changes. If you leave, they will be lost.",
+      "deactivateQuestion": "Are you sure you want to deactivate this lot?",
+      "unarchiveQuestion": "Are you sure you want to unarchive this lot?"
     },
     "validation": {
       "taxonomyRequired": "Select taxonomy",
@@ -255,7 +260,23 @@
     },
     "success": {
       "updated": "Lot updated",
-      "created": "Lot created"
+      "created": "Lot created",
+      "deactivated": "Lot deactivated",
+      "unarchived": "Lot unarchived"
     }
+  },
+  "lot": {
+    "visibility": {
+      "active": "Active",
+      "hidden": "Hidden",
+      "archived": "Archived"
+    },
+    "description": "Description",
+    "quantity": "Quantity",
+    "owner": "Owner",
+    "edit": "Edit",
+    "createdAt": "Created At",
+    "notFound": "Lot not found",
+    "noImages": "No images available"
   }
 }

@@ -255,11 +255,16 @@
     },
     "actions": {
       "cancel": "Отмена",
-      "continue": "Продолжить"
+      "continue": "Продолжить",
+      "confirm": "Подтвердить",
+      "deactivate": "Деактивировать",
+      "unarchive": "Разархивировать"
     },
     "modal": {
       "selectCategory": "Выберите категорию",
-      "unsavedWarning": "Вы внесли изменения. Если выйти, они будут потеряны."
+      "unsavedWarning": "Вы внесли изменения. Если выйти, они будут потеряны.",
+      "deactivateQuestion": "Вы уверены, что хотите деактивировать этот лот?",
+      "unarchiveQuestion": "Вы уверены, что хотите разархивировать этот лот?"
     },
     "validation": {
       "taxonomyRequired": "Выберите категорию",
@@ -269,7 +274,23 @@
     },
     "success": {
       "updated": "Лот обновлён",
-      "created": "Лот создан"
+      "created": "Лот создан",
+      "deactivated": "Лот деактивирован",
+      "unarchived": "Лот разархивирован"
     }
+  },
+  "lot": {
+    "visibility": {
+      "active": "Активен",
+      "hidden": "Скрыт",
+      "archived": "Архивирован"
+    },
+    "description": "Описание",
+    "quantity": "Количество",
+    "owner": "Владелец",
+    "edit": "Редактировать",
+    "createdAt": "Создан",
+    "notFound": "Лот не найден",
+    "noImages": "Нет изображений"
   }
 }

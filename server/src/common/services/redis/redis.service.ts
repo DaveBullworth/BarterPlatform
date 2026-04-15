@@ -226,6 +226,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
         value: lotId,
       })
       .exec();
+
+    return archivedAt;
   }
 
   async unmarkLotArchived(lotId: string) {
@@ -247,6 +249,20 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       before.getTime(),
       { LIMIT: { offset: 0, count: limit } },
     );
+  }
+
+  async getLotArchivationDate(lotId: string): Promise<Date | null> {
+    const client = this.getClient();
+    const score = await client.zScore(
+      RedisService.ARCHIVED_LOTS_SET_KEY,
+      lotId,
+    );
+
+    if (score == null) {
+      return null;
+    }
+
+    return new Date(score);
   }
 
   async unmarkArchivedLots(lotIds: string[]) {

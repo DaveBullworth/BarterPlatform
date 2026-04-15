@@ -33,6 +33,10 @@ const subcategories = loadSeed<SubcategorySeed>(
   'src/database/seeds/subcategory.json',
 );
 
+export type LotWithArchivationDate = LotEntity & {
+  archivationDate?: string | null;
+};
+
 @Injectable()
 export class LotsService implements OnModuleInit, OnModuleDestroy {
   private static readonly ARCHIVE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
@@ -63,13 +67,12 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     lotId: string,
     previousStatus: LotVisibilityStatus,
     nextStatus: LotVisibilityStatus,
-  ) {
+  ): Promise<Date | null> {
     if (
       previousStatus !== LotVisibilityStatus.ARCHIVED &&
       nextStatus === LotVisibilityStatus.ARCHIVED
     ) {
-      await this.redisService.markLotArchived(lotId);
-      return;
+      return await this.redisService.markLotArchived(lotId);
     }
 
     if (
@@ -78,6 +81,8 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     ) {
       await this.redisService.unmarkLotArchived(lotId);
     }
+
+    return null;
   }
 
   private async cleanupArchivedLots() {
@@ -204,7 +209,7 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       .getMany();
   }
 
-  async getOne(id: string, user: JwtPayload) {
+  async getOne(id: string, user: JwtPayload): Promise<LotWithArchivationDate> {
     const lot = await this.lotsRepo.findOne({ where: { id } });
     if (!lot)
       throw new NotFoundException({
@@ -221,6 +226,17 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
         code: LotErrorCode.NO_ACCESS,
         message: 'No access to this lot',
       });
+    }
+
+    if (lot.visibilityStatus === LotVisibilityStatus.ARCHIVED) {
+      const archivationDate = await this.redisService.getLotArchivationDate(
+        lot.id,
+      );
+
+      return {
+        ...lot,
+        archivationDate: archivationDate ? archivationDate.toISOString() : null,
+      };
     }
 
     return lot;
@@ -269,13 +285,25 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     });
 
     const savedLot = await this.lotsRepo.save(lot);
-    await this.syncArchiveTracking(
+    let archivationDate = await this.syncArchiveTracking(
       savedLot.id,
       previousStatus,
       savedLot.visibilityStatus,
     );
 
-    return savedLot;
+    if (
+      previousStatus === LotVisibilityStatus.ARCHIVED &&
+      savedLot.visibilityStatus === LotVisibilityStatus.ARCHIVED
+    ) {
+      archivationDate = await this.redisService.getLotArchivationDate(
+        savedLot.id,
+      );
+    }
+
+    return {
+      ...savedLot,
+      archivationDate: archivationDate ? archivationDate.toISOString() : null,
+    };
   }
 
   async remove(id: string, user: JwtPayload) {

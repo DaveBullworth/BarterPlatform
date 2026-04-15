@@ -10,8 +10,8 @@ import {
   Loader,
   Modal,
   NumberInput,
+  SegmentedControl,
   Stack,
-  Switch,
   Text,
   TextInput,
   Textarea,
@@ -25,6 +25,8 @@ import {
   BadgeQuestionMark,
   Building2,
   Check,
+  Eye,
+  EyeOff,
   ImagePlus,
   Plus,
   Trash2,
@@ -42,6 +44,7 @@ import {
   selectTaxonomy,
   selectTaxonomyStatus,
 } from '@/store/taxonomySlice';
+import { selectCurrentUser } from '@/store/userSlice';
 import type { TaxonomyCategory } from '@/types/taxonomy';
 import { createLot, getLotById, updateLot } from '@/http/lots';
 import {
@@ -51,9 +54,10 @@ import {
   uploadLotImage,
 } from '@/http/media';
 import { LOT_VISIBILITY_STATUS, type CreateLotDto } from '@/types/lot';
+import { USER_ROLES } from '@/shared/constants/user-role';
 import { notify } from '@/shared/utils/notifications';
 import { handleApiError } from '@/shared/utils/handleApiError';
-import { goToRoot } from '@/shared/utils/navigation';
+import { goToLotView } from '@/shared/utils/navigation';
 import { chapterIcons } from '@/shared/utils/chapterIcons';
 import { ChapterItem } from '@/app/layout/categoriesDrawer/ChapterItem';
 import { CategoryItem } from '@/app/layout/categoriesDrawer/CategoryItem';
@@ -68,6 +72,7 @@ type FormValues = {
   characteristicsDescription: string;
   quantity: number;
   visibilityStatus: boolean;
+  archivationDate?: string | null;
 };
 
 type ExistingImage = {
@@ -81,7 +86,10 @@ type NewImage = {
   id: string;
   file: File;
   previewUrl: string;
+  isPrimary: boolean;
 };
+
+type LotStatusAction = 'deactivate' | 'unarchive';
 
 const getCategoryKey = (chapterId: number, categoryId: number) =>
   `${chapterId}:${categoryId}`;
@@ -98,6 +106,8 @@ export const LotFormPage = () => {
 
   const taxonomy = useSelector(selectTaxonomy);
   const taxonomyStatus = useSelector(selectTaxonomyStatus);
+  const currentUser = useSelector(selectCurrentUser);
+  const isAdmin = currentUser?.role === USER_ROLES.ADMIN;
 
   const [taxonomyOpened, taxonomyControls] = useDisclosure(false);
   const [unsavedChangesModalOpen, setUnsavedChangesModalOpen] = useState(false);
@@ -120,7 +130,14 @@ export const LotFormPage = () => {
     string | null
   >(null);
   const [showContent, setShowContent] = useState(false);
-  const [shouldNavigate, setShouldNavigate] = useState(false);
+  const [shouldNavigate, setShouldNavigate] = useState<string | boolean>(false);
+  const [initialImagesState, setInitialImagesState] = useState<{
+    primaryImageId: string | null;
+    existingIds: string[];
+  } | null>(null);
+  const [isArchived, setIsArchived] = useState(false);
+  const [statusActionModal, setStatusActionModal] =
+    useState<LotStatusAction | null>(null);
 
   const {
     values,
@@ -160,7 +177,34 @@ export const LotFormPage = () => {
     },
   });
 
-  const blocker = useBlocker(isDirty());
+  const computeImagesDirty = () => {
+    if (!initialImagesState) return !!newImages.length;
+
+    const currentPrimary =
+      existingImages.find((img) => img.isPrimary)?.imageId ?? null;
+
+    const currentExistingIds = existingImages.map((img) => img.imageId);
+
+    const isPrimaryChanged =
+      currentPrimary !== initialImagesState.primaryImageId;
+
+    const isExistingChanged =
+      currentExistingIds.length !== initialImagesState.existingIds.length ||
+      currentExistingIds.some(
+        (id, idx) => id !== initialImagesState.existingIds[idx],
+      );
+
+    const isNewImagesAdded = newImages.length > 0;
+    const isDeleted = pendingDeleteImageIds.length > 0;
+
+    return (
+      isPrimaryChanged || isExistingChanged || isNewImagesAdded || isDeleted
+    );
+  };
+
+  const isFormDirty = isDirty() || computeImagesDirty();
+
+  const blocker = useBlocker(isFormDirty);
 
   const initExpandedFromForm = useCallback(() => {
     const { chapterId, categoryId } = values;
@@ -260,26 +304,31 @@ export const LotFormPage = () => {
           quantity: lot.quantity,
           visibilityStatus:
             lot.visibilityStatus === LOT_VISIBILITY_STATUS.ACTIVE,
+          archivationDate: lot.archivationDate ?? null,
         });
+        setIsArchived(lot.visibilityStatus === LOT_VISIBILITY_STATUS.ARCHIVED);
         resetDirty();
 
         setExistingImages(images.images);
+
+        setInitialImagesState({
+          primaryImageId:
+            images.images.find((img) => img.isPrimary)?.imageId ?? null,
+          existingIds: images.images.map((img) => img.imageId),
+        });
       } catch (error) {
         handleApiError(error, t);
-        navigate(-1);
       } finally {
         setInitializing(false);
       }
     };
 
     void load();
-  }, [id, navigate, resolveTaxonomyPath, setValues, resetDirty, t]);
+  }, [id, resolveTaxonomyPath, setValues, resetDirty, t]);
 
   useEffect(() => {
-    if (!shouldNavigate) return;
-
-    // TODO: заменить на страницу лота после её реализации
-    goToRoot(navigate);
+    if (typeof shouldNavigate !== 'string') return;
+    goToLotView(navigate, shouldNavigate);
   }, [shouldNavigate, navigate]);
 
   const totalImagesCount = existingImages.length + newImages.length;
@@ -307,12 +356,14 @@ export const LotFormPage = () => {
       taxonomyPath: path,
     });
 
-    setDirty({
-      chapterId: true,
-      categoryId: true,
-      subcategoryId: true,
-      taxonomyPath: true,
-    });
+    if (!isEditMode) {
+      setDirty({
+        chapterId: true,
+        categoryId: true,
+        subcategoryId: true,
+        taxonomyPath: true,
+      });
+    }
 
     setShowContent(false);
     taxonomyControls.close();
@@ -323,37 +374,43 @@ export const LotFormPage = () => {
 
     if (freeSlots <= 0) return;
 
+    const hasPrimary =
+      existingImages.some((image) => image.isPrimary) ||
+      newImages.some((image) => image.isPrimary);
+
     const nextImages = files.slice(0, freeSlots).map((file) => ({
       id: crypto.randomUUID(),
       file,
       previewUrl: URL.createObjectURL(file),
+      isPrimary: false,
     }));
 
+    if (!hasPrimary && nextImages.length > 0) {
+      nextImages[0].isPrimary = true;
+    }
+
     setNewImages((prev) => [...prev, ...nextImages]);
-    setDirty({});
   };
 
   const setExistingImagePrimary = (imageId: string) => {
     setExistingImages((prev) =>
       prev.map((image) => ({ ...image, isPrimary: image.imageId === imageId })),
     );
+    setNewImages((prev) => prev.map((image) => ({ ...image, isPrimary: false })));
 
     setPendingPrimaryImageId(imageId);
-    setDirty({});
   };
 
   const setNewImagePrimary = (id: string) => {
     setNewImages((prev) => {
-      const current = prev.find((item) => item.id === id);
-      if (!current) return prev;
-      return [current, ...prev.filter((item) => item.id !== id)];
+      if (!prev.some((item) => item.id === id)) return prev;
+      return prev.map((item) => ({ ...item, isPrimary: item.id === id }));
     });
 
     setExistingImages((prev) =>
       prev.map((image) => ({ ...image, isPrimary: false })),
     );
     setPendingPrimaryImageId(null);
-    setDirty({});
   };
 
   const removeExistingImage = (imageId: string) => {
@@ -364,7 +421,6 @@ export const LotFormPage = () => {
     if (pendingPrimaryImageId === imageId) {
       setPendingPrimaryImageId(null);
     }
-    setDirty({});
   };
 
   const removeNewImage = (imageId: string) => {
@@ -373,9 +429,19 @@ export const LotFormPage = () => {
       if (target) {
         URL.revokeObjectURL(target.previewUrl);
       }
-      return prev.filter((item) => item.id !== imageId);
+      const filtered = prev.filter((item) => item.id !== imageId);
+      if (
+        target?.isPrimary &&
+        filtered.length > 0 &&
+        !filtered.some((item) => item.isPrimary)
+      ) {
+        return filtered.map((item, index) => ({
+          ...item,
+          isPrimary: index === 0,
+        }));
+      }
+      return filtered;
     });
-    setDirty({});
   };
 
   const onSubmitForm = onSubmit(async (values) => {
@@ -406,12 +472,17 @@ export const LotFormPage = () => {
         await deleteLotImage(imageId);
       }
 
+      let nextPrimaryImageId = pendingPrimaryImageId;
+
       for (const image of newImages) {
-        await uploadLotImage(lotId, image.file);
+        const uploaded = await uploadLotImage(lotId, image.file);
+        if (image.isPrimary) {
+          nextPrimaryImageId = uploaded.imageId;
+        }
       }
 
-      if (pendingPrimaryImageId) {
-        await setPrimaryLotImage(lotId, pendingPrimaryImageId);
+      if (nextPrimaryImageId) {
+        await setPrimaryLotImage(lotId, nextPrimaryImageId);
       }
 
       notify({
@@ -423,15 +494,61 @@ export const LotFormPage = () => {
         icon: <Check size={16} />,
       });
 
+      setNewImages([]);
+      setInitialImagesState(null);
       resetDirty();
 
-      setShouldNavigate(true);
+      setShouldNavigate(lotId);
     } catch (error) {
       handleApiError(error, t);
     } finally {
       setLoading(false);
     }
   });
+
+  const handleConfirmStatusAction = async () => {
+    if (!id || !statusActionModal) return;
+
+    const isDeactivateAction = statusActionModal === 'deactivate';
+    const nextStatus = isDeactivateAction
+      ? LOT_VISIBILITY_STATUS.ARCHIVED
+      : LOT_VISIBILITY_STATUS.HIDDEN;
+
+    setLoading(true);
+    try {
+      const updatedLot = await updateLot(id, { visibilityStatus: nextStatus });
+      const nextIsArchived =
+        updatedLot.visibilityStatus === LOT_VISIBILITY_STATUS.ARCHIVED;
+      setIsArchived(nextIsArchived);
+
+      if (!nextIsArchived) {
+        setFieldValue(
+          'visibilityStatus',
+          updatedLot.visibilityStatus === LOT_VISIBILITY_STATUS.ACTIVE,
+        );
+      } else {
+        setFieldValue('archivationDate', updatedLot.archivationDate ?? null);
+      }
+
+      resetDirty();
+
+      setShouldNavigate(updatedLot.id);
+
+      notify({
+        title: t('common.success'),
+        message: isDeactivateAction
+          ? t('lotForm.success.deactivated')
+          : t('lotForm.success.unarchived'),
+        color: 'green',
+        icon: <Check size={16} />,
+      });
+    } catch (error) {
+      handleApiError(error, t);
+    } finally {
+      setLoading(false);
+      setStatusActionModal(null);
+    }
+  };
 
   const toggleChapter = (chapterId: number) => {
     setExpandedChapters((prev) => {
@@ -462,16 +579,20 @@ export const LotFormPage = () => {
       kind: 'existing' as const,
     }));
 
-    const fresh = newImages.map((image, index) => ({
+    const fresh = newImages.map((image) => ({
       key: image.id,
       imageId: image.id,
-      isPrimary: existing.length === 0 && index === 0,
+      isPrimary: image.isPrimary,
       src: image.previewUrl,
       kind: 'new' as const,
     }));
 
     return [...existing, ...fresh];
   }, [existingImages, newImages]);
+
+  const showDeactivateAction = isEditMode && Boolean(id) && !isArchived;
+  const showUnarchiveAction =
+    isEditMode && Boolean(id) && isArchived && isAdmin;
 
   if (
     taxonomyStatus === 'idle' ||
@@ -491,8 +612,10 @@ export const LotFormPage = () => {
         <Title order={2}>
           {isEditMode ? t('lotForm.title.edit') : t('lotForm.title.create')}
         </Title>
-        <Badge color={isDirty() ? 'yellow' : 'green'}>
-          {isDirty() ? t('lotForm.status.unsaved') : t('lotForm.status.saved')}
+        <Badge color={isFormDirty ? 'yellow' : 'green'}>
+          {isFormDirty
+            ? t('lotForm.status.unsaved')
+            : t('lotForm.status.saved')}
         </Badge>
       </Group>
 
@@ -623,42 +746,101 @@ export const LotFormPage = () => {
             <Stack>
               <Text fw={700}>{t('lotForm.fields.title')}</Text>
               <TextInput
+                maxLength={255}
                 label={t('lotForm.fields.generalDescription')}
                 placeholder={t('lotForm.fields.generalDescriptionPlaceholder')}
                 {...getInputProps('generalDescription')}
               />
               <Textarea
+                maxLength={1000}
                 label={t('lotForm.fields.characteristics')}
                 minRows={6}
+                // style={{ height: '10rem' }}
                 placeholder={t('lotForm.fields.characteristicsPlaceholder')}
                 {...getInputProps('characteristicsDescription')}
               />
-              <NumberInput
-                label={t('lotForm.fields.quantity')}
-                placeholder={t('lotForm.fields.quantityPlaceholder')}
-                min={1}
-                allowDecimal={false}
-                {...getInputProps('quantity')}
-              />
-              <Group gap="xs" align="center">
-                <Tooltip label={t('lotForm.visibility.tooltip')}>
-                  <BadgeQuestionMark size={16} style={{ cursor: 'pointer' }} />
-                </Tooltip>
-                <Switch
-                  label={
-                    values.visibilityStatus
-                      ? t('lotForm.visibility.visible')
-                      : t('lotForm.visibility.hidden')
-                  }
-                  checked={values.visibilityStatus}
-                  onChange={(event) => {
-                    setFieldValue(
-                      'visibilityStatus',
-                      event.currentTarget.checked,
-                    );
-                    setDirty({ visibilityStatus: true });
-                  }}
+
+              <Group justify="space-between" align="center">
+                <NumberInput
+                  label={t('lotForm.fields.quantity')}
+                  placeholder={t('lotForm.fields.quantityPlaceholder')}
+                  min={1}
+                  max={10000}
+                  allowDecimal={false}
+                  {...getInputProps('quantity')}
                 />
+                {!isArchived ? (
+                  <Stack
+                    gap="0"
+                    justify="space-between"
+                    style={{ height: '60px' }}
+                  >
+                    <Text size="sm" fw={500} style={{ lineHeight: '1.55' }}>
+                      {t('admin.filter.status')}
+                    </Text>
+                    <Group>
+                      <SegmentedControl
+                        size="md"
+                        value={values.visibilityStatus ? 'visible' : 'hidden'}
+                        onChange={(value) => {
+                          setFieldValue(
+                            'visibilityStatus',
+                            value === 'visible',
+                          );
+                        }}
+                        data={[
+                          {
+                            label: (
+                              <Group gap={6} wrap="nowrap" align="self-end">
+                                <Eye size={16} />
+                                <Text size="sm" fw={500}>
+                                  {t('lotForm.visibility.visible')}
+                                </Text>
+                              </Group>
+                            ),
+                            value: 'visible',
+                          },
+                          {
+                            label: (
+                              <Group gap={6} wrap="nowrap" align="self-end">
+                                <EyeOff size={16} />
+                                <Text size="sm" fw={500}>
+                                  {t('lotForm.visibility.hidden')}
+                                </Text>
+                              </Group>
+                            ),
+                            value: 'hidden',
+                          },
+                        ]}
+                      />
+                      <Tooltip label={t('lotForm.visibility.tooltip')}>
+                        <BadgeQuestionMark
+                          size={16}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </Tooltip>
+                    </Group>
+                  </Stack>
+                ) : (
+                  <Stack
+                    gap="0"
+                    justify="space-between"
+                    style={{ height: '60px' }}
+                  >
+                    <Text size="sm" fw={500} style={{ lineHeight: '1.8' }}>
+                      {t('lot.visibility.archived')}
+                    </Text>
+                    <Badge
+                      color="gray"
+                      size="lg"
+                      style={{ alignItems: 'baseline' }}
+                    >
+                      {values?.archivationDate
+                        ? new Date(values.archivationDate).toLocaleDateString()
+                        : '—'}
+                    </Badge>
+                  </Stack>
+                )}
               </Group>
             </Stack>
           </Card>
@@ -667,7 +849,27 @@ export const LotFormPage = () => {
             <Button variant="default" onClick={() => navigate(-1)}>
               {t('lotForm.actions.cancel')}
             </Button>
-            <Button type="submit" loading={loading}>
+            {showDeactivateAction && (
+              <Button
+                disabled={isFormDirty}
+                color="red"
+                variant="light"
+                loading={loading}
+                onClick={() => setStatusActionModal('deactivate')}
+              >
+                {t('lotForm.actions.deactivate')}
+              </Button>
+            )}
+            {showUnarchiveAction && (
+              <Button
+                disabled={isFormDirty}
+                loading={loading}
+                onClick={() => setStatusActionModal('unarchive')}
+              >
+                {t('lotForm.actions.unarchive')}
+              </Button>
+            )}
+            <Button type="submit" loading={loading} disabled={!isFormDirty}>
               {t('common.save')}
             </Button>
           </Group>
@@ -795,6 +997,40 @@ export const LotFormPage = () => {
             })}
           </Stack>
         )}
+      </Modal>
+
+      <Modal
+        opened={statusActionModal !== null}
+        onClose={() => setStatusActionModal(null)}
+        title={
+          statusActionModal === 'deactivate'
+            ? t('lotForm.actions.deactivate')
+            : t('lotForm.actions.unarchive')
+        }
+        centered
+      >
+        <Stack>
+          <Text>
+            {statusActionModal === 'deactivate'
+              ? t('lotForm.modal.deactivateQuestion')
+              : t('lotForm.modal.unarchiveQuestion')}
+          </Text>
+          <Group justify="flex-end">
+            <Button
+              variant="default"
+              onClick={() => setStatusActionModal(null)}
+            >
+              {t('lotForm.actions.cancel')}
+            </Button>
+            <Button
+              color={statusActionModal === 'deactivate' ? 'red' : undefined}
+              loading={loading}
+              onClick={handleConfirmStatusAction}
+            >
+              {t('lotForm.actions.confirm')}
+            </Button>
+          </Group>
+        </Stack>
       </Modal>
 
       <Modal

@@ -147,7 +147,7 @@ export const UserProfilePage = () => {
   }
 
   return (
-    <Stack gap="lg" w={'100%'}>
+    <Stack gap="lg" maw={860} w={'100%'} mx="auto">
       <Title order={2}>{t('profile.title')}</Title>
 
       <ProfileHeaderBlock user={user} mode={mode} />
@@ -163,7 +163,7 @@ export const UserProfilePage = () => {
       {/* Кнопка для открытия модалки изменения данных профиля */}
       {['self', 'admin'].includes(mode) &&
         (isSelfUser(user) || isAdminUser(user)) && (
-          <Button onClick={() => setEditProfileModalOpened(true)} maw={600}>
+          <Button onClick={() => setEditProfileModalOpened(true)} maw={'100%'}>
             {t('profile.editData')}
           </Button>
         )}

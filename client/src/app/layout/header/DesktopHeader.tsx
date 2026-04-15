@@ -16,6 +16,8 @@ import { UserMenu } from './UserMenu';
 import { goToRoot, gotToLotCreate } from '@/shared/utils/navigation';
 import { selectCategorySelection } from '@/store/categoryFilterSlice';
 import { GeoFilterControl } from './GeoFilterControl';
+import { selectIsAuthenticated } from '@/store/userSlice';
+import { openAuthRequiredModal } from '@/shared/ui/AuthRequiredModal';
 
 type DesktopHeaderProps = {
   desktopOpened: boolean;
@@ -31,6 +33,7 @@ export const DesktopHeader = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const selectedCategory = useSelector(selectCategorySelection);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   return (
     <Group h="100%" px="md" justify="space-between" visibleFrom="sm">
@@ -79,7 +82,11 @@ export const DesktopHeader = ({
         {/* CREATE LOT */}
         <Button
           leftSection={<Plus size={16} />}
-          onClick={() => gotToLotCreate(navigate)}
+          onClick={() =>
+            isAuthenticated
+              ? gotToLotCreate(navigate)
+              : openAuthRequiredModal(navigate, t)
+          }
         >
           {t('header.createLot')}
         </Button>

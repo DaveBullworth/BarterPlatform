@@ -19,7 +19,9 @@ export type CreateLotDto = {
     | typeof LOT_VISIBILITY_STATUS.ACTIVE;
 };
 
-export type UpdateLotDto = Partial<CreateLotDto>;
+export type UpdateLotDto = Partial<Omit<CreateLotDto, 'visibilityStatus'>> & {
+  visibilityStatus?: LotVisibilityStatus;
+};
 
 export type LotDto = {
   id: string;
@@ -31,6 +33,7 @@ export type LotDto = {
   characteristicsDescription: string;
   quantity: number;
   visibilityStatus: LotVisibilityStatus;
+  archivationDate?: string | null;
   createdAt: string;
   updatedAt: string;
   imageLinks: string[];
