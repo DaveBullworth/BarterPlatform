@@ -22,6 +22,8 @@ import type {
 } from './types/taxonomy.types';
 import { LotErrorCode } from './errors/lots-error-codes';
 import { RedisService } from '@/common/services/redis/redis.service';
+import type { Region, City, District } from '@/common/types/geo.type';
+import { UserErrorCode } from '../users/errors/users-error-codes';
 
 function loadSeed<T>(filename: string): T[] {
   return JSON.parse(readFileSync(join(process.cwd(), filename), 'utf8')) as T[];
@@ -31,6 +33,12 @@ const chapters = loadSeed<ChapterSeed>('src/database/seeds/chapter.json');
 const categories = loadSeed<CategorySeed>('src/database/seeds/category.json');
 const subcategories = loadSeed<SubcategorySeed>(
   'src/database/seeds/subcategory.json',
+);
+
+const regions = loadSeed<Region>('src/database/seeds/geography_region.json');
+const cities = loadSeed<City>('src/database/seeds/geography_city.json');
+const districts = loadSeed<District>(
+  'src/database/seeds/geography_district.json',
 );
 
 export type LotWithArchivationDate = LotEntity & {
@@ -60,6 +68,40 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     if (this.cleanupTimer) {
       clearInterval(this.cleanupTimer);
       this.cleanupTimer = null;
+    }
+  }
+
+  private validateGeography(
+    regionId: number,
+    cityId: number,
+    districtId?: number | null,
+  ) {
+    const region = regions.find((r) => r.externalId === regionId);
+    if (!region) {
+      throw new NotFoundException({
+        code: UserErrorCode.REGION_NOT_FOUND,
+        message: 'Region not found',
+      });
+    }
+
+    const city = cities.find((c) => c.externalId === cityId);
+    if (!city || city.regionId !== regionId) {
+      throw new NotFoundException({
+        code: UserErrorCode.CITY_NOT_FOUND,
+        message: 'City not found for selected region',
+      });
+    }
+
+    if (districtId == null) {
+      return;
+    }
+
+    const district = districts.find((d) => d.externalId === districtId);
+    if (!district || district.cityId !== cityId) {
+      throw new NotFoundException({
+        code: UserErrorCode.DISTRICT_NOT_FOUND,
+        message: 'District not found for selected city',
+      });
     }
   }
 
@@ -178,6 +220,8 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
   async create(dto: CreateLotDto, user: JwtPayload) {
     this.validateTaxonomy(dto.chapterId, dto.categoryId, dto.subcategoryId);
 
+    this.validateGeography(dto.regionId, dto.cityId, dto.districtId ?? null);
+
     const lot = this.lotsRepo.create({
       userId: user.sub,
       chapterId: dto.chapterId,
@@ -187,6 +231,9 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       characteristicsDescription: dto.characteristicsDescription,
       quantity: dto.quantity,
       visibilityStatus: dto.visibilityStatus,
+      regionId: dto.regionId,
+      cityId: dto.cityId,
+      districtId: dto.districtId ?? null,
     });
 
     const createdLot = await this.lotsRepo.save(lot);
@@ -271,7 +318,17 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     const chapterId = dto.chapterId ?? lot.chapterId;
     const categoryId = dto.categoryId ?? lot.categoryId;
     const subcategoryId = dto.subcategoryId ?? lot.subcategoryId ?? undefined;
+
+    const nextRegionId = dto.regionId ?? lot.regionId;
+    const nextCityId = dto.cityId ?? lot.cityId;
+    const nextDistrictId =
+      dto.districtId !== undefined ? dto.districtId : lot.districtId;
+
     this.validateTaxonomy(chapterId, categoryId, subcategoryId);
+
+    if (nextRegionId && nextCityId) {
+      this.validateGeography(nextRegionId, nextCityId, nextDistrictId ?? null);
+    }
 
     Object.assign(lot, {
       chapterId,
@@ -282,6 +339,9 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
         dto.characteristicsDescription ?? lot.characteristicsDescription,
       quantity: dto.quantity ?? lot.quantity,
       visibilityStatus: dto.visibilityStatus ?? lot.visibilityStatus,
+      regionId: dto.regionId ?? lot.regionId,
+      cityId: dto.cityId ?? lot.cityId,
+      districtId: dto.districtId ?? lot.districtId,
     });
 
     const savedLot = await this.lotsRepo.save(lot);

@@ -28,6 +28,7 @@ import { CreateLotDto } from './dto/create-lot.dto';
 import { UpdateLotDto } from './dto/update-lot.dto';
 import { LotEntity } from '@/database/entities/lot.entity';
 import { LotErrorCode } from './errors/lots-error-codes';
+import { UserErrorCode } from '../users/errors/users-error-codes';
 
 @Controller('lot')
 @ApiTags('Lot')
@@ -87,6 +88,24 @@ export class LotsController {
           example: {
             code: LotErrorCode.SUBCATEGORY_NOT_FOUND,
             message: 'Subcategory not found in category',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.REGION_NOT_FOUND,
+            message: 'Region not found',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.CITY_NOT_FOUND,
+            message: 'City not found for selected region',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.DISTRICT_NOT_FOUND,
+            message: 'District not found for selected city',
           },
         },
       ],
@@ -175,7 +194,7 @@ export class LotsController {
   @Patch(':id')
   @ApiOperation({
     summary: 'Обновить лот',
-    description: 'Редактирует существующий лот (только владелец)',
+    description: 'Редактирует существующий лот (только владелец) или Админ',
   })
   @ApiParam({
     name: 'id',
@@ -206,12 +225,35 @@ export class LotsController {
     },
   })
   @ApiNotFoundResponse({
-    description: 'Лот не найден',
+    description:
+      'Географические данные не найдены для указанных regionId/cityId/districtId',
     schema: {
-      example: {
-        code: LotErrorCode.LOT_NOT_FOND,
-        message: 'Lot not found',
-      },
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.REGION_NOT_FOUND,
+            message: 'Region not found',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.CITY_NOT_FOUND,
+            message: 'City not found for selected region',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.DISTRICT_NOT_FOUND,
+            message: 'District not found for selected city',
+          },
+        },
+        {
+          example: {
+            code: LotErrorCode.LOT_NOT_FOND,
+            message: 'Lot not found',
+          },
+        },
+      ],
     },
   })
   @ApiConflictResponse({

@@ -7,7 +7,7 @@ import {
   Min,
 } from 'class-validator';
 import { LotVisibilityStatus } from '@/database/entities/lot.entity';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateLotDto {
   @ApiProperty({
@@ -78,4 +78,23 @@ export class UpdateLotDto {
   @IsOptional()
   @IsEnum(LotVisibilityStatus)
   visibilityStatus?: LotVisibilityStatus;
+
+  @ApiPropertyOptional({ example: 5, description: 'ID региона' })
+  @IsOptional()
+  @IsInt()
+  regionId?: number;
+
+  @ApiPropertyOptional({ example: 5003, description: 'ID города' })
+  @IsOptional()
+  @IsInt()
+  cityId?: number;
+
+  @ApiPropertyOptional({
+    example: 7002,
+    description: 'ID района',
+    nullable: true,
+  })
+  @IsOptional()
+  @IsInt()
+  districtId?: number | null;
 }

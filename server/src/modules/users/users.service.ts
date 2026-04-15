@@ -29,22 +29,7 @@ import { UserErrorCode } from './errors/users-error-codes';
 import { UserFiltersDto } from './dto/userFilters.dto';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { TextFilterDto } from '@/common/dtos/filter-item.dto';
-
-type Region = { externalId: number; name: string; slug: string };
-
-type City = {
-  externalId: number;
-  regionId: number;
-  name: string;
-  slug: string;
-};
-
-type District = {
-  externalId: number;
-  cityId: number;
-  name: string;
-  slug: string;
-};
+import type { Region, City, District } from '@/common/types/geo.type';
 
 function loadSeed<T>(filename: string): T[] {
   return JSON.parse(readFileSync(join(process.cwd(), filename), 'utf8')) as T[];
@@ -170,7 +155,7 @@ export class UsersService {
     const region = regions.find((r) => r.externalId === regionId);
     if (!region) {
       throw new NotFoundException({
-        code: 'REGION_NOT_FOUND',
+        code: UserErrorCode.REGION_NOT_FOUND,
         message: 'Region not found',
       });
     }
@@ -178,7 +163,7 @@ export class UsersService {
     const city = cities.find((c) => c.externalId === cityId);
     if (!city || city.regionId !== regionId) {
       throw new NotFoundException({
-        code: 'CITY_NOT_FOUND',
+        code: UserErrorCode.CITY_NOT_FOUND,
         message: 'City not found for selected region',
       });
     }
@@ -190,7 +175,7 @@ export class UsersService {
     const district = districts.find((d) => d.externalId === districtId);
     if (!district || district.cityId !== cityId) {
       throw new NotFoundException({
-        code: 'DISTRICT_NOT_FOUND',
+        code: UserErrorCode.DISTRICT_NOT_FOUND,
         message: 'District not found for selected city',
       });
     }

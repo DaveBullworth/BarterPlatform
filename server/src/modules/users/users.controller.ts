@@ -137,6 +137,32 @@ export class UsersController {
       },
     },
   })
+  @ApiNotFoundResponse({
+    description:
+      'Географические данные не найдены для указанных regionId/cityId/districtId',
+    schema: {
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.REGION_NOT_FOUND,
+            message: 'Region not found',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.CITY_NOT_FOUND,
+            message: 'City not found for selected region',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.DISTRICT_NOT_FOUND,
+            message: 'District not found for selected city',
+          },
+        },
+      ],
+    },
+  })
   @ApiConflictResponse({
     description: 'Конфликт бизнес-ограничений',
     schema: {
@@ -348,8 +374,9 @@ export class UsersController {
     - login
     - name
     - phone (включая null)
-        - language
+    - language
     - theme
+    - гео (regionId, cityId, districtId)
   `,
   })
   @ApiBody({ type: UpdateSelfUserDto })
@@ -383,6 +410,32 @@ export class UsersController {
             statusCode: 400,
             error: 'Bad Request',
             message: ['language must be a valid enum value'],
+          },
+        },
+      ],
+    },
+  })
+  @ApiNotFoundResponse({
+    description:
+      'Географические данные не найдены для указанных regionId/cityId/districtId',
+    schema: {
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.REGION_NOT_FOUND,
+            message: 'Region not found',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.CITY_NOT_FOUND,
+            message: 'City not found for selected region',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.DISTRICT_NOT_FOUND,
+            message: 'District not found for selected city',
           },
         },
       ],
@@ -448,12 +501,35 @@ export class UsersController {
     description: 'Недостаточно прав (только ADMIN)',
   })
   @ApiNotFoundResponse({
-    description: 'Пользователь не найден',
+    description:
+      'Географические данные не найдены для указанных regionId/cityId/districtId',
     schema: {
-      example: {
-        code: UserErrorCode.USER_NOT_FOUND,
-        message: 'User not found',
-      },
+      oneOf: [
+        {
+          example: {
+            code: UserErrorCode.REGION_NOT_FOUND,
+            message: 'Region not found',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.CITY_NOT_FOUND,
+            message: 'City not found for selected region',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.DISTRICT_NOT_FOUND,
+            message: 'District not found for selected city',
+          },
+        },
+        {
+          example: {
+            code: UserErrorCode.USER_NOT_FOUND,
+            message: 'User not found',
+          },
+        },
+      ],
     },
   })
   @ApiConflictResponse({

@@ -87,6 +87,18 @@ export class LotEntity {
   })
   visibilityStatus!: LotVisibilityStatus;
 
+  @ApiProperty({ example: 5, nullable: true })
+  @Column({ type: 'int', nullable: true })
+  regionId!: number | null;
+
+  @ApiProperty({ example: 5003, nullable: true })
+  @Column({ type: 'int', nullable: true })
+  cityId!: number | null;
+
+  @ApiProperty({ example: 7002, nullable: true })
+  @Column({ type: 'int', nullable: true })
+  districtId!: number | null;
+
   @ApiProperty({
     example: '2026-01-11T10:30:00.000Z',
     description: 'Дата создания лота',

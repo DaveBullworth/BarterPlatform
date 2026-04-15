@@ -66,4 +66,25 @@ export class CreateLotDto {
   })
   @IsIn([LotVisibilityStatus.HIDDEN, LotVisibilityStatus.ACTIVE])
   visibilityStatus!: LotVisibilityStatus;
+
+  @ApiProperty({
+    example: 5,
+    description: 'ID региона',
+  })
+  @IsInt()
+  regionId!: number;
+
+  @ApiProperty({ example: 5003, description: 'ID города' })
+  @IsInt()
+  cityId!: number;
+
+  @ApiProperty({
+    example: 7002,
+    description: 'ID района',
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  @IsInt()
+  districtId?: number | null;
 }

@@ -1,3 +1,5 @@
+import type { GeographyNode } from './user';
+
 export const LOT_VISIBILITY_STATUS = {
   HIDDEN: 'hidden',
   ACTIVE: 'active',
@@ -17,6 +19,9 @@ export type CreateLotDto = {
   visibilityStatus:
     | typeof LOT_VISIBILITY_STATUS.HIDDEN
     | typeof LOT_VISIBILITY_STATUS.ACTIVE;
+  region: GeographyNode;
+  city: GeographyNode;
+  district: GeographyNode;
 };
 
 export type UpdateLotDto = Partial<Omit<CreateLotDto, 'visibilityStatus'>> & {
@@ -33,6 +38,9 @@ export type LotDto = {
   characteristicsDescription: string;
   quantity: number;
   visibilityStatus: LotVisibilityStatus;
+  region: GeographyNode;
+  city: GeographyNode;
+  district: GeographyNode;
   archivationDate?: string | null;
   createdAt: string;
   updatedAt: string;
