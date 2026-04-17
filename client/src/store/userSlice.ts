@@ -3,6 +3,7 @@ import type { RootState } from '.';
 import type { UserRole } from '@/shared/constants/user-role';
 import type { UserTheme } from '@/shared/constants/user-theme';
 import type { UserLanguage } from '@/shared/constants/user-language';
+import type { GeographyNode } from '@/types/user';
 
 export interface UserEntry {
   id: string;
@@ -11,6 +12,9 @@ export interface UserEntry {
   role?: UserRole;
   email?: string;
   phone?: string | null;
+  region?: GeographyNode | null;
+  city?: GeographyNode | null;
+  district?: GeographyNode | null;
   language?: UserLanguage;
   theme?: UserTheme;
   createdAt?: string;

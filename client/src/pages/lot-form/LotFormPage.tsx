@@ -10,6 +10,7 @@ import {
   Loader,
   Modal,
   NumberInput,
+  Select,
   SegmentedControl,
   Stack,
   Text,
@@ -62,6 +63,8 @@ import { chapterIcons } from '@/shared/utils/chapterIcons';
 import { ChapterItem } from '@/app/layout/categoriesDrawer/ChapterItem';
 import { CategoryItem } from '@/app/layout/categoriesDrawer/CategoryItem';
 import { SkeletonList } from '@/app/layout/categoriesDrawer/ChapterItemSkeleton';
+import { getCities, getDistricts, getRegions } from '@/http/geography';
+import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
 
 type FormValues = {
   taxonomyPath: string;
@@ -71,6 +74,9 @@ type FormValues = {
   generalDescription: string;
   characteristicsDescription: string;
   quantity: number;
+  regionId: string;
+  cityId: string;
+  districtId: string;
   visibilityStatus: boolean;
   archivationDate?: string | null;
 };
@@ -110,6 +116,7 @@ export const LotFormPage = () => {
   const isAdmin = currentUser?.role === USER_ROLES.ADMIN;
 
   const [taxonomyOpened, taxonomyControls] = useDisclosure(false);
+  const [geoOpened, geoControls] = useDisclosure(false);
   const [unsavedChangesModalOpen, setUnsavedChangesModalOpen] = useState(false);
 
   const [expandedChapters, setExpandedChapters] = useState<Set<number>>(
@@ -138,6 +145,9 @@ export const LotFormPage = () => {
   const [isArchived, setIsArchived] = useState(false);
   const [statusActionModal, setStatusActionModal] =
     useState<LotStatusAction | null>(null);
+  const [regions, setRegions] = useState<RegionOption[]>([]);
+  const [cities, setCities] = useState<CityOption[]>([]);
+  const [districts, setDistricts] = useState<DistrictOption[]>([]);
 
   const {
     values,
@@ -159,6 +169,9 @@ export const LotFormPage = () => {
       generalDescription: '',
       characteristicsDescription: '',
       quantity: 1,
+      regionId: '',
+      cityId: '',
+      districtId: '',
       visibilityStatus: true,
     },
     validate: {
@@ -174,6 +187,8 @@ export const LotFormPage = () => {
           : null,
       quantity: (value) =>
         value < 1 ? t('lotForm.validation.minQuantity') : null,
+      regionId: (value) => (!value ? t('auth.region') : null),
+      cityId: (value) => (!value ? t('auth.city') : null),
     },
   });
 
@@ -247,6 +262,33 @@ export const LotFormPage = () => {
     [taxonomy],
   );
 
+  const regionOptions = useMemo(
+    () =>
+      [...regions]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((region) => ({ value: String(region.id), label: region.name })),
+    [regions],
+  );
+
+  const cityOptions = useMemo(
+    () =>
+      [...cities]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((city) => ({ value: String(city.id), label: city.name })),
+    [cities],
+  );
+
+  const districtOptions = useMemo(
+    () =>
+      [...districts]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((district) => ({
+          value: String(district.id),
+          label: district.name,
+        })),
+    [districts],
+  );
+
   useEffect(() => {
     if (blocker.state === 'blocked') {
       setUnsavedChangesModalOpen(true);
@@ -273,10 +315,53 @@ export const LotFormPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    getRegions().then(setRegions).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (isEditMode || !currentUser) return;
+
+    const nextRegionId = currentUser.region ? String(currentUser.region.id) : '';
+    const nextCityId = currentUser.city ? String(currentUser.city.id) : '';
+    const nextDistrictId = currentUser.district
+      ? String(currentUser.district.id)
+      : '';
+
+    setValues({
+      regionId: nextRegionId,
+      cityId: nextCityId,
+      districtId: nextDistrictId,
+    });
+  }, [currentUser, isEditMode, setValues]);
+
+  useEffect(() => {
     if (taxonomyOpened) {
       initExpandedFromForm();
     }
   }, [taxonomyOpened, initExpandedFromForm]);
+
+  useEffect(() => {
+    if (!values.regionId) {
+      setCities([]);
+      setDistricts([]);
+      return;
+    }
+
+    getCities(Number(values.regionId))
+      .then(setCities)
+      .catch(console.error);
+  }, [values.regionId]);
+
+  useEffect(() => {
+    if (!values.cityId) {
+      setDistricts([]);
+      return;
+    }
+
+    getDistricts(Number(values.cityId))
+      .then(setDistricts)
+      .catch(console.error);
+  }, [values.cityId]);
 
   useEffect(() => {
     const load = async () => {
@@ -302,6 +387,9 @@ export const LotFormPage = () => {
           generalDescription: lot.generalDescription,
           characteristicsDescription: lot.characteristicsDescription,
           quantity: lot.quantity,
+          regionId: lot.region ? String(lot.region.id) : '',
+          cityId: lot.city ? String(lot.city.id) : '',
+          districtId: lot.district ? String(lot.district.id) : '',
           visibilityStatus:
             lot.visibilityStatus === LOT_VISIBILITY_STATUS.ACTIVE,
           archivationDate: lot.archivationDate ?? null,
@@ -392,6 +480,17 @@ export const LotFormPage = () => {
     setNewImages((prev) => [...prev, ...nextImages]);
   };
 
+  const handleRegionChange = (value: string | null) => {
+    setFieldValue('regionId', value || '');
+    setFieldValue('cityId', '');
+    setFieldValue('districtId', '');
+  };
+
+  const handleCityChange = (value: string | null) => {
+    setFieldValue('cityId', value || '');
+    setFieldValue('districtId', '');
+  };
+
   const setExistingImagePrimary = (imageId: string) => {
     setExistingImages((prev) =>
       prev.map((image) => ({ ...image, isPrimary: image.imageId === imageId })),
@@ -449,6 +548,14 @@ export const LotFormPage = () => {
       setFieldError('taxonomyPath', t('lotForm.validation.taxonomyRequired'));
       return;
     }
+    if (!values.regionId) {
+      setFieldError('regionId', t('auth.region'));
+      return;
+    }
+    if (!values.cityId) {
+      setFieldError('cityId', t('auth.city'));
+      return;
+    }
 
     setLoading(true);
     try {
@@ -459,6 +566,9 @@ export const LotFormPage = () => {
         generalDescription: values.generalDescription,
         characteristicsDescription: values.characteristicsDescription,
         quantity: values.quantity,
+        regionId: Number(values.regionId),
+        cityId: Number(values.cityId),
+        districtId: values.districtId ? Number(values.districtId) : null,
         visibilityStatus: values.visibilityStatus
           ? LOT_VISIBILITY_STATUS.ACTIVE
           : LOT_VISIBILITY_STATUS.HIDDEN,
@@ -593,6 +703,17 @@ export const LotFormPage = () => {
   const showDeactivateAction = isEditMode && Boolean(id) && !isArchived;
   const showUnarchiveAction =
     isEditMode && Boolean(id) && isArchived && isAdmin;
+  const selectedRegionName =
+    regionOptions.find((option) => option.value === values.regionId)?.label ??
+    '';
+  const selectedCityName =
+    cityOptions.find((option) => option.value === values.cityId)?.label ?? '';
+  const selectedDistrictName =
+    districtOptions.find((option) => option.value === values.districtId)
+      ?.label ?? '';
+  const locationPath = [selectedRegionName, selectedCityName, selectedDistrictName]
+    .filter(Boolean)
+    .join(' → ');
 
   if (
     taxonomyStatus === 'idle' ||
@@ -638,6 +759,27 @@ export const LotFormPage = () => {
               />
               <Button variant="default" onClick={taxonomyControls.open}>
                 {t('lotForm.taxonomy.selectButton')}
+              </Button>
+            </Stack>
+          </Card>
+
+          <Card withBorder radius="md" p="md">
+            <Stack>
+              <Text fw={700}>{t('lotForm.geo.title')}</Text>
+              <TextInput
+                label={t('lotForm.geo.selected')}
+                placeholder={t('lotForm.geo.placeholder')}
+                readOnly
+                value={locationPath}
+                error={errors.regionId || errors.cityId}
+                styles={{
+                  input: {
+                    fontStyle: 'italic',
+                  },
+                }}
+              />
+              <Button variant="default" onClick={geoControls.open}>
+                {t('lotForm.geo.selectButton')}
               </Button>
             </Stack>
           </Card>
@@ -997,6 +1139,69 @@ export const LotFormPage = () => {
             })}
           </Stack>
         )}
+      </Modal>
+
+      <Modal
+        opened={geoOpened}
+        onClose={geoControls.close}
+        title={t('lotForm.geo.modalTitle')}
+        centered
+      >
+        <Stack gap="sm">
+          <Select
+            label={t('auth.region')}
+            placeholder={t('auth.selectRegion')}
+            data={regionOptions}
+            searchable
+            clearable
+            value={values.regionId}
+            error={errors.regionId}
+            onChange={handleRegionChange}
+          />
+
+          <Select
+            key={`city-${values.regionId || 'empty'}`}
+            label={t('auth.city')}
+            placeholder={t('auth.selectCity')}
+            data={cityOptions}
+            searchable
+            clearable
+            disabled={!values.regionId}
+            value={values.cityId}
+            error={errors.cityId}
+            onChange={handleCityChange}
+          />
+
+          <Select
+            key={`district-${values.cityId || 'empty'}`}
+            label={t('auth.district')}
+            placeholder={
+              !values.cityId
+                ? t('auth.cityNotSelected')
+                : districtOptions.length === 0
+                  ? t('profile.missed')
+                  : t('auth.selectDistrict')
+            }
+            data={districtOptions}
+            searchable
+            clearable
+            disabled={!values.cityId || districtOptions.length === 0}
+            value={values.districtId}
+            onChange={(value) => setFieldValue('districtId', value || '')}
+          />
+
+          <Group justify="flex-end" mt="sm">
+            <Button variant="default" onClick={geoControls.close}>
+              {t('auth.close')}
+            </Button>
+            <Button
+              onClick={geoControls.close}
+              disabled={!values.regionId || !values.cityId}
+            >
+              {t('common.save')}
+            </Button>
+          </Group>
+        </Stack>
       </Modal>
 
       <Modal

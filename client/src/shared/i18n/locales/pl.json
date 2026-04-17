@@ -217,16 +217,24 @@
     "taxonomy": {
       "title": "1. Kategoria",
       "selected": "Wybrana kategoria",
-      "selectButton": "Wybierz kategorię"
+      "selectButton": "Wybierz kategorię",
+      "placeholder": "Kliknij przycisk poniżej, aby wybrać kategorię"
+    },
+    "geo": {
+      "title": "2. Lokalizacja",
+      "selected": "Wybrana lokalizacja",
+      "selectButton": "Wybierz lokalizację",
+      "placeholder": "Kliknij przycisk poniżej, aby wybrać lokalizację",
+      "modalTitle": "Wybierz lokalizację"
     },
     "images": {
-      "title": "2. Obrazy",
+      "title": "3. Obrazy",
       "primary": "Główne",
       "setPrimary": "Ustaw jako główne",
       "add": "Dodaj"
     },
     "fields": {
-      "title": "3. Dane oferty",
+      "title": "4. Dane oferty",
       "generalDescriptionPlaceholder": "Krótki opis",
       "characteristicsPlaceholder": "Szczegółowe cechy",
       "quantityPlaceholder": "Podaj ilość towaru",
@@ -273,6 +281,7 @@
     "description": "Opis",
     "quantity": "Ilość",
     "owner": "Właściciel",
+    "location": "Lokalizacja",
     "edit": "Edytuj",
     "createdAt": "Utworzony",
     "notFound": "Oferta nie znaleziona",

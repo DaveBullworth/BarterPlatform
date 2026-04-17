@@ -218,16 +218,24 @@
     "taxonomy": {
       "title": "1. Taxonomy",
       "selected": "Selected category",
-      "selectButton": "Select taxonomy"
+      "selectButton": "Select taxonomy",
+      "placeholder": "Click the button below to select a taxonomy"
+    },
+    "geo": {
+      "title": "2. Location",
+      "selected": "Selected location",
+      "selectButton": "Select location",
+      "placeholder": "Click the button below to select location",
+      "modalTitle": "Select location"
     },
     "images": {
-      "title": "2. Images",
+      "title": "3. Images",
       "primary": "Primary",
       "setPrimary": "Set as primary",
       "add": "Add"
     },
     "fields": {
-      "title": "3. Lot details",
+      "title": "4. Lot details",
       "generalDescriptionPlaceholder": "Short description",
       "characteristicsPlaceholder": "Detailed characteristics",
       "quantityPlaceholder": "Specify the quantity of the item",
@@ -274,6 +282,7 @@
     "description": "Description",
     "quantity": "Quantity",
     "owner": "Owner",
+    "location": "Location",
     "edit": "Edit",
     "createdAt": "Created At",
     "notFound": "Lot not found",

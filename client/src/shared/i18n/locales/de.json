@@ -216,16 +216,24 @@
     "taxonomy": {
       "title": "1. Kategorie",
       "selected": "Ausgewählte Kategorie",
-      "selectButton": "Kategorie auswählen"
+      "selectButton": "Kategorie auswählen",
+      "placeholder": "Klicken Sie unten, um eine Kategorie auszuwählen"
+    },
+    "geo": {
+      "title": "2. Standort",
+      "selected": "Ausgewählter Standort",
+      "selectButton": "Standort auswählen",
+      "placeholder": "Klicken Sie unten, um den Standort auszuwählen",
+      "modalTitle": "Standort auswählen"
     },
     "images": {
-      "title": "2. Bilder",
+      "title": "3. Bilder",
       "primary": "Hauptbild",
       "setPrimary": "Als Hauptbild setzen",
       "add": "Hinzufügen"
     },
     "fields": {
-      "title": "3. Anzeigendaten",
+      "title": "4. Anzeigendaten",
       "generalDescriptionPlaceholder": "Kurze Beschreibung",
       "characteristicsPlaceholder": "Detaillierte Eigenschaften",
       "quantityPlaceholder": "Menge angeben",
@@ -272,6 +280,7 @@
     "description": "Beschreibung",
     "quantity": "Menge",
     "owner": "Besitzer",
+    "location": "Standort",
     "edit": "Bearbeiten",
     "createdAt": "Erstellt am",
     "notFound": "Anzeige nicht gefunden",
