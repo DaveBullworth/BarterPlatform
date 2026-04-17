@@ -1,15 +1,6 @@
-﻿import {
-  Button,
-  Checkbox,
-  Collapse,
-  Drawer,
-  Group,
-  Stack,
-  Text,
-} from '@mantine/core';
+﻿import { Button, Checkbox, Drawer, Group, Text } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Building2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -22,15 +13,13 @@ import {
   selectTaxonomy,
   selectTaxonomyStatus,
 } from '@/store/taxonomySlice';
-import { ChapterItem } from './ChapterItem';
-import { CategoryItem } from './CategoryItem';
 import { SubcategoryItem } from './SubcategoryItem';
-import { chapterIcons } from '@/shared/utils/chapterIcons';
 import type { AppDispatch } from '@/store';
 import type { CategorySelection } from '@/types/taxonomy';
 
-import styles from '../MainLayout.module.scss';
 import { SkeletonList } from './ChapterItemSkeleton';
+import { TaxonomyTree } from '@/shared/ui/TaxonomyTree';
+import styles from '../MainLayout.module.scss';
 
 type Props = {
   opened: boolean;
@@ -79,6 +68,31 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
   );
   const [showContent, setShowContent] = useState(false);
 
+  const isChapterSelected = (chapterId: number) => {
+    return selected?.level === 'chapter' && selected.chapterId === chapterId;
+  };
+
+  const isCategorySelected = (chapterId: number, categoryId: number) => {
+    return (
+      selected?.level === 'category' &&
+      selected.chapterId === chapterId &&
+      selected.categoryId === categoryId
+    );
+  };
+
+  const isSubcategorySelected = (
+    chapterId: number,
+    categoryId: number,
+    subcategoryId: number,
+  ) => {
+    return (
+      selected?.level === 'subcategory' &&
+      selected.chapterId === chapterId &&
+      selected.categoryId === categoryId &&
+      selected.subcategoryId === subcategoryId
+    );
+  };
+
   const initExpandedFromSelection = useCallback(() => {
     if (!selected) {
       setExpandedChapters(new Set());
@@ -89,18 +103,19 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
     const chapters = new Set<number>();
     const categories = new Set<string>();
 
-    if (selected.level === 'chapter') {
-      chapters.add(selected.chapterId);
-    }
+    switch (selected.level) {
+      case 'chapter':
+        // ничего не раскрываем
+        break;
 
-    if (selected.level === 'category') {
-      chapters.add(selected.chapterId);
-      categories.add(getCategoryKey(selected.chapterId, selected.categoryId));
-    }
+      case 'category':
+        chapters.add(selected.chapterId);
+        break;
 
-    if (selected.level === 'subcategory') {
-      chapters.add(selected.chapterId);
-      categories.add(getCategoryKey(selected.chapterId, selected.categoryId));
+      case 'subcategory':
+        chapters.add(selected.chapterId);
+        categories.add(getCategoryKey(selected.chapterId, selected.categoryId));
+        break;
     }
 
     setExpandedChapters(chapters);
@@ -185,112 +200,56 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
       {!showContent || taxonomyStatus === 'loading' ? (
         <SkeletonList />
       ) : (
-        <Stack gap="sm">
-          {data.map((chapter) => {
-            const ChapterIcon = chapterIcons[chapter.slug] ?? Building2;
-            const chapterExpanded = expandedChapters.has(chapter.id);
-            const chapterSelected =
-              selected?.level === 'chapter' &&
-              selected.chapterId === chapter.id;
-
-            return (
-              <ChapterItem
-                key={chapter.id}
-                chapter={chapter}
-                ChapterIcon={ChapterIcon}
-                expanded={chapterExpanded}
-                selected={chapterSelected}
-                onToggle={toggleChapter}
-                rightSection={
-                  <Checkbox
-                    checked={chapterSelected}
-                    onChange={() =>
-                      toggleSelection({
-                        level: 'chapter',
-                        chapterId: chapter.id,
-                      })
-                    }
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                }
-              >
-                <Collapse in={chapterExpanded}>
-                  {chapterExpanded && (
-                    <Stack pl="md" gap={4}>
-                      {chapter.categories.map((category) => {
-                        const hasSubcategories =
-                          category.subcategories.length > 0;
-                        const categoryExpanded = expandedCategories.has(
-                          getCategoryKey(chapter.id, category.id),
-                        );
-                        const categorySelected =
-                          selected?.level === 'category' &&
-                          selected.chapterId === chapter.id &&
-                          selected.categoryId === category.id;
-
-                        return (
-                          <CategoryItem
-                            key={category.id}
-                            category={category}
-                            expanded={categoryExpanded}
-                            selected={categorySelected}
-                            hasSubcategories={hasSubcategories}
-                            onToggle={() =>
-                              toggleCategory(chapter.id, category.id)
-                            }
-                            rightSection={
-                              <Checkbox
-                                checked={categorySelected}
-                                onChange={() =>
-                                  toggleSelection({
-                                    level: 'category',
-                                    chapterId: chapter.id,
-                                    categoryId: category.id,
-                                  })
-                                }
-                                onClick={(e) => e.stopPropagation()}
-                              />
-                            }
-                          >
-                            {hasSubcategories && categoryExpanded && (
-                              <Collapse in={categoryExpanded}>
-                                <Stack pl="md" gap={4}>
-                                  {category.subcategories.map((subcategory) => {
-                                    const subcategorySelected =
-                                      selected?.level === 'subcategory' &&
-                                      selected.chapterId === chapter.id &&
-                                      selected.categoryId === category.id &&
-                                      selected.subcategoryId === subcategory.id;
-
-                                    return (
-                                      <SubcategoryItem
-                                        key={subcategory.id}
-                                        subcategory={subcategory}
-                                        selected={subcategorySelected}
-                                        onSelect={() =>
-                                          toggleSelection({
-                                            level: 'subcategory',
-                                            chapterId: chapter.id,
-                                            categoryId: category.id,
-                                            subcategoryId: subcategory.id,
-                                          })
-                                        }
-                                      />
-                                    );
-                                  })}
-                                </Stack>
-                              </Collapse>
-                            )}
-                          </CategoryItem>
-                        );
-                      })}
-                    </Stack>
-                  )}
-                </Collapse>
-              </ChapterItem>
-            );
-          })}
-        </Stack>
+        <TaxonomyTree
+          taxonomy={data}
+          expandedChapters={expandedChapters}
+          expandedCategories={expandedCategories}
+          onToggleChapter={toggleChapter}
+          onToggleCategory={toggleCategory}
+          renderChapterRight={(chapterId) => (
+            <Checkbox
+              checked={isChapterSelected(chapterId)}
+              onChange={() =>
+                toggleSelection({
+                  level: 'chapter',
+                  chapterId,
+                })
+              }
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+          renderCategoryRight={({ chapterId, category }) => (
+            <Checkbox
+              checked={isCategorySelected(chapterId, category.id)}
+              onChange={() =>
+                toggleSelection({
+                  level: 'category',
+                  chapterId,
+                  categoryId: category.id,
+                })
+              }
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+          renderSubcategory={({ chapterId, category, subcategory }) => (
+            <SubcategoryItem
+              subcategory={subcategory}
+              selected={isSubcategorySelected(
+                chapterId,
+                category.id,
+                subcategory.id,
+              )}
+              onSelect={() =>
+                toggleSelection({
+                  level: 'subcategory',
+                  chapterId,
+                  categoryId: category.id,
+                  subcategoryId: subcategory.id,
+                })
+              }
+            />
+          )}
+        />
       )}
     </Drawer>
   );

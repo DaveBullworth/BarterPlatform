@@ -169,6 +169,67 @@ export const handleApiError = (
           icon = React.createElement(Crown, { size: 18 });
           break;
 
+        /** GEO */
+        case ERROR_TYPES.REGION_NOT_FOUND:
+          message = t('auth.regionNotFound');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.CITY_NOT_FOUND:
+          message = t('auth.cityNotFound');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.DISTRICT_NOT_FOUND:
+          message = t('auth.districtNotFound');
+          color = 'yellow';
+          break;
+
+        /** TAXONOMY */
+        case ERROR_TYPES.CHAPTER_NOT_FOUND:
+          message = t('auth.chapterNotFound');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.CATEGORY_NOT_FOUND:
+          message = t('auth.categoryNotFound');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.SUBCATEGORY_REQUIRED:
+          message = t('auth.subcategoryRequired');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.SUBCATEGORY_NOT_FOUND:
+          message = t('auth.subcategoryNotFound');
+          color = 'yellow';
+          break;
+
+        /** LOT */
+        case ERROR_TYPES.LOT_NOT_FOND:
+          message = t('lot.notFound');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.NO_ACCESS:
+          message = t('common.noAccess');
+          color = 'red';
+          icon = React.createElement(DoorClosedLocked, { size: 18 });
+          break;
+
+        case ERROR_TYPES.NOT_OWNER:
+          message = t('lot.notOwner');
+          color = 'red';
+          icon = React.createElement(DoorClosedLocked, { size: 18 });
+          break;
+
+        case ERROR_TYPES.USER_ARCHIVED:
+          message = t('lot.userArchived');
+          color = 'red';
+          icon = React.createElement(UserRoundX, { size: 18 });
+          break;
+
         default:
           message = data.message || message;
           color = 'red';

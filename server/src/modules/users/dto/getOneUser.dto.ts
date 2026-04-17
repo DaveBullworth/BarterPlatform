@@ -5,7 +5,7 @@ import {
   UserLanguage,
   UserThemes,
 } from '@/database/entities/user.entity';
-import { GeographyNodeDto } from './getAllUsers.dto';
+import { GeographyNodeDto } from '@/common/dtos/geo-node.dto';
 
 type UserGeo = {
   region: GeographyNodeDto | null;

@@ -19,9 +19,9 @@ export type CreateLotDto = {
   visibilityStatus:
     | typeof LOT_VISIBILITY_STATUS.HIDDEN
     | typeof LOT_VISIBILITY_STATUS.ACTIVE;
-  region: GeographyNode;
-  city: GeographyNode;
-  district: GeographyNode;
+  regionId: number;
+  cityId: number;
+  districtId?: number | null;
 };
 
 export type UpdateLotDto = Partial<Omit<CreateLotDto, 'visibilityStatus'>> & {
@@ -40,9 +40,17 @@ export type LotDto = {
   visibilityStatus: LotVisibilityStatus;
   region: GeographyNode;
   city: GeographyNode;
-  district: GeographyNode;
+  district: GeographyNode | null;
   archivationDate?: string | null;
   createdAt: string;
   updatedAt: string;
   imageLinks: string[];
 };
+
+export interface GetLotsParams {
+  page?: number;
+  limit?: number;
+  filters?: string;
+}
+
+export type LotResponseDto = Omit<LotDto, 'userId'>;

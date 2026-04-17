@@ -6,19 +6,23 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiConflictResponse,
+  ApiExtraModels,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiResponse,
   ApiTags,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { Authenticated } from '../auth/auth.decorator';
 import { CurrentUser } from '../auth/user.decorator';
@@ -29,6 +33,8 @@ import { UpdateLotDto } from './dto/update-lot.dto';
 import { LotEntity } from '@/database/entities/lot.entity';
 import { LotErrorCode } from './errors/lots-error-codes';
 import { UserErrorCode } from '../users/errors/users-error-codes';
+import { GetLotsQueryDto, LotResponseDto } from './dto/getAllLots.dto';
+import { LotFiltersDto } from './dto/lotFilters.dto';
 
 @Controller('lot')
 @ApiTags('Lot')
@@ -131,12 +137,52 @@ export class LotsController {
   @Authenticated()
   @Get()
   @ApiOperation({
-    summary: 'Получить список лотов',
-    description: 'Возвращает список лотов с учётом прав доступа и видимости',
+    summary: 'Получение списка лотов',
+    description: `
+    Возвращает список лотов с учётом прав доступа, пагинации и фильтрации.
+
+    Правила доступа:
+    - ADMIN — видит все лоты
+    - USER — видит только:
+      - активные лоты
+      - свои лоты (включая скрытые)
+
+    Параметры:
+    - page — номер страницы (по умолчанию 1)
+    - limit — количество записей (по умолчанию 20)
+    - filters — JSON-фильтры
+
+    Поддерживаемые фильтры:
+
+    ID поля (chapterId, categoryId, subcategoryId, regionId, cityId, districtId):
+      - equals — точное совпадение
+      - value — строка с id
+
+    query:
+      - поиск по generalDescription и characteristicsDescription
+      - оператор: contains
+  `,
   })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+  @ApiQuery({
+    name: 'filters',
+    required: false,
+    description: 'JSON-объект фильтров лотов',
+  })
+  @ApiExtraModels(LotResponseDto, LotFiltersDto)
   @ApiOkResponse({
-    description: 'Список лотов',
-    type: [LotEntity],
+    description: 'Список лотов с пагинацией',
+    schema: {
+      type: 'object',
+      properties: {
+        total: { type: 'number', example: 100 },
+        data: {
+          type: 'array',
+          items: { $ref: getSchemaPath(LotResponseDto) },
+        },
+      },
+    },
   })
   @ApiForbiddenResponse({
     description: 'Пользователь не авторизован',
@@ -144,8 +190,13 @@ export class LotsController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
-  getAll(@CurrentUser() user: JwtPayload) {
-    return this.lotsService.getAll(user);
+  getAll(@Query() query: GetLotsQueryDto, @CurrentUser() user: JwtPayload) {
+    return this.lotsService.getAll({
+      page: query.page ?? 1,
+      limit: query.limit ?? 20,
+      filters: query.filters,
+      user,
+    });
   }
 
   @ApiBearerAuth()

@@ -1,5 +1,12 @@
+import type { PaginatedResponse } from '@/types/user';
 import { $authHost, $host } from './index';
-import type { CreateLotDto, LotDto, UpdateLotDto } from '@/types/lot';
+import type {
+  CreateLotDto,
+  GetLotsParams,
+  LotDto,
+  LotResponseDto,
+  UpdateLotDto,
+} from '@/types/lot';
 
 export const getLotsTaxonomy = async () => {
   const { data } = await $host.get('/lot/taxonomy');
@@ -11,8 +18,18 @@ export const createLot = async (dto: CreateLotDto): Promise<LotDto> => {
   return data;
 };
 
-export const getLots = async (): Promise<LotDto[]> => {
-  const { data } = await $authHost.get<LotDto[]>('/lot');
+export const getLots = async (
+  params: GetLotsParams,
+  signal?: AbortSignal,
+): Promise<PaginatedResponse<LotResponseDto>> => {
+  const { data } = await $authHost.get<PaginatedResponse<LotResponseDto>>(
+    '/user',
+    {
+      params,
+      signal,
+    },
+  );
+
   return data;
 };
 
@@ -21,7 +38,10 @@ export const getLotById = async (id: string): Promise<LotDto> => {
   return data;
 };
 
-export const updateLot = async (id: string, dto: UpdateLotDto): Promise<LotDto> => {
+export const updateLot = async (
+  id: string,
+  dto: UpdateLotDto,
+): Promise<LotDto> => {
   const { data } = await $authHost.patch<LotDto>(`/lot/${id}`, dto);
   return data;
 };

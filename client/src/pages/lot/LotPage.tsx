@@ -16,14 +16,17 @@ import {
 } from '@mantine/core';
 import {
   AlertCircle,
+  Building2,
   CameraOff,
   CheckCircle2,
   CircleDashed,
+  Home,
+  MapPin,
   Pencil,
   UserRound,
   X,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -45,8 +48,13 @@ import { LOT_VISIBILITY_STATUS, type LotDto } from '@/types/lot';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { goToUser, gotToLotEdit } from '@/shared/utils/navigation';
-
+import { getApiErrorStatusCode } from '@/shared/utils/getApiErrorStatusCode';
+import { ErrorStub } from '@/shared/ui/ErrorStub';
+import StatusActionModal, {
+  type LotStatusAction,
+} from '@/shared/ui/StatusActionModal';
 import styles from './LotPage.module.scss';
+import { useLotStatus } from '../lot-form/hooks/useLotStatus';
 
 export const LotPage = () => {
   const { t } = useTranslation();
@@ -62,15 +70,18 @@ export const LotPage = () => {
   const [lot, setLot] = useState<LotDto | null>(null);
   const [images, setImages] = useState<LotImageDto[]>([]);
   const [openedImageId, setOpenedImageId] = useState<string | null>(null);
+  const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const [isError, setIsError] = useState(false);
+  const [statusActionModal, setStatusActionModal] =
+    useState<LotStatusAction | null>(null);
 
-  useEffect(() => {
-    dispatch(fetchTaxonomyIfNeeded());
-  }, [dispatch]);
+  const { changeLotStatus } = useLotStatus({
+    t,
+    setLoading,
+  });
 
-  useEffect(() => {
-    const load = async () => {
-      if (!id) return;
-
+  const load = useCallback(
+    async (id: string) => {
       setLoading(true);
       try {
         const [lotData, lotImages] = await Promise.all([
@@ -80,14 +91,26 @@ export const LotPage = () => {
         setLot(lotData);
         setImages(lotImages.images);
       } catch (error) {
+        const status = getApiErrorStatusCode(error);
+
+        setErrorStatus(status);
+        setIsError(true);
         handleApiError(error, t);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [t],
+  );
 
-    load();
-  }, [t, id]);
+  useEffect(() => {
+    dispatch(fetchTaxonomyIfNeeded());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!id) return;
+    load(id);
+  }, [t, id, load]);
 
   const taxonomyPath = useMemo(() => {
     if (!lot) return [];
@@ -107,6 +130,16 @@ export const LotPage = () => {
 
   const isAdmin = currentUser?.role === USER_ROLES.ADMIN;
   const canEdit = Boolean(isAdmin || (lot && lot.userId === currentUser?.id));
+
+  const showDeactivateAction =
+    Boolean(id) &&
+    canEdit &&
+    lot?.visibilityStatus !== LOT_VISIBILITY_STATUS.ARCHIVED;
+  const showUnarchiveAction =
+    Boolean(id) &&
+    canEdit &&
+    lot?.visibilityStatus === LOT_VISIBILITY_STATUS.ARCHIVED &&
+    isAdmin;
 
   const visibilityMeta = useMemo(() => {
     if (!lot) return null;
@@ -133,6 +166,21 @@ export const LotPage = () => {
     }
   }, [t, lot]);
 
+  const handleConfirmStatusAction = async () => {
+    if (!id || !statusActionModal) return;
+
+    const updatedLot = await changeLotStatus({
+      lotId: id,
+      action: statusActionModal,
+    });
+
+    if (updatedLot) {
+      setLot(updatedLot);
+    } else return;
+
+    setStatusActionModal(null);
+  };
+
   if (loading || taxonomyStatus === 'loading') {
     return (
       <Group justify="center" style={{ width: '100%' }}>
@@ -141,8 +189,19 @@ export const LotPage = () => {
     );
   }
 
-  if (!lot) {
-    return <Text>{t('lot.notFound')}</Text>;
+  if (isError || !lot) {
+    return (
+      <ErrorStub
+        status={errorStatus ?? undefined}
+        t={t}
+        onRetry={() => {
+          setIsError(false);
+          setErrorStatus(null);
+          if (id) load(id);
+        }}
+        onBack={() => navigate(-1)}
+      />
+    );
   }
 
   return (
@@ -222,8 +281,48 @@ export const LotPage = () => {
       </Card>
 
       <Card withBorder>
-        <Text fw={700}>{t('lot.description')}:</Text>
+        <Badge mb={8} variant="light" color="orange">
+          {t('lot.description')}
+        </Badge>
         <Text>{lot.characteristicsDescription}</Text>
+      </Card>
+
+      <Card withBorder radius="md" p="md">
+        <Badge mb={8} variant="light" color="blue">
+          {t('lot.location')}
+        </Badge>
+
+        <Stack gap={10}>
+          <Group gap={10}>
+            <MapPin size={16} />
+            <Text size="sm" display={'flex'}>
+              <Box component="span" w="4rem" fw={700}>
+                {t('lot.region')}:
+              </Box>{' '}
+              {lot.region?.name ?? '—'}
+            </Text>
+          </Group>
+
+          <Group gap={10}>
+            <Building2 size={16} />
+            <Text size="sm" display={'flex'}>
+              <Box component="span" w="4rem" fw={700}>
+                {t('lot.city')}:{' '}
+              </Box>{' '}
+              {lot.city?.name ?? '—'}
+            </Text>
+          </Group>
+
+          <Group gap={10}>
+            <Home size={16} />
+            <Text size="sm" display={'flex'}>
+              <Box component="span" w="4rem" fw={700}>
+                {t('lot.district')}:
+              </Box>{' '}
+              {lot.district?.name ?? '—'}
+            </Text>
+          </Group>
+        </Stack>
       </Card>
 
       {lot.quantity !== 1 && (
@@ -250,6 +349,26 @@ export const LotPage = () => {
             onClick={() => gotToLotEdit(navigate, lot.id)}
           >
             {t('lot.edit')}
+          </Button>
+        )}
+
+        {showDeactivateAction && (
+          <Button
+            color="red"
+            variant="light"
+            loading={loading}
+            onClick={() => setStatusActionModal('deactivate')}
+          >
+            {t('lotForm.actions.deactivate')}
+          </Button>
+        )}
+
+        {showUnarchiveAction && (
+          <Button
+            loading={loading}
+            onClick={() => setStatusActionModal('unarchive')}
+          >
+            {t('lotForm.actions.unarchive')}
           </Button>
         )}
       </Group>
@@ -293,6 +412,14 @@ export const LotPage = () => {
           />
         )}
       </Modal>
+
+      <StatusActionModal
+        action={statusActionModal}
+        loading={loading}
+        onConfirm={handleConfirmStatusAction}
+        onClose={() => setStatusActionModal(null)}
+        t={t}
+      />
     </Stack>
   );
 };

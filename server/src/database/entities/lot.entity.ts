@@ -87,13 +87,13 @@ export class LotEntity {
   })
   visibilityStatus!: LotVisibilityStatus;
 
-  @ApiProperty({ example: 5, nullable: true })
-  @Column({ type: 'int', nullable: true })
-  regionId!: number | null;
+  @ApiProperty({ example: 5 })
+  @Column({ type: 'int' })
+  regionId!: number;
 
-  @ApiProperty({ example: 5003, nullable: true })
-  @Column({ type: 'int', nullable: true })
-  cityId!: number | null;
+  @ApiProperty({ example: 5003 })
+  @Column({ type: 'int' })
+  cityId!: number;
 
   @ApiProperty({ example: 7002, nullable: true })
   @Column({ type: 'int', nullable: true })

@@ -285,6 +285,23 @@
     "edit": "Edytuj",
     "createdAt": "Utworzony",
     "notFound": "Oferta nie znaleziona",
-    "noImages": "Brak obrazów"
+    "noImages": "Brak obrazów",
+    "region": "Region",
+    "city": "Miasto",
+    "district": "Dzielnica"
+  },
+  "error": {
+    "notFound": {
+      "title": "Nie znaleziono",
+      "description": "Żądana strona lub zasób nie istnieje albo został usunięty."
+    },
+    "forbidden": {
+      "title": "Brak dostępu",
+      "description": "Nie masz uprawnień do wyświetlenia lub edycji tego zasobu."
+    },
+    "tooManyRequests": {
+      "title": "Zbyt wiele żądań",
+      "description": "Wysyłasz zbyt wiele żądań w krótkim czasie. Poczekaj chwilę i spróbuj ponownie."
+    }
   }
 }

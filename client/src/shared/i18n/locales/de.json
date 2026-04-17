@@ -284,6 +284,23 @@
     "edit": "Bearbeiten",
     "createdAt": "Erstellt am",
     "notFound": "Anzeige nicht gefunden",
-    "noImages": "Keine Bilder vorhanden"
+    "noImages": "Keine Bilder vorhanden",
+    "region": "Region",
+    "city": "Stadt",
+    "district": "Bezirk"
+  },
+  "error": {
+    "notFound": {
+      "title": "Nicht gefunden",
+      "description": "Die angeforderte Seite oder Ressource existiert nicht oder wurde entfernt."
+    },
+    "forbidden": {
+      "title": "Kein Zugriff",
+      "description": "Sie haben keine Berechtigung, diese Ressource anzuzeigen oder zu bearbeiten."
+    },
+    "tooManyRequests": {
+      "title": "Zu viele Anfragen",
+      "description": "Sie senden zu viele Anfragen in kurzer Zeit. Bitte warten Sie einen Moment und versuchen Sie es erneut."
+    }
   }
 }

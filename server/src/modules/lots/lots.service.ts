@@ -7,9 +7,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { LotEntity, LotVisibilityStatus } from '@/database/entities/lot.entity';
 import { UserRole } from '@/database/entities/user.entity';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
@@ -22,12 +20,14 @@ import type {
 } from './types/taxonomy.types';
 import { LotErrorCode } from './errors/lots-error-codes';
 import { RedisService } from '@/common/services/redis/redis.service';
-import type { Region, City, District } from '@/common/types/geo.type';
 import { UserErrorCode } from '../users/errors/users-error-codes';
-
-function loadSeed<T>(filename: string): T[] {
-  return JSON.parse(readFileSync(join(process.cwd(), filename), 'utf8')) as T[];
-}
+import { LotFiltersDto } from './dto/lotFilters.dto';
+import { LotResponseDto } from './dto/getAllLots.dto';
+import { loadSeed } from '@/common/utils/load-seed.util';
+import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query-filters.util';
+import { GeographyNodeDto } from '@/common/dtos/geo-node.dto';
+import { LotOneResponseDto } from './dto/getOneLot.dto';
+import type { Region, City, District } from '@/common/types/geo.type';
 
 const chapters = loadSeed<ChapterSeed>('src/database/seeds/chapter.json');
 const categories = loadSeed<CategorySeed>('src/database/seeds/category.json');
@@ -40,10 +40,6 @@ const cities = loadSeed<City>('src/database/seeds/geography_city.json');
 const districts = loadSeed<District>(
   'src/database/seeds/geography_district.json',
 );
-
-export type LotWithArchivationDate = LotEntity & {
-  archivationDate?: string | null;
-};
 
 @Injectable()
 export class LotsService implements OnModuleInit, OnModuleDestroy {
@@ -69,6 +65,46 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       clearInterval(this.cleanupTimer);
       this.cleanupTimer = null;
     }
+  }
+
+  private applyLotIdFilter(
+    qb: SelectQueryBuilder<LotEntity>,
+    field:
+      | 'chapterId'
+      | 'categoryId'
+      | 'subcategoryId'
+      | 'regionId'
+      | 'cityId'
+      | 'districtId',
+    value: string,
+  ) {
+    const id = Number(value);
+    if (!Number.isFinite(id)) return;
+
+    qb.andWhere(`lot.${field} = :${field}`, {
+      [field]: id,
+    });
+  }
+
+  private applyTextFilter = applyTextFilterImported<LotEntity>;
+
+  private buildGeography(lot: LotEntity) {
+    const region = regions.find((r) => r.externalId === lot.regionId);
+    const city = cities.find((c) => c.externalId === lot.cityId);
+    const district = districts.find((d) => d.externalId === lot.districtId);
+
+    const asNode = <T extends { externalId: number; name: string }>(
+      item?: T,
+    ): GeographyNodeDto | null => {
+      if (!item) return null;
+      return { id: item.externalId, name: item.name };
+    };
+
+    return {
+      region: asNode(region),
+      city: asNode(city),
+      district: asNode(district),
+    };
   }
 
   private validateGeography(
@@ -241,22 +277,93 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     return createdLot;
   }
 
-  async getAll(user: JwtPayload) {
-    if (user.role === UserRole.ADMIN) {
-      return this.lotsRepo.find({ order: { createdAt: 'DESC' } });
+  async getAll(params: {
+    page: number;
+    limit: number;
+    filters?: LotFiltersDto;
+    user: JwtPayload;
+  }): Promise<{ data: LotResponseDto[]; total: number }> {
+    const { page, limit, filters, user } = params;
+
+    const qb = this.lotsRepo.createQueryBuilder('lot');
+
+    // БАЗОВАЯ ЛОГИКА ДОСТУПА
+    if (user.role !== UserRole.ADMIN) {
+      qb.andWhere('(lot.visibilityStatus = :active OR lot.userId = :userId)', {
+        active: LotVisibilityStatus.ACTIVE,
+        userId: user.sub,
+      });
     }
 
-    return this.lotsRepo
-      .createQueryBuilder('lot')
-      .where('lot.visibilityStatus = :active', {
-        active: LotVisibilityStatus.ACTIVE,
-      })
-      .orWhere('lot.userId = :userId', { userId: user.sub })
-      .orderBy('lot.createdAt', 'DESC')
-      .getMany();
+    // ID ФИЛЬТРЫ (строго equals)
+    const idFiltersMap = [
+      'chapterId',
+      'categoryId',
+      'subcategoryId',
+      'regionId',
+      'cityId',
+      'districtId',
+    ] as const;
+
+    for (const field of idFiltersMap) {
+      const filter = filters?.[field];
+      if (filter) {
+        this.applyLotIdFilter(qb, field, filter.value);
+      }
+    }
+
+    // TEXT FILTER
+    if (filters?.query) {
+      this.applyTextFilter(
+        qb,
+        'lot.generalDescription',
+        filters.query,
+        'query',
+      );
+
+      // если хочешь искать и в характеристиках — лучше сразу так:
+      qb.orWhere('lot.characteristicsDescription ILIKE :query', {
+        query: `%${filters.query.value}%`,
+      });
+    }
+
+    // СОРТИРОВКА (всегда одна)
+    qb.orderBy('lot.createdAt', 'DESC');
+
+    // ПАГИНАЦИЯ
+    qb.skip((page - 1) * limit).take(limit);
+
+    const [lots, total] = await qb.getManyAndCount();
+
+    return {
+      total,
+      data: lots.map((lot) => this.toResponseDto(lot)),
+    };
   }
 
-  async getOne(id: string, user: JwtPayload): Promise<LotWithArchivationDate> {
+  private toResponseDto(lot: LotEntity): LotResponseDto {
+    const geo = this.buildGeography(lot);
+
+    return {
+      id: lot.id,
+      chapterId: lot.chapterId,
+      categoryId: lot.categoryId,
+      subcategoryId: lot.subcategoryId ?? undefined,
+      generalDescription: lot.generalDescription,
+      characteristicsDescription: lot.characteristicsDescription,
+      quantity: lot.quantity,
+      visibilityStatus: lot.visibilityStatus,
+      region: geo.region,
+      city: geo.city,
+      district: geo.district,
+      archivationDate: lot.archivationDate,
+      createdAt: lot.createdAt,
+      updatedAt: lot.updatedAt,
+      imageLinks: lot.imageLinks ?? [],
+    };
+  }
+
+  async getOne(id: string, user: JwtPayload): Promise<LotOneResponseDto> {
     const lot = await this.lotsRepo.findOne({ where: { id } });
     if (!lot)
       throw new NotFoundException({
@@ -275,18 +382,17 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       });
     }
 
-    if (lot.visibilityStatus === LotVisibilityStatus.ARCHIVED) {
-      const archivationDate = await this.redisService.getLotArchivationDate(
-        lot.id,
-      );
+    let archivationDate: Date | null = null;
 
-      return {
-        ...lot,
-        archivationDate: archivationDate ? archivationDate.toISOString() : null,
-      };
+    if (lot.visibilityStatus === LotVisibilityStatus.ARCHIVED) {
+      archivationDate = await this.redisService.getLotArchivationDate(lot.id);
     }
 
-    return lot;
+    return {
+      ...this.toResponseDto(lot),
+      userId: lot.userId,
+      archivationDate: archivationDate ? archivationDate.toISOString() : null,
+    };
   }
 
   async update(id: string, dto: UpdateLotDto, user: JwtPayload) {
@@ -360,8 +466,13 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       );
     }
 
+    const geo = this.buildGeography(lot);
+
     return {
       ...savedLot,
+      region: geo.region,
+      city: geo.city,
+      district: geo.district,
       archivationDate: archivationDate ? archivationDate.toISOString() : null,
     };
   }

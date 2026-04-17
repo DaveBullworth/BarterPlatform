@@ -286,6 +286,23 @@
     "edit": "Edit",
     "createdAt": "Created At",
     "notFound": "Lot not found",
-    "noImages": "No images available"
+    "noImages": "No images available",
+    "region": "Region",
+    "city": "City",
+    "district": "District"
+  },
+  "error": {
+    "notFound": {
+      "title": "Not found",
+      "description": "The requested page or resource does not exist or has been removed."
+    },
+    "forbidden": {
+      "title": "Access denied",
+      "description": "You don’t have permission to view or modify this resource."
+    },
+    "tooManyRequests": {
+      "title": "Too many requests",
+      "description": "You are sending requests too frequently. Please wait a moment and try again."
+    }
   }
 }

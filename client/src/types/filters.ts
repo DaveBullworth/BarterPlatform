@@ -26,6 +26,11 @@ export type DateRangeFilter = {
   values: [Date | null, Date | null];
 };
 
+export type IDFilter = {
+  type: 'id';
+  value: string;
+};
+
 export type UserFilters = {
   login?: TextFilter;
   name?: TextFilter;
@@ -37,4 +42,14 @@ export type UserFilters = {
   city?: MultiTextFilter;
   district?: MultiTextFilter;
   createdAt?: DateRangeFilter;
+};
+
+export type LotFilters = {
+  regionId?: IDFilter;
+  cityId?: IDFilter;
+  districtId?: IDFilter;
+  chapterId?: IDFilter;
+  categoryId?: IDFilter;
+  subcategoryId?: IDFilter;
+  query?: TextFilter;
 };

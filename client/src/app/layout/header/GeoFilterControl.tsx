@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActionIcon, Button, Group, Modal, Select, Stack } from '@mantine/core';
+import { ActionIcon, Button, Group, Modal, Stack } from '@mantine/core';
 import { MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getCities, getDistricts, getRegions } from '@/http/geography';
 import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
+import { GeoSelector } from '@/shared/ui/GeoSelector';
 
 const GEO_FILTER_STORAGE_KEY = 'geo-filter';
 
@@ -186,46 +187,14 @@ export const GeoFilterControl = () => {
         centered
       >
         <Stack gap="sm">
-          <Select
-            label={t('auth.region')}
-            placeholder={t('auth.selectRegion')}
-            data={regionOptions}
-            searchable
-            clearable
-            value={draftFilter.regionId}
-            onChange={handleRegionChange}
-          />
-
-          <Select
-            key={`city-${draftFilter.regionId || 'empty'}`}
-            label={t('auth.city')}
-            placeholder={t('auth.selectCity')}
-            data={cityOptions}
-            searchable
-            clearable
-            disabled={!draftFilter.regionId}
-            value={draftFilter.cityId}
-            onChange={handleCityChange}
-          />
-
-          <Select
-            key={`district-${draftFilter.cityId || 'empty'}`}
-            label={t('auth.district')}
-            placeholder={
-              !draftFilter.cityId
-                ? t('auth.cityNotSelected')
-                : districtOptions.length === 0
-                  ? t('profile.missed')
-                  : t('auth.selectDistrict')
-            }
-            data={districtOptions}
-            searchable
-            clearable
-            disabled={!draftFilter.cityId || districtOptions.length === 0}
-            value={draftFilter.districtId}
-            onChange={(value) =>
-              setDraftFilter((prev) => ({ ...prev, districtId: value || '' }))
-            }
+          <GeoSelector
+            value={draftFilter}
+            onChange={setDraftFilter}
+            regionOptions={regionOptions}
+            cityOptions={cityOptions}
+            districtOptions={districtOptions}
+            onRegionChange={handleRegionChange}
+            onCityChange={handleCityChange}
           />
 
           <Group justify="flex-end" mt="sm">

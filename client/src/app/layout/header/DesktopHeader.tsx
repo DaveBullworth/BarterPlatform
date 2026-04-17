@@ -10,7 +10,7 @@ import { Search, Plus, ChartColumnStacked } from 'lucide-react';
 
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { UserMenu } from './UserMenu';
 import { goToRoot, gotToLotCreate } from '@/shared/utils/navigation';
@@ -18,6 +18,8 @@ import { selectCategorySelection } from '@/store/categoryFilterSlice';
 import { GeoFilterControl } from './GeoFilterControl';
 import { selectIsAuthenticated } from '@/store/userSlice';
 import { openAuthRequiredModal } from '@/shared/ui/AuthRequiredModal';
+import { selectSearchQuery, setSearchQuery } from '@/store/searchFilterSlice';
+import { useState } from 'react';
 
 type DesktopHeaderProps = {
   desktopOpened: boolean;
@@ -32,8 +34,18 @@ export const DesktopHeader = ({
 }: DesktopHeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const searchFromStore = useSelector(selectSearchQuery);
   const selectedCategory = useSelector(selectCategorySelection);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+
+  const [value, setValue] = useState(searchFromStore);
+
+  const handleSearch = () => {
+    if (value !== searchFromStore) {
+      dispatch(setSearchQuery(value));
+    }
+  };
 
   return (
     <Group h="100%" px="md" justify="space-between" visibleFrom="sm">
@@ -70,7 +82,20 @@ export const DesktopHeader = ({
         <Group gap="xs" wrap="nowrap">
           <TextInput
             placeholder={t('header.lotSearch')}
-            rightSection={<Search size={16} />}
+            value={value}
+            rightSection={
+              <Search
+                size={16}
+                style={{ cursor: 'pointer' }}
+                onClick={handleSearch}
+              />
+            }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
+            onChange={(e) => setValue(e.currentTarget.value)}
             w={320}
           />
           <GeoFilterControl />

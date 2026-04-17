@@ -6,6 +6,7 @@ import { TransformJsonObject } from '@/common/decorators/transform-json-object.d
 import { UserRole } from '@/database/entities/user.entity';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { UserFiltersDto } from './userFilters.dto';
+import { GeographyNodeDto } from '@/common/dtos/geo-node.dto';
 
 export class GetUsersQueryDto {
   @IsOptional()
@@ -32,14 +33,6 @@ export class GetUsersQueryDto {
   @IsOptional()
   @TransformJsonObject<UserFiltersDto>()
   filters?: UserFiltersDto;
-}
-
-export class GeographyNodeDto {
-  @ApiProperty({ example: 5 })
-  id!: number;
-
-  @ApiProperty({ example: 'Минская область' })
-  name!: string;
 }
 
 export class UserResponseDto {

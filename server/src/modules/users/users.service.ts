@@ -7,15 +7,13 @@ import {
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import {
   UserEntity,
   UserLanguage,
   UserThemes,
   UserRole,
 } from '@/database/entities/user.entity';
-import { GeographyNodeDto, UserResponseDto } from './dto/getAllUsers.dto';
+import { UserResponseDto } from './dto/getAllUsers.dto';
 import { RegisterUserDto } from '../auth/dto/register.dto';
 import { AdminUserDto, SelfUserDto, PublicUserDto } from './dto/getOneUser.dto';
 import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
@@ -28,12 +26,10 @@ import { RedisService } from '@/common/services/redis/redis.service';
 import { UserErrorCode } from './errors/users-error-codes';
 import { UserFiltersDto } from './dto/userFilters.dto';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
-import { TextFilterDto } from '@/common/dtos/filter-item.dto';
+import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query-filters.util';
+import { loadSeed } from '@/common/utils/load-seed.util';
+import { GeographyNodeDto } from '@/common/dtos/geo-node.dto';
 import type { Region, City, District } from '@/common/types/geo.type';
-
-function loadSeed<T>(filename: string): T[] {
-  return JSON.parse(readFileSync(join(process.cwd(), filename), 'utf8')) as T[];
-}
 
 const regions = loadSeed<Region>('src/database/seeds/geography_region.json');
 const cities = loadSeed<City>('src/database/seeds/geography_city.json');
@@ -97,33 +93,7 @@ export class UsersService {
     return UserLanguage.EN;
   }
 
-  private applyTextFilter(
-    qb: SelectQueryBuilder<UserEntity>,
-    field: string,
-    filter: TextFilterDto,
-    paramKey: string,
-  ) {
-    const value = filter.value;
-
-    switch (filter.operator) {
-      case 'contains':
-        qb.andWhere(`${field} ILIKE :${paramKey}`, {
-          [paramKey]: `%${value}%`,
-        });
-        break;
-      case 'equals':
-        qb.andWhere(`${field} = :${paramKey}`, { [paramKey]: value });
-        break;
-      case 'not_contains':
-        qb.andWhere(`${field} NOT ILIKE :${paramKey}`, {
-          [paramKey]: `%${value}%`,
-        });
-        break;
-      case 'not_equals':
-        qb.andWhere(`${field} != :${paramKey}`, { [paramKey]: value });
-        break;
-    }
-  }
+  private applyTextFilter = applyTextFilterImported<UserEntity>;
 
   private applyIdFilter(
     qb: SelectQueryBuilder<UserEntity>,

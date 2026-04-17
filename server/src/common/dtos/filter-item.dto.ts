@@ -40,3 +40,8 @@ export class DateRangeFilterDto {
   @IsDateString({}, { each: true })
   values!: [string, string]; // [from, to]
 }
+
+export class IDFilter {
+  @IsString()
+  value!: string;
+}
