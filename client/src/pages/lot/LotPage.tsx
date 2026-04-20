@@ -138,8 +138,7 @@ export const LotPage = () => {
   const showUnarchiveAction =
     Boolean(id) &&
     canEdit &&
-    lot?.visibilityStatus === LOT_VISIBILITY_STATUS.ARCHIVED &&
-    isAdmin;
+    lot?.visibilityStatus === LOT_VISIBILITY_STATUS.ARCHIVED;
 
   const visibilityMeta = useMemo(() => {
     if (!lot) return null;

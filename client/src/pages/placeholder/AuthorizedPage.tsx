@@ -1,13 +1,13 @@
-import { Title, Text, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
+import { LotsFeed } from '@/shared/ui/LotsFeed';
 // import { useTranslation } from 'react-i18next';
 
 export const AuthorizedPage = () => {
   // const { t } = useTranslation();
 
   return (
-    <Stack>
-      <Title order={2}>Home Page</Title>
-      <Text c="dimmed">Vremenno</Text>
+    <Stack gap="md" w={'100%'}>
+      <LotsFeed />
     </Stack>
   );
 };

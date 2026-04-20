@@ -68,11 +68,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: ROUTES.LOT_VIEW + '/:id',
-        element: (
-          <RequireAuth>
-            <LotPage />
-          </RequireAuth>
-        ),
+        element: <LotPage />,
       },
     ],
   },

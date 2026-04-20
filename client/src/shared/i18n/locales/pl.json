@@ -303,5 +303,28 @@
       "title": "Zbyt wiele żądań",
       "description": "Wysyłasz zbyt wiele żądań w krótkim czasie. Poczekaj chwilę i spróbuj ponownie."
     }
+  },
+  "feed": {
+    "noLotsFound": "Nie znaleziono ofert",
+    "limit": "Limit",
+    "info": "Informacje o kanale",
+    "recordsOnPage": "Rekordy na stronie",
+    "recordsTotal": "Łączna liczba rekordów",
+    "filters": {
+      "geo": "Filtr geo",
+      "category": "Kategoria",
+      "search": "Wyszukiwanie",
+      "notSelected": "Nie wybrano"
+    },
+    "exchange": {
+      "action": "Wymień się",
+      "title": "Zaproponuj wymianę",
+      "confirm": "Czy zaproponować wymianę właścicielowi tej oferty?",
+      "success": "Działanie dla \"{{title}}\" zostało potwierdzone. Integracja wymiany zostanie dodana później."
+    },
+    "view": {
+      "grid": "Siatka",
+      "list": "Lista"
+    }
   }
 }

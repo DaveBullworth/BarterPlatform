@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -35,6 +36,7 @@ import { LotErrorCode } from './errors/lots-error-codes';
 import { UserErrorCode } from '../users/errors/users-error-codes';
 import { GetLotsQueryDto, LotResponseDto } from './dto/getAllLots.dto';
 import { LotFiltersDto } from './dto/lotFilters.dto';
+import { OptionalAuthGuard } from '../auth/auth.optinal.guard';
 
 @Controller('lot')
 @ApiTags('Lot')
@@ -134,7 +136,7 @@ export class LotsController {
   }
 
   @ApiBearerAuth()
-  @Authenticated()
+  @UseGuards(OptionalAuthGuard)
   @Get()
   @ApiOperation({
     summary: 'Получение списка лотов',
@@ -190,7 +192,7 @@ export class LotsController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
-  getAll(@Query() query: GetLotsQueryDto, @CurrentUser() user: JwtPayload) {
+  getAll(@Query() query: GetLotsQueryDto, @CurrentUser() user?: JwtPayload) {
     return this.lotsService.getAll({
       page: query.page ?? 1,
       limit: query.limit ?? 20,
@@ -200,7 +202,7 @@ export class LotsController {
   }
 
   @ApiBearerAuth()
-  @Authenticated()
+  @UseGuards(OptionalAuthGuard)
   @Get(':id')
   @ApiOperation({
     summary: 'Получить лот по ID',
@@ -236,7 +238,7 @@ export class LotsController {
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
   })
-  getOne(@Param('id') id: string, @CurrentUser() user: JwtPayload) {
+  getOne(@Param('id') id: string, @CurrentUser() user?: JwtPayload) {
     return this.lotsService.getOne(id, user);
   }
 

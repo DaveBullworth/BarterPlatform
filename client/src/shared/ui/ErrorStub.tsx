@@ -43,7 +43,10 @@ export const ErrorStub = ({ status, t, onRetry, onBack }: ErrorStubProps) => {
   })();
 
   return (
-    <Group justify="center" style={{ width: '100%' }}>
+    <Group
+      justify="center"
+      style={{ width: '100%', height: '100%', alignSelf: 'center' }}
+    >
       <Stack align="center" gap="sm" maw={420}>
         <Text size="3rem">{config.icon}</Text>
 

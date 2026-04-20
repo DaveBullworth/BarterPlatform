@@ -302,5 +302,28 @@
       "title": "Zu viele Anfragen",
       "description": "Sie senden zu viele Anfragen in kurzer Zeit. Bitte warten Sie einen Moment und versuchen Sie es erneut."
     }
+  },
+  "feed": {
+    "noLotsFound": "Keine Anzeigen gefunden",
+    "limit": "Limit",
+    "info": "Feed-Info",
+    "recordsOnPage": "Einträge auf der Seite",
+    "recordsTotal": "Gesamteinträge",
+    "filters": {
+      "geo": "Geo-Filter",
+      "category": "Kategorie",
+      "search": "Suche",
+      "notSelected": "Nicht ausgewählt"
+    },
+    "exchange": {
+      "action": "Tauschen",
+      "title": "Tausch vorschlagen",
+      "confirm": "Möchten Sie dem Besitzer dieses Lots einen Tausch vorschlagen?",
+      "success": "Die Aktion für \"{{title}}\" wurde bestätigt. Die Tausch-Integration wird später hinzugefügt."
+    },
+    "view": {
+      "grid": "Raster",
+      "list": "Liste"
+    }
   }
 }

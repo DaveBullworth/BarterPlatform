@@ -1,4 +1,3 @@
-import type { PaginatedResponse } from '@/types/user';
 import { $authHost, $host } from './index';
 import type {
   CreateLotDto,
@@ -7,6 +6,7 @@ import type {
   LotResponseDto,
   UpdateLotDto,
 } from '@/types/lot';
+import type { PaginatedResponse } from '@/types/user';
 
 export const getLotsTaxonomy = async () => {
   const { data } = await $host.get('/lot/taxonomy');
@@ -23,7 +23,7 @@ export const getLots = async (
   signal?: AbortSignal,
 ): Promise<PaginatedResponse<LotResponseDto>> => {
   const { data } = await $authHost.get<PaginatedResponse<LotResponseDto>>(
-    '/user',
+    '/lot',
     {
       params,
       signal,

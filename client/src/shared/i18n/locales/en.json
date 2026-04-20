@@ -304,5 +304,28 @@
       "title": "Too many requests",
       "description": "You are sending requests too frequently. Please wait a moment and try again."
     }
+  },
+  "feed": {
+    "noLotsFound": "No lots found",
+    "limit": "Limit",
+    "info": "Feed info",
+    "recordsOnPage": "Records on page",
+    "recordsTotal": "Total records",
+    "filters": {
+      "geo": "Geo filter",
+      "category": "Category",
+      "search": "Search",
+      "notSelected": "Not selected"
+    },
+    "exchange": {
+      "action": "Exchange",
+      "title": "Suggest an exchange",
+      "confirm": "Suggest an exchange to this lot owner?",
+      "success": "The action for \"{{title}}\" has been confirmed. Exchange integration will be added later."
+    },
+    "view": {
+      "grid": "Grid",
+      "list": "List"
+    }
   }
 }

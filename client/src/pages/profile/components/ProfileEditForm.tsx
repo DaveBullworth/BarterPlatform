@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Stack,
@@ -23,11 +23,11 @@ import {
   createEmailValidator,
 } from '@/shared/utils/validators';
 
-import type { AdminUserDto, SelfUserDto } from '@/types/user';
+import ConfirmModal from '@/shared/ui/ConfirmModal';
 import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
 import { BELARUS_PHONE_CODE } from '@/shared/constants/country';
-import { getRegions, getCities, getDistricts } from '@/http/geography';
-import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
+import type { AdminUserDto, SelfUserDto } from '@/types/user';
+import type { SelectOption } from '@/shared/ui/GeoSelector';
 
 type FormValues = {
   name: string;
@@ -46,16 +46,31 @@ type FormValues = {
 type Props = {
   user: SelfUserDto | AdminUserDto;
   role?: UserRole;
+  regionOptions: SelectOption[];
+  cityOptions: SelectOption[];
+  districtOptions: SelectOption[];
+  onRegionChange: (value: string | null) => void;
+  onCityChange: (value: string | null) => void;
   onUpdated: (user: SelfUserDto | AdminUserDto) => void;
   onClose: () => void;
+  onHasChangesChange?: (value: boolean) => void;
 };
 
-export const ProfileEditForm = ({ user, role, onUpdated, onClose }: Props) => {
+export const ProfileEditForm = ({
+  user,
+  role,
+  regionOptions,
+  cityOptions,
+  districtOptions,
+  onRegionChange,
+  onCityChange,
+  onUpdated,
+  onClose,
+  onHasChangesChange,
+}: Props) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [regions, setRegions] = useState<RegionOption[]>([]);
-  const [cities, setCities] = useState<CityOption[]>([]);
-  const [districts, setDistricts] = useState<DistrictOption[]>([]);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const isAdminMode = role === USER_ROLES.ADMIN && isAdminUser(user);
 
@@ -104,41 +119,23 @@ export const ProfileEditForm = ({ user, role, onUpdated, onClose }: Props) => {
     },
   });
 
-  useEffect(() => {
-    getRegions().then(setRegions).catch(console.error);
-  }, []);
-
-  const regionOptions = useMemo(
-    () =>
-      [...regions]
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((r) => ({ value: String(r.id), label: r.name })),
-    [regions],
-  );
-
-  const cityOptions = useMemo(
-    () =>
-      [...cities]
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((c) => ({ value: String(c.id), label: c.name })),
-    [cities],
-  );
-
-  const districtOptions = useMemo(
-    () =>
-      [...districts]
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((d) => ({ value: String(d.id), label: d.name })),
-    [districts],
-  );
-
   const hasChanges =
     form.isDirty() ||
     (isAdminMode &&
       (form.values.email !== user.email ||
-        form.values.password ||
+        Boolean(form.values.password) ||
         form.values.status !== user.status ||
         form.values.statusEmail !== user.statusEmail));
+
+  useEffect(() => {
+    onHasChangesChange?.(hasChanges);
+  }, [hasChanges, onHasChangesChange]);
+
+  const handleSubmitRequested = () => {
+    if (hasChanges) {
+      setConfirmModalOpen(true);
+    }
+  };
 
   const handleSubmit = useCallback(
     async (values: FormValues) => {
@@ -205,138 +202,135 @@ export const ProfileEditForm = ({ user, role, onUpdated, onClose }: Props) => {
   );
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack gap="sm">
-        <Select
-          required
-          placeholder={t('auth.selectRegion')}
-          label={t('auth.region')}
-          data={regionOptions}
-          searchable
-          onChange={(value) => {
-            form.setFieldValue('regionId', value || '');
+    <>
+      <form onSubmit={handleSubmitRequested}>
+        <Stack gap="sm">
+          <Select
+            required
+            placeholder={t('auth.selectRegion')}
+            label={t('auth.region')}
+            data={regionOptions}
+            value={form.values.regionId}
+            searchable
+            onChange={(value) => {
+              onRegionChange(value);
+              form.setFieldValue('regionId', value || '');
 
-            // сброс зависимостей
-            form.setFieldValue('cityId', '');
-            form.setFieldValue('districtId', '');
-
-            setCities([]);
-            setDistricts([]);
-
-            if (value) {
-              getCities(Number(value)).then(setCities).catch(console.error);
+              // сброс зависимостей
+              form.setFieldValue('cityId', '');
+              form.setFieldValue('districtId', '');
+            }}
+          />
+          <Select
+            key={`city-${form.values.regionId || 'empty'}`}
+            required
+            label={t('auth.city')}
+            placeholder={t('auth.selectCity')}
+            data={cityOptions}
+            searchable
+            disabled={!form.values.regionId}
+            value={form.values.cityId}
+            onChange={(value) => {
+              onCityChange(value);
+              form.setFieldValue('cityId', value || '');
+            }}
+          />
+          <Select
+            key={`district-${form.values.cityId || 'empty'}`}
+            label={t('auth.district')}
+            placeholder={
+              !form.values.cityId
+                ? t('auth.cityNotSelected') // "Город не выбран"
+                : districtOptions.length === 0
+                  ? t('profile.missed') // "Районы отсутствуют"
+                  : t('auth.selectDistrict') // "Выберите район"
             }
-          }}
-        />
-        <Select
-          key={`city-${form.values.regionId || 'empty'}`}
-          required
-          label={t('auth.city')}
-          placeholder={t('auth.selectCity')}
-          data={cityOptions}
-          searchable
-          disabled={!form.values.regionId}
-          value={form.values.cityId}
-          onChange={(value) => {
-            form.setFieldValue('cityId', value || '');
+            data={districtOptions}
+            searchable
+            clearable
+            disabled={!form.values.cityId || districtOptions.length === 0}
+            {...form.getInputProps('districtId')}
+          />
 
-            // сброс района
-            form.setFieldValue('districtId', '');
-            setDistricts([]);
+          <TextInput
+            label={t('auth.name')}
+            placeholder={t('auth.namePlaceholder')}
+            leftSection={<User size={16} />}
+            maxLength={200}
+            {...form.getInputProps('name')}
+          />
 
-            if (value) {
-              getDistricts(Number(value))
-                .then(setDistricts)
-                .catch(console.error);
-            }
-          }}
-        />
-        <Select
-          key={`district-${form.values.cityId || 'empty'}`}
-          label={t('auth.district')}
-          placeholder={
-            !form.values.cityId
-              ? t('auth.cityNotSelected') // "Город не выбран"
-              : districtOptions.length === 0
-                ? t('profile.missed') // "Районы отсутствуют"
-                : t('auth.selectDistrict') // "Выберите район"
-          }
-          data={districtOptions}
-          searchable
-          clearable
-          disabled={!form.values.cityId || districtOptions.length === 0}
-          {...form.getInputProps('districtId')}
-        />
+          <TextInput
+            label={t('auth.login')}
+            placeholder={t('auth.loginPlaceholder')}
+            leftSection={<AtSign size={16} />}
+            maxLength={60}
+            {...form.getInputProps('login')}
+          />
 
-        <TextInput
-          label={t('auth.name')}
-          placeholder={t('auth.namePlaceholder')}
-          leftSection={<User size={16} />}
-          maxLength={200}
-          {...form.getInputProps('name')}
-        />
+          <PhoneInput
+            phone={form.values.phone}
+            countryCode={BELARUS_PHONE_CODE}
+            error={form.errors.phone}
+            onChange={(v) => form.setFieldValue('phone', v)}
+          />
 
-        <TextInput
-          label={t('auth.login')}
-          placeholder={t('auth.loginPlaceholder')}
-          leftSection={<AtSign size={16} />}
-          maxLength={60}
-          {...form.getInputProps('login')}
-        />
+          {isAdminMode && (
+            <>
+              <TextInput
+                leftSection={<Mail size={16} />}
+                label={t('auth.email')}
+                placeholder={t('auth.emailPlaceholder')}
+                required
+                maxLength={200}
+                {...form.getInputProps('email')}
+              />
+              <PasswordInput
+                leftSection={<LockKeyhole size={16} />}
+                label={t('auth.password')}
+                placeholder={t('auth.passwordPlaceholder')}
+                maxLength={60}
+                {...form.getInputProps('password')}
+              />
+              <Select
+                label={t('common.role')}
+                placeholder={t('common.role')}
+                data={[
+                  { value: 'admin', label: t('common.admin') },
+                  { value: 'user', label: t('common.user') },
+                ]}
+                {...form.getInputProps('role')}
+              />
+              <Checkbox
+                label={t('common.status')}
+                {...form.getInputProps('status', { type: 'checkbox' })}
+              />
+              <Checkbox
+                label={t('common.statusEmail')}
+                {...form.getInputProps('statusEmail', { type: 'checkbox' })}
+              />
+            </>
+          )}
 
-        <PhoneInput
-          phone={form.values.phone}
-          countryCode={BELARUS_PHONE_CODE}
-          error={form.errors.phone}
-          onChange={(v) => form.setFieldValue('phone', v)}
-        />
-
-        {isAdminMode && (
-          <>
-            <TextInput
-              leftSection={<Mail size={16} />}
-              label={t('auth.email')}
-              placeholder={t('auth.emailPlaceholder')}
-              required
-              maxLength={200}
-              {...form.getInputProps('email')}
-            />
-            <PasswordInput
-              leftSection={<LockKeyhole size={16} />}
-              label={t('auth.password')}
-              placeholder={t('auth.passwordPlaceholder')}
-              maxLength={60}
-              {...form.getInputProps('password')}
-            />
-            <Select
-              label={t('common.role')}
-              placeholder={t('common.role')}
-              data={[
-                { value: 'admin', label: t('common.admin') },
-                { value: 'user', label: t('common.user') },
-              ]}
-              {...form.getInputProps('role')}
-            />
-            <Checkbox
-              label={t('common.status')}
-              {...form.getInputProps('status', { type: 'checkbox' })}
-            />
-            <Checkbox
-              label={t('common.statusEmail')}
-              {...form.getInputProps('statusEmail', { type: 'checkbox' })}
-            />
-          </>
-        )}
-
-        <Group justify="flex-end" mt="md">
-          <Button variant="default" onClick={onClose} disabled={loading}>
-            {t('authRequired.cancel')}
-          </Button>
-          <Button type="submit" loading={loading} disabled={!hasChanges}>
-            {t('common.save')}
-          </Button>
-        </Group>
-      </Stack>
-    </form>
+          <Group justify="flex-end" mt="md">
+            <Button variant="default" onClick={onClose} disabled={loading}>
+              {t('authRequired.cancel')}
+            </Button>
+            <Button type="submit" loading={loading} disabled={!hasChanges}>
+              {t('common.save')}
+            </Button>
+          </Group>
+        </Stack>
+      </form>
+      <ConfirmModal
+        opened={confirmModalOpen}
+        onCancel={() => setConfirmModalOpen(false)}
+        onConfirm={form.onSubmit(handleSubmit)}
+        title={t('profile.confirmTitle')}
+        message={t('profile.confirmUpdateMessage')}
+        confirmLabel={t('profile.confirmDiscardConfirm')}
+        cancelLabel={t('profile.confirmDiscardCancel')}
+      />
+    </>
   );
 };

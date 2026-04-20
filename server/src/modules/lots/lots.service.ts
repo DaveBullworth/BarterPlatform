@@ -281,14 +281,18 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     page: number;
     limit: number;
     filters?: LotFiltersDto;
-    user: JwtPayload;
+    user?: JwtPayload;
   }): Promise<{ data: LotResponseDto[]; total: number }> {
     const { page, limit, filters, user } = params;
 
     const qb = this.lotsRepo.createQueryBuilder('lot');
 
     // БАЗОВАЯ ЛОГИКА ДОСТУПА
-    if (user.role !== UserRole.ADMIN) {
+    if (!user) {
+      qb.andWhere('lot.visibilityStatus = :active', {
+        active: LotVisibilityStatus.ACTIVE,
+      });
+    } else if (user.role !== UserRole.ADMIN) {
       qb.andWhere('(lot.visibilityStatus = :active OR lot.userId = :userId)', {
         active: LotVisibilityStatus.ACTIVE,
         userId: user.sub,
@@ -320,11 +324,6 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
         filters.query,
         'query',
       );
-
-      // если хочешь искать и в характеристиках — лучше сразу так:
-      qb.orWhere('lot.characteristicsDescription ILIKE :query', {
-        query: `%${filters.query.value}%`,
-      });
     }
 
     // СОРТИРОВКА (всегда одна)
@@ -363,7 +362,7 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     };
   }
 
-  async getOne(id: string, user: JwtPayload): Promise<LotOneResponseDto> {
+  async getOne(id: string, user?: JwtPayload): Promise<LotOneResponseDto> {
     const lot = await this.lotsRepo.findOne({ where: { id } });
     if (!lot)
       throw new NotFoundException({
@@ -371,7 +370,14 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
         message: 'Lot not found',
       });
 
-    if (
+    if (!user) {
+      if (lot.visibilityStatus !== LotVisibilityStatus.ACTIVE) {
+        throw new ForbiddenException({
+          code: LotErrorCode.NO_ACCESS,
+          message: 'No access to this lot',
+        });
+      }
+    } else if (
       user.role !== UserRole.ADMIN &&
       lot.userId !== user.sub &&
       lot.visibilityStatus !== LotVisibilityStatus.ACTIVE
@@ -412,7 +418,11 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
         });
       }
 
-      if (lot.visibilityStatus === LotVisibilityStatus.ARCHIVED) {
+      const isArchived = lot.visibilityStatus === LotVisibilityStatus.ARCHIVED;
+      const wantsUnarchive =
+        dto.visibilityStatus === LotVisibilityStatus.ACTIVE;
+
+      if (isArchived && !wantsUnarchive) {
         throw new ForbiddenException({
           code: LotErrorCode.USER_ARCHIVED,
           message: 'Archived lots cannot be edited by user',

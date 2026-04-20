@@ -23,9 +23,11 @@ const StatusActionModal = ({
       opened={action !== null}
       onClose={onClose}
       title={
-        action === 'deactivate'
-          ? t('lotForm.actions.deactivate')
-          : t('lotForm.actions.unarchive')
+        <Text fw={700} size="lg" td="underline">
+          {action === 'deactivate'
+            ? t('lotForm.actions.deactivate')
+            : t('lotForm.actions.unarchive')}
+        </Text>
       }
       centered
     >

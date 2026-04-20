@@ -4,51 +4,20 @@ import { MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getCities, getDistricts, getRegions } from '@/http/geography';
-import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
 import { GeoSelector } from '@/shared/ui/GeoSelector';
+import {
+  EMPTY_GEO_FILTER,
+  GEO_FILTER_CHANGED_EVENT,
+  GEO_FILTER_STORAGE_KEY,
+  readStoredGeoFilter,
+  type GeoFilterStorageValue,
+} from '@/shared/utils/geoFilter';
+import type { CityOption, DistrictOption, RegionOption } from '@/types/geo.dto';
 
-const GEO_FILTER_STORAGE_KEY = 'geo-filter';
-
-type GeoFilterValues = {
-  regionId: string;
-  cityId: string;
-  districtId: string;
-};
-
-const EMPTY_FILTER: GeoFilterValues = {
-  regionId: '',
-  cityId: '',
-  districtId: '',
-};
+type GeoFilterValues = GeoFilterStorageValue;
 
 const hasSelectedGeo = (values: GeoFilterValues) =>
   Boolean(values.regionId || values.cityId || values.districtId);
-
-const readStoredGeoFilter = (): GeoFilterValues => {
-  if (typeof window === 'undefined') {
-    return EMPTY_FILTER;
-  }
-
-  const saved = localStorage.getItem(GEO_FILTER_STORAGE_KEY);
-
-  if (!saved) {
-    return EMPTY_FILTER;
-  }
-
-  try {
-    const parsed = JSON.parse(saved) as GeoFilterValues;
-
-    return {
-      regionId: parsed.regionId || '',
-      cityId: parsed.cityId || '',
-      districtId: parsed.districtId || '',
-    };
-  } catch (error) {
-    console.error(error);
-    localStorage.removeItem(GEO_FILTER_STORAGE_KEY);
-    return EMPTY_FILTER;
-  }
-};
 
 export const GeoFilterControl = () => {
   const { t } = useTranslation();
@@ -155,15 +124,17 @@ export const GeoFilterControl = () => {
       localStorage.removeItem(GEO_FILTER_STORAGE_KEY);
     }
 
+    window.dispatchEvent(new Event(GEO_FILTER_CHANGED_EVENT));
     setOpened(false);
   };
 
   const handleReset = () => {
-    setDraftFilter(EMPTY_FILTER);
-    setAppliedFilter(EMPTY_FILTER);
+    setDraftFilter(EMPTY_GEO_FILTER);
+    setAppliedFilter(EMPTY_GEO_FILTER);
     setCities([]);
     setDistricts([]);
     localStorage.removeItem(GEO_FILTER_STORAGE_KEY);
+    window.dispatchEvent(new Event(GEO_FILTER_CHANGED_EVENT));
   };
 
   const hasAppliedFilter = hasSelectedGeo(appliedFilter);

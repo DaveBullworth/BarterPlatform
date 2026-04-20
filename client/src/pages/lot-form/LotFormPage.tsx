@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useBlocker, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import UnsavedChangesModal from '@/shared/ui/UnsavedChangesModal';
+import ConfirmModal from '@/shared/ui/ConfirmModal';
 import StatusActionModal, {
   type LotStatusAction,
 } from '@/shared/ui/StatusActionModal';
@@ -20,7 +20,6 @@ import { selectCurrentUser } from '@/store/userSlice';
 import { getLotById } from '@/http/lots';
 import { getLotImages } from '@/http/media';
 import { LOT_VISIBILITY_STATUS } from '@/types/lot';
-import { USER_ROLES } from '@/shared/constants/user-role';
 import { handleApiError } from '@/shared/utils/handleApiError';
 import { goToLotView } from '@/shared/utils/navigation';
 import { getCities, getDistricts, getRegions } from '@/http/geography';
@@ -52,7 +51,6 @@ export const LotFormPage = () => {
   const taxonomy = useSelector(selectTaxonomy);
   const taxonomyStatus = useSelector(selectTaxonomyStatus);
   const currentUser = useSelector(selectCurrentUser);
-  const isAdmin = currentUser?.role === USER_ROLES.ADMIN;
 
   const [taxonomyOpened, taxonomyControls] = useDisclosure(false);
   const [geoOpened, geoControls] = useDisclosure(false);
@@ -387,8 +385,7 @@ export const LotFormPage = () => {
   };
 
   const showDeactivateAction = isEditMode && Boolean(id) && !isArchived;
-  const showUnarchiveAction =
-    isEditMode && Boolean(id) && isArchived && isAdmin;
+  const showUnarchiveAction = isEditMode && Boolean(id) && isArchived;
 
   if (
     taxonomyStatus === 'idle' ||
@@ -503,8 +500,12 @@ export const LotFormPage = () => {
         t={t}
       />
 
-      <UnsavedChangesModal
+      <ConfirmModal
         opened={unsavedChangesModalOpen}
+        title={t('lotForm.status.unsaved')}
+        message={t('lotForm.modal.unsavedWarning')}
+        confirmLabel={t('lotForm.actions.continue')}
+        cancelLabel={t('lotForm.actions.cancel')}
         onConfirm={() => {
           if (blocker.state !== 'blocked') {
             return;
@@ -517,7 +518,6 @@ export const LotFormPage = () => {
             blocker.reset();
           }
         }}
-        t={t}
       />
     </Stack>
   );
