@@ -22,20 +22,11 @@ import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { AppRequest } from '@/common/interfaces/app-request.interface';
 import { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { MailConfirmService } from '../mail-confirm/mail-confirm.service';
-import { RedisService } from '@/common/services/redis/redis.service';
 import { UserErrorCode } from './errors/users-error-codes';
 import { UserFiltersDto } from './dto/userFilters.dto';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query-filters.util';
-import { loadSeed } from '@/common/utils/load-seed.util';
-import { GeographyNodeDto } from '@/common/dtos/geo-node.dto';
-import type { Region, City, District } from '@/common/types/geo.type';
-
-const regions = loadSeed<Region>('src/database/seeds/geography_region.json');
-const cities = loadSeed<City>('src/database/seeds/geography_city.json');
-const districts = loadSeed<District>(
-  'src/database/seeds/geography_district.json',
-);
+import { GeographyService } from './geography.service';
 
 @Injectable()
 export class UsersService {
@@ -43,42 +34,8 @@ export class UsersService {
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
     private readonly emailConfirmationService: MailConfirmService,
-    private readonly redisService: RedisService,
+    private readonly geographyService: GeographyService,
   ) {}
-
-  getRegions() {
-    return regions.map((region) => ({
-      id: region.externalId,
-      name: region.name,
-      slug: region.slug,
-    }));
-  }
-
-  getCities(regionId?: number) {
-    const regionCities = regionId
-      ? cities.filter((city) => city.regionId === regionId)
-      : cities;
-
-    return regionCities.map((city) => ({
-      id: city.externalId,
-      regionId: city.regionId,
-      name: city.name,
-      slug: city.slug,
-    }));
-  }
-
-  getDistricts(cityId?: number) {
-    const cityDistricts = cityId
-      ? districts.filter((district) => district.cityId === cityId)
-      : districts;
-
-    return cityDistricts.map((district) => ({
-      id: district.externalId,
-      cityId: district.cityId,
-      name: district.name,
-      slug: district.slug,
-    }));
-  }
 
   private detectLanguage(req: AppRequest): UserLanguage {
     const header = req.headers['accept-language'];
@@ -95,7 +52,7 @@ export class UsersService {
 
   private applyTextFilter = applyTextFilterImported<UserEntity>;
 
-  private applyIdFilter(
+  private applyUserIdFilter(
     qb: SelectQueryBuilder<UserEntity>,
     field: 'regionId' | 'cityId' | 'districtId',
     operator: 'contains' | 'equals' | 'not_contains' | 'not_equals',
@@ -115,59 +72,6 @@ export class UsersService {
       `(user.${field} IS NULL OR user.${field} NOT IN (:...ids_${field}))`,
       { [`ids_${field}`]: ids },
     );
-  }
-
-  private validateGeography(
-    regionId: number,
-    cityId: number,
-    districtId?: number | null,
-  ) {
-    const region = regions.find((r) => r.externalId === regionId);
-    if (!region) {
-      throw new NotFoundException({
-        code: UserErrorCode.REGION_NOT_FOUND,
-        message: 'Region not found',
-      });
-    }
-
-    const city = cities.find((c) => c.externalId === cityId);
-    if (!city || city.regionId !== regionId) {
-      throw new NotFoundException({
-        code: UserErrorCode.CITY_NOT_FOUND,
-        message: 'City not found for selected region',
-      });
-    }
-
-    if (districtId == null) {
-      return;
-    }
-
-    const district = districts.find((d) => d.externalId === districtId);
-    if (!district || district.cityId !== cityId) {
-      throw new NotFoundException({
-        code: UserErrorCode.DISTRICT_NOT_FOUND,
-        message: 'District not found for selected city',
-      });
-    }
-  }
-
-  private buildGeography(user: UserEntity) {
-    const region = regions.find((r) => r.externalId === user.regionId);
-    const city = cities.find((c) => c.externalId === user.cityId);
-    const district = districts.find((d) => d.externalId === user.districtId);
-
-    const asNode = <T extends { externalId: number; name: string }>(
-      item?: T,
-    ): GeographyNodeDto | null => {
-      if (!item) return null;
-      return { id: item.externalId, name: item.name };
-    };
-
-    return {
-      region: asNode(region),
-      city: asNode(city),
-      district: asNode(district),
-    };
   }
 
   async register(dto: RegisterUserDto, req: AppRequest) {
@@ -191,7 +95,11 @@ export class UsersService {
       });
     }
 
-    this.validateGeography(dto.regionId, dto.cityId, dto.districtId ?? null);
+    this.geographyService.validate(
+      dto.regionId,
+      dto.cityId,
+      dto.districtId ?? null,
+    );
 
     const language = this.detectLanguage(req);
     const theme = UserThemes.SYSTEM;
@@ -249,7 +157,7 @@ export class UsersService {
     }
 
     if (filters?.region) {
-      this.applyIdFilter(
+      this.applyUserIdFilter(
         qb,
         'regionId',
         filters.region.operator,
@@ -258,7 +166,7 @@ export class UsersService {
     }
 
     if (filters?.city) {
-      this.applyIdFilter(
+      this.applyUserIdFilter(
         qb,
         'cityId',
         filters.city.operator,
@@ -267,7 +175,7 @@ export class UsersService {
     }
 
     if (filters?.district) {
-      this.applyIdFilter(
+      this.applyUserIdFilter(
         qb,
         'districtId',
         filters.district.operator,
@@ -318,7 +226,11 @@ export class UsersService {
   }
 
   private toResponseDto(user: UserEntity): UserResponseDto {
-    const geo = this.buildGeography(user);
+    const geo = this.geographyService.build({
+      regionId: user.regionId,
+      cityId: user.cityId,
+      districtId: user.districtId,
+    });
     return {
       id: user.id,
       email: user.email,
@@ -344,7 +256,11 @@ export class UsersService {
       });
     }
 
-    const geo = this.buildGeography(user);
+    const geo = this.geographyService.build({
+      regionId: user.regionId,
+      cityId: user.cityId,
+      districtId: user.districtId,
+    });
 
     if (requester.role === UserRole.ADMIN && requester.sub !== user.id) {
       return new AdminUserDto(user, geo);
@@ -401,16 +317,26 @@ export class UsersService {
       dto.districtId !== undefined ? dto.districtId : user.districtId;
 
     if (nextRegionId && nextCityId) {
-      this.validateGeography(nextRegionId, nextCityId, nextDistrictId ?? null);
+      this.geographyService.validate(
+        nextRegionId,
+        nextCityId,
+        nextDistrictId ?? null,
+      );
       user.regionId = nextRegionId;
       user.cityId = nextCityId;
       user.districtId = nextDistrictId ?? null;
     }
 
     await this.userRepo.save(user);
-    await this.redisService.updateUserTimestamp(user.id, user.updatedAt);
 
-    return new SelfUserDto(user, this.buildGeography(user));
+    return new SelfUserDto(
+      user,
+      this.geographyService.build({
+        regionId: user.regionId,
+        cityId: user.cityId,
+        districtId: user.districtId,
+      }),
+    );
   }
 
   async adminUpdateUser(userId: string, dto: AdminUpdateUserDto) {
@@ -495,16 +421,26 @@ export class UsersService {
       dto.districtId !== undefined ? dto.districtId : user.districtId;
 
     if (nextRegionId && nextCityId) {
-      this.validateGeography(nextRegionId, nextCityId, nextDistrictId ?? null);
+      this.geographyService.validate(
+        nextRegionId,
+        nextCityId,
+        nextDistrictId ?? null,
+      );
       user.regionId = nextRegionId;
       user.cityId = nextCityId;
       user.districtId = nextDistrictId ?? null;
     }
 
     await this.userRepo.save(user);
-    await this.redisService.updateUserTimestamp(user.id, user.updatedAt);
 
-    return new AdminUserDto(user, this.buildGeography(user));
+    return new AdminUserDto(
+      user,
+      this.geographyService.build({
+        regionId: user.regionId,
+        cityId: user.cityId,
+        districtId: user.districtId,
+      }),
+    );
   }
 
   async deleteUserByAdmin(userId: string) {
@@ -517,7 +453,6 @@ export class UsersService {
     }
 
     await this.userRepo.remove(user);
-    await this.redisService.deleteUserTimestamp(user.id);
 
     return { success: true };
   }
@@ -543,7 +478,11 @@ export class UsersService {
       });
     }
 
-    this.validateGeography(dto.regionId, dto.cityId, dto.districtId ?? null);
+    this.geographyService.validate(
+      dto.regionId,
+      dto.cityId,
+      dto.districtId ?? null,
+    );
 
     const defaultPassword = process.env.DEFAULT_PASSWORD || 'default_password';
 
@@ -562,8 +501,14 @@ export class UsersService {
     });
 
     await this.userRepo.save(user);
-    await this.redisService.updateUserTimestamp(user.id, user.updatedAt);
 
-    return new AdminUserDto(user, this.buildGeography(user));
+    return new AdminUserDto(
+      user,
+      this.geographyService.build({
+        regionId: user.regionId,
+        cityId: user.cityId,
+        districtId: user.districtId,
+      }),
+    );
   }
 }

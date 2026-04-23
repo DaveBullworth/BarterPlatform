@@ -7,13 +7,9 @@ import { USER_LANGUAGES } from '../shared/constants/user-language';
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Разные флаги для разных Интерцепторов ответов
-/*
-  1. Для повтора запроса после успешного обновления `accessToken`
-  2. Для повтора запроса после неудачной проверки валидности кеша записи
-*/
+// Для повтора запроса после успешного обновления `accessToken`
 type RetryableAxiosConfig = AxiosRequestConfig & {
   _retryAuth?: boolean;
-  _retryCache?: boolean;
 };
 
 // -------------------- Axios экземпляры --------------------
@@ -96,30 +92,6 @@ $authHost.interceptors.response.use(
         store.dispatch(logout());
         return Promise.reject(err);
       }
-    }
-
-    return Promise.reject(error);
-  },
-);
-
-// УСТАРЕЛ КЕШ
-$authHost.interceptors.response.use(
-  (res) => res,
-  async (error: AxiosError & { config?: RetryableAxiosConfig }) => {
-    const originalRequest = error.config;
-
-    if (
-      error.response?.status === 412 &&
-      originalRequest &&
-      !originalRequest._retryCache
-    ) {
-      originalRequest._retryCache = true;
-
-      if (originalRequest.headers) {
-        delete originalRequest.headers['If-User-Updated-Since'];
-      }
-
-      return $authHost(originalRequest);
     }
 
     return Promise.reject(error);

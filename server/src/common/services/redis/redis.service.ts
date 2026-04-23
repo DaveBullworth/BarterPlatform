@@ -1,15 +1,12 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { createClient, RedisClientType } from '@redis/client';
 import { DataSource } from 'typeorm';
-import { UserEntity } from '@/database/entities/user.entity';
 import { SessionEntity } from '@/database/entities/session.entity';
 import { redisLogger } from '@/common/services/logger/logger.scopes';
 import type { RedisSession } from '@/common/interfaces/redis-session.interface';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
-  private static readonly ARCHIVED_LOTS_SET_KEY = 'lot:archived:index';
-  // private static readonly ARCHIVED_LOT_KEY_PREFIX = 'lot:archived:';
   private client!: RedisClientType;
 
   constructor(private readonly dataSource: DataSource) {}
@@ -59,9 +56,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
     await this.client.connect();
 
-    redisLogger.info('Redis connected, initializing user timestamps...');
+    redisLogger.info('Redis connected');
     await this.bootstrapSessions();
-    await this.initUserTimestamps(); // сразу вызываем инициализацию
   }
 
   getClient(): RedisClientType {
@@ -109,174 +105,6 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     }
 
     redisLogger.info('Session bootstrap completed');
-  }
-
-  async setSession(sessionId: string, data: RedisSession, ttlSeconds: number) {
-    const client = this.getClient();
-
-    redisLogger.debug('SET session', {
-      sid: sessionId,
-      ttl: ttlSeconds,
-    });
-
-    await client.set(`session:${sessionId}`, JSON.stringify(data), {
-      EX: ttlSeconds,
-    });
-  }
-
-  async getSession(sessionId: string): Promise<RedisSession | null> {
-    const client = this.getClient();
-
-    if (!sessionId) {
-      redisLogger.warn('GET session called without sid');
-      return null;
-    }
-
-    redisLogger.debug('GET session', { sid: sessionId });
-
-    const raw = await client.get(`session:${sessionId}`);
-
-    if (!raw) {
-      redisLogger.debug('MISS session', { sid: sessionId });
-      return null;
-    }
-
-    try {
-      const parsed: unknown = JSON.parse(raw);
-
-      if (
-        typeof parsed === 'object' &&
-        parsed !== null &&
-        'userId' in parsed &&
-        'active' in parsed &&
-        'expiresAt' in parsed
-      ) {
-        redisLogger.debug('HIT session', { sid: sessionId });
-        return parsed as RedisSession;
-      }
-
-      redisLogger.warn('Invalid session payload', {
-        sid: sessionId,
-        raw,
-      });
-
-      return null;
-    } catch (err) {
-      redisLogger.error('Failed to parse session JSON', {
-        sid: sessionId,
-        error: err instanceof Error ? err.message : String(err),
-      });
-      return null;
-    }
-  }
-
-  async revokeSession(sessionId: string) {
-    const client = this.getClient();
-
-    redisLogger.info('REVOKE session', { sid: sessionId });
-
-    await client.del(`session:${sessionId}`);
-  }
-
-  // Подсервис валидации кеша записей
-
-  async initUserTimestamps() {
-    const repo = this.dataSource.getRepository(UserEntity);
-
-    // Берём только id и updatedAt для экономии памяти
-    const users = await repo.find({ select: ['id', 'updatedAt'] });
-    redisLogger.info(`Initializing ${users.length} user timestamps in Redis`);
-
-    const pipeline = this.client.multi(); // batch запись через pipeline
-
-    users.forEach((user) => {
-      // ключ формата "user:updated:{userId}" → timestamp
-      pipeline.set(`user:updated:${user.id}`, user.updatedAt.toISOString());
-    });
-
-    await pipeline.exec();
-    redisLogger.info('User timestamps initialized in Redis');
-  }
-
-  async updateUserTimestamp(userId: string, date?: Date) {
-    const client = this.getClient();
-    const updatedAt = (date ?? new Date()).toISOString();
-    await client.set(`user:updated:${userId}`, updatedAt);
-  }
-
-  async deleteUserTimestamp(userId: string) {
-    const client = this.getClient();
-    await client.del(`user:updated:${userId}`);
-  }
-
-  async markLotArchived(lotId: string, archivedAt: Date = new Date()) {
-    const client = this.getClient();
-    // const key = `${RedisService.ARCHIVED_LOT_KEY_PREFIX}${lotId}`;
-    // const payload = JSON.stringify({
-    //   lotId,
-    //   archivedAt: archivedAt.toISOString(),
-    // });
-    // const ttlSeconds = 30 * 24 * 60 * 60;
-
-    await client
-      .multi()
-      // .set(key, payload, { EX: ttlSeconds })
-      .zAdd(RedisService.ARCHIVED_LOTS_SET_KEY, {
-        score: archivedAt.getTime(),
-        value: lotId,
-      })
-      .exec();
-
-    return archivedAt;
-  }
-
-  async unmarkLotArchived(lotId: string) {
-    const client = this.getClient();
-
-    await client
-      .multi()
-      // .del(`${RedisService.ARCHIVED_LOT_KEY_PREFIX}${lotId}`)
-      .zRem(RedisService.ARCHIVED_LOTS_SET_KEY, lotId)
-      .exec();
-  }
-
-  async getArchivedLotIdsDueForDeletion(before: Date, limit = 200) {
-    const client = this.getClient();
-
-    return client.zRangeByScore(
-      RedisService.ARCHIVED_LOTS_SET_KEY,
-      0,
-      before.getTime(),
-      { LIMIT: { offset: 0, count: limit } },
-    );
-  }
-
-  async getLotArchivationDate(lotId: string): Promise<Date | null> {
-    const client = this.getClient();
-    const score = await client.zScore(
-      RedisService.ARCHIVED_LOTS_SET_KEY,
-      lotId,
-    );
-
-    if (score == null) {
-      return null;
-    }
-
-    return new Date(score);
-  }
-
-  async unmarkArchivedLots(lotIds: string[]) {
-    if (!lotIds.length) return;
-
-    const client = this.getClient();
-    const pipeline = client.multi();
-
-    pipeline.zRem(RedisService.ARCHIVED_LOTS_SET_KEY, lotIds);
-    // lotIds.forEach((lotId) => {
-    //   pipeline.del(`${RedisService.ARCHIVED_LOT_KEY_PREFIX}${lotId}`);
-    // });
-
-    await pipeline.exec();
   }
 
   async onModuleDestroy() {

@@ -7,6 +7,8 @@ import { UsersService } from './users.service';
 import { UserEntity } from 'src/database/entities/user.entity';
 import { UsersController } from './users.controller';
 import { AuthModule } from '../auth/auth.module';
+import { UserUpdatedInterceptor } from './interceptors/user.cache.interseptor';
+import { GeographyService } from './geography.service';
 
 @Module({
   imports: [
@@ -15,8 +17,8 @@ import { AuthModule } from '../auth/auth.module';
     AuthModule,
     RedisModule,
   ],
-  providers: [UsersService],
-  exports: [UsersService],
+  providers: [UsersService, GeographyService, UserUpdatedInterceptor],
+  exports: [UsersService, GeographyService],
   controllers: [UsersController],
 })
 export class UsersModule {}

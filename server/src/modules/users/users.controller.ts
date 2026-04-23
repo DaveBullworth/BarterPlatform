@@ -27,6 +27,8 @@ import {
   ApiNotFoundResponse,
   ApiForbiddenResponse,
   ApiConflictResponse,
+  ApiHeader,
+  ApiNotModifiedResponse,
 } from '@nestjs/swagger';
 // Импорт сервиса пользователей — тут будет вся бизнес-логика
 import { UsersService } from './users.service';
@@ -46,6 +48,7 @@ import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { UserFiltersDto } from './dto/userFilters.dto';
 import { DistrictDto, GeoItemDto } from './dto/geo.dto';
 import { UserUpdatedInterceptor } from './interceptors/user.cache.interseptor';
+import { GeographyService } from './geography.service';
 import type { AppRequest } from '@/common/interfaces/app-request.interface';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 
@@ -54,7 +57,10 @@ import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 @ApiTags('User')
 export class UsersController {
   // Внедряем UsersService через конструктор (Dependency Injection)
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly geographyService: GeographyService,
+  ) {}
 
   @Get('geography/regions')
   @ApiOperation({ summary: 'Список областей' })
@@ -67,7 +73,7 @@ export class UsersController {
     description: 'Внутренняя ошибка сервера',
   })
   getRegions() {
-    return this.usersService.getRegions();
+    return this.geographyService.getRegions();
   }
 
   @Get('geography/cities')
@@ -91,7 +97,7 @@ export class UsersController {
   })
   getCities(@Query('regionId') regionId?: string) {
     const parsed = regionId ? Number(regionId) : undefined;
-    return this.usersService.getCities(parsed);
+    return this.geographyService.getCities(parsed);
   }
 
   @Get('geography/districts')
@@ -112,7 +118,7 @@ export class UsersController {
   })
   getDistricts(@Query('cityId') cityId?: string) {
     const parsed = cityId ? Number(cityId) : undefined;
-    return this.usersService.getDistricts(parsed);
+    return this.geographyService.getDistricts(parsed);
   }
 
   @Post('register')
@@ -176,7 +182,7 @@ export class UsersController {
         {
           example: {
             code: UserErrorCode.LOGIN_ALREADY_IN_USE,
-            message: 'Email is already in use',
+            message: 'Login is already in use',
           },
         },
       ],
@@ -308,6 +314,14 @@ export class UsersController {
       },
     },
   })
+  @ApiHeader({
+    name: 'If-None-Match',
+    required: false,
+    description: 'ETag из предыдущего ответа пользователя',
+  })
+  @ApiNotModifiedResponse({
+    description: 'Пользователь не изменился (совпал ETag)',
+  })
   getSelf(@CurrentUser() user: JwtPayload) {
     const { sub: userId } = user;
     return this.usersService.getById(userId, user);
@@ -351,6 +365,14 @@ export class UsersController {
   })
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
+  })
+  @ApiHeader({
+    name: 'If-None-Match',
+    required: false,
+    description: 'ETag из предыдущего ответа пользователя',
+  })
+  @ApiNotModifiedResponse({
+    description: 'Пользователь не изменился (совпал ETag)',
   })
   getUserById(
     // @Param('id') извлекает параметр id из маршрута

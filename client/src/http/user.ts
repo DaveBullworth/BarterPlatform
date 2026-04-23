@@ -14,9 +14,17 @@ import type {
   UserResponseDto,
 } from '@/types/user';
 
+const toUserEtag = (updatedAt?: string): string | undefined => {
+  if (!updatedAt) return undefined;
+  const time = Date.parse(updatedAt);
+  if (Number.isNaN(time)) return undefined;
+  return `W/"user:${time}"`;
+};
+
 export const getSelfUser = async (updatedAt?: string) => {
+  const etag = toUserEtag(updatedAt);
   const { data } = await $authHost.get<SelfUserDto>('/user/self', {
-    headers: updatedAt ? { 'If-User-Updated-Since': updatedAt } : undefined,
+    headers: etag ? { 'If-None-Match': etag } : undefined,
   });
 
   return data;
@@ -72,10 +80,11 @@ export const getUserById = async (
   id: string,
   updatedAt?: string,
 ): Promise<SelfUserDto | AdminUserDto | PublicUserDto> => {
+  const etag = toUserEtag(updatedAt);
   const { data } = await $authHost.get<
     SelfUserDto | AdminUserDto | PublicUserDto
   >(`/user/${id}`, {
-    headers: updatedAt ? { 'If-User-Updated-Since': updatedAt } : undefined,
+    headers: etag ? { 'If-None-Match': etag } : undefined,
   });
 
   return data;
