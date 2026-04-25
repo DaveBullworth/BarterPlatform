@@ -1,6 +1,5 @@
 import type { AxiosInstance, AxiosError } from 'axios';
-import { store } from '@/app/store';
-import { rateLimitHit } from '@/app/store/appSlice';
+import { getApiClientConfig } from '../client';
 
 export const applyRateLimitInterceptor = (instance: AxiosInstance): void => {
   instance.interceptors.response.use(
@@ -8,7 +7,7 @@ export const applyRateLimitInterceptor = (instance: AxiosInstance): void => {
     (error: AxiosError) => {
       if (error.response?.status === 429) {
         const retryAfter = Number(error.response.headers['retry-after']) || 5;
-        store.dispatch(rateLimitHit(retryAfter));
+        getApiClientConfig().onRateLimit(retryAfter); // колбэк вместо прямого импорта
       }
       return Promise.reject(error);
     },

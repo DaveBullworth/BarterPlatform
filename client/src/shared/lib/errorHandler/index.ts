@@ -1,6 +1,5 @@
 import React from 'react';
 import type { AxiosError } from 'axios';
-import { notify } from './notifications';
 import type { ReactNode } from 'react';
 import type { TFunction } from 'i18next';
 import {
@@ -12,12 +11,28 @@ import {
   ImageOff,
   Crown,
 } from 'lucide-react';
-import { ERROR_TYPES } from '../constants/error-types';
-import { ResendConfirmEmailAction } from '../ui/ResendConfirmEmailAction';
-import type { ApiErrorData } from '@/types/error';
+import { notify } from '@/shared/lib';
+import { ERROR_TYPES, type ErrorTypes } from '@/shared/constants/error-types';
+
+interface ApiErrorData {
+  code?: ErrorTypes;
+  message?: string;
+  meta?: {
+    // auth
+    maxSessions?: number;
+    currentSessions?: number;
+    action?: string;
+    isBruteforce?: boolean; // новый флаг
+
+    // mail confirm / resend
+    loginOrEmail?: string;
+    waitHours?: number;
+  };
+}
 
 interface ApiErrorOptions {
   defaultMessage?: string | ReactNode; // если неизвестная ошибка
+  renderEmailNotConfirmed?: (loginOrEmail: string) => ReactNode; // вместо прямого импорта компонента — колбэк
 }
 
 export const handleApiError = (
@@ -50,10 +65,8 @@ export const handleApiError = (
           color = 'yellow';
           break;
         case ERROR_TYPES.EMAIL_NOT_CONFIRMED:
-          if (loginOrEmail) {
-            message = React.createElement(ResendConfirmEmailAction, {
-              loginOrEmail,
-            });
+          if (loginOrEmail && opts?.renderEmailNotConfirmed) {
+            message = opts.renderEmailNotConfirmed(loginOrEmail);
             autoClose = undefined;
           } else {
             message = t('auth.emailNotConfirmed');

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { applyLanguageInterceptor } from './interceptors/language.interceptor';
 import { applyAuthInterceptor } from './interceptors/auth.interceptor';
-import { applyCacheInterceptor } from './interceptors/cache.interceptor';
 import { applyRateLimitInterceptor } from './interceptors/rateLimit.interceptor';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
@@ -18,9 +17,26 @@ export const $authHost = axios.create({
   withCredentials: true,
 });
 
-// Порядок важен: language → auth → cache → rateLimit
+// Применяем перехватчики к обоим экземплярам
+// Порядок важен: language → auth → rateLimit
 applyLanguageInterceptor($host);
 applyLanguageInterceptor($authHost);
 applyAuthInterceptor($authHost, $host);
-applyCacheInterceptor($authHost);
 applyRateLimitInterceptor($authHost);
+
+// Коллбеки для использования redux actions в перехватчиках
+type ApiClientConfig = {
+  onRateLimit: (retryAfter: number) => void;
+  onLogout: () => void;
+};
+
+let clientConfig: ApiClientConfig = {
+  onRateLimit: () => {},
+  onLogout: () => {},
+};
+
+export const configureApiClient = (config: ApiClientConfig): void => {
+  clientConfig = config;
+};
+
+export const getApiClientConfig = (): ApiClientConfig => clientConfig;

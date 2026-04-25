@@ -1,7 +1,6 @@
 import type { AxiosInstance, AxiosError } from 'axios';
-import { store } from '@/app/store';
-import { logout } from '@/app/store/userSlice';
 import type { RetryableAxiosConfig } from '../types';
+import { getApiClientConfig } from '../client';
 
 export const applyAuthInterceptor = (
   authInstance: AxiosInstance,
@@ -33,13 +32,12 @@ export const applyAuthInterceptor = (
           '/auth/refresh',
         );
         localStorage.setItem('accessToken', data.accessToken);
-        original.headers = {
-          ...original.headers,
-          Authorization: `Bearer ${data.accessToken}`,
-        };
+        if (original.headers) {
+          original.headers.set('Authorization', `Bearer ${data.accessToken}`);
+        }
         return authInstance(original);
       } catch {
-        store.dispatch(logout());
+        getApiClientConfig().onLogout(); // колбэк вместо прямого импорта
         return Promise.reject(error);
       }
     },

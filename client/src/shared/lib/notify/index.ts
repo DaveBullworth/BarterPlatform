@@ -10,12 +10,12 @@ export type NotificationPosition =
   | 'bottom-center'
   | 'bottom-right';
 
-export interface NotifyOptions {
+export type NotifyOptions = {
   title?: ReactNode;
   message: ReactNode;
-  color?: string; // любой CSS цвет или ключ из theme.colors
+  color?: string;
   icon?: ReactNode;
-  autoClose?: number;
+  autoClose?: number | false;
   position?: NotificationPosition;
   loading?: boolean;
   loaderProps?: LoaderProps;
@@ -24,36 +24,12 @@ export interface NotifyOptions {
   withBorder?: boolean;
   onClose?: () => void;
   closeButtonProps?: React.HTMLAttributes<HTMLButtonElement>;
-}
+};
 
-export const notify = ({
-  title,
-  message,
-  color,
-  icon,
-  autoClose,
-  position = 'top-center',
-  loading,
-  loaderProps,
-  radius,
-  withCloseButton = true,
-  withBorder,
-  onClose,
-  closeButtonProps,
-}: NotifyOptions) => {
+export const notify = (options: NotifyOptions): void => {
   showNotification({
-    title,
-    message,
-    color,
-    icon,
-    autoClose,
-    position,
-    loading,
-    loaderProps,
-    radius,
-    withCloseButton,
-    withBorder,
-    onClose,
-    closeButtonProps,
+    position: 'top-center',
+    withCloseButton: true,
+    ...options,
   });
 };
