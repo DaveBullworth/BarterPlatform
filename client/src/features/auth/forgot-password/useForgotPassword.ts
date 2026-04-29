@@ -1,18 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { $host } from '@/shared/api';
-import { notify } from '@/shared/lib';
-import {
-  PASSWORD_RESET_REQUEST,
-  type PasswordResetRequest,
-} from '@/shared/constants/password-reset-request';
-import { handleApiError } from '@/shared/lib/errorHandler';
-
-// DTO для ответа
-interface PasswordResetRequestResponseDto {
-  result: PasswordResetRequest;
-  waitHours?: number;
-}
+import { PASSWORD_RESET_REQUEST } from '@/shared/constants/password-reset-request';
+import { notify, handleApiError } from '@/shared/lib';
+import { userApi } from '@/entities/user';
 
 type UseForgotPasswordOptions = {
   onSuccess?: () => void;
@@ -24,13 +14,7 @@ export const useForgotPassword = ({
   const { t } = useTranslation();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (email: string) => {
-      const { data } = await $host.post<PasswordResetRequestResponseDto>(
-        '/password-reset/request',
-        { email },
-      );
-      return data;
-    },
+    mutationFn: (email: string) => userApi.requestPasswordReset(email),
     onSuccess: (data) => {
       if (data.result === PASSWORD_RESET_REQUEST.SENT) {
         notify({ message: t('auth.passwordResetSent'), color: 'green' });

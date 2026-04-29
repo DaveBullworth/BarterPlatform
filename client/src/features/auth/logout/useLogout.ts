@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { $authHost } from '@/shared/api';
-import { useAuthStore } from '@/entities/user';
+
+import { useAuthStore, userApi } from '@/entities/user';
 import { notify } from '@/shared/lib';
 
 type UseLogoutOptions = {
@@ -13,7 +13,7 @@ export const useLogout = ({ onSuccess }: UseLogoutOptions = {}) => {
   const { logout } = useAuthStore();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => $authHost.post('/auth/logout'),
+    mutationFn: () => userApi.logout(),
     onSuccess: () => {
       logout();
       onSuccess?.();

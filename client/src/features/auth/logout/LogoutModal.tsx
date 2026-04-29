@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ConfirmModal } from '@/shared/ui/ConfirmModal';
-import { useLogout } from '../hooks/useLogout';
+import { useLogout } from './useLogout';
 
 type Props = {
   opened: boolean;

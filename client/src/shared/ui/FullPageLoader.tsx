@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Center, Stack, Loader, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-
-type LoadingReason = 'BOOTSTRAP' | 'RATE_LIMIT' | null;
+import {
+  LOADING_REASON,
+  type LoadingReason,
+} from '../constants/loading-reason';
 
 interface FullPageLoaderProps {
   reason?: LoadingReason;
@@ -33,7 +35,7 @@ export const FullPageLoader = ({ reason, retryIn }: FullPageLoaderProps) => {
   return (
     <Center h="100vh">
       <Stack align="center" gap="sm">
-        {reason === 'RATE_LIMIT' && (
+        {reason === LOADING_REASON.RATE_LIMIT && (
           <Text size="sm" c="dimmed" ta="center">
             {t('auth.loginRateLimit')}
           </Text>

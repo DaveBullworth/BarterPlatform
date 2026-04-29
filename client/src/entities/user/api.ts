@@ -1,20 +1,15 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { $authHost } from '@/shared/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { $host, $authHost } from '@/shared/api';
 import {
   SelfUserSchema,
   AdminUserSchema,
   PublicUserSchema,
-  UpdateSelfUserSchema,
-  UpdateAdminUserSchema,
   type SelfUser,
+  type AdminUser,
   type AnyUser,
-  type UpdateSelfUserDto,
-  type UpdateAdminUserDto,
 } from './model';
-import { AVATAR_BASE_URL } from '@/shared/constants/avatar-base-url';
-import { createEtagBuilder } from '@/shared/lib/';
+import { createEtagBuilder } from '@/shared/lib';
 
-// функция-строитель ETag из фабрики
 const toUserEtag = createEtagBuilder('user');
 
 export const userKeys = {
@@ -22,36 +17,116 @@ export const userKeys = {
   byId: (id: string) => ['user', id] as const,
 };
 
-// Fetchers
+// Fetcher-ы
 
-const fetchSelfUser = async (updatedAt?: string): Promise<SelfUser> => {
-  const etag = toUserEtag(updatedAt);
-  const { data } = await $authHost.get('/user/self', {
-    headers: etag ? { 'If-None-Match': etag } : undefined,
-  });
-  return SelfUserSchema.parse(data);
+export const userApi = {
+  getSelf: async (updatedAt?: string): Promise<SelfUser> => {
+    const etag = toUserEtag(updatedAt);
+    const { data } = await $authHost.get('/user/self', {
+      headers: etag ? { 'If-None-Match': etag } : undefined,
+    });
+    return SelfUserSchema.parse(data);
+  },
+
+  getById: async (id: string, updatedAt?: string): Promise<AnyUser> => {
+    const etag = toUserEtag(updatedAt);
+    const { data } = await $authHost.get(`/user/${id}`, {
+      headers: etag ? { 'If-None-Match': etag } : undefined,
+    });
+
+    const adminResult = AdminUserSchema.safeParse(data);
+    if (adminResult.success) return adminResult.data;
+
+    const selfResult = SelfUserSchema.safeParse(data);
+    if (selfResult.success) return selfResult.data;
+
+    return PublicUserSchema.parse(data);
+  },
+
+  updateSelf: async (dto: Record<string, unknown>): Promise<SelfUser> => {
+    const { data } = await $authHost.patch('/user/self', dto);
+    return SelfUserSchema.parse(data);
+  },
+
+  updateByAdmin: async (
+    id: string,
+    dto: Record<string, unknown>,
+  ): Promise<AdminUser> => {
+    const { data } = await $authHost.patch(`/user/${id}`, dto);
+    return AdminUserSchema.parse(data);
+  },
+
+  uploadAvatar: async (file: File, userId?: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const url = userId ? `/media/avatar?userId=${userId}` : '/media/avatar';
+    const { data } = await $authHost.post(url, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data as { message: string };
+  },
+
+  deleteAvatar: async (userId?: string) => {
+    const url = userId ? `/media/avatar?userId=${userId}` : '/media/avatar';
+    const { data } = await $authHost.delete(url);
+    return data as { message: string };
+  },
+
+  login: async (dto: {
+    loginOrEmail: string;
+    password: string;
+    remember: boolean;
+  }) => {
+    const { data } = await $host.post<{ accessToken: string }>(
+      '/auth/login',
+      dto,
+    );
+    return data.accessToken;
+  },
+
+  register: async (dto: Record<string, unknown>) => {
+    await $host.post('/user/register', dto);
+  },
+
+  logout: async () => {
+    await $authHost.post('/auth/logout');
+  },
+
+  requestDeactivation: async () => {
+    const { data } = await $authHost.post<{
+      result: string;
+      waitHours?: number;
+    }>('/deactivation/request');
+    return data;
+  },
+
+  confirmDeactivation: async (code: string) => {
+    await $authHost.post('/deactivation/confirm', { code });
+  },
+
+  requestPasswordReset: async (email: string) => {
+    const { data } = await $host.post<{
+      result: string;
+      waitHours?: number;
+    }>('/password-reset/request', { email });
+    return data;
+  },
+
+  confirmPasswordReset: async (token: string, newPassword: string) => {
+    await $host.post('/password-reset/confirm', { token, newPassword });
+  },
+
+  resendConfirmEmail: async (loginOrEmail: string) => {
+    await $host.post('/mail-confirm/resend', { loginOrEmail });
+  },
 };
 
-const fetchUserById = async (
-  id: string,
-  updatedAt?: string,
-): Promise<AnyUser> => {
-  const etag = toUserEtag(updatedAt);
-  const { data } = await $authHost.get(`/user/${id}`, {
-    headers: etag ? { 'If-None-Match': etag } : undefined,
-  });
-
-  // Пробуем распарсить от наиболее к наименее детальному
-  const adminResult = AdminUserSchema.safeParse(data);
-  if (adminResult.success) return adminResult.data;
-
-  const selfResult = SelfUserSchema.safeParse(data);
-  if (selfResult.success) return selfResult.data;
-
-  return PublicUserSchema.parse(data);
+export const getUserAvatarUrl = (userId: string, version?: number): string => {
+  const base = `${import.meta.env.VITE_API_URL}/media/avatars/${userId}`;
+  return version ? `${base}?v=${version}` : base;
 };
 
-// Хуки
+// Query хуки — только чтение
 
 export const useSelfUser = () => {
   const queryClient = useQueryClient();
@@ -59,12 +134,11 @@ export const useSelfUser = () => {
   return useQuery({
     queryKey: userKeys.self(),
     queryFn: () => {
-      // Берём updatedAt из того что уже есть в кеше
       const cached = queryClient.getQueryData<SelfUser>(userKeys.self());
-      return fetchSelfUser(cached?.updatedAt);
+      return userApi.getSelf(cached?.updatedAt);
     },
     enabled: Boolean(localStorage.getItem('accessToken')),
-    staleTime: 1000 * 60 * 5, // 5 минут
+    staleTime: 1000 * 60 * 5,
   });
 };
 
@@ -74,76 +148,10 @@ export const useUserById = (id: string | undefined) => {
   return useQuery({
     queryKey: userKeys.byId(id!),
     queryFn: () => {
-      // Берём updatedAt из того что уже есть в кеше
       const cached = queryClient.getQueryData<AnyUser>(userKeys.byId(id!));
-      return fetchUserById(id!, cached?.updatedAt);
+      return userApi.getById(id!, cached?.updatedAt);
     },
     enabled: Boolean(id),
     staleTime: 1000 * 60 * 5,
-  });
-};
-
-// Мутации
-
-export const useUpdateSelfUser = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (dto: UpdateSelfUserDto) => {
-      const validated = UpdateSelfUserSchema.parse(dto);
-      const { data } = await $authHost.patch('/user/self', validated);
-      return SelfUserSchema.parse(data);
-    },
-    onSuccess: (updatedUser) => {
-      // Обновляем кеш — компонент перерендерится автоматически
-      queryClient.setQueryData(userKeys.self(), updatedUser);
-    },
-  });
-};
-
-export const useUpdateUserByAdmin = (userId: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (dto: UpdateAdminUserDto) => {
-      const validated = UpdateAdminUserSchema.parse(dto);
-      const { data } = await $authHost.patch(`/user/${userId}`, validated);
-      return AdminUserSchema.parse(data);
-    },
-    onSuccess: (updatedUser) => {
-      queryClient.setQueryData(userKeys.byId(userId), updatedUser);
-    },
-  });
-};
-
-// Avatar — отдельные мутации, изолированные от основных данных пользователя
-
-export const getUserAvatarUrl = (userId: string, version?: number): string =>
-  version
-    ? `${AVATAR_BASE_URL}/${userId}?v=${version}`
-    : `${AVATAR_BASE_URL}/${userId}`;
-
-export const useUploadAvatar = (userId?: string) => {
-  return useMutation({
-    mutationFn: async (file: File) => {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const url = userId ? `/media/avatar?userId=${userId}` : '/media/avatar';
-      const { data } = await $authHost.post(url, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      return data as { message: string };
-    },
-  });
-};
-
-export const useDeleteAvatar = (userId?: string) => {
-  return useMutation({
-    mutationFn: async () => {
-      const url = userId ? `/media/avatar?userId=${userId}` : '/media/avatar';
-      const { data } = await $authHost.delete(url);
-      return data as { message: string };
-    },
   });
 };

@@ -8,6 +8,15 @@ export type {
   UpdateAdminUserDto,
 } from './model';
 
+// Cхемы валидации
+export {
+  SelfUserSchema,
+  AdminUserSchema,
+  PublicUserSchema,
+  UpdateSelfUserSchema,
+  UpdateAdminUserSchema,
+} from './model';
+
 // Guards и утилиты
 export {
   isSelfUser,
@@ -21,11 +30,8 @@ export {
 export {
   useSelfUser,
   useUserById,
-  useUpdateSelfUser,
-  useUpdateUserByAdmin,
-  useUploadAvatar,
-  useDeleteAvatar,
   getUserAvatarUrl,
+  userApi,
   userKeys,
 } from './api';
 
@@ -33,3 +39,5 @@ export {
 export { useAuthStore } from './store';
 // slice экспортируем отдельно — только для подключения в store
 export { default as authReducer } from './store';
+// Экшены для использования в других местах приложения
+export { authenticated, loggedOut } from './store';

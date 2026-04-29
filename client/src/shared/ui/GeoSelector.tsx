@@ -1,5 +1,5 @@
-import { Stack, Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Stack, Select } from '@mantine/core';
 import type { ReactNode } from 'react';
 import type { GeoSelectOption } from '@/entities/geography';
 
@@ -15,8 +15,6 @@ type Props = {
   regionOptions: GeoSelectOption[];
   cityOptions: GeoSelectOption[];
   districtOptions: GeoSelectOption[];
-  onRegionChange: (value: string | null) => void;
-  onCityChange: (value: string | null) => void;
   errors?: {
     regionId?: ReactNode;
     cityId?: ReactNode;
@@ -29,8 +27,6 @@ export const GeoSelector = ({
   regionOptions,
   cityOptions,
   districtOptions,
-  onRegionChange,
-  onCityChange,
   errors,
 }: Props) => {
   const { t } = useTranslation();
@@ -45,10 +41,9 @@ export const GeoSelector = ({
         clearable
         value={value.regionId || null}
         error={errors?.regionId}
-        onChange={(val) => {
-          onRegionChange(val);
-          onChange({ regionId: val ?? '', cityId: '', districtId: '' });
-        }}
+        onChange={(val) =>
+          onChange({ regionId: val ?? '', cityId: '', districtId: '' })
+        }
       />
 
       <Select
@@ -61,10 +56,9 @@ export const GeoSelector = ({
         disabled={!value.regionId}
         value={value.cityId || null}
         error={errors?.cityId}
-        onChange={(val) => {
-          onCityChange(val);
-          onChange({ ...value, cityId: val ?? '', districtId: '' });
-        }}
+        onChange={(val) =>
+          onChange({ ...value, cityId: val ?? '', districtId: '' })
+        }
       />
 
       <Select

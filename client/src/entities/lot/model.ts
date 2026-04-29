@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { LOT_STATUS } from '@/shared/constants/lot-status';
-import { enumFromObject } from '@/shared/utils/enum-from-obj.helper';
+import { enumFromObject } from '@/shared/lib';
 import type { TextFilter, IDFilter } from '@/shared/lib/filters';
 
 const GeoNodeSchema = z.object({

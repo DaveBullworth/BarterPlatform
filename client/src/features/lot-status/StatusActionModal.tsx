@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ConfirmModal } from '@/shared/ui/ConfirmModal';
-
-export type LotStatusAction = 'deactivate' | 'unarchive';
+import type { LotStatusAction } from './useLotStatus';
 
 type Props = {
   action: LotStatusAction | null;

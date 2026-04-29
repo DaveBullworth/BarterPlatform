@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Базовые переиспользуемые схемы
 export const loginSchema = z.string().min(8).max(60);
 export const passwordSchema = z.string().min(8).max(60);
-export const emailSchema = z.string().email().min(8).max(200);
+export const emailSchema = z.email().min(8).max(200);
 export const nameSchema = z.string().min(5).max(200);
 export const phoneSchema = z
   .string()

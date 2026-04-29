@@ -14,6 +14,20 @@ export type {
   PaginatedLots,
 } from './model';
 
+// Схемы
+export {
+  LotSchema,
+  LotResponseSchema,
+  LotImageSchema,
+  LotImagesResponseSchema,
+  LotMainImageSchema,
+  LotsMainImagesResponseSchema,
+  CreateLotSchema,
+  UpdateLotSchema,
+  GetLotsParamsSchema,
+  PaginatedLotsSchema,
+} from './model';
+
 // Утилиты
 export {
   getLotStatusMeta,
@@ -32,12 +46,7 @@ export {
   useLot,
   useLotImages,
   useLotsMainImages,
-  useCreateLot,
-  useUpdateLot,
-  useDeleteLot,
-  useUploadLotImage,
-  useSetPrimaryLotImage,
-  useDeleteLotImage,
   getLotOriginalImageUrl,
+  lotApi,
   lotKeys,
 } from './api';

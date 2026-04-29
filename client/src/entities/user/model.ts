@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { USER_THEMES } from '@/shared/constants/user-theme';
 import { USER_LANGUAGES } from '@/shared/constants/user-language';
-import { enumFromObject } from '@/shared/utils/enum-from-obj.helper';
+import { enumFromObject } from '@/shared/lib/';
 import type {
   TextFilter,
   BooleanFilter,
