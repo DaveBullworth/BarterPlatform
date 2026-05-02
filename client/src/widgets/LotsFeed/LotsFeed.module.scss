@@ -1,0 +1,81 @@
+.feedMeta {
+  align-items: center !important;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.pulseIcon {
+  display: inline-flex;
+}
+
+.pulseIcon[aria-expanded='false'] {
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.clickableCard {
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.clickableCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.clickableCard:focus-visible {
+  outline: 2px solid var(--mantine-color-blue-6);
+  outline-offset: 2px;
+}
+
+.gridCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.75rem;
+}
+
+.gridImageFallback {
+  min-height: 11rem;
+  justify-content: center;
+  border-radius: var(--mantine-radius-sm);
+  background: var(--mantine-color-default-hover);
+}
+
+.listImageFallback {
+  width: 80px;
+  min-width: 80px;
+  height: 80px;
+  justify-content: center;
+  border-radius: var(--mantine-radius-sm);
+  background: var(--mantine-color-default-hover);
+}
+
+.listCardBody {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.listAction {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.infoValue {
+  word-break: break-word;
+}

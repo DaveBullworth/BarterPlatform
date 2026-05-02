@@ -36,6 +36,7 @@ export {
   isLotHidden,
   resolveLotActions,
   toLotImageSrc,
+  buildLotFilters,
 } from './lib';
 
 export type { LotStatusMeta, LotActions, ImageSource } from './lib';
