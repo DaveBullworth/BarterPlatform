@@ -8,6 +8,13 @@ import type {
 } from '@/types/lot';
 import type { PaginatedResponse } from '@/types/user';
 
+const toLotEtag = (updatedAt?: string): string | undefined => {
+  if (!updatedAt) return undefined;
+  const time = Date.parse(updatedAt);
+  if (Number.isNaN(time)) return undefined;
+  return `W/"lot:${time}"`;
+};
+
 export const getLotsTaxonomy = async () => {
   const { data } = await $host.get('/lot/taxonomy');
   return data;
@@ -33,8 +40,14 @@ export const getLots = async (
   return data;
 };
 
-export const getLotById = async (id: string): Promise<LotDto> => {
-  const { data } = await $authHost.get<LotDto>(`/lot/${id}`);
+export const getLotById = async (
+  id: string,
+  updatedAt?: string,
+): Promise<LotDto> => {
+  const etag = toLotEtag(updatedAt);
+  const { data } = await $authHost.get<LotDto>(`/lot/${id}`, {
+    headers: etag ? { 'If-None-Match': etag } : undefined,
+  });
   return data;
 };
 

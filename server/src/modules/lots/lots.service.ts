@@ -1,10 +1,7 @@
 import {
-  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
-  OnModuleDestroy,
-  OnModuleInit,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
@@ -13,59 +10,26 @@ import { UserRole } from '@/database/entities/user.entity';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { CreateLotDto } from './dto/create-lot.dto';
 import { UpdateLotDto } from './dto/update-lot.dto';
-import type {
-  CategorySeed,
-  ChapterSeed,
-  SubcategorySeed,
-} from './types/taxonomy.types';
 import { LotErrorCode } from './errors/lots-error-codes';
-import { RedisService } from '@/common/services/redis/redis.service';
-import { UserErrorCode } from '../users/errors/users-error-codes';
 import { LotFiltersDto } from './dto/lotFilters.dto';
 import { LotResponseDto } from './dto/getAllLots.dto';
-import { loadSeed } from '@/common/utils/load-seed.util';
 import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query-filters.util';
-import { GeographyNodeDto } from '@/common/dtos/geo-node.dto';
 import { LotOneResponseDto } from './dto/getOneLot.dto';
-import type { Region, City, District } from '@/common/types/geo.type';
-
-const chapters = loadSeed<ChapterSeed>('src/database/seeds/chapter.json');
-const categories = loadSeed<CategorySeed>('src/database/seeds/category.json');
-const subcategories = loadSeed<SubcategorySeed>(
-  'src/database/seeds/subcategory.json',
-);
-
-const regions = loadSeed<Region>('src/database/seeds/geography_region.json');
-const cities = loadSeed<City>('src/database/seeds/geography_city.json');
-const districts = loadSeed<District>(
-  'src/database/seeds/geography_district.json',
-);
+import { LotArchiveService } from './lot-archive.service';
+import { GeographyService } from '../users/geography.service';
+import { TaxonomyService } from './taxonomy.service';
 
 @Injectable()
-export class LotsService implements OnModuleInit, OnModuleDestroy {
-  private static readonly ARCHIVE_TTL_MS = 30 * 24 * 60 * 60 * 1000;
-  private static readonly CLEANUP_INTERVAL_MS = 60 * 60 * 1000;
-  private cleanupTimer: NodeJS.Timeout | null = null;
-
+export class LotsService {
   constructor(
     @InjectRepository(LotEntity)
     private readonly lotsRepo: Repository<LotEntity>,
-    private readonly redisService: RedisService,
+    private readonly lotArchiveService: LotArchiveService,
+    private readonly geographyService: GeographyService,
+    private readonly taxonomyService: TaxonomyService,
   ) {}
 
-  onModuleInit() {
-    this.cleanupArchivedLots().catch(() => undefined);
-    this.cleanupTimer = setInterval(() => {
-      this.cleanupArchivedLots().catch(() => undefined);
-    }, LotsService.CLEANUP_INTERVAL_MS);
-  }
-
-  onModuleDestroy() {
-    if (this.cleanupTimer) {
-      clearInterval(this.cleanupTimer);
-      this.cleanupTimer = null;
-    }
-  }
+  private applyTextFilter = applyTextFilterImported<LotEntity>;
 
   private applyLotIdFilter(
     qb: SelectQueryBuilder<LotEntity>,
@@ -86,177 +50,18 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  private applyTextFilter = applyTextFilterImported<LotEntity>;
-
-  private buildGeography(lot: LotEntity) {
-    const region = regions.find((r) => r.externalId === lot.regionId);
-    const city = cities.find((c) => c.externalId === lot.cityId);
-    const district = districts.find((d) => d.externalId === lot.districtId);
-
-    const asNode = <T extends { externalId: number; name: string }>(
-      item?: T,
-    ): GeographyNodeDto | null => {
-      if (!item) return null;
-      return { id: item.externalId, name: item.name };
-    };
-
-    return {
-      region: asNode(region),
-      city: asNode(city),
-      district: asNode(district),
-    };
-  }
-
-  private validateGeography(
-    regionId: number,
-    cityId: number,
-    districtId?: number | null,
-  ) {
-    const region = regions.find((r) => r.externalId === regionId);
-    if (!region) {
-      throw new NotFoundException({
-        code: UserErrorCode.REGION_NOT_FOUND,
-        message: 'Region not found',
-      });
-    }
-
-    const city = cities.find((c) => c.externalId === cityId);
-    if (!city || city.regionId !== regionId) {
-      throw new NotFoundException({
-        code: UserErrorCode.CITY_NOT_FOUND,
-        message: 'City not found for selected region',
-      });
-    }
-
-    if (districtId == null) {
-      return;
-    }
-
-    const district = districts.find((d) => d.externalId === districtId);
-    if (!district || district.cityId !== cityId) {
-      throw new NotFoundException({
-        code: UserErrorCode.DISTRICT_NOT_FOUND,
-        message: 'District not found for selected city',
-      });
-    }
-  }
-
-  private async syncArchiveTracking(
-    lotId: string,
-    previousStatus: LotVisibilityStatus,
-    nextStatus: LotVisibilityStatus,
-  ): Promise<Date | null> {
-    if (
-      previousStatus !== LotVisibilityStatus.ARCHIVED &&
-      nextStatus === LotVisibilityStatus.ARCHIVED
-    ) {
-      return await this.redisService.markLotArchived(lotId);
-    }
-
-    if (
-      previousStatus === LotVisibilityStatus.ARCHIVED &&
-      nextStatus !== LotVisibilityStatus.ARCHIVED
-    ) {
-      await this.redisService.unmarkLotArchived(lotId);
-    }
-
-    return null;
-  }
-
-  private async cleanupArchivedLots() {
-    const threshold = new Date(Date.now() - LotsService.ARCHIVE_TTL_MS);
-    const lotIds =
-      await this.redisService.getArchivedLotIdsDueForDeletion(threshold);
-
-    if (!lotIds.length) return;
-
-    await this.lotsRepo
-      .createQueryBuilder()
-      .delete()
-      .from(LotEntity)
-      .where('id IN (:...ids)', { ids: lotIds })
-      .andWhere('visibilityStatus = :status', {
-        status: LotVisibilityStatus.ARCHIVED,
-      })
-      .execute();
-
-    await this.redisService.unmarkArchivedLots(lotIds);
-  }
-
-  getTaxonomy() {
-    return chapters.map((chapter) => ({
-      id: chapter.externalId,
-      name: chapter.name,
-      slug: chapter.slug,
-      categories: categories
-        .filter((category) => category.chapterId === chapter.externalId)
-        .map((category) => ({
-          id: category.externalId,
-          name: category.name,
-          slug: category.slug,
-          subcategories: subcategories
-            .filter(
-              (subcategory) => subcategory.categoryId === category.externalId,
-            )
-            .map((subcategory) => ({
-              id: subcategory.externalId,
-              name: subcategory.name,
-              slug: subcategory.slug,
-            })),
-        })),
-    }));
-  }
-
-  private validateTaxonomy(
-    chapterId: number,
-    categoryId: number,
-    subcategoryId?: number,
-  ) {
-    const chapter = chapters.find((item) => item.externalId === chapterId);
-    if (!chapter)
-      throw new NotFoundException({
-        code: LotErrorCode.CHAPTER_NOT_FOUND,
-        message: 'Chapter not found',
-      });
-
-    const category = categories.find((item) => item.externalId === categoryId);
-    if (!category || category.chapterId !== chapterId) {
-      throw new NotFoundException({
-        code: LotErrorCode.CATEGORY_NOT_FOUND,
-        message: 'Category not found in chapter',
-      });
-    }
-
-    // Проверяем, есть ли у категории подкатегории
-    const categorySubcategories = subcategories.filter(
-      (item) => item.categoryId === categoryId,
+  async create(dto: CreateLotDto, user: JwtPayload) {
+    this.taxonomyService.validate(
+      dto.chapterId,
+      dto.categoryId,
+      dto.subcategoryId,
     );
 
-    if (categorySubcategories.length > 0) {
-      // Если подкатегории есть, subcategoryId обязателен
-      if (subcategoryId == null) {
-        throw new ConflictException({
-          code: LotErrorCode.SUBCATEGORY_REQUIRED,
-          message: 'Subcategory must be selected for this category',
-        });
-      }
-
-      const subcategory = subcategories.find(
-        (item) => item.externalId === subcategoryId,
-      );
-      if (!subcategory || subcategory.categoryId !== categoryId) {
-        throw new NotFoundException({
-          code: LotErrorCode.SUBCATEGORY_NOT_FOUND,
-          message: 'Subcategory not found in category',
-        });
-      }
-    }
-  }
-
-  async create(dto: CreateLotDto, user: JwtPayload) {
-    this.validateTaxonomy(dto.chapterId, dto.categoryId, dto.subcategoryId);
-
-    this.validateGeography(dto.regionId, dto.cityId, dto.districtId ?? null);
+    this.geographyService.validate(
+      dto.regionId,
+      dto.cityId,
+      dto.districtId ?? null,
+    );
 
     const lot = this.lotsRepo.create({
       userId: user.sub,
@@ -341,7 +146,11 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
   }
 
   private toResponseDto(lot: LotEntity): LotResponseDto {
-    const geo = this.buildGeography(lot);
+    const geo = this.geographyService.build({
+      regionId: lot.regionId,
+      cityId: lot.cityId,
+      districtId: lot.districtId ?? null,
+    });
 
     return {
       id: lot.id,
@@ -391,7 +200,7 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     let archivationDate: Date | null = null;
 
     if (lot.visibilityStatus === LotVisibilityStatus.ARCHIVED) {
-      archivationDate = await this.redisService.getLotArchivationDate(lot.id);
+      archivationDate = await this.lotArchiveService.getArchivationDate(lot.id);
     }
 
     return {
@@ -440,10 +249,14 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     const nextDistrictId =
       dto.districtId !== undefined ? dto.districtId : lot.districtId;
 
-    this.validateTaxonomy(chapterId, categoryId, subcategoryId);
+    this.taxonomyService.validate(chapterId, categoryId, subcategoryId);
 
     if (nextRegionId && nextCityId) {
-      this.validateGeography(nextRegionId, nextCityId, nextDistrictId ?? null);
+      this.geographyService.validate(
+        nextRegionId,
+        nextCityId,
+        nextDistrictId ?? null,
+      );
     }
 
     Object.assign(lot, {
@@ -461,7 +274,7 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
     });
 
     const savedLot = await this.lotsRepo.save(lot);
-    let archivationDate = await this.syncArchiveTracking(
+    let archivationDate = await this.lotArchiveService.sync(
       savedLot.id,
       previousStatus,
       savedLot.visibilityStatus,
@@ -471,12 +284,16 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       previousStatus === LotVisibilityStatus.ARCHIVED &&
       savedLot.visibilityStatus === LotVisibilityStatus.ARCHIVED
     ) {
-      archivationDate = await this.redisService.getLotArchivationDate(
+      archivationDate = await this.lotArchiveService.getArchivationDate(
         savedLot.id,
       );
     }
 
-    const geo = this.buildGeography(lot);
+    const geo = this.geographyService.build({
+      regionId: lot.regionId,
+      cityId: lot.cityId,
+      districtId: lot.districtId ?? null,
+    });
 
     return {
       ...savedLot,
@@ -503,7 +320,7 @@ export class LotsService implements OnModuleInit, OnModuleDestroy {
       });
 
     await this.lotsRepo.remove(lot);
-    await this.redisService.unmarkLotArchived(lot.id);
+    await this.lotArchiveService.remove(lot.id);
 
     return { success: true };
   }
