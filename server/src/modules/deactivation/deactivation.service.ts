@@ -6,7 +6,6 @@ import { createHash } from 'crypto';
 import { UserEntity } from '@/database/entities/user.entity';
 import { AccountDeactivationCodeEntity } from '@/database/entities/account_deactivation_code.entity';
 import { MailService } from '@/modules/mail/mail.service';
-import { RedisService } from '@/common/services/redis/redis.service';
 import { DeactivationPolicy } from './policies/deactivation.policy';
 import { DeactivationRequestResult } from './dto/deactivationRequestDto';
 
@@ -23,7 +22,6 @@ export class DeactivationService {
     private readonly codeRepo: Repository<AccountDeactivationCodeEntity>,
 
     private readonly mailService: MailService,
-    private readonly redisService: RedisService,
     private readonly policy: DeactivationPolicy,
   ) {}
 
@@ -123,12 +121,6 @@ export class DeactivationService {
     // код использован
     code.used = true;
     await this.codeRepo.save(code);
-
-    // Обновляем Redis после сохранения
-    await this.redisService.updateUserTimestamp(
-      code.user.id,
-      code.user.updatedAt,
-    );
   }
 
   // ---------------- helpers ----------------

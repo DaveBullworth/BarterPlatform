@@ -7,13 +7,13 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { Repository, Not, IsNull } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RedisService } from '@/common/services/redis/redis.service';
 import { SessionPolicyService } from './policies/session-policy.service';
 import { LoginBruteforcePolicy } from './policies/login-bruteforce.policy';
 import { UserEntity } from '../../database/entities/user.entity';
 import { SessionEntity } from '../../database/entities/session.entity';
-import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { AuthErrorCode } from './errors/auth-error-codes';
+import { RedisSessionService } from '@/common/services/redis/redis.session';
+import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly sessionPolicy: SessionPolicyService,
     private readonly loginBruteforcePolicy: LoginBruteforcePolicy,
-    private readonly redisService: RedisService,
+    private readonly redisSessionService: RedisSessionService,
   ) {}
 
   // Логин
@@ -116,7 +116,7 @@ export class AuthService {
       existingSession.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
       await this.sessionRepo.save(existingSession);
 
-      await this.redisService.setSession(
+      await this.redisSessionService.setSession(
         existingSession.id,
         {
           userId: user.id,
@@ -149,7 +149,7 @@ export class AuthService {
     session.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
     await this.sessionRepo.save(session);
 
-    await this.redisService.setSession(
+    await this.redisSessionService.setSession(
       session.id,
       {
         userId: user.id,
@@ -267,7 +267,7 @@ export class AuthService {
         // Сохраняем сессию с новым статусом с БД
         await this.sessionRepo.save(session);
         // Удаляем сессию из Redis
-        await this.redisService.revokeSession(session.id);
+        await this.redisSessionService.revokeSession(session.id);
         return;
       }
     }

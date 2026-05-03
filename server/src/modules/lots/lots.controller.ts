@@ -8,6 +8,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -23,6 +24,8 @@ import {
   ApiQuery,
   ApiResponse,
   ApiTags,
+  ApiHeader,
+  ApiNotModifiedResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
 import { Authenticated } from '../auth/auth.decorator';
@@ -37,11 +40,16 @@ import { UserErrorCode } from '../users/errors/users-error-codes';
 import { GetLotsQueryDto, LotResponseDto } from './dto/getAllLots.dto';
 import { LotFiltersDto } from './dto/lotFilters.dto';
 import { OptionalAuthGuard } from '../auth/auth.optinal.guard';
+import { LotUpdatedInterceptor } from './interceptors/lot.cache.interceptor';
+import { TaxonomyService } from './taxonomy.service';
 
 @Controller('lot')
 @ApiTags('Lot')
 export class LotsController {
-  constructor(private readonly lotsService: LotsService) {}
+  constructor(
+    private readonly lotsService: LotsService,
+    private readonly taxonomyService: TaxonomyService,
+  ) {}
 
   @Get('taxonomy')
   @ApiOperation({
@@ -55,7 +63,7 @@ export class LotsController {
     description: 'Внутренняя ошибка сервера',
   })
   getTaxonomy() {
-    return this.lotsService.getTaxonomy();
+    return this.taxonomyService.getTree();
   }
 
   @ApiBearerAuth()
@@ -203,6 +211,7 @@ export class LotsController {
 
   @ApiBearerAuth()
   @UseGuards(OptionalAuthGuard)
+  @UseInterceptors(LotUpdatedInterceptor)
   @Get(':id')
   @ApiOperation({
     summary: 'Получить лот по ID',
@@ -237,6 +246,14 @@ export class LotsController {
   })
   @ApiInternalServerErrorResponse({
     description: 'Внутренняя ошибка сервера',
+  })
+  @ApiHeader({
+    name: 'If-None-Match',
+    required: false,
+    description: 'ETag из предыдущего ответа лота',
+  })
+  @ApiNotModifiedResponse({
+    description: 'Лот не изменился (совпал ETag)',
   })
   getOne(@Param('id') id: string, @CurrentUser() user?: JwtPayload) {
     return this.lotsService.getOne(id, user);

@@ -1,4 +1,5 @@
 import { Response, NextFunction } from 'express';
+import { randomUUID } from 'crypto';
 import { AppRequest } from '@/common/interfaces/app-request.interface';
 import { httpLogger } from './logger.scopes';
 
@@ -7,6 +8,14 @@ export function requestLogger(
   res: Response,
   next: NextFunction,
 ) {
+  const headerRequestId = req.headers['x-request-id'];
+  const correlationId =
+    (typeof headerRequestId === 'string' && headerRequestId.trim()) ||
+    randomUUID();
+
+  req.requestId = correlationId;
+  res.setHeader('X-Request-Id', correlationId);
+
   const start = Date.now();
 
   res.on('finish', () => {
@@ -14,6 +23,7 @@ export function requestLogger(
       // Собираем информацию о запросе
       const info = {
         method: req.method,
+        requestId: correlationId,
         url: req.originalUrl,
         statusCode: res.statusCode,
         durationMs: Date.now() - start,
@@ -64,7 +74,14 @@ function maskSensitive(
 function filterHeaders(
   headers: Record<string, unknown>,
 ): Record<string, unknown> {
-  const allowed: string[] = ['content-type', 'accept', 'host', 'origin'];
+  const allowed: string[] = [
+    'content-type',
+    'accept',
+    'host',
+    'origin',
+    'if-none-match',
+    'x-request-id',
+  ];
   const out: Record<string, unknown> = {};
   for (const key of allowed) {
     if (key in headers) out[key] = headers[key];
