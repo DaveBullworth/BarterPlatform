@@ -1,3 +1,4 @@
+import type { UserRole } from '@/shared/constants/user-role';
 import type { SelfUser, AdminUser, PublicUser, AnyUser } from './model';
 
 // Type guards — были в profile/components/guard.ts
@@ -18,7 +19,7 @@ export type ProfileMode = 'self' | 'admin' | 'public';
 export const resolveProfileMode = (params: {
   viewedId: string | undefined;
   currentUserId: string | undefined;
-  currentUserRole: string | undefined;
+  currentUserRole: UserRole | undefined;
 }): ProfileMode => {
   const { viewedId, currentUserId, currentUserRole } = params;
 

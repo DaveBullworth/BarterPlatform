@@ -12,10 +12,10 @@ import {
 } from '@/entities/lot';
 import { useCategorySelection } from '@/features/category-filter';
 import { useGeoFilter } from '@/features/geo-filter';
+import { useSearchQuery } from '@/features/search-filter';
 import { useNavigation } from '@/shared/lib/navigation';
 import { notify } from '@/shared/lib/notify';
-import { ErrorStub } from '@/shared/ui/ErrorStub';
-import { ConfirmModal } from '@/shared/ui/ConfirmModal';
+import { ErrorStub, ConfirmModal } from '@/shared/ui';
 import { getApiErrorStatusCode } from '@/shared/lib/';
 import { LotCardGrid } from './LotCardGrid';
 import { LotCardList } from './LotCardList';
@@ -38,8 +38,7 @@ export const LotsFeed = () => {
   const { filter: geoFilter } = useGeoFilter();
 
   // Строим фильтры
-  // TODO: searchQuery из URL params когда переедет searchFilterSlice
-  const searchQuery = ''; // временно
+  const { query: searchQuery } = useSearchQuery();
 
   const filters = useMemo(
     () => buildLotFilters(geoFilter, selection, searchQuery),

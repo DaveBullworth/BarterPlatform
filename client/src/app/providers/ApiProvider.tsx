@@ -10,10 +10,7 @@ export const ApiProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     configureApiClient({
       onRateLimit: (retryAfter) => dispatch(rateLimitHit(retryAfter)),
-      onLogout: () => {
-        localStorage.removeItem('accessToken');
-        dispatch(loggedOut());
-      },
+      onLogout: () => dispatch(loggedOut()),
     });
   }, [dispatch]);
 

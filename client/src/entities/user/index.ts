@@ -6,6 +6,7 @@ export type {
   AnyUser,
   UpdateSelfUserDto,
   UpdateAdminUserDto,
+  UserFilters,
 } from './model';
 
 // Cхемы валидации

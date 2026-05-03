@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Checkbox, Drawer, Group, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { TaxonomyTree } from '@/shared/ui/TaxonomyTree';
+import { TaxonomyTree } from '@/shared/ui';
 import { useTaxonomy, type CategorySelection } from '@/entities/taxonomy';
 import { SubcategoryItem } from './SubcategoryItem';
 import { CategoriesSkeleton } from './CategoriesSkeleton';

@@ -1,6 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '@/app/store';
+import type { UserRole } from '@/shared/constants/user-role';
 
 // Минимум — только то что нужно глобально
 type AuthState = {
@@ -54,7 +55,7 @@ export const useAuthStore = () => {
     currentUser: state.currentUserId
       ? {
           id: state.currentUserId,
-          role: state.currentUserRole,
+          role: state.currentUserRole as UserRole | undefined,
         }
       : null,
     authenticate: (payload: { id: string; role: string }) =>

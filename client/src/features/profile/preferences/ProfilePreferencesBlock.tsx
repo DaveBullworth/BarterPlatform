@@ -11,8 +11,7 @@ import {
 import { Palette, Languages, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
-import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
+import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 import { buildAlertProps } from '@/shared/lib';
 import { usePreferences } from './usePreferences';
 import { PreferenceRow } from './PreferenceRow';
@@ -109,7 +108,7 @@ export const ProfilePreferencesBlock = ({ user }: Props) => {
                   <ChevronRight size={18} />
                 </Center>
                 <Text fw={600} miw={32} w="10%" ta="center">
-                  {localLanguage.toUpperCase()}
+                  {localLanguage?.toUpperCase()}
                 </Text>
               </Group>
             )}

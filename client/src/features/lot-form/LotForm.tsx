@@ -3,7 +3,7 @@ import { Stack, Group, Button } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { UseFormReturnType } from '@mantine/form';
 
-import { ConfirmModal } from '@/shared/ui/ConfirmModal';
+import { ConfirmModal } from '@/shared/ui';
 import { LotStatusActions } from '@/features/lot-status';
 import { useNavigation } from '@/shared/lib/navigation';
 import { TaxonomySection } from './sections/TaxonomySection';
@@ -13,7 +13,7 @@ import { BasicInfoSection } from './sections/BasicInfoSection';
 import type { LotFormValues } from './model';
 import type { RenderedImage } from './useLotImages';
 import type { Lot } from '@/entities/lot';
-import type { GeoValue } from '@/shared/ui/GeoSelector';
+import type { GeoValue } from '@/shared/ui';
 import type { Category } from '@/entities/taxonomy';
 
 type Props = {

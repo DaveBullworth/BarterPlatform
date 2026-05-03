@@ -12,8 +12,7 @@ import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import { User, AtSign, Mail, LockKeyhole } from 'lucide-react';
 
-import { PhoneInput } from '@/shared/ui/PhoneInput';
-import { ConfirmModal } from '@/shared/ui/ConfirmModal';
+import { PhoneInput, ConfirmModal } from '@/shared/ui';
 import { createMantineValidators } from '@/shared/lib/validators';
 import {
   useRegionOptions,

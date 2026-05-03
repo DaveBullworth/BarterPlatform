@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ConfirmModal } from '@/shared/ui/ConfirmModal';
+import { ConfirmModal } from '@/shared/ui';
 import { useLogout } from './useLogout';
 
 type Props = {

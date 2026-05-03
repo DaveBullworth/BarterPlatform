@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Mail, User, AtSign, LockKeyhole } from 'lucide-react';
 
 import { createMantineValidators } from '@/shared/lib/validators';
-import { PhoneInput } from '@/shared/ui/PhoneInput';
+import { PhoneInput } from '@/shared/ui';
 import {
   useRegionOptions,
   useCityOptions,

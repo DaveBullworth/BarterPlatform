@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal, Text } from '@mantine/core';
 
-import { ConfirmModal } from '@/shared/ui/ConfirmModal';
+import { ConfirmModal } from '@/shared/ui';
 import { ProfileEditForm } from './ProfileEditForm';
 import type { SelfUser, AdminUser } from '@/entities/user';
 import type { UserRole } from '@/shared/constants/user-role';

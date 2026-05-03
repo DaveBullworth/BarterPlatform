@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { $host, $authHost } from '@/shared/api';
+import { $host, $authHost, type PaginatedResponse } from '@/shared/api';
 import {
   SelfUserSchema,
   AdminUserSchema,
@@ -41,6 +41,22 @@ export const userApi = {
     if (selfResult.success) return selfResult.data;
 
     return PublicUserSchema.parse(data);
+  },
+
+  getAll: async (
+    params: {
+      page?: number;
+      limit?: number;
+      sorting?: string;
+      filters?: string;
+    },
+    signal?: AbortSignal,
+  ) => {
+    const { data } = await $authHost.get<PaginatedResponse<AdminUser>>(
+      '/user',
+      { params, signal },
+    );
+    return data;
   },
 
   updateSelf: async (dto: Record<string, unknown>): Promise<SelfUser> => {
@@ -118,6 +134,12 @@ export const userApi = {
 
   resendConfirmEmail: async (loginOrEmail: string) => {
     await $host.post('/mail-confirm/resend', { loginOrEmail });
+  },
+
+  confirmEmail: async (token: string) => {
+    await $host.get('/mail-confirm/confirm-email', {
+      params: { token },
+    });
   },
 };
 

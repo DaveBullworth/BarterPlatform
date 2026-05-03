@@ -15,33 +15,30 @@ import { useNavigation } from '@/shared/lib/navigation';
 import { openAuthRequiredModal } from '@/features/auth';
 import { useCategorySelection } from '@/features/category-filter';
 import { GeoFilterButton } from '@/features/geo-filter';
+import { useSearchQuery } from '@/features/search-filter';
 import { UserMenu } from './UserMenu';
 
 type Props = {
   desktopOpened: boolean;
   onToggleDesktop: () => void;
   onOpenCategories: () => void;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
 };
 
 export const DesktopHeader = ({
   desktopOpened,
   onToggleDesktop,
   onOpenCategories,
-  searchQuery,
-  onSearchChange,
 }: Props) => {
   const { t } = useTranslation();
   const { toRoot, toLotCreate, toAuth } = useNavigation();
   const { isAuthenticated } = useAuthStore();
   const { selection } = useCategorySelection();
-
-  const [localSearch, setLocalSearch] = useState(searchQuery);
+  const { query, setQuery } = useSearchQuery();
+  const [localSearch, setLocalSearch] = useState(query);
 
   const handleSearch = () => {
-    if (localSearch !== searchQuery) {
-      onSearchChange(localSearch);
+    if (localSearch !== query) {
+      setQuery(localSearch);
     }
   };
 

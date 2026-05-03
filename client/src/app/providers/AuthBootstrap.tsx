@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import { FullPageLoader } from '@/shared/ui/FullPageLoader';
+import { FullPageLoader } from '@/shared/ui';
 import { useBootstrap } from '@/features/auth/bootstrap';
 import { LOADING_REASON } from '@/shared/constants/loading-reason';
 

@@ -2,7 +2,7 @@ import type { GeoFilterValue } from '@/shared/lib/geoFilter';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Stack, Group, Button } from '@mantine/core';
-import { GeoSelector } from '@/shared/ui/GeoSelector';
+import { GeoSelector } from '@/shared/ui';
 import {
   useRegionOptions,
   useCityOptions,

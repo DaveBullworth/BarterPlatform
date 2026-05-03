@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { AppShell as MantineAppShell } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Outlet } from 'react-router-dom';
@@ -12,10 +11,6 @@ export const AppShell = () => {
   const [categoriesOpened, { open: openCategories, close: closeCategories }] =
     useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 48em)');
-
-  // search управляется через URL в будущем,
-  // пока простой state для передачи в header
-  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <MantineAppShell
@@ -33,8 +28,6 @@ export const AppShell = () => {
           desktopOpened={desktopOpened}
           onToggleDesktop={toggleDesktop}
           onOpenCategories={openCategories}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
         />
         <MobileHeader />
       </MantineAppShell.Header>

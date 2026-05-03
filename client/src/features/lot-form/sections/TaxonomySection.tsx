@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 
-import { TaxonomyTree } from '@/shared/ui/TaxonomyTree';
+import { TaxonomyTree } from '@/shared/ui';
 import { CategoriesSkeleton } from '@/features/category-filter/CategoriesSkeleton';
 import { SubcategoryItem } from '@/features/category-filter/SubcategoryItem';
 import { useTaxonomy, type Category } from '@/entities/taxonomy';

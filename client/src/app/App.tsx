@@ -1,5 +1,3 @@
-import { AppProviders } from './app/providers/AppProviders';
+import { AppProvider } from './providers/AppProvider';
 
-export const App = () => {
-  return <AppProviders />;
-};
+export const App = () => <AppProvider />;

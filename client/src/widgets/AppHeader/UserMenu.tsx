@@ -6,8 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthStore, useSelfUser } from '@/entities/user';
 import { useNavigation } from '@/shared/lib/navigation';
 import { LogoutModal } from '@/features/auth';
-import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
-import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
+import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 import { NotificationsDrawer } from './NotificationsDrawer';
 
 export const UserMenu = () => {

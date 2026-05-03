@@ -23,6 +23,14 @@ export const useLotImages = (serverImages: LotImage[] = []) => {
   const [newImages, setNewImages] = useState<NewImage[]>([]);
   const [deletedIds, setDeletedIds] = useState<string[]>([]);
   const [pendingPrimaryId, setPendingPrimaryId] = useState<string | null>(null);
+  const [initialized, setInitialized] = useState(serverImages.length > 0);
+
+  // Единственный оправданный момент:
+  // serverImages пришли после первого рендера (async загрузка)
+  if (serverImages.length > 0 && !initialized) {
+    setExistingImages(serverImages);
+    setInitialized(true);
+  }
 
   // Синхронизация при загрузке данных (edit mode)
   // Вызывается один раз когда serverImages загрузились
