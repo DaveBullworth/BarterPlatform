@@ -1,0 +1,20 @@
+.avatarBox {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid #dee2e6; /* аналог gray[3] */
+  transition:
+    border-color 0.3s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    border-color: #228be6; /* голубой blue[5] */
+    transform: scale(1.05); /* лёгкое увеличение */
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

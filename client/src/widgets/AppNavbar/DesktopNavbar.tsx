@@ -1,0 +1,62 @@
+import { Stack, NavLink } from '@mantine/core';
+import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import { useAuthStore } from '@/entities/user';
+import { useNavigation } from '@/shared/lib/navigation';
+import { openAuthRequiredModal } from '@/features/auth';
+import { NAV_ACCESS } from '@/shared/constants/nav-access';
+import { USER_ROLES } from '@/shared/constants/user-role';
+import { NAV_ITEMS } from './navigation';
+
+export const DesktopNavbar = () => {
+  const location = useLocation();
+  const { t } = useTranslation();
+  const { isAuthenticated, currentUser } = useAuthStore();
+  const { toAuth } = useNavigation();
+
+  const visibleItems = NAV_ITEMS.filter((item) => {
+    if (item.access === NAV_ACCESS.PUBLIC) return true;
+    if (item.access === NAV_ACCESS.AUTH) return true;
+    if (item.access === NAV_ACCESS.ADMIN) {
+      return isAuthenticated && currentUser?.role === USER_ROLES.ADMIN;
+    }
+    return false;
+  });
+
+  return (
+    <Stack gap={4}>
+      {visibleItems.map((item) => {
+        const Icon = item.icon;
+        const active =
+          item.to === '/'
+            ? location.pathname === '/'
+            : location.pathname.startsWith(item.to);
+
+        return (
+          <NavLink
+            key={item.key}
+            fw={600}
+            label={t(`nav.${item.key}`)}
+            leftSection={<Icon size={16} />}
+            active={active}
+            component={Link}
+            to={item.to}
+            description={
+              item.description
+                ? t(item.description({ isAuthenticated }) as string)
+                : undefined
+            }
+            rightSection={item.rightSection?.({ isAuthenticated })}
+            onClick={(e) => {
+              if (item.access === NAV_ACCESS.AUTH && !isAuthenticated) {
+                e.preventDefault();
+                openAuthRequiredModal(toAuth, t);
+              }
+            }}
+          />
+        );
+      })}
+    </Stack>
+  );
+};

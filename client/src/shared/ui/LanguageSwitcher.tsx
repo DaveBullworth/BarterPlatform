@@ -1,9 +1,7 @@
 import { Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { Languages } from 'lucide-react';
-import { USER_LANGUAGES } from '@/shared/constants/user-language.ts';
-
-import '@/app/styles/globals.scss';
+import { USER_LANGUAGES } from '@/shared/constants/user-language';
 
 export const LanguageSwitcher = () => {
   const { i18n } = useTranslation();

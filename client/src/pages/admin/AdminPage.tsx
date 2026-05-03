@@ -1,66 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Stack,
-  Title,
-  Text,
-  Loader,
-  Center,
-  Popover,
-  List,
-  ActionIcon,
-  Group,
-  Tooltip,
-} from '@mantine/core';
+import { Stack, Title, Text, Loader, Center } from '@mantine/core';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { BadgeInfo, ListRestart, Save, SaveOff } from 'lucide-react';
-import type { SortingState } from '@tanstack/react-table';
 
-import { AdminTable } from './components/AdminTable';
-import { AdminTablePagination } from './components/AdminTablePagination';
-import { AdminTableFilters } from './components/AdminTableFilters';
-import { getAllUsers } from '@/http/user';
+import { userApi, useAuthStore } from '@/entities/user';
+import { useNavigation } from '@/shared/lib/navigation';
 import { TABLES } from '@/shared/constants/tables';
-import type { AdminTableRef } from './components/AdminTable';
-import type { UserFilters } from '@/types/filters';
-
-import styles from './AdminPage.module.scss';
-
-// Ключ для получения сохраненных сортировок для данной таблицы
-const SORTING_STORAGE_KEY = `adminTable:${TABLES.USERS}:sorting`;
-const FILTERS_STORAGE_KEY = `adminTable:${TABLES.USERS}:filters`;
+import { AdminTableFilters, useAdminFilters } from '@/features/admin/filters';
+import {
+  AdminTable,
+  AdminTableInfo,
+  AdminTablePagination,
+  AdminTableActions,
+} from '@/features/admin/table';
+import { useTableSorting, useColumnSizing } from '@/features/admin/table';
+import { getUserColumns } from '@/features/admin/columns';
 
 export const AdminPage = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuthStore();
+  const { toUser, toProfile } = useNavigation();
 
-  const tableRef = React.useRef<AdminTableRef>(null);
-
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [sorting, setSorting] = useState<SortingState>(() => {
-    try {
-      return JSON.parse(localStorage.getItem(SORTING_STORAGE_KEY) || '[]');
-    } catch {
-      return [];
-    }
-  });
-  const [filters, setFilters] = useState<UserFilters>(() => {
-    try {
-      const raw = localStorage.getItem(FILTERS_STORAGE_KEY);
-      if (!raw) return {};
 
-      const parsed = JSON.parse(raw);
-      return typeof parsed === 'object' && parsed !== null ? parsed : {};
-    } catch {
-      return {};
-    }
-  });
+  const { sorting, onSortingChange, resetSorting, hasSorting } =
+    useTableSorting(TABLES.USERS);
+
+  const { columnSizing, setColumnSizing, saveSizing, resetSizing } =
+    useColumnSizing(TABLES.USERS);
+
+  const {
+    committed: filters,
+    local: localFilters,
+    setLocal: setLocalFilters,
+    activeCount: activeFiltersCount,
+    apply: applyFilters,
+    reset: resetFilters,
+  } = useAdminFilters(TABLES.USERS);
+
+  const columns = useMemo(() => getUserColumns(t), [t]);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin', 'users', page, pageSize, sorting, filters],
     queryFn: ({ signal }) =>
-      getAllUsers(
+      userApi.getAll(
         {
           page,
           limit: pageSize,
@@ -74,144 +58,79 @@ export const AdminPage = () => {
     placeholderData: keepPreviousData,
   });
 
-  const handleResetSorting = () => {
-    setSorting([]); // очищаем состояние сортировки в компоненте
+  const handleRowClick = (row: { id: string }) => {
+    if (row.id === currentUser?.id) {
+      toProfile();
+    } else {
+      toUser(row.id);
+    }
   };
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      const id = requestAnimationFrame(() => setLoading(false));
-      return () => cancelAnimationFrame(id); // чистка
-    } else {
-      const id = setTimeout(() => setLoading(true), 0);
-      return () => clearTimeout(id);
-    }
-  }, [isLoading, data]);
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setPage(1);
+  };
 
-  // Сохраняем в localStorage только при размонтировании страницы
-  useEffect(() => {
-    return () => {
-      localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters));
-      localStorage.setItem(SORTING_STORAGE_KEY, JSON.stringify(sorting));
-    };
-  }, [sorting, filters]);
+  if (isLoading && !data) {
+    return (
+      <Center py="xl">
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
-    <Stack gap="md" w={'100%'}>
+    <Stack gap="md" w="100%">
       <Title order={2}>{t('admin.title')}</Title>
 
-      <div className={styles.adminContainer}>
-        <Text c="dimmed">{t('admin.description')}</Text>
-        <Popover position="right" width={220} withArrow>
-          <Popover.Target>
-            <ActionIcon
-              variant="light"
-              color="blue"
-              size="sm"
-              className={styles.pulseIcon}
-            >
-              <BadgeInfo size={22} />
-            </ActionIcon>
-          </Popover.Target>
-
-          <Popover.Dropdown p={'0.5rem'}>
-            <List spacing="xs" size="xs">
-              <List.Item>{t('admin.sort.multi')}</List.Item>
-              <List.Item>{t('admin.sort.asc')}</List.Item>
-              <List.Item>{t('admin.sort.desc')}</List.Item>
-              <List.Item>{t('admin.sort.reset')}</List.Item>
-              <List.Item>{t('admin.sort.pageSizeTip')}</List.Item>
-            </List>
-          </Popover.Dropdown>
-        </Popover>
-      </div>
-
-      {loading && (
-        <Center py="xl">
-          <Loader />
-        </Center>
-      )}
+      <AdminTableInfo />
 
       {isError && <Text c="red">{t('admin.loadFailed')}</Text>}
 
-      {!loading && (
-        <AdminTableFilters
-          value={filters}
-          onChange={(next) => {
-            setFilters(next);
-            setPage(1);
-          }}
-        />
-      )}
+      <AdminTableFilters
+        local={localFilters}
+        onChange={setLocalFilters}
+        activeCount={activeFiltersCount}
+        onApply={() => {
+          applyFilters();
+          setPage(1);
+        }}
+        onReset={() => {
+          resetFilters();
+          setPage(1);
+        }}
+      />
 
-      {!loading && data && (
+      {data && (
         <>
-          <Group justify="flex-start">
-            {/* Сброс сортировки */}
-            {sorting && sorting.length > 0 && (
-              <Tooltip label={t('admin.resetSorting')} withArrow position="top">
-                <ActionIcon
-                  variant="light"
-                  size="sm"
-                  color="lime"
-                  onClick={handleResetSorting}
-                  disabled={!sorting || sorting.length === 0}
-                >
-                  <ListRestart size={18} />
-                </ActionIcon>
-              </Tooltip>
-            )}
-            <Tooltip
-              label={t('admin.saveColumnsPreset')}
-              withArrow
-              position="top"
-            >
-              <ActionIcon
-                variant="light"
-                size="sm"
-                onClick={() => tableRef.current?.saveColumnSizing()}
-              >
-                <Save size={18} />
-              </ActionIcon>
-            </Tooltip>
-            <Tooltip
-              label={t('admin.resetColumnsPreset')}
-              withArrow
-              position="top"
-            >
-              <ActionIcon
-                variant="light"
-                size="sm"
-                color="red"
-                onClick={() => tableRef.current?.resetColumnSizing()}
-              >
-                <SaveOff size={18} />
-              </ActionIcon>
-            </Tooltip>
-          </Group>
+          <AdminTableActions
+            hasSorting={hasSorting}
+            onResetSorting={resetSorting}
+            onSaveSizing={saveSizing}
+            onResetSizing={resetSizing}
+          />
+
           <AdminTable
-            ref={tableRef}
-            tableKey={TABLES.USERS}
+            columns={columns}
             data={data.data}
             page={page}
             pageSize={pageSize}
             sorting={sorting}
             onSortingChange={(updater) => {
-              setSorting((old) =>
-                typeof updater === 'function' ? updater(old) : updater,
-              );
+              onSortingChange(updater);
               setPage(1);
             }}
+            columnSizing={columnSizing}
+            onColumnSizingChange={setColumnSizing}
+            onRowClick={handleRowClick}
           />
+
           <AdminTablePagination
             page={page}
             pageSize={pageSize}
             total={data.total}
             onPageChange={setPage}
-            onPageSizeChange={(size) => {
-              setPageSize(size);
-              setPage(1); // сброс на первую страницу при смене размера
-            }}
+            onPageSizeChange={handlePageSizeChange}
           />
         </>
       )}

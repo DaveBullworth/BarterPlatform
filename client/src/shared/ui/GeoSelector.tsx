@@ -1,6 +1,7 @@
-import { Stack, Select } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { Stack, Select } from '@mantine/core';
 import type { ReactNode } from 'react';
+import type { GeoSelectOption } from '@/entities/geography';
 
 export type GeoValue = {
   regionId: string;
@@ -8,22 +9,12 @@ export type GeoValue = {
   districtId: string;
 };
 
-export type SelectOption = {
-  value: string;
-  label: string;
-};
-
 type Props = {
   value: GeoValue;
   onChange: (value: GeoValue) => void;
-
-  regionOptions: SelectOption[];
-  cityOptions: SelectOption[];
-  districtOptions: SelectOption[];
-
-  onRegionChange: (value: string | null) => void;
-  onCityChange: (value: string | null) => void;
-
+  regionOptions: GeoSelectOption[];
+  cityOptions: GeoSelectOption[];
+  districtOptions: GeoSelectOption[];
   errors?: {
     regionId?: ReactNode;
     cityId?: ReactNode;
@@ -36,8 +27,6 @@ export const GeoSelector = ({
   regionOptions,
   cityOptions,
   districtOptions,
-  onRegionChange,
-  onCityChange,
   errors,
 }: Props) => {
   const { t } = useTranslation();
@@ -50,17 +39,11 @@ export const GeoSelector = ({
         data={regionOptions}
         searchable
         clearable
-        value={value.regionId}
+        value={value.regionId || null}
         error={errors?.regionId}
-        onChange={(val) => {
-          onRegionChange(val);
-
-          onChange({
-            regionId: val || '',
-            cityId: '',
-            districtId: '',
-          });
-        }}
+        onChange={(val) =>
+          onChange({ regionId: val ?? '', cityId: '', districtId: '' })
+        }
       />
 
       <Select
@@ -71,17 +54,11 @@ export const GeoSelector = ({
         searchable
         clearable
         disabled={!value.regionId}
-        value={value.cityId}
+        value={value.cityId || null}
         error={errors?.cityId}
-        onChange={(val) => {
-          onCityChange(val);
-
-          onChange({
-            ...value,
-            cityId: val || '',
-            districtId: '',
-          });
-        }}
+        onChange={(val) =>
+          onChange({ ...value, cityId: val ?? '', districtId: '' })
+        }
       />
 
       <Select
@@ -98,13 +75,8 @@ export const GeoSelector = ({
         searchable
         clearable
         disabled={!value.cityId || districtOptions.length === 0}
-        value={value.districtId}
-        onChange={(val) =>
-          onChange({
-            ...value,
-            districtId: val || '',
-          })
-        }
+        value={value.districtId || null}
+        onChange={(val) => onChange({ ...value, districtId: val ?? '' })}
       />
     </Stack>
   );

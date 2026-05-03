@@ -1,0 +1,1 @@
+export { ProfileHeaderBlock } from './ProfileHeaderBlock';

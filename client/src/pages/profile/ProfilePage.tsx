@@ -1,203 +1,102 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
 import { Title, Stack, Loader, Center, Button } from '@mantine/core';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
-import type { AxiosError } from 'axios';
 
-import { getSelfUser, getUserById } from '@/http/user';
-import { ProfileEditModal } from './components/ProfileEditModal';
-import { ProfileHeaderBlock } from './components/ProfileHeaderBlock';
-import { ProfileContactsBlock } from './components/ProfileContactsBlock';
-import { ProfilePreferencesBlock } from './components/ProfilePreferencesBlock';
-import { AccountDeactivationModal } from './components/AccountDeactivationModal';
-import { handleApiError } from '@/shared/utils/handleApiError';
-import { isSelfUser, isAdminUser } from './components/guard';
 import {
-  selectCurrentUser,
-  selectUserById,
-  setCurrentUser,
-  upsertUser,
-} from '@/store/userSlice';
+  useAuthStore,
+  useSelfUser,
+  useUserById,
+  isSelfUser,
+  isAdminUser,
+  resolveProfileMode,
+  type AnyUser,
+  type SelfUser,
+  type AdminUser,
+} from '@/entities/user';
 import { USER_ROLES } from '@/shared/constants/user-role';
-import type { ApiErrorData } from '@/types/error';
-import type { SelfUserDto, AdminUserDto, PublicUserDto } from '@/types/user';
-import type { RootState } from '@/store';
+import { ProfileHeaderBlock } from '@/features/profile/header';
+import { ProfileContactsBlock } from '@/features/profile/contacts';
+import { ProfilePreferencesBlock } from '@/features/profile/preferences';
+import { ProfileEditModal } from '@/features/profile/edit';
+import { AccountDeactivationModal } from '@/features/profile/deactivation';
 
-export type Mode = 'self' | 'admin' | 'public';
-
-export const UserProfilePage = () => {
+export const ProfilePage = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
+  const { currentUser } = useAuthStore();
 
-  const currentUser = useSelector((s: RootState) => selectCurrentUser(s));
-  const viewedUser = useSelector((s: RootState) => selectUserById(id ?? '')(s));
+  const mode = resolveProfileMode({
+    viewedId: id,
+    currentUserId: currentUser?.id,
+    currentUserRole: currentUser?.role,
+  });
 
-  const [user, setUser] = useState<
-    SelfUserDto | AdminUserDto | PublicUserDto | null
-  >(null);
-  const [loading, setLoading] = useState(true);
+  // Выбираем нужный query в зависимости от mode
+  const selfQuery = useSelfUser();
+  const otherQuery = useUserById(mode !== 'self' ? id : undefined);
 
-  const [deactivationModalOpened, setDeactivationModalOpened] = useState(false);
-  const [editProfileModalOpened, setEditProfileModalOpened] = useState(false);
+  const query = mode === 'self' ? selfQuery : otherQuery;
+  const user = query.data as AnyUser | undefined;
 
-  // Determine mode with priority: self -> admin -> public
-  const mode: Mode = (() => {
-    if (!id) return 'self';
-    if (currentUser && currentUser.id === id) return 'self';
-    if (currentUser && currentUser.role === USER_ROLES.ADMIN) return 'admin';
-    return 'public';
-  })();
+  const [editOpened, setEditOpened] = useState(false);
+  const [deactivationOpened, setDeactivationOpened] = useState(false);
 
-  // initialize from redux cache
-  useEffect(() => {
-    if (mode === 'self' && currentUser) {
-      setUser(currentUser as SelfUserDto);
-      setLoading(false);
-      return;
-    }
-
-    if (viewedUser) {
-      setUser(viewedUser as SelfUserDto | AdminUserDto | PublicUserDto);
-      setLoading(false);
-    }
-  }, [mode, currentUser, viewedUser]);
-
-  const handleUserUpdated = (updatedUser: SelfUserDto | AdminUserDto) => {
-    // if self — update current user, otherwise upsert
-    if (mode === 'self') {
-      dispatch(
-        setCurrentUser({
-          ...updatedUser,
-          updatedAt: updatedUser.updatedAt ?? new Date().toISOString(),
-        }),
-      );
-    } else if (updatedUser.id) {
-      dispatch(
-        upsertUser({
-          ...updatedUser,
-          updatedAt: updatedUser.updatedAt ?? new Date().toISOString(),
-        }),
-      );
-    }
-
-    setUser(updatedUser);
-  };
-
-  // Загружаем данные с сервера
-  const fetchUser = useCallback(async () => {
-    if (!id && mode === 'public') {
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    try {
-      if (mode === 'self') {
-        const cachedUpdatedAt = currentUser?.updatedAt;
-        const result = await getSelfUser(cachedUpdatedAt);
-
-        dispatch(setCurrentUser(result));
-        setUser(result);
-        return;
-      }
-
-      // viewing other user
-      const cachedUpdatedAt = viewedUser?.updatedAt;
-      const result = await getUserById(id!, cachedUpdatedAt);
-
-      // persist to store
-      dispatch(upsertUser(result));
-
-      setUser(result);
-    } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorData>;
-
-      // Проверяем, что это ошибка с ответом от сервера
-      if (axiosError.response?.data) {
-        const status = axiosError.response.status;
-
-        // Игнорируем `304` - это попадание в кеш
-        if (status !== 304) {
-          handleApiError(err, t, {
-            defaultMessage: t('profile.error'),
-          });
-        }
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [id, mode, currentUser?.updatedAt, viewedUser?.updatedAt, dispatch, t]);
-
-  useEffect(() => {
-    // Always attempt to fetch/validate on mount and when id changes
-    fetchUser();
-  }, [fetchUser]);
-
-  if (loading) {
+  if (query.isLoading) {
     return (
-      <Center w={'100%'}>
+      <Center w="100%">
         <Loader />
       </Center>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
+
+  const canEdit = mode === 'self' || mode === 'admin';
+  const canDeactivate =
+    currentUser?.role === USER_ROLES.USER && mode === 'self';
 
   return (
-    <Stack gap="lg" maw={860} w={'100%'} mx="auto">
+    <Stack gap="lg" maw={860} w="100%" mx="auto">
       <Title order={2}>{t('profile.title')}</Title>
 
       <ProfileHeaderBlock user={user} mode={mode} />
       <ProfileContactsBlock user={user} role={currentUser?.role} mode={mode} />
 
       {mode === 'self' && isSelfUser(user) && (
-        <ProfilePreferencesBlock
-          user={user}
-          onPreferencesSaved={handleUserUpdated}
+        <ProfilePreferencesBlock user={user} />
+      )}
+
+      {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
+        <Button onClick={() => setEditOpened(true)} maw="100%">
+          {t('profile.editData')}
+        </Button>
+      )}
+
+      {canDeactivate && (
+        <Button
+          color="red"
+          onClick={() => setDeactivationOpened(true)}
+          maw={600}
+        >
+          {t('deactivation.deactivate')}
+        </Button>
+      )}
+
+      {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
+        <ProfileEditModal
+          user={user as SelfUser | AdminUser}
+          role={currentUser?.role}
+          opened={editOpened}
+          onClose={() => setEditOpened(false)}
+          onUpdated={() => setEditOpened(false)}
         />
       )}
 
-      {/* Кнопка для открытия модалки изменения данных профиля */}
-      {['self', 'admin'].includes(mode) &&
-        (isSelfUser(user) || isAdminUser(user)) && (
-          <Button onClick={() => setEditProfileModalOpened(true)} maw={'100%'}>
-            {t('profile.editData')}
-          </Button>
-        )}
-
-      {/* Кнопка для открытия модалки деактивации */}
-      {currentUser?.role === USER_ROLES.USER &&
-        mode === 'self' &&
-        isSelfUser(user) && (
-          <Button
-            color="red"
-            onClick={() => setDeactivationModalOpened(true)}
-            maw={600}
-          >
-            {t('deactivation.deactivate')}
-          </Button>
-        )}
-
-      {/* Модалка деактивации*/}
       <AccountDeactivationModal
-        opened={deactivationModalOpened}
-        onClose={() => setDeactivationModalOpened(false)}
+        opened={deactivationOpened}
+        onClose={() => setDeactivationOpened(false)}
       />
-
-      {/* Модалка изменения данных профиля*/}
-      {['self', 'admin'].includes(mode) &&
-        (isSelfUser(user) || isAdminUser(user)) && (
-          <ProfileEditModal
-            user={user}
-            role={currentUser?.role}
-            opened={editProfileModalOpened}
-            onClose={() => setEditProfileModalOpened(false)}
-            onUpdated={handleUserUpdated}
-          />
-        )}
     </Stack>
   );
 };

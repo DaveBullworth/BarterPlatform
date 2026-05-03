@@ -1,138 +1,33 @@
-import { useState } from 'react';
-import { useSearchParams, Navigate, useNavigate } from 'react-router-dom';
-import {
-  Button,
-  PasswordInput,
-  Stack,
-  Title,
-  Text,
-  Center,
-  Paper,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { Navigate } from 'react-router-dom';
+import { Center, Paper, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import type { AxiosError } from 'axios';
 
-import { confirmPasswordReset } from '@/http/password.reset';
-import { notify } from '@/shared/utils/notifications';
-import { handleApiError } from '@/shared/utils/handleApiError';
-import { goToAuth } from '@/shared/utils/navigation';
-import { createLengthValidator } from '@/shared/utils/validators';
+import { ResetPasswordForm } from '@/features/auth/reset-password';
+import { useResetPassword } from '@/features/auth/reset-password';
 import { ROUTES } from '@/shared/constants/routes';
-import type { ApiErrorData } from '@/types/error';
-
-type ResetPasswordFormValues = {
-  password: string;
-  passwordRepeat: string;
-};
 
 export const ResetPasswordPage = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
-  const [loading, setLoading] = useState(false);
+  const { hasToken } = useResetPassword();
 
-  const form = useForm<ResetPasswordFormValues>({
-    initialValues: {
-      password: '',
-      passwordRepeat: '',
-    },
-
-    validate: {
-      password: createLengthValidator(t, 'auth.password', {
-        min: 8,
-        max: 60,
-      }),
-
-      passwordRepeat: (value, values) =>
-        value !== values.password ? t('validation.passwordsDoNotMatch') : null,
-    },
-  });
-
-  // если токена нет — сразу уводим
-  if (!token) {
+  if (!hasToken) {
     return <Navigate to={ROUTES.AUTH} replace />;
   }
-
-  const handleSubmit = async (values: ResetPasswordFormValues) => {
-    try {
-      setLoading(true);
-
-      await confirmPasswordReset({
-        token,
-        newPassword: values.password,
-      });
-
-      notify({
-        title: t('auth.passwordResetSuccessTitle'),
-        message: t('auth.passwordResetSuccessMessage'),
-        color: 'green',
-      });
-
-      goToAuth(navigate, true);
-    } catch (err: unknown) {
-      const axiosError = err as AxiosError<ApiErrorData>;
-      // Проверяем, что это ошибка с ответом от сервера
-      if (axiosError.response?.status) {
-        const status = axiosError.response.status;
-        // 400 — намеренно общий ответ (security)
-        if (status === 400) {
-          notify({
-            title: t('auth.passwordResetErrorTitle'),
-            message: t('auth.passwordResetErrorMessage'),
-            color: 'red',
-          });
-        } else {
-          // всё остальное — технические ошибки
-          handleApiError(err, t, {
-            defaultMessage: t('auth.passwordResetFailed'),
-          });
-        }
-      } else {
-        handleApiError(err, t, { defaultMessage: t('deactivation.failed') });
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <Center mih="100vh" px={{ base: 'sm', xs: 'md', sm: 'xl' }}>
       <Paper
         withBorder
         radius="md"
+        shadow="sm"
         p={{ base: 'sm', xs: 'md', sm: 'xl' }}
         w="100%"
         maw={420}
-        shadow="sm"
       >
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="md">
-            <Title order={2}>{t('auth.resetPassword')}</Title>
-
-            <Text c="dimmed">{t('auth.resetPasswordDescription')}</Text>
-
-            <PasswordInput
-              label={t('auth.newPassword')}
-              placeholder={t('auth.passwordPlaceholder')}
-              {...form.getInputProps('password')}
-            />
-
-            <PasswordInput
-              label={t('auth.repeatPassword')}
-              placeholder={t('auth.repeatPassword')}
-              {...form.getInputProps('passwordRepeat')}
-              onPaste={(e) => e.preventDefault()}
-              onDrop={(e) => e.preventDefault()}
-              onContextMenu={(e) => e.preventDefault()}
-            />
-
-            <Button type="submit" loading={loading}>
-              {t('auth.setNewPassword')}
-            </Button>
-          </Stack>
-        </form>
+        <Title order={2} mb="md">
+          {t('auth.resetPassword')}
+        </Title>
+        <ResetPasswordForm />
       </Paper>
     </Center>
   );

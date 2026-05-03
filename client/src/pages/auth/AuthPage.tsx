@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Container, Stack, Title, Card, Group } from '@mantine/core';
-import { LoginForm } from './components/LoginForm';
-import { RegisterScreen } from './components/RegisterScreen';
-import { LanguageSwitcher } from '@/shared/ui/LanguageSwitcher';
-import { ThemeSwitcher } from '@/shared/ui/ThemeSwitcher';
+import { useTranslation } from 'react-i18next';
 
-import styles from './AuthPage.module.scss';
+import { LoginForm } from '@/features/auth/login';
+import { RegisterForm } from '@/features/auth/register';
+import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 
 type AuthMode = 'login' | 'register';
 
@@ -15,9 +13,13 @@ export const AuthPage = () => {
   const [mode, setMode] = useState<AuthMode>('login');
 
   return (
-    <Container size={420} my="auto" className={styles.container}>
-      <Stack gap="md" className={styles.stack}>
-        <Card withBorder radius="md" p="lg" className={styles.card}>
+    <Container
+      size={420}
+      my="auto"
+      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
+    >
+      <Stack gap="md" w="100%">
+        <Card withBorder radius="md" p="lg" bg="var(--mantine-color-body)">
           <Title order={3} ta="center" mb="md">
             {mode === 'login' ? t('auth.signin') : t('auth.registration')}
           </Title>
@@ -25,9 +27,10 @@ export const AuthPage = () => {
           {mode === 'login' ? (
             <LoginForm onRegister={() => setMode('register')} />
           ) : (
-            <RegisterScreen onBackToLogin={() => setMode('login')} />
+            <RegisterForm onBackToLogin={() => setMode('login')} />
           )}
         </Card>
+
         <Group gap="sm" grow>
           <LanguageSwitcher />
           <ThemeSwitcher />

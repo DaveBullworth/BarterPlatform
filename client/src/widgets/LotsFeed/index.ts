@@ -1,0 +1,1 @@
+export { LotsFeed } from './LotsFeed';

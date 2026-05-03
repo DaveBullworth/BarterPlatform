@@ -1,44 +1,38 @@
-import { useEffect, useState, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Center, Stack, Text, Title, Loader } from '@mantine/core';
 import { CircleCheckBig, CircleOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from '@tanstack/react-query';
 
-import { goToAuth } from '@/shared/utils/navigation';
-import { confirmEmail } from '@/http/mail.confirm';
+import { useNavigation } from '@/shared/lib/navigation';
+import { userApi } from '@/entities/user';
 
 type Status = 'loading' | 'success' | 'error';
 
 export const MailConfirmPage = () => {
   const { t } = useTranslation();
+  const { toAuth } = useNavigation();
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-
   const token = searchParams.get('token');
-
   const hasRequestedRef = useRef(false);
 
-  // начальное состояние вычисляется синхронно
   const [status, setStatus] = useState<Status>(token ? 'loading' : 'error');
 
+  const { mutate } = useMutation({
+    mutationFn: (token: string) => userApi.confirmEmail(token),
+    onSuccess: () => {
+      setStatus('success');
+      setTimeout(toAuth, 4000);
+    },
+    onError: () => setStatus('error'),
+  });
+
   useEffect(() => {
-    if (!token) return;
-    if (hasRequestedRef.current) return;
-
+    if (!token || hasRequestedRef.current) return;
     hasRequestedRef.current = true;
-
-    confirmEmail(token)
-      .then(() => {
-        setStatus('success');
-
-        setTimeout(() => {
-          goToAuth(navigate);
-        }, 4000);
-      })
-      .catch(() => {
-        setStatus('error');
-      });
-  }, [token, navigate]);
+    mutate(token);
+  }, [token, mutate]);
 
   return (
     <Center h="100%">

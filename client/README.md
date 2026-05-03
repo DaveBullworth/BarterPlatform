@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+## FSD
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Feature-Sliced Design
 
-Currently, two official plugins are available:
+> Новая предполагаемая структура
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── app/                          # Инициализация приложения
+│   ├── providers/                # MantineProvider, QueryProvider, RouterProvider
+│   ├── router/                   # routes.tsx, guards
+│   └── store/                    # Redux store (только то что действительно global)
+│
+├── pages/                        # Страницы = точки входа маршрутов
+│   ├── auth/
+│   ├── feed/
+│   ├── lot/
+│   ├── lot-form/
+│   ├── profile/
+│   └── admin/
+│
+├── widgets/                      # Самодостаточные блоки UI
+│   ├── AppHeader/
+│   ├── AppNavbar/
+│   ├── LotCard/
+│   ├── LotsFeed/
+│   └── TaxonomyTree/
+│
+├── features/                     # Конкретные юзер-флоу
+│   ├── auth/
+│   │   ├── login/
+│   │   └── register/
+│   ├── lot/
+│   │   ├── create/
+│   │   ├── edit/
+│   │   └── status-change/
+│   ├── profile/
+│   │   ├── edit/
+│   │   └── avatar/
+│   └── geo-filter/
+│
+├── entities/                     # Доменные сущности
+│   ├── user/
+│   │   ├── api.ts                # useUserQuery, useSelfUserQuery
+│   │   ├── model.ts              # Zod схемы, типы
+│   │   ├── store.ts              # userSlice (только auth state)
+│   │   └── index.ts
+│   ├── lot/
+│   │   ├── api.ts
+│   │   ├── model.ts
+│   │   └── index.ts
+│   ├── taxonomy/
+│   │   ├── api.ts
+│   │   ├── store.ts
+│   │   └── index.ts
+│   └── geography/
+│       ├── api.ts                # useRegions, useCities, useDistricts
+│       ├── model.ts
+│       └── index.ts
+│
+└── shared/                       # Переиспользуемые примитивы
+    ├── api/                      # axios instances, interceptors
+    ├── ui/                       # Button, Modal, ConfirmModal — только dumb компоненты
+    ├── lib/                      # validators (zod), formatters, cn()
+    ├── hooks/                    # useDisclosure, useTheme — только generic
+    ├── constants/                # routes, roles, themes
+    └── i18n/                     # ресурсы переводов
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
