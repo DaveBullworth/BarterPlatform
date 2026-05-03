@@ -2,7 +2,7 @@ import { Badge, Box, Divider, Group, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './ProfileContactsBlock.module.scss';
+import styles from '../Profile.module.scss';
 
 type InfoRowProps = {
   icon: ReactNode;

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { $host, $authHost, type PaginatedResponse } from '@/shared/api';
 import {
   SelfUserSchema,
@@ -7,6 +7,7 @@ import {
   type SelfUser,
   type AdminUser,
   type AnyUser,
+  type UpdateSelfUserDto,
 } from './model';
 import { createEtagBuilder } from '@/shared/lib';
 
@@ -175,5 +176,30 @@ export const useUserById = (id: string | undefined) => {
     },
     enabled: Boolean(id),
     staleTime: 1000 * 60 * 5,
+  });
+};
+
+// Mutation хуки
+
+export const useUpdateSelfUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (dto: UpdateSelfUserDto) => userApi.updateSelf(dto),
+    onSuccess: (updatedUser) => {
+      queryClient.setQueryData(userKeys.self(), updatedUser);
+    },
+  });
+};
+
+export const useUploadAvatar = (userId?: string) => {
+  return useMutation({
+    mutationFn: (file: File) => userApi.uploadAvatar(file, userId),
+  });
+};
+
+export const useDeleteAvatar = (userId?: string) => {
+  return useMutation({
+    mutationFn: () => userApi.deleteAvatar(userId),
   });
 };

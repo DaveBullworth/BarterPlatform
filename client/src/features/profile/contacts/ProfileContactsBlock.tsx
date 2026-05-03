@@ -19,7 +19,7 @@ import { InfoRow } from './InfoRow';
 import type { AnyUser, ProfileMode } from '@/entities/user';
 import type { UserRole } from '@/shared/constants/user-role';
 
-import styles from './ProfileContactsBlock.module.scss';
+import styles from '../Profile.module.scss';
 
 type Props = {
   user: AnyUser;

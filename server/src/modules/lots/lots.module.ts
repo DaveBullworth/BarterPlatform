@@ -8,6 +8,8 @@ import { RedisModule } from '../redis/redis.module';
 import { UsersModule } from '../users/users.module';
 import { LotUpdatedInterceptor } from './interceptors/lot.cache.interceptor';
 import { TaxonomyService } from './taxonomy.service';
+import { LotArchiveService } from './lot-archive.service';
+import { LotArchiveCleanupService } from './lot-archive-cleanup.service';
 
 @Module({
   imports: [
@@ -17,7 +19,13 @@ import { TaxonomyService } from './taxonomy.service';
     UsersModule,
   ],
   controllers: [LotsController],
-  providers: [LotsService, TaxonomyService, LotUpdatedInterceptor],
+  providers: [
+    LotsService,
+    TaxonomyService,
+    LotArchiveService,
+    LotArchiveCleanupService,
+    LotUpdatedInterceptor,
+  ],
   exports: [LotsService],
 })
 export class LotsModule {}

@@ -8,7 +8,6 @@ import { AppMantineProvider } from './providers/MantineProvider';
 import { ApiProvider } from './providers/ApiProvider';
 import { App } from './App';
 
-import './styles/reset.scss';
 import './styles/globals.scss';
 import './styles/variables.scss';
 

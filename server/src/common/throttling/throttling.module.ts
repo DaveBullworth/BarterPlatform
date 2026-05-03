@@ -11,6 +11,7 @@ import { AppThrottlerGuard } from './app-throttler.guard';
   imports: [
     RedisModule,
     ThrottlerModule.forRootAsync({
+      imports: [RedisModule],
       inject: [RedisService],
       useFactory: (redisService: RedisService) => ({
         storage: new RedisThrottlerStorage(redisService),

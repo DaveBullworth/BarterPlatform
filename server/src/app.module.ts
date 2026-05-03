@@ -15,7 +15,6 @@ import { LotsModule } from './modules/lots/lots.module';
 import { UserVersionSubscriber } from './database/subscribers/user-version.subscriber';
 import { LotVersionSubscriber } from './database/subscribers/lot-version.subscriber';
 import { ThrottlingModule } from './common/throttling/throttling.module';
-import { GeoModule } from './modules/geo/geo.module';
 
 @Module({
   imports: [
@@ -56,7 +55,6 @@ import { GeoModule } from './modules/geo/geo.module';
     DeactivationModule,
     LotsModule,
     ThrottlingModule,
-    GeoModule,
   ],
   providers: [UserVersionSubscriber, LotVersionSubscriber],
 })

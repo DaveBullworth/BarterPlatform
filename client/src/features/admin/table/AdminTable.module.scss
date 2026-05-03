@@ -1,0 +1,72 @@
+.adminContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .pulseIcon {
+    display: inline-block;
+  }
+
+  .pulseIcon[aria-expanded='false'] {
+    animation: pulse 1.2s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+  }
+}
+
+.tableWrapper {
+  background-color: var(--mantine-color-background); // адаптивный фон
+  border-radius: 12px;
+  box-shadow: var(--mantine-shadow-md); // тень из темы
+  overflow-x: auto;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: var(--mantine-shadow-lg);
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed; /* фиксированные колонки */
+    th,
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; /* чтобы длинный текст не переносился */
+
+      .resizer {
+        position: absolute;
+        right: 0;
+        top: 4px;
+        bottom: 4px;
+        width: 8px;
+        cursor: col-resize;
+      }
+
+      .resizer:hover {
+        background: rgba(0, 0, 0, 0.06);
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
+
+  .sortedAsc {
+    outline: 2px dashed green;
+    outline-offset: -2px; /* рамка не добавляет размер */
+    border-radius: 6px;
+  }
+
+  .sortedDesc {
+    outline: 2px dashed red;
+    outline-offset: -2px;
+    border-radius: 6px;
+  }
+}

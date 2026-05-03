@@ -31,6 +31,9 @@ export {
 export {
   useSelfUser,
   useUserById,
+  useUpdateSelfUser,
+  useUploadAvatar,
+  useDeleteAvatar,
   getUserAvatarUrl,
   userApi,
   userKeys,

@@ -4,7 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { Badge, Divider, Group, Popover, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
 
-import styles from './ProfilePreferencesBlock.module.scss';
+import styles from '../Profile.module.scss';
 
 type PreferenceRowProps = {
   icon: ReactNode;

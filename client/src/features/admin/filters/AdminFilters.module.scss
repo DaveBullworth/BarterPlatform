@@ -1,0 +1,37 @@
+@use '../../../app/styles/variables.scss' as vars;
+
+.filtersPanel {
+  @media (max-width: vars.$breakpoint-sm) {
+    :global(.mantine-Accordion-content) {
+      padding: 0.5rem;
+    }
+  }
+
+  .textFilter {
+    @media (max-width: vars.$breakpoint-sm) {
+      gap: 0.5rem;
+      div {
+        max-width: unset;
+      }
+    }
+  }
+
+  .booleanFilter {
+    @media (max-width: vars.$breakpoint-sm) {
+      div {
+        max-width: unset;
+      }
+    }
+  }
+
+  .filterAction {
+    justify-content: flex-end;
+    @media (max-width: vars.$breakpoint-sm) {
+      justify-content: space-between;
+      gap: 0;
+      button {
+        width: 50%;
+      }
+    }
+  }
+}

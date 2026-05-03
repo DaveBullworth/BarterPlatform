@@ -18,7 +18,7 @@ import { PreferenceRow } from './PreferenceRow';
 import { THEME_ICON_MAP } from '@/shared/constants/theme-icons-map';
 import type { SelfUser } from '@/entities/user';
 
-import styles from './ProfilePreferencesBlock.module.scss';
+import styles from '../Profile.module.scss';
 
 type Props = {
   user: SelfUser;
