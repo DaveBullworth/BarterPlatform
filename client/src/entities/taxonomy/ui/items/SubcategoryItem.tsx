@@ -18,7 +18,7 @@ export const SubcategoryItem = ({ subcategory, selected, onSelect }: Props) => {
         padding: '4px 10px',
         backgroundColor: selected
           ? 'var(--mantine-color-blue-0)'
-          : 'var(--mantine-color-white)',
+          : 'transparent',
       }}
     >
       <Text size="sm">{subcategory.name}</Text>

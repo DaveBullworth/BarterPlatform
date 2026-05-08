@@ -32,7 +32,7 @@ export const CategoryItem = ({
           padding: '6px 10px',
           backgroundColor: selected
             ? 'var(--mantine-color-blue-0)'
-            : 'var(--mantine-color-white)',
+            : 'transparent',
         }}
       >
         <Group justify="space-between" wrap="nowrap">

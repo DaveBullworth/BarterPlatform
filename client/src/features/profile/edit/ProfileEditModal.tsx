@@ -36,6 +36,7 @@ export const ProfileEditModal = ({
 
   const handleSuccess = (updatedUser: SelfUser | AdminUser) => {
     onUpdated(updatedUser);
+    setHasChanges(false);
     onClose();
   };
 
@@ -66,7 +67,6 @@ export const ProfileEditModal = ({
         opened={discardOpen}
         onCancel={() => setDiscardOpen(false)}
         onConfirm={() => {
-          setHasChanges(false);
           setDiscardOpen(false);
           onClose();
         }}

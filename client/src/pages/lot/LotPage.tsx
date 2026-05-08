@@ -8,7 +8,7 @@ import {
   Title,
 } from '@mantine/core';
 import { ArrowLeft } from 'lucide-react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
@@ -24,20 +24,44 @@ import {
 } from '@/entities/lot';
 import { resolveBreadcrumbs, useTaxonomy } from '@/entities/taxonomy';
 import { useAuthStore } from '@/entities/user';
+import { openAuthRequiredModal } from '@/features/auth';
 import { USER_ROLES } from '@/shared/constants/user-role';
-import { ErrorStub } from '@/shared/ui';
+import { ConfirmModal, ErrorStub } from '@/shared/ui';
 import { getApiErrorStatusCode, useNavigation } from '@/shared/lib';
+import { notify } from '@/shared/lib/notify';
 import { LotActions } from '@/widgets/LotActions';
 
 export const LotPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { back } = useNavigation();
-  const { currentUser } = useAuthStore();
+  const { back, toAuth } = useNavigation();
+  const { currentUser, isAuthenticated } = useAuthStore();
   const { data: taxonomy = [] } = useTaxonomy();
 
   const { data: lot, isLoading, isError, error } = useLot(id);
   const { data: images = [] } = useLotImages(id);
+
+  const [exchangeOpened, setExchangeOpened] = useState(false);
+
+  const handleExchangeClick = () => {
+    if (!isAuthenticated) {
+      openAuthRequiredModal(toAuth, t);
+      return;
+    }
+    setExchangeOpened(true);
+  };
+
+  const handleConfirmExchange = () => {
+    if (!lot) return;
+    notify({
+      title: t('common.success'),
+      message: t('feed.exchange.success', {
+        title: lot.generalDescription,
+      }),
+      color: 'green',
+    });
+    setExchangeOpened(false);
+  };
 
   const breadcrumbs = useMemo(() => {
     if (!lot) return [];
@@ -100,7 +124,12 @@ export const LotPage = () => {
         >
           {t('common.back')}
         </Button>
-        <LotActions lot={lot} actions={actions} isAdmin={isAdmin} />
+        <Group gap="xs">
+          <Button variant="light" onClick={handleExchangeClick}>
+            {t('feed.exchange.action')}
+          </Button>
+          <LotActions lot={lot} actions={actions} isAdmin={isAdmin} />
+        </Group>
       </Group>
 
       <LotImagesCarousel images={images} />
@@ -112,6 +141,17 @@ export const LotPage = () => {
       />
 
       {lot.quantity !== 1 && <LotQuantity quantity={lot.quantity} />}
+
+      <ConfirmModal
+        opened={exchangeOpened}
+        onConfirm={handleConfirmExchange}
+        onCancel={() => setExchangeOpened(false)}
+        title={t('feed.exchange.title')}
+        message={t('feed.exchange.confirm')}
+        confirmLabel={t('lotForm.actions.confirm')}
+        cancelLabel={t('lotForm.actions.cancel')}
+        confirmColor="blue"
+      />
     </Stack>
   );
 };

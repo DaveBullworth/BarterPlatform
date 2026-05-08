@@ -10,6 +10,8 @@ import {
   toLotImageSrc,
   type LotResponse,
 } from '@/entities/lot';
+import { useAuthStore } from '@/entities/user';
+import { openAuthRequiredModal } from '@/features/auth';
 import { useCategorySelection } from '@/features/category-filter';
 import { useGeoFilter } from '@/features/geo-filter';
 import { useSearchQuery } from '@/features/search-filter';
@@ -29,7 +31,8 @@ type Props = {
 
 export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
   const { t, i18n } = useTranslation();
-  const { toLotView } = useNavigation();
+  const { toLotView, toAuth } = useNavigation();
+  const { isAuthenticated } = useAuthStore();
   const isMobile = useMediaQuery('(max-width: 48em)');
   const isWide = useMediaQuery('(min-width: 90em)');
 
@@ -37,6 +40,14 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
   const [page, setPage] = useState(1);
   const [limitValue, setLimitValue] = useState<LimitOption>('5');
   const [exchangeLot, setExchangeLot] = useState<LotResponse | null>(null);
+
+  const handleExchange = (lot: LotResponse) => {
+    if (!isAuthenticated) {
+      openAuthRequiredModal(toAuth, t);
+      return;
+    }
+    setExchangeLot(lot);
+  };
 
   const limit = Number(limitValue);
   const { selection } = useCategorySelection();
@@ -140,7 +151,7 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                 imageSrc={imageMap[lot.id] ?? null}
                 locale={i18n.language}
                 onOpen={toLotView}
-                onExchange={setExchangeLot}
+                onExchange={handleExchange}
               />
             ))}
           </SimpleGrid>
@@ -155,7 +166,7 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                 imageSrc={imageMap[lot.id] ?? null}
                 locale={i18n.language}
                 onOpen={toLotView}
-                onExchange={setExchangeLot}
+                onExchange={handleExchange}
               />
             ))}
           </Stack>

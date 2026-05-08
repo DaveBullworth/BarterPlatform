@@ -330,18 +330,26 @@ export class MediaService {
           image.id,
           'compressed',
         );
-        const binary = await fs.readFile(compressedPath);
-
-        return {
-          imageId: image.id,
-          isPrimary: image.isPrimary,
-          mimeType: 'image/png',
-          data: binary.toString('base64'),
-        };
+        try {
+          const binary = await fs.readFile(compressedPath);
+          return {
+            imageId: image.id,
+            isPrimary: image.isPrimary,
+            mimeType: 'image/png',
+            data: binary.toString('base64'),
+          };
+        } catch (err) {
+          if ((err as NodeJS.ErrnoException)?.code !== 'ENOENT') throw err;
+          logger.warn(
+            `Lot image file missing on read: ${compressedPath}`,
+            err instanceof Error ? { stack: err.stack } : undefined,
+          );
+          return null;
+        }
       }),
     );
 
-    return { lotId, images: payload };
+    return { lotId, images: payload.filter((item) => item !== null) };
   }
 
   async getLotsMainImagesTiny(lotIds: string[]) {
@@ -367,14 +375,27 @@ export class MediaService {
         }
 
         const tinyPath = await this.getLotImageFile(mainImage.id, 'tiny');
-        const binary = await fs.readFile(tinyPath);
-
-        return {
-          lotId,
-          imageId: mainImage.id,
-          mimeType: 'image/png',
-          data: binary.toString('base64'),
-        };
+        try {
+          const binary = await fs.readFile(tinyPath);
+          return {
+            lotId,
+            imageId: mainImage.id,
+            mimeType: 'image/png',
+            data: binary.toString('base64'),
+          };
+        } catch (err) {
+          if ((err as NodeJS.ErrnoException)?.code !== 'ENOENT') throw err;
+          logger.warn(
+            `Lot image file missing on read: ${tinyPath}`,
+            err instanceof Error ? { stack: err.stack } : undefined,
+          );
+          return {
+            lotId,
+            imageId: null,
+            mimeType: null,
+            data: null,
+          };
+        }
       }),
     );
 
