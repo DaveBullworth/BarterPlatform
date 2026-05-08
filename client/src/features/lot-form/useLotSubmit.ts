@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 import { lotKeys, lotApi, LOT_STATUS, type Lot } from '@/entities/lot';
-import { notify, handleApiError, useNavigation } from '@/shared/lib';
+import { notify, handleApiError } from '@/shared/lib';
 import type { LotFormValues } from './model';
 import type { NewImage } from './useLotImages';
 
@@ -11,7 +11,7 @@ type UseLotSubmitOptions = {
   deletedImageIds: string[];
   pendingPrimaryId: string | null;
   newImages: NewImage[];
-  onSuccess: () => void;
+  onSuccess: (lot: Lot) => void;
 };
 
 export const useLotSubmit = ({
@@ -22,7 +22,6 @@ export const useLotSubmit = ({
   onSuccess,
 }: UseLotSubmitOptions) => {
   const { t } = useTranslation();
-  const { toLotView } = useNavigation();
   const queryClient = useQueryClient();
   const isEditMode = Boolean(lotId);
 
@@ -75,6 +74,7 @@ export const useLotSubmit = ({
       queryClient.setQueryData(lotKeys.detail(lot.id), lot);
       queryClient.invalidateQueries({ queryKey: lotKeys.lists() });
       queryClient.invalidateQueries({ queryKey: lotKeys.images(lot.id) });
+      queryClient.invalidateQueries({ queryKey: lotKeys.mainImagesAll() });
 
       notify({
         title: t('common.success'),
@@ -84,8 +84,7 @@ export const useLotSubmit = ({
         color: 'green',
       });
 
-      onSuccess();
-      toLotView(lot.id);
+      onSuccess(lot);
     },
     onError: (error) => handleApiError(error, t),
   });

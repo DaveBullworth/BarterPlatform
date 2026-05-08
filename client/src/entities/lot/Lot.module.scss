@@ -1,0 +1,88 @@
+.carouselRow {
+  padding-bottom: 6px;
+}
+
+.carouselImageWrapper {
+  min-width: 260px;
+  width: 260px;
+  cursor: pointer;
+}
+
+.carouselImage {
+  border-radius: 8px;
+  border: 1px solid var(--mantine-color-gray-3);
+}
+
+.fullImageModal {
+  :global(.mantine-Modal-content) {
+    position: relative;
+    overflow: hidden;
+    max-height: unset;
+  }
+  :global(.mantine-Modal-inner) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.quantity {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.descriptionWrapper {
+  position: relative;
+  overflow: hidden;
+  transition: max-height 220ms ease;
+}
+
+.descriptionWrapperFaded::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    var(--mantine-color-body) 100%
+  );
+}
+
+.descriptionToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px auto 0;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mantine-color-orange-7);
+  background: var(--mantine-color-orange-0);
+  border: 1px solid var(--mantine-color-orange-2);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+
+  &:hover {
+    background: var(--mantine-color-orange-1);
+    border-color: var(--mantine-color-orange-3);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.descriptionChevron {
+  transition: transform 220ms ease;
+}
+
+.descriptionChevronOpen {
+  transform: rotate(180deg);
+}

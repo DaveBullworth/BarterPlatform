@@ -73,10 +73,11 @@ export class TaxonomyService {
       }
 
       const subcategory = subcategories.find(
-        (item) => item.externalId === subcategoryId,
+        (item) =>
+          item.externalId === subcategoryId && item.categoryId === categoryId,
       );
 
-      if (!subcategory || subcategory.categoryId !== categoryId) {
+      if (!subcategory) {
         throw new NotFoundException({
           code: LotErrorCode.SUBCATEGORY_NOT_FOUND,
           message: 'Subcategory not found in category',

@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import { Button, Checkbox, Drawer, Group, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { TaxonomyTree } from '@/shared/ui';
-import { useTaxonomy, type CategorySelection } from '@/entities/taxonomy';
-import { SubcategoryItem } from './SubcategoryItem';
-import { CategoriesSkeleton } from './CategoriesSkeleton';
+import {
+  TaxonomyTree,
+  useTaxonomy,
+  SubcategoryItem,
+  CategoriesSkeleton,
+  type CategorySelection,
+} from '@/entities/taxonomy';
 import { useCategorySelection } from './useCategorySelection';
 import { CATEGORY_PARAM } from '@/shared/constants/category-filter-param';
+
+import styles from '../../widgets/AppHeader/AppHeader.module.scss';
 
 type Props = {
   opened: boolean;
@@ -26,13 +31,16 @@ const computeExpansionFromSelection = (
 
   if (!selection) return { chapters, categories };
 
+  // Всегда раскрываем chapter если есть любой выбор ниже него
   if (
     selection.level === CATEGORY_PARAM.CATEGORY ||
     selection.level === CATEGORY_PARAM.SUBCATEGORY
   ) {
     chapters.add(selection.chapterId);
   }
-  if (selection.level === CATEGORY_PARAM.CATEGORY) {
+
+  // ТОЛЬКО для subcategory раскрываем category
+  if (selection.level === CATEGORY_PARAM.SUBCATEGORY) {
     categories.add(getCategoryKey(selection.chapterId, selection.categoryId));
   }
 
@@ -52,6 +60,7 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set(),
   );
+  const [showContent, setShowContent] = useState(false);
 
   // При открытии drawer — синхронизируем раскрытие с selection
   useEffect(() => {
@@ -110,8 +119,11 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
       position="left"
       size="lg"
       title={t('categories.title')}
+      onEnterTransitionEnd={() => setShowContent(true)}
+      onExitTransitionEnd={() => setShowContent(false)}
+      className={styles.drawer_}
     >
-      <Group mb="sm" justify="space-between" px="sm">
+      <Group mb="sm" justify="space-between">
         <Text size="sm" c="dimmed">
           {t('categories.hint')}
         </Text>
@@ -120,7 +132,7 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
         </Button>
       </Group>
 
-      {isLoading ? (
+      {isLoading || !showContent ? (
         <CategoriesSkeleton />
       ) : (
         <TaxonomyTree

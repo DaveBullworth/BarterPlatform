@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { handleApiError, notify } from '@/shared/lib/';
 import {
   userKeys,
+  useAuthStore,
   type SelfUser,
   type AdminUser,
   userApi,
@@ -21,6 +22,8 @@ export const useProfileEdit = ({
 }: UseProfileEditOptions) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { currentUser } = useAuthStore();
+  const isSelfEdit = currentUser?.id === userId;
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (dto: Record<string, unknown>) => {
@@ -30,10 +33,16 @@ export const useProfileEdit = ({
         ? userApi.updateByAdmin(userId, dto)
         : userApi.updateSelf(dto);
     },
-    onSuccess: (updatedUser) => {
+    onSuccess: async (updatedUser) => {
       // Обновляем кеш точечно
       if (isAdminMode) {
         queryClient.setQueryData(userKeys.byId(userId), updatedUser);
+        // Админ редактирует себя через admin endpoint — ответ AdminUser без
+        // language/theme. Инвалидируем self-кеш, чтобы перечитать /user/self
+        // и получить актуальный SelfUser+admin-поля.
+        if (isSelfEdit) {
+          await queryClient.invalidateQueries({ queryKey: userKeys.self() });
+        }
       } else {
         queryClient.setQueryData(userKeys.self(), updatedUser);
       }

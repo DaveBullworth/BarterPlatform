@@ -19,7 +19,7 @@ import {
   useCityOptions,
   useDistrictOptions,
 } from '@/entities/geography';
-import { isAdminUser, type SelfUser, type AdminUser } from '@/entities/user';
+import { type SelfUser, type AdminUser } from '@/entities/user';
 import { USER_ROLES, type UserRole } from '@/shared/constants/user-role';
 import { useProfileEdit } from './useProfileEdit';
 
@@ -56,7 +56,9 @@ export const ProfileEditForm = ({
   const validators = createMantineValidators(t);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  const isAdminMode = role === USER_ROLES.ADMIN && isAdminUser(user);
+  // Role-based: админ редактирует через /user/:id любого пользователя,
+  // включая себя (бэк возвращает SelfUser+admin-поля для self, AdminUser для других)
+  const isAdminMode = role === USER_ROLES.ADMIN;
 
   const { save, isPending } = useProfileEdit({
     userId: user.id,
@@ -85,8 +87,8 @@ export const ProfileEditForm = ({
       districtId: user.district ? String(user.district.id) : '',
       email: isAdminMode ? user.email : '',
       password: '',
-      status: isAdminMode ? user.status : true,
-      statusEmail: isAdminMode ? user.statusEmail : true,
+      status: isAdminMode ? (user.status ?? true) : true,
+      statusEmail: isAdminMode ? (user.statusEmail ?? true) : true,
       role: isAdminMode ? user.role : USER_ROLES.USER,
     },
     validate: {

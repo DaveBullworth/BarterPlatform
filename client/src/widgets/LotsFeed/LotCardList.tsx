@@ -55,15 +55,14 @@ export const LotCardList = ({
           <Image
             src={imageSrc}
             alt={lot.generalDescription}
-            w={80}
-            h={80}
+            w={100}
+            h={100}
             radius="sm"
             fit="cover"
           />
         ) : (
           <Stack gap="sm" align="center" className={styles.listImageFallback}>
             <CameraOff size={42} />
-            <Text size="sm">{t('lot.noImages')}</Text>
           </Stack>
         )}
 

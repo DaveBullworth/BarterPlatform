@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { appSlice } from './appSlice';
 import authReducer from '@/entities/user/store';
+import { rateLimitSlice } from '@/entities/rate-limit';
 
 export const store = configureStore({
   reducer: {
-    app: appSlice.reducer,
     auth: authReducer,
+    rateLimit: rateLimitSlice.reducer,
   },
 });
 

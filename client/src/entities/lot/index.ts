@@ -51,3 +51,12 @@ export {
   lotApi,
   lotKeys,
 } from './api';
+
+// UI
+export {
+  LotDescription,
+  LotImagesCarousel,
+  LotLocation,
+  LotQuantity,
+  LotStatusDates,
+} from './ui';

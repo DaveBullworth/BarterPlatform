@@ -13,7 +13,7 @@ const BaseLotSchema = z.object({
   id: z.uuid(),
   chapterId: z.number().int().positive(),
   categoryId: z.number().int().positive(),
-  subcategoryId: z.number().int().positive().nullable(),
+  subcategoryId: z.number().int().positive().nullish(),
   generalDescription: z.string().min(1).max(255),
   characteristicsDescription: z.string().min(1).max(1000),
   quantity: z.number().int().min(1).max(10000),
@@ -109,4 +109,5 @@ export type LotFilters = {
   categoryId?: IDFilter;
   subcategoryId?: IDFilter;
   query?: TextFilter;
+  selfOnly?: boolean;
 };

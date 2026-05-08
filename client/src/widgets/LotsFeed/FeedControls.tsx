@@ -1,17 +1,14 @@
 import {
-  ActionIcon,
   Group,
-  List,
   Pagination,
-  Popover,
   SegmentedControl,
   Select,
-  Text,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
-import { BadgeInfo, LayoutGrid, LayoutList, ListOrdered } from 'lucide-react';
+import { LayoutGrid, LayoutList, ListOrdered } from 'lucide-react';
 
+import { FeedInfoPopover } from './FeedInfoPopover';
 import styles from './LotsFeed.module.scss';
 
 export type FeedView = 'grid' | 'list';
@@ -46,41 +43,9 @@ export const FeedControls = ({
   const isMobile = useMediaQuery('(max-width: 48em)');
 
   return (
-    <Group justify="space-between" align="end" gap="sm">
+    <Group justify="space-between" align="center" gap="sm">
       <Group className={styles.feedMeta} align="center">
-        <Popover position="right" width={280} withArrow>
-          <Popover.Target>
-            <ActionIcon
-              variant="light"
-              color="blue"
-              size="sm"
-              className={styles.pulseIcon}
-              aria-label={t('feed.info')}
-            >
-              <BadgeInfo size={22} />
-            </ActionIcon>
-          </Popover.Target>
-          <Popover.Dropdown p="0.5rem">
-            <List spacing="xs" size="xs">
-              <List.Item>
-                <Text span fw={600}>
-                  {t('feed.recordsOnPage')}:
-                </Text>{' '}
-                <Text span c="dimmed">
-                  {lotsOnPage}
-                </Text>
-              </List.Item>
-              <List.Item>
-                <Text span fw={600}>
-                  {t('feed.recordsTotal')}:
-                </Text>{' '}
-                <Text span c="dimmed">
-                  {totalLots}
-                </Text>
-              </List.Item>
-            </List>
-          </Popover.Dropdown>
-        </Popover>
+        <FeedInfoPopover lotsOnPage={lotsOnPage} totalLots={totalLots} />
 
         <Group gap="xs">
           <ListOrdered />

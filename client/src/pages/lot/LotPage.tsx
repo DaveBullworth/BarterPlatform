@@ -1,37 +1,37 @@
 import {
-  Badge,
   Breadcrumbs,
+  Button,
   Group,
   Loader,
   Stack,
   Text,
   Title,
 } from '@mantine/core';
+import { ArrowLeft } from 'lucide-react';
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 
 import {
   useLot,
   useLotImages,
-  getLotStatusMeta,
   resolveLotActions,
+  LotImagesCarousel,
+  LotLocation,
+  LotQuantity,
+  LotStatusDates,
+  LotDescription,
 } from '@/entities/lot';
 import { resolveBreadcrumbs, useTaxonomy } from '@/entities/taxonomy';
 import { useAuthStore } from '@/entities/user';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { ErrorStub } from '@/shared/ui';
-import { getApiErrorStatusCode, useNavigation, formatDate } from '@/shared/lib';
-
-import { LotImagesCarousel } from './sections/LotImagesCarousel';
-import { LotDescription } from './sections/LotDescription';
-import { LotLocation } from './sections/LotLocation';
-import { LotActions } from './sections/LotActions';
-import { LotQuantity } from './sections/LotQuantity';
+import { getApiErrorStatusCode, useNavigation } from '@/shared/lib';
+import { LotActions } from '@/widgets/LotActions';
 
 export const LotPage = () => {
-  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const { back } = useNavigation();
   const { currentUser } = useAuthStore();
   const { data: taxonomy = [] } = useTaxonomy();
@@ -66,7 +66,6 @@ export const LotPage = () => {
     );
   }
 
-  const statusMeta = getLotStatusMeta(lot.visibilityStatus);
   const isAdmin = currentUser?.role === USER_ROLES.ADMIN;
   const actions = resolveLotActions({
     lot,
@@ -75,7 +74,7 @@ export const LotPage = () => {
   });
 
   return (
-    <Stack gap="lg" maw={860} w="100%" mx="auto">
+    <Stack gap="xs" maw={860} w="100%" mx="auto">
       <Breadcrumbs separator="→">
         {breadcrumbs.map((part) => (
           <Text key={part} c="dimmed" fw={500}>
@@ -86,13 +85,22 @@ export const LotPage = () => {
 
       <Title order={1}>{lot.generalDescription}</Title>
 
-      <Group>
-        <Badge size="lg" color={statusMeta.color}>
-          {t(statusMeta.labelKey)}
-        </Badge>
-        <Text c="dimmed">
-          {t('lot.createdAt')}: {formatDate(lot.createdAt, i18n.language)}
-        </Text>
+      <LotStatusDates
+        visibilityStatus={lot.visibilityStatus}
+        createdAt={lot.createdAt}
+        archivationDate={lot.archivationDate ?? null}
+      />
+
+      <Group justify="space-between">
+        <Button
+          variant="default"
+          leftSection={<ArrowLeft size={16} />}
+          onClick={back}
+          style={{ alignItems: 'center' }}
+        >
+          {t('common.back')}
+        </Button>
+        <LotActions lot={lot} actions={actions} isAdmin={isAdmin} />
       </Group>
 
       <LotImagesCarousel images={images} />
@@ -104,8 +112,6 @@ export const LotPage = () => {
       />
 
       {lot.quantity !== 1 && <LotQuantity quantity={lot.quantity} />}
-
-      <LotActions lot={lot} actions={actions} isAdmin={isAdmin} />
     </Stack>
   );
 };

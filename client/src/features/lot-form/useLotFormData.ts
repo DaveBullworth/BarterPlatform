@@ -16,11 +16,11 @@ export const useLotFormData = (lotId: string | undefined) => {
         taxonomyPath: resolveTaxonomyPath(taxonomy, {
           chapterId: lot.chapterId,
           categoryId: lot.categoryId,
-          subcategoryId: lot.subcategoryId,
+          subcategoryId: lot.subcategoryId ?? null,
         }),
         chapterId: lot.chapterId,
         categoryId: lot.categoryId,
-        subcategoryId: lot.subcategoryId,
+        subcategoryId: lot.subcategoryId ?? null,
         generalDescription: lot.generalDescription,
         characteristicsDescription: lot.characteristicsDescription,
         quantity: lot.quantity,

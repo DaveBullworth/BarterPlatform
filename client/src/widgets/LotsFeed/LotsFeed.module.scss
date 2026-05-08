@@ -50,16 +50,16 @@
 }
 
 .gridImageFallback {
-  min-height: 11rem;
+  height: 70%;
   justify-content: center;
   border-radius: var(--mantine-radius-sm);
   background: var(--mantine-color-default-hover);
 }
 
 .listImageFallback {
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
   justify-content: center;
   border-radius: var(--mantine-radius-sm);
   background: var(--mantine-color-default-hover);

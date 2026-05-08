@@ -7,7 +7,7 @@ import {
   Button,
   Indicator,
 } from '@mantine/core';
-import { User, LogIn, LogOut, HatGlasses, Bell } from 'lucide-react';
+import { User, LogIn, LogOut, HatGlasses, Bell, Package } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,11 +16,14 @@ import { LogoutModal } from '@/features/auth';
 import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 import { NotificationsDrawer } from '@/widgets/AppHeader';
 
+import styles from './AppNavbar.module.scss';
+
 type Props = {
   opened: boolean;
   onClose: () => void;
   onLogin: () => void;
   onProfile: () => void;
+  onMyLots: () => void;
 };
 
 export const ProfileDrawer = ({
@@ -28,6 +31,7 @@ export const ProfileDrawer = ({
   onClose,
   onLogin,
   onProfile,
+  onMyLots,
 }: Props) => {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuthStore();
@@ -51,6 +55,7 @@ export const ProfileDrawer = ({
             {t('nav.profile')}
           </Text>
         }
+        className={styles.userDrawer}
       >
         <Stack gap="sm">
           <Group>
@@ -82,6 +87,17 @@ export const ProfileDrawer = ({
                 }}
               >
                 {t('nav.profile')}
+              </Button>
+
+              <Button
+                variant="light"
+                leftSection={<Package size={16} />}
+                onClick={() => {
+                  onMyLots();
+                  onClose();
+                }}
+              >
+                {t('nav.myLots')}
               </Button>
 
               <Button

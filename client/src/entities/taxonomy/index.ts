@@ -16,3 +16,9 @@ export {
 
 // Хуки
 export { useTaxonomy, useChapter, taxonomyKeys } from './api';
+
+// UI
+export { TaxonomyTree } from './ui/TaxonomyTree';
+export { TaxonomySection } from './ui/TaxonomySection';
+export { SubcategoryItem } from './ui/items/SubcategoryItem';
+export { CategoriesSkeleton } from './ui/CategoriesSkeleton';

@@ -1,7 +1,8 @@
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import { isSameSelection, type CategorySelection } from '@/entities/taxonomy';
 import { CATEGORY_PARAM } from '@/shared/constants/category-filter-param';
+import { ROUTES } from '@/shared/constants/routes';
 
 const parseId = (value: string | null): number | null => {
   if (!value) return null;
@@ -31,19 +32,19 @@ const parseSelection = (params: URLSearchParams): CategorySelection | null => {
 
 export const useCategorySelection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const selection = useMemo(() => parseSelection(searchParams), [searchParams]);
 
   const setSelection = useCallback(
     (next: CategorySelection | null) => {
-      setSearchParams((prev) => {
-        const updated = new URLSearchParams(prev);
-        updated.delete(CATEGORY_PARAM.CHAPTER);
-        updated.delete(CATEGORY_PARAM.CATEGORY);
-        updated.delete(CATEGORY_PARAM.SUBCATEGORY);
+      const updated = new URLSearchParams(searchParams);
+      updated.delete(CATEGORY_PARAM.CHAPTER);
+      updated.delete(CATEGORY_PARAM.CATEGORY);
+      updated.delete(CATEGORY_PARAM.SUBCATEGORY);
 
-        if (!next) return updated;
-
+      if (next) {
         updated.set(CATEGORY_PARAM.CHAPTER, String(next.chapterId));
         if (next.level !== CATEGORY_PARAM.CHAPTER) {
           updated.set(CATEGORY_PARAM.CATEGORY, String(next.categoryId));
@@ -51,11 +52,17 @@ export const useCategorySelection = () => {
         if (next.level === CATEGORY_PARAM.SUBCATEGORY) {
           updated.set(CATEGORY_PARAM.SUBCATEGORY, String(next.subcategoryId));
         }
+      }
 
-        return updated;
-      });
+      // Выбор фильтра имеет смысл только на ленте — иначе параметры
+      // потеряются при следующей навигации
+      if (next && pathname !== ROUTES.ROOT) {
+        navigate({ pathname: ROUTES.ROOT, search: updated.toString() });
+      } else {
+        setSearchParams(updated);
+      }
     },
-    [setSearchParams],
+    [searchParams, setSearchParams, navigate, pathname],
   );
 
   // Toggle — если выбираем то же что уже выбрано, очищаем

@@ -38,4 +38,7 @@ export class LotFiltersDto {
   @ValidateNested()
   @Type(() => TextFilterDto)
   query?: TextFilterDto;
+
+  @IsOptional()
+  selfOnly?: boolean;
 }

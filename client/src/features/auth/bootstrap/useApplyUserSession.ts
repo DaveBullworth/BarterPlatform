@@ -1,9 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useMantineColorScheme } from '@mantine/core';
+import i18n from '@/app/i18n';
 
-import i18n from '@/shared/i18n';
-import { useAuthStore } from '@/entities/user';
-import { userKeys, userApi } from '@/entities/user';
-import { useTheme } from '@/shared/hooks/useTheme';
+import { userKeys, userApi, useAuthStore } from '@/entities/user';
 import { THEME_MAP } from '@/shared/constants/theme-map';
 
 // Общая логика после получения accessToken
@@ -11,7 +10,7 @@ import { THEME_MAP } from '@/shared/constants/theme-map';
 export const useApplyUserSession = () => {
   const queryClient = useQueryClient();
   const { authenticate } = useAuthStore();
-  const { setColorScheme } = useTheme();
+  const { setColorScheme } = useMantineColorScheme();
 
   const applySession = async () => {
     const user = await userApi.getSelf();

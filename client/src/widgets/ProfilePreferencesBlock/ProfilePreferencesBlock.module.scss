@@ -1,0 +1,25 @@
+.contactsBlock {
+  max-width: 860px;
+}
+
+.contactBadge {
+  padding: 10px 12px;
+  justify-content: flex-start;
+}
+
+.contactLabel {
+  min-width: 95px;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+}
+
+.contactValue {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+}
+
+.alert {
+  :global(.mantine-Alert-wrapper) {
+    align-items: center;
+  }
+}

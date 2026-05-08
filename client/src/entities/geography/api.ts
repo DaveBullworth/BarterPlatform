@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { $host } from '@/shared/api';
 import { toSelectOption } from './lib';
@@ -16,6 +17,8 @@ export const geoKeys = {
   regions: () => ['geography', 'regions'] as const,
   cities: (regionId: number) => ['geography', 'cities', regionId] as const,
   districts: (cityId: number) => ['geography', 'districts', cityId] as const,
+  allCities: () => ['geography', 'cities', 'all'] as const,
+  allDistricts: () => ['geography', 'districts', 'all'] as const,
 };
 
 // Сырые fetcher функции — отдельно от хуков
@@ -32,10 +35,20 @@ const fetchCities = async (regionId: number): Promise<City[]> => {
   return CitySchema.array().parse(data);
 };
 
+const fetchAllCities = async (): Promise<City[]> => {
+  const { data } = await $host.get('/user/geography/cities');
+  return CitySchema.array().parse(data);
+};
+
 const fetchDistricts = async (cityId: number): Promise<District[]> => {
   const { data } = await $host.get('/user/geography/districts', {
     params: { cityId },
   });
+  return DistrictSchema.array().parse(data);
+};
+
+const fetchAllDistricts = async (): Promise<District[]> => {
+  const { data } = await $host.get('/user/geography/districts');
   return DistrictSchema.array().parse(data);
 };
 
@@ -67,6 +80,24 @@ export const useDistricts = (cityId: number | null) => {
   });
 };
 
+// Полные списки без каскадной фильтрации — для админ-фильтров с multi-select,
+// где варианты комбинируются через OR на сервере и нет смысла ограничивать список.
+export const useAllCities = () => {
+  return useQuery({
+    queryKey: geoKeys.allCities(),
+    queryFn: fetchAllCities,
+    staleTime: Infinity,
+  });
+};
+
+export const useAllDistricts = () => {
+  return useQuery({
+    queryKey: geoKeys.allDistricts(),
+    queryFn: fetchAllDistricts,
+    staleTime: Infinity,
+  });
+};
+
 // Производные хуки — данные уже готовы к рендеру
 // Компонент получает options и не знает как они получены
 
@@ -91,4 +122,53 @@ export const useDistrictOptions = (
   return [...data]
     .sort((a, b) => a.name.localeCompare(b.name))
     .map(toSelectOption);
+};
+
+// Дублирующиеся имена городов («Другие города» в каждой области, одноимённые
+// райцентры) и районов разрешаем уточнением в скобках: city → имя региона,
+// district → имя города. Уникальные имена не трогаем — UI не зашумляется.
+export const useAllCityOptions = (): GeoSelectOption[] => {
+  const { data: cities = [] } = useAllCities();
+  const { data: regions = [] } = useRegions();
+
+  return useMemo(() => {
+    const regionName = new Map(regions.map((r) => [r.id, r.name]));
+    const nameCount = new Map<string, number>();
+    for (const c of cities) {
+      nameCount.set(c.name, (nameCount.get(c.name) ?? 0) + 1);
+    }
+
+    return [...cities]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((c) => ({
+        value: String(c.id),
+        label:
+          (nameCount.get(c.name) ?? 0) > 1
+            ? `${c.name} (${regionName.get(c.regionId) ?? '—'})`
+            : c.name,
+      }));
+  }, [cities, regions]);
+};
+
+export const useAllDistrictOptions = (): GeoSelectOption[] => {
+  const { data: districts = [] } = useAllDistricts();
+  const { data: cities = [] } = useAllCities();
+
+  return useMemo(() => {
+    const cityName = new Map(cities.map((c) => [c.id, c.name]));
+    const nameCount = new Map<string, number>();
+    for (const d of districts) {
+      nameCount.set(d.name, (nameCount.get(d.name) ?? 0) + 1);
+    }
+
+    return [...districts]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((d) => ({
+        value: String(d.id),
+        label:
+          (nameCount.get(d.name) ?? 0) > 1
+            ? `${d.name} (${cityName.get(d.cityId) ?? '—'})`
+            : d.name,
+      }));
+  }, [districts, cities]);
 };

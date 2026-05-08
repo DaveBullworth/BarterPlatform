@@ -9,7 +9,11 @@ import {
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import { useRegions, useCities, useDistricts } from '@/entities/geography';
+import {
+  useRegionOptions,
+  useAllCityOptions,
+  useAllDistrictOptions,
+} from '@/entities/geography';
 import { DateRangeDropdownInput } from '@/shared/ui';
 import type { UserFilters } from '@/entities/user';
 import type { TextFilter } from '@/shared/lib/filters';
@@ -38,10 +42,11 @@ export const AdminTableFilters = ({
 }: Props) => {
   const { t } = useTranslation();
 
-  // Geography для multi-selects
-  const { data: regions = [] } = useRegions();
-  const { data: cities = [] } = useCities(null);
-  const { data: districts = [] } = useDistricts(null);
+  // Geography для multi-selects: фильтры комбинируются через OR на сервере,
+  // поэтому показываем полные списки без каскадной фильтрации.
+  const regionOptions = useRegionOptions();
+  const cityOptions = useAllCityOptions();
+  const districtOptions = useAllDistrictOptions();
 
   const setField = <K extends keyof UserFilters>(
     field: K,
@@ -83,27 +88,21 @@ export const AdminTableFilters = ({
 
               <MultiTextFilterInput
                 filter={local.region}
-                options={[...regions]
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((r) => ({ value: String(r.id), label: r.name }))}
+                options={regionOptions}
                 onCommit={(filter) => setField('region', filter)}
                 placeholder={t('auth.region')}
               />
 
               <MultiTextFilterInput
                 filter={local.city}
-                options={[...cities]
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((c) => ({ value: String(c.id), label: c.name }))}
+                options={cityOptions}
                 onCommit={(filter) => setField('city', filter)}
                 placeholder={t('auth.city')}
               />
 
               <MultiTextFilterInput
                 filter={local.district}
-                options={[...districts]
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((d) => ({ value: String(d.id), label: d.name }))}
+                options={districtOptions}
                 onCommit={(filter) => setField('district', filter)}
                 placeholder={t('auth.district')}
               />

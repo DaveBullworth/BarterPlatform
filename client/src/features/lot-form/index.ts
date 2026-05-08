@@ -1,5 +1,3 @@
-export { LotForm } from './LotForm';
-export { LotFormHeader } from './LotFormHeader';
 export { useLotFormData } from './useLotFormData';
 export { useLotFormState } from './useLotFormState';
 export { useLotImages } from './useLotImages';

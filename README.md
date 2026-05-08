@@ -253,73 +253,131 @@ sequenceDiagram
 
 ---
 
-## Предлагаемая структура проекта
+## Текущая структура проекта
+
+> Frontend организован по методологии **Feature-Sliced Design (FSD)**: слои `app → pages → widgets → features → entities → shared`.
+> Backend построен на модульной архитектуре **NestJS**: `controllers → services → repositories (TypeORM) → database`.
 
 ```txt
 barter-platform/
 │
-├── client/ # Frontend
-│ ├── public/ # Статические файлы (favicon, index.html)
+├── client/                            # Frontend (React + Vite + TypeScript)
+│ ├── public/                          # Статические файлы (favicon, index.html)
 │ ├── src/
-│ │ ├── app/
-│ │ │   ├── App.tsx
-│ │ │   ├── providers/
-│ │ │   │   ├── AppProviders.tsx
-│ │ │   │   ├── RouterProvider.tsx
-│ │ │   │   └── MantineProvider.tsx
-│ │ │   │
-│ │ │   ├── routes/
-│ │ │   │   ├── index.tsx
-│ │ │   │   ├── private.routes.tsx
-│ │ │   │   └── public.routes.tsx
-│ │ │   │
-│ │ │   └── layouts/
-│ │ │       ├── PublicLayout.tsx
-│ │ │       └── PrivateLayout.tsx
+│ │ ├── app/                           # Инициализация приложения
+│ │ │ ├── App.tsx                      # Корневой компонент
+│ │ │ ├── main.tsx                     # Точка входа
+│ │ │ ├── i18n/                        # Конфигурация i18next и ресурсы переводов
+│ │ │ ├── providers/                   # AppProvider, RouterProvider, MantineProvider, QueryProvider, AuthBootstrap
+│ │ │ ├── router/                      # routes.tsx и guards (RequireAuth, RequireAdmin)
+│ │ │ ├── store/                       # Корневой Redux store
+│ │ │ └── styles/                      # globals.scss, переменные, Mantine-модуль
 │ │ │
-│ │ ├── pages/
-│ │ │   ├── auth/
-│ │ │   │   └── AuthPage.tsx
-│ │ │   └── placeholder/
-│ │ │       └── AuthorizedPage.tsx
+│ │ ├── pages/                         # Страницы приложения
+│ │ │ ├── admin/                       # Админ-панель
+│ │ │ ├── auth/                        # Логин / регистрация
+│ │ │ ├── feed/                        # Лента лотов
+│ │ │ ├── lot/                         # Просмотр конкретного лота
+│ │ │ ├── lot-form/                    # Создание / редактирование лота
+│ │ │ ├── mail-confirm/                # Подтверждение email
+│ │ │ ├── my-lots/                     # Лоты текущего пользователя
+│ │ │ ├── profile/                     # Профиль пользователя
+│ │ │ └── reset-password/              # Сброс пароля
 │ │ │
-│ │ ├── shared/
-│ │ │   ├── hooks/
-│ │ │   │   └── useAuth.ts
-│ │ │   ├── store/
-│ │ │   │   └── auth.store.ts
-│ │ │   └── types/
+│ │ ├── widgets/                       # Композитные UI-блоки
+│ │ │ ├── AppHeader/                   # Шапка приложения
+│ │ │ ├── AppNavbar/                   # Боковая навигация
+│ │ │ ├── AppShell/                    # Каркас layout’а
+│ │ │ ├── LotActions/                  # Действия над лотом
+│ │ │ ├── LotForm/                     # Форма лота с секциями
+│ │ │ ├── LotsFeed/                    # Лента карточек лотов
+│ │ │ ├── ProfileContactsBlock/
+│ │ │ ├── ProfileHeaderBlock/
+│ │ │ └── ProfilePreferencesBlock/
 │ │ │
-│ │ ├── main.tsx
-│ │ └── index.scss
-│
-├── server/ # Backend
-│ ├── src/
-│ │ ├── app.module.ts # Главный модуль NestJS
-│ │ ├── main.ts # Точка входа backend
-│ │ ├── common/ # Общие утилиты, интерфейсы, мидлвейры и сервисы
-│ │ │ ├── interfaces/ # Пользовательские интерфейсы
-│ │ │ ├── middlewares/ # Общие мидлвейры API
-│ │ │ ├── services/ # различные сторонние используемые сервисы (redis, winston, ..)
-│ │ ├── modules/ # Модули приложения
-│ │ │ ├── auth/ # Регистрация, логин, JWT аутентификация (auth, roles guard)
-│ │ │ ├── users/ # Пользовательские маршруты
-│ │ │ ├── countries/ # Маршруты для данных стран
-│ │ │ └── mail/ # Маршруты для отправки писем на email
-│ │ └── database/ # Настройка TypeORM, миграции, сущности
-│ │   ├── entities/ # Entity-классы (User, Role, Settings)
-│ │   ├── migrations/ # Миграции базы данных
-│ │   └── seeds/ # Начальные данные
+│ │ ├── features/                      # Пользовательские сценарии (feature-слои FSD)
+│ │ │ ├── admin/                       # Таблицы, фильтры и колонки админки
+│ │ │ ├── auth/                        # login, register, logout, forgot/reset password, bootstrap, auth-required
+│ │ │ ├── category-filter/             # Drawer выбора категорий
+│ │ │ ├── geo-filter/                  # Гео-фильтр
+│ │ │ ├── lot-form/                    # Логика формы лота (state, submit, images)
+│ │ │ ├── lot-status/                  # Смена статуса лота
+│ │ │ ├── profile/                     # avatar, deactivation, edit
+│ │ │ └── search-filter/               # Поиск
+│ │ │
+│ │ ├── entities/                      # Доменные сущности (модели + API + UI)
+│ │ │ ├── geography/                   # Страны / регионы / города / районы
+│ │ │ ├── lot/                         # Лоты
+│ │ │ ├── rate-limit/                  # Состояние rate-limit
+│ │ │ ├── taxonomy/                    # Главы и категории
+│ │ │ └── user/                        # Пользователь
+│ │ │
+│ │ └── shared/                        # Переиспользуемое ядро
+│ │   ├── api/                         # axios-клиент и interceptors (auth, language, rateLimit)
+│ │   ├── constants/                   # Константы и enum-ы
+│ │   ├── hooks/                       # Общие React-хуки
+│ │   ├── lib/                         # Утилиты (alertPresets, errorHandler, …)
+│ │   └── ui/                          # Базовые UI-компоненты
+│ │
+│ ├── eslint.config.js
+│ ├── tsconfig.json / tsconfig.app.json / tsconfig.node.json
+│ ├── vite.config.ts
 │ └── package.json
 │
-├── docker/ # Docker файлы и конфигурации
+├── server/                            # Backend (NestJS + TypeORM + PostgreSQL)
+│ ├── src/
+│ │ ├── main.ts                        # Точка входа backend
+│ │ ├── app.module.ts                  # Корневой модуль NestJS
+│ │ ├── app.controller.ts / app.service.ts
+│ │ │
+│ │ ├── common/                        # Общие утилиты и инфраструктура
+│ │ │ ├── constants/                   # Общие константы
+│ │ │ ├── decorators/                  # Кастомные декораторы (transform-json, …)
+│ │ │ ├── dtos/                        # Общие DTO (filter, sort, geo-node, …)
+│ │ │ ├── interfaces/                  # auth-request, jwt-payload, redis-session, …
+│ │ │ ├── middlewares/                 # device.middleware и др.
+│ │ │ ├── services/                    # Сторонние сервисы (logger/winston и т.п.)
+│ │ │ ├── throttling/                  # Защита от перебора / rate limit
+│ │ │ ├── types/                       # Общие типы
+│ │ │ └── utils/                       # query-filters, load-seed, …
+│ │ │
+│ │ ├── modules/                       # Доменные модули приложения
+│ │ │ ├── auth/                        # Регистрация, логин, JWT, guards, policies
+│ │ │ ├── users/                       # Управление пользователями (self + admin)
+│ │ │ ├── mail/                        # Отправка писем (nodemailer + шаблоны)
+│ │ │ ├── mail-confirm/                # Подтверждение email
+│ │ │ ├── password-reset/              # Сброс пароля
+│ │ │ ├── deactivation/                # Деактивация аккаунта
+│ │ │ ├── media/                       # Загрузка/обработка медиа (jimp), guards
+│ │ │ ├── lots/                        # Лоты, таксономия, DTO и ошибки
+│ │ │ └── redis/                       # Redis-модуль (сессии, throttling)
+│ │ │
+│ │ └── database/                      # TypeORM
+│ │   ├── data-source.ts               # Конфигурация DataSource
+│ │   ├── entities/                    # Entity-классы (User, Lot, Session, MediaFile, …)
+│ │   ├── migrations/                  # Миграции БД
+│ │   ├── seeds/                       # Начальные данные (geography, chapter, category, admin, …)
+│ │   ├── subscribers/                 # TypeORM-подписчики
+│ │   └── seed.ts                      # Раннер сидов
+│ │
+│ ├── test/                            # e2e-тесты
+│ ├── media/                           # Локальное хранилище медиа (dev)
+│ ├── logs/                            # Файлы логов winston
+│ ├── eslint.config.mjs
+│ ├── nest-cli.json
+│ ├── tsconfig.json / tsconfig.build.json
+│ └── package.json
+│
+├── docker/                            # Docker-конфигурации
 │ ├── Dockerfile.client
 │ ├── Dockerfile.server
-│ └── docker-compose.yml
+│ ├── docker-compose.dev.yml
+│ ├── docker-compose.prod.yml
+│ └── nginx.client.conf
 │
-├── .eslintrc.js
-├── .prettierrc
-├── tsconfig.json
+├── logs/                              # Общие логи запуска
+├── business.png                       # Концепт-схема платформы
+├── icon.png
 └── README.md
 ```
 

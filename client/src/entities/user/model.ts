@@ -31,12 +31,16 @@ const BaseUserSchema = z.object({
 export const PublicUserSchema = BaseUserSchema;
 
 // Self — добавляет приватные поля + настройки
+// status/statusEmail — необязательные: бэк присылает их только для админа,
+// смотрящего свой профиль (см. SelfUserDto includeAdminFields на сервере)
 export const SelfUserSchema = BaseUserSchema.extend({
   role: enumFromObject(USER_ROLES),
   email: z.email(),
   phone: z.string().nullable(),
   language: enumFromObject(USER_LANGUAGES),
   theme: enumFromObject(USER_THEMES),
+  status: z.boolean().optional(),
+  statusEmail: z.boolean().optional(),
 });
 
 // Admin view — всё кроме настроек

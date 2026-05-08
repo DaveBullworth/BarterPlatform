@@ -53,7 +53,7 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
   const { t } = useTranslation();
   const theme = useMantineTheme();
   const { isAuthenticated, currentUser } = useAuthStore();
-  const { toAuth, toProfile } = useNavigation();
+  const { toAuth, toProfile, toMyLots } = useNavigation();
   const { selection } = useCategorySelection();
   const [drawerOpened, setDrawerOpened] = useState(false);
   const rawNavigate = useNavigate();
@@ -129,6 +129,7 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
         onClose={() => setDrawerOpened(false)}
         onLogin={toAuth}
         onProfile={toProfile}
+        onMyLots={toMyLots}
       />
     </>
   );

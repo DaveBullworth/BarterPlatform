@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { isLotArchived, type Lot } from '@/entities/lot';
 import { StatusActionModal } from './StatusActionModal';
 import { useLotStatus, type LotStatusAction } from './useLotStatus';
+import { useAuthStore } from '@/entities/user';
 
 type Props = {
   lot: Lot;
@@ -15,6 +16,8 @@ type Props = {
 
 export const LotStatusActions = ({ lot, disabled, onSuccess }: Props) => {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuthStore();
+
   const [pendingAction, setPendingAction] = useState<LotStatusAction | null>(
     null,
   );
@@ -31,7 +34,7 @@ export const LotStatusActions = ({ lot, disabled, onSuccess }: Props) => {
 
   return (
     <>
-      {!archived && (
+      {!archived && isAuthenticated && (
         <Button
           color="red"
           variant="light"
@@ -43,7 +46,7 @@ export const LotStatusActions = ({ lot, disabled, onSuccess }: Props) => {
         </Button>
       )}
 
-      {archived && (
+      {archived && isAuthenticated && (
         <Button
           loading={isPending}
           disabled={disabled}

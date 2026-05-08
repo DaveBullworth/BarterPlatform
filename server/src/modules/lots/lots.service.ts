@@ -79,7 +79,19 @@ export class LotsService {
 
     const createdLot = await this.lotsRepo.save(lot);
 
-    return createdLot;
+    const geo = this.geographyService.build({
+      regionId: createdLot.regionId,
+      cityId: createdLot.cityId,
+      districtId: createdLot.districtId ?? null,
+    });
+
+    return {
+      ...createdLot,
+      region: geo.region,
+      city: geo.city,
+      district: geo.district,
+      archivationDate: null,
+    };
   }
 
   async getAll(params: {
@@ -102,6 +114,11 @@ export class LotsService {
         active: LotVisibilityStatus.ACTIVE,
         userId: user.sub,
       });
+    }
+
+    // Фильтр своих лотов (для страницы "Мои лоты")
+    if (user && filters?.selfOnly) {
+      qb.andWhere('lot.userId = :userId', { userId: user.sub });
     }
 
     // ID ФИЛЬТРЫ (строго equals)

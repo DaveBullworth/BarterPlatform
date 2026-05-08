@@ -1,5 +1,5 @@
 import { Menu, ActionIcon, Avatar, Group, Indicator } from '@mantine/core';
-import { User, LogIn, LogOut, Bell } from 'lucide-react';
+import { User, LogIn, LogOut, Bell, Package } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,7 +13,7 @@ export const UserMenu = () => {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuthStore();
   const { data: user } = useSelfUser();
-  const { toProfile, toAuth } = useNavigation();
+  const { toProfile, toAuth, toMyLots } = useNavigation();
 
   const [logoutOpened, setLogoutOpened] = useState(false);
   const [notificationsOpened, setNotificationsOpened] = useState(false);
@@ -64,6 +64,13 @@ export const UserMenu = () => {
                 onClick={() => toProfile()}
               >
                 {t('nav.profile')}
+              </Menu.Item>
+
+              <Menu.Item
+                leftSection={<Package size={16} />}
+                onClick={() => toMyLots()}
+              >
+                {t('nav.myLots')}
               </Menu.Item>
 
               <Menu.Item

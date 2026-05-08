@@ -48,7 +48,7 @@ export const LotCardGrid = ({
             src={imageSrc}
             alt={lot.generalDescription}
             radius="sm"
-            style={{ aspectRatio: '1 / 1' }}
+            style={{ aspectRatio: '1 / 1', height: '70%' }}
             fit="cover"
           />
         ) : (
@@ -62,7 +62,12 @@ export const LotCardGrid = ({
           <Text fw={700} lineClamp={2}>
             {lot.generalDescription}
           </Text>
-          <Text size="sm" c="dimmed" lineClamp={2}>
+          <Text
+            size="sm"
+            c="dimmed"
+            lineClamp={2}
+            style={{ minHeight: '40px' }}
+          >
             {lot.characteristicsDescription}
           </Text>
           <Group justify="space-between" gap="xs">

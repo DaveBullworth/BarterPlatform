@@ -216,7 +216,6 @@
     "type": "subcategory",
     "slug": "komplekt"
   },
-
   {
     "externalId": 32,
     "categoryId": 16,
@@ -301,7 +300,6 @@
     "type": "subcategory",
     "slug": "prochie-aksessuary"
   },
-
   {
     "externalId": 44,
     "categoryId": 17,
@@ -330,7 +328,6 @@
     "type": "subcategory",
     "slug": "prochaya-selhoztehnika"
   },
-
   {
     "externalId": 48,
     "categoryId": 18,
@@ -422,7 +419,6 @@
     "type": "subcategory",
     "slug": "prochaya-spectehnika"
   },
-
   {
     "externalId": 61,
     "categoryId": 19,
@@ -444,7 +440,6 @@
     "type": "subcategory",
     "slug": "lafet"
   },
-
   {
     "externalId": 64,
     "categoryId": 20,
@@ -494,7 +489,6 @@
     "type": "subcategory",
     "slug": "lodochnye-motory"
   },
-
   {
     "externalId": 71,
     "categoryId": 22,
@@ -607,7 +601,6 @@
     "type": "subcategory",
     "slug": "ochistiteli"
   },
-
   {
     "externalId": 88,
     "categoryId": 23,
@@ -790,7 +783,6 @@
     "type": "subcategory",
     "slug": "prochaya-tehnika-dlya-kuhni"
   },
-
   {
     "externalId": 114,
     "categoryId": 24,
@@ -854,7 +846,6 @@
     "type": "subcategory",
     "slug": "prochaya-krupnogabaritnaya-tehnika"
   },
-
   {
     "externalId": 123,
     "categoryId": 25,
@@ -883,7 +874,6 @@
     "type": "subcategory",
     "slug": "prochaya-tehnika-dlya-uborki"
   },
-
   {
     "externalId": 127,
     "categoryId": 26,
@@ -947,7 +937,6 @@
     "type": "subcategory",
     "slug": "prochaya-tehnika-dlya-uhoda-za-odezhdoy"
   },
-
   {
     "externalId": 136,
     "categoryId": 27,
@@ -997,7 +986,6 @@
     "type": "subcategory",
     "slug": "prochaya-klimaticheskaya-tehnika"
   },
-
   {
     "externalId": 143,
     "categoryId": 28,
@@ -1131,7 +1119,6 @@
     "type": "subcategory",
     "slug": "prochaya-tehnika-dlya-krasoty-i-zdorovya"
   },
-
   {
     "externalId": 163,
     "categoryId": 30,
@@ -1153,7 +1140,6 @@
     "type": "subcategory",
     "slug": "monobloki"
   },
-
   {
     "externalId": 167,
     "categoryId": 32,
@@ -1245,7 +1231,6 @@
     "type": "subcategory",
     "slug": "prochie-kompyuternye-komplektuyushchie"
   },
-
   {
     "externalId": 180,
     "categoryId": 33,
@@ -1309,7 +1294,6 @@
     "type": "subcategory",
     "slug": "komplektuyushchie-rashodniki"
   },
-
   {
     "externalId": 189,
     "categoryId": 34,
@@ -1436,7 +1420,6 @@
     "type": "subcategory",
     "slug": "prochie-kompyuternye-aksessuary"
   },
-
   {
     "externalId": 207,
     "categoryId": 35,
@@ -1472,7 +1455,6 @@
     "type": "subcategory",
     "slug": "prochee-setevoe-oborudovanie"
   },
-
   {
     "externalId": 87,
     "categoryId": 38,
@@ -1543,7 +1525,6 @@
     "type": "subcategory",
     "slug": "drugoy"
   },
-
   {
     "externalId": 97,
     "categoryId": 39,
@@ -1621,7 +1602,6 @@
     "type": "subcategory",
     "slug": "prochie-aksessuary"
   },
-
   {
     "externalId": 108,
     "categoryId": 40,
@@ -1643,7 +1623,6 @@
     "type": "subcategory",
     "slug": "racij"
   },
-
   {
     "externalId": 111,
     "categoryId": 42,
@@ -1707,7 +1686,6 @@
     "type": "subcategory",
     "slug": "drugoy"
   },
-
   {
     "externalId": 120,
     "categoryId": 45,
@@ -1729,7 +1707,6 @@
     "type": "subcategory",
     "slug": "fitnes-braslety"
   },
-
   {
     "externalId": 123,
     "categoryId": 46,
@@ -1765,7 +1742,6 @@
     "type": "subcategory",
     "slug": "prochie-aksessuary"
   },
-
   {
     "externalId": 128,
     "categoryId": 48,
@@ -1857,7 +1833,6 @@
     "type": "subcategory",
     "slug": "prochee"
   },
-
   {
     "externalId": 141,
     "categoryId": 49,
@@ -1886,7 +1861,6 @@
     "type": "subcategory",
     "slug": "polnorasmernye"
   },
-
   {
     "externalId": 145,
     "categoryId": 50,
@@ -1943,7 +1917,6 @@
     "type": "subcategory",
     "slug": "prochee"
   },
-
   {
     "externalId": 153,
     "categoryId": 51,
@@ -1993,7 +1966,6 @@
     "type": "subcategory",
     "slug": "prochee"
   },
-
   {
     "externalId": 160,
     "categoryId": 52,
@@ -2050,7 +2022,6 @@
     "type": "subcategory",
     "slug": "prochee"
   },
-
   {
     "externalId": 168,
     "categoryId": 53,
@@ -2086,7 +2057,6 @@
     "type": "subcategory",
     "slug": "prochee"
   },
-
   {
     "externalId": 173,
     "categoryId": 54,
@@ -2213,7 +2183,6 @@
     "type": "subcategory",
     "slug": "shorty-yubki"
   },
-
   {
     "externalId": 191,
     "categoryId": 55,
@@ -2326,7 +2295,6 @@
     "type": "subcategory",
     "slug": "aksessuary-dlya-obuvi"
   },
-
   {
     "externalId": 207,
     "categoryId": 56,
@@ -2439,7 +2407,6 @@
     "type": "subcategory",
     "slug": "prochee"
   },
-
   {
     "externalId": 224,
     "categoryId": 57,
@@ -2559,7 +2526,6 @@
     "type": "subcategory",
     "slug": "prochaya-muzhskaya-odezhda"
   },
-
   {
     "externalId": 241,
     "categoryId": 58,
@@ -2623,7 +2589,6 @@
     "type": "subcategory",
     "slug": "aksessuary-dlya-obuvi"
   },
-
   {
     "externalId": 250,
     "categoryId": 59,
@@ -2729,7 +2694,6 @@
     "type": "subcategory",
     "slug": "prochie-aksessuary"
   },
-
   {
     "externalId": 265,
     "name": "Брови",
@@ -2758,7 +2722,6 @@
     "slug": "face",
     "categoryId": 60
   },
-
   {
     "externalId": 269,
     "name": "Лицо",
@@ -2787,7 +2750,6 @@
     "slug": "body",
     "categoryId": 61
   },
-
   {
     "externalId": 273,
     "name": "Гель-лаки",
@@ -2879,7 +2841,6 @@
     "slug": "other",
     "categoryId": 63
   },
-
   {
     "externalId": 286,
     "name": "Уход за волосами",
@@ -2915,7 +2876,6 @@
     "slug": "hair-tools",
     "categoryId": 64
   },
-
   {
     "externalId": 291,
     "name": "Гигиена полости рта",
@@ -2958,7 +2918,6 @@
     "slug": "other",
     "categoryId": 65
   },
-
   {
     "externalId": 297,
     "name": "Татуировки, татуаж",
@@ -2980,7 +2939,6 @@
     "slug": "brows-tools",
     "categoryId": 66
   },
-
   {
     "externalId": 300,
     "name": "Зеркала",
@@ -3030,7 +2988,6 @@
     "slug": "other",
     "categoryId": 67
   },
-
   {
     "externalId": 307,
     "name": "Бандажи, корсеты",
@@ -3122,7 +3079,6 @@
     "slug": "other",
     "categoryId": 68
   },
-
   {
     "externalId": 320,
     "name": "Верхняя одежда",
@@ -3214,7 +3170,6 @@
     "slug": "other",
     "categoryId": 70
   },
-
   {
     "externalId": 333,
     "name": "Верхняя одежда",
@@ -3299,7 +3254,6 @@
     "slug": "other",
     "categoryId": 71
   },
-
   {
     "externalId": 345,
     "name": "Верхняя одежда",
@@ -3384,7 +3338,6 @@
     "slug": "other",
     "categoryId": 72
   },
-
   {
     "externalId": 357,
     "name": "Аксессуары для волос",
@@ -3483,7 +3436,6 @@
     "slug": "other",
     "categoryId": 73
   },
-
   {
     "externalId": 371,
     "name": "Босоножки, сандалии",
@@ -3547,7 +3499,6 @@
     "slug": "other",
     "categoryId": 74
   },
-
   {
     "externalId": 380,
     "name": "Ходунки",
@@ -3569,7 +3520,6 @@
     "slug": "swings",
     "categoryId": 75
   },
-
   {
     "externalId": 383,
     "name": "Люльки",
@@ -3633,7 +3583,6 @@
     "slug": "carriers",
     "categoryId": 76
   },
-
   {
     "externalId": 392,
     "name": "Люлька",
@@ -3662,7 +3611,6 @@
     "slug": "transformer",
     "categoryId": 77
   },
-
   {
     "externalId": 396,
     "name": "Подгузники и гигиена",
@@ -3740,7 +3688,6 @@
     "slug": "other-feeding-care",
     "categoryId": 78
   },
-
   {
     "externalId": 407,
     "name": "Балдахины",
@@ -3811,7 +3758,6 @@
     "slug": "other-textile",
     "categoryId": 79
   },
-
   {
     "externalId": 417,
     "name": "Сумки-кенгуру и слинги",
@@ -3819,7 +3765,6 @@
     "slug": "baby-carriers-slings",
     "categoryId": 80
   },
-
   {
     "externalId": 418,
     "name": "Игрушки",
@@ -3834,7 +3779,6 @@
     "slug": "books-coloring",
     "categoryId": 81
   },
-
   {
     "externalId": 420,
     "name": "Детский транспорт",
@@ -3842,7 +3786,6 @@
     "slug": "kids-transport",
     "categoryId": 82
   },
-
   {
     "externalId": 421,
     "name": "Товары для мам",
@@ -3850,7 +3793,6 @@
     "slug": "mom-products",
     "categoryId": 83
   },
-
   {
     "externalId": 422,
     "name": "Белье",
@@ -3963,7 +3905,6 @@
     "slug": "shorts-skirts",
     "categoryId": 84
   },
-
   {
     "externalId": 438,
     "name": "Прочие товары для детей",
@@ -3971,7 +3912,6 @@
     "slug": "other-kids",
     "categoryId": 85
   },
-
   {
     "externalId": 439,
     "name": "Банкетки",
@@ -3993,7 +3933,6 @@
     "slug": "other",
     "categoryId": 86
   },
-
   {
     "externalId": 442,
     "name": "Вешалки",
@@ -4015,7 +3954,6 @@
     "slug": "other",
     "categoryId": 87
   },
-
   {
     "externalId": 445,
     "name": "Кроватки для новорожденных",
@@ -4086,7 +4024,6 @@
     "slug": "other",
     "categoryId": 88
   },
-
   {
     "externalId": 455,
     "name": "Комоды",
@@ -4094,7 +4031,6 @@
     "slug": "dressers",
     "categoryId": 89
   },
-
   {
     "externalId": 456,
     "name": "Кровати",
@@ -4123,7 +4059,6 @@
     "slug": "other",
     "categoryId": 90
   },
-
   {
     "externalId": 460,
     "name": "Кухни",
@@ -4131,7 +4066,6 @@
     "slug": "kitchens",
     "categoryId": 91
   },
-
   {
     "externalId": 461,
     "name": "Кухонные уголки",
@@ -4139,7 +4073,6 @@
     "slug": "kitchen-corners",
     "categoryId": 92
   },
-
   {
     "externalId": 462,
     "name": "Диваны",
@@ -4175,7 +4108,6 @@
     "slug": "other",
     "categoryId": 93
   },
-
   {
     "externalId": 467,
     "name": "Полки для вина",
@@ -4211,7 +4143,6 @@
     "slug": "other",
     "categoryId": 94
   },
-
   {
     "externalId": 472,
     "name": "Спальные гарнитуры",
@@ -4219,7 +4150,6 @@
     "slug": "bedroom-sets",
     "categoryId": 95
   },
-
   {
     "externalId": 473,
     "name": "Стенки",
@@ -4255,7 +4185,6 @@
     "slug": "other",
     "categoryId": 96
   },
-
   {
     "externalId": 478,
     "name": "Компьютерные и письменные",
@@ -4291,7 +4220,6 @@
     "slug": "other",
     "categoryId": 97
   },
-
   {
     "externalId": 483,
     "name": "Обеденные",
@@ -4334,7 +4262,6 @@
     "slug": "other",
     "categoryId": 98
   },
-
   {
     "externalId": 489,
     "name": "Тумбы под телевизор",
@@ -4377,7 +4304,6 @@
     "slug": "other",
     "categoryId": 99
   },
-
   {
     "externalId": 495,
     "name": "Распашные шкафы",
@@ -4413,7 +4339,6 @@
     "slug": "other",
     "categoryId": 100
   },
-
   {
     "externalId": 500,
     "name": "Сейфы",
@@ -4484,7 +4409,6 @@
     "slug": "other",
     "categoryId": 101
   },
-
   {
     "externalId": 510,
     "name": "Вазы",
@@ -4569,7 +4493,6 @@
     "slug": "other",
     "categoryId": 103
   },
-
   {
     "externalId": 522,
     "name": "Карнизы",
@@ -4612,7 +4535,6 @@
     "slug": "other",
     "categoryId": 104
   },
-
   {
     "externalId": 528,
     "name": "Ковры",
@@ -4683,7 +4605,6 @@
     "slug": "other-textile",
     "categoryId": 105
   },
-
   {
     "externalId": 538,
     "name": "Люстры",
@@ -4747,7 +4668,6 @@
     "slug": "other",
     "categoryId": 106
   },
-
   {
     "externalId": 547,
     "name": "Аккумуляторы, батарейки, подзарядки",
@@ -4881,7 +4801,6 @@
     "slug": "other",
     "categoryId": 107
   },
-
   {
     "externalId": 566,
     "name": "Столовая посуда",
@@ -4973,7 +4892,6 @@
     "slug": "other",
     "categoryId": 108
   },
-
   {
     "externalId": 579,
     "name": "Растения",
@@ -4995,7 +4913,6 @@
     "slug": "plant-care",
     "categoryId": 109
   },
-
   {
     "externalId": 582,
     "name": "Бензо и электрорезы",
@@ -5199,7 +5116,6 @@
     "slug": "other-tools",
     "categoryId": 110
   },
-
   {
     "externalId": 611,
     "name": "Бетономешалки",
@@ -5284,7 +5200,6 @@
     "slug": "other-equipment",
     "categoryId": 111
   },
-
   {
     "externalId": 623,
     "name": "Батареи, радиаторы",
@@ -5453,7 +5368,6 @@
     "slug": "other-plumbing",
     "categoryId": 112
   },
-
   {
     "externalId": 647,
     "name": "Гипсокартон, профили",
@@ -5591,43 +5505,50 @@
     "externalId": 739,
     "name": "Стены, внутренняя отделка",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "walls-interior"
   },
   {
     "externalId": 740,
     "name": "Лакокрасочная продукция",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "paints-coatings"
   },
   {
     "externalId": 741,
     "name": "Напольные покрытия",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "flooring"
   },
   {
     "externalId": 742,
     "name": "Плитка",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "tiles"
   },
   {
     "externalId": 743,
     "name": "Потолки",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "ceilings"
   },
   {
     "externalId": 744,
     "name": "Фасады",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "facades"
   },
   {
     "externalId": 745,
     "name": "Прочие отделочные материалы",
     "type": "subcategory",
-    "categoryId": 114
+    "categoryId": 114,
+    "slug": "other-finishing"
   },
   {
     "externalId": 666,
@@ -5706,7 +5627,6 @@
     "slug": "other-windows-doors",
     "categoryId": 115
   },
-
   {
     "externalId": 677,
     "name": "Срубы",
@@ -5742,7 +5662,6 @@
     "slug": "other-houses",
     "categoryId": 116
   },
-
   {
     "externalId": 682,
     "name": "Ворота",
@@ -5771,7 +5690,6 @@
     "slug": "other-gates-fences",
     "categoryId": 117
   },
-
   {
     "externalId": 686,
     "name": "Кабели и провода",
@@ -5814,290 +5732,335 @@
     "slug": "other-electrics",
     "categoryId": 118
   },
-
   {
     "externalId": 692,
     "name": "Бассейны",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "pools"
   },
   {
     "externalId": 693,
     "name": "Беседки, шатры, тенты",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "gazebos-tents"
   },
   {
     "externalId": 694,
     "name": "Детские площадки",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "playgrounds"
   },
   {
     "externalId": 695,
     "name": "Качели садовые",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "garden-swings"
   },
   {
     "externalId": 696,
     "name": "Мебель для сада",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "garden-furniture"
   },
   {
     "externalId": 697,
     "name": "Садовый интерьер и аксессуары",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "garden-decor"
   },
   {
     "externalId": 698,
     "name": "Уличное освещение",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "outdoor-lighting"
   },
   {
     "externalId": 699,
     "name": "Прочее",
     "type": "subcategory",
-    "categoryId": 121
+    "categoryId": 121,
+    "slug": "other-garden-furniture"
   },
   {
     "externalId": 700,
     "name": "Мангалы",
     "type": "subcategory",
-    "categoryId": 122
+    "categoryId": 122,
+    "slug": "grills"
   },
   {
     "externalId": 701,
     "name": "Казаны",
     "type": "subcategory",
-    "categoryId": 122
+    "categoryId": 122,
+    "slug": "cauldrons"
   },
   {
     "externalId": 702,
     "name": "Коптильни",
     "type": "subcategory",
-    "categoryId": 122
+    "categoryId": 122,
+    "slug": "smokers"
   },
   {
     "externalId": 703,
     "name": "Аксессуары",
     "type": "subcategory",
-    "categoryId": 122
+    "categoryId": 122,
+    "slug": "bbq-accessories"
   },
   {
     "externalId": 704,
     "name": "Топливо",
     "type": "subcategory",
-    "categoryId": 122
+    "categoryId": 122,
+    "slug": "bbq-fuel"
   },
   {
     "externalId": 705,
     "name": "Мотоблоки",
     "type": "subcategory",
-    "categoryId": 123
+    "categoryId": 123,
+    "slug": "motor-blocks"
   },
   {
     "externalId": 706,
     "name": "Культиваторы",
     "type": "subcategory",
-    "categoryId": 123
+    "categoryId": 123,
+    "slug": "cultivators"
   },
   {
     "externalId": 707,
     "name": "Запчасти и сопутствующие товары",
     "type": "subcategory",
-    "categoryId": 123
+    "categoryId": 123,
+    "slug": "motor-blocks-parts"
   },
   {
     "externalId": 708,
     "name": "Электро- и бензопилы",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "saws"
   },
   {
     "externalId": 709,
     "name": "Газонокосилки",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "lawn-mowers"
   },
   {
     "externalId": 710,
     "name": "Измельчители",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "shredders"
   },
   {
     "externalId": 711,
     "name": "Насосы",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "pumps"
   },
   {
     "externalId": 712,
     "name": "Триммеры",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "trimmers"
   },
   {
     "externalId": 713,
     "name": "Запчасти и аксессуары",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "garden-equipment-parts"
   },
   {
     "externalId": 714,
     "name": "Прочее",
     "type": "subcategory",
-    "categoryId": 124
+    "categoryId": 124,
+    "slug": "other-garden-equipment"
   },
   {
     "externalId": 715,
     "name": "Еврокубы, баки и бочки",
     "type": "subcategory",
-    "categoryId": 125
+    "categoryId": 125,
+    "slug": "tanks-barrels"
   },
   {
     "externalId": 716,
     "name": "Садовый инструмент",
     "type": "subcategory",
-    "categoryId": 125
+    "categoryId": 125,
+    "slug": "hand-garden-tools"
   },
   {
     "externalId": 717,
     "name": "Тачки и тележки",
     "type": "subcategory",
-    "categoryId": 125
+    "categoryId": 125,
+    "slug": "wheelbarrows"
   },
   {
     "externalId": 718,
     "name": "Шланги и полив",
     "type": "subcategory",
-    "categoryId": 125
+    "categoryId": 125,
+    "slug": "hoses-irrigation"
   },
   {
     "externalId": 719,
     "name": "Прочее",
     "type": "subcategory",
-    "categoryId": 125
+    "categoryId": 125,
+    "slug": "other-garden-tools"
   },
   {
     "externalId": 720,
     "name": "Саженцы, рассада",
     "type": "subcategory",
-    "categoryId": 127
+    "categoryId": 127,
+    "slug": "seedlings"
   },
   {
     "externalId": 721,
     "name": "Семена, луковицы",
     "type": "subcategory",
-    "categoryId": 127
+    "categoryId": 127,
+    "slug": "seeds-bulbs"
   },
   {
     "externalId": 722,
     "name": "Прочее",
     "type": "subcategory",
-    "categoryId": 127
+    "categoryId": 127,
+    "slug": "other-plants"
   },
   {
     "externalId": 723,
     "name": "Органические удобрения",
     "type": "subcategory",
-    "categoryId": 128
+    "categoryId": 128,
+    "slug": "organic-fertilizers"
   },
   {
     "externalId": 724,
     "name": "Минеральные удобрения",
     "type": "subcategory",
-    "categoryId": 128
+    "categoryId": 128,
+    "slug": "mineral-fertilizers"
   },
   {
     "externalId": 725,
     "name": "Калийные удобрения",
     "type": "subcategory",
-    "categoryId": 128
+    "categoryId": 128,
+    "slug": "potassium-fertilizers"
   },
   {
     "externalId": 726,
     "name": "Средства для защиты растений",
     "type": "subcategory",
-    "categoryId": 128
+    "categoryId": 128,
+    "slug": "plant-protection"
   },
   {
     "externalId": 727,
     "name": "Инструменты и аксессуары",
     "type": "subcategory",
-    "categoryId": 129
+    "categoryId": 129,
+    "slug": "beekeeping-tools"
   },
   {
     "externalId": 728,
     "name": "Одежда для защиты",
     "type": "subcategory",
-    "categoryId": 129
+    "categoryId": 129,
+    "slug": "beekeeping-clothing"
   },
   {
     "externalId": 729,
     "name": "Пчелы, пчелопакеты",
     "type": "subcategory",
-    "categoryId": 129
+    "categoryId": 129,
+    "slug": "bees"
   },
   {
     "externalId": 730,
     "name": "Продукты пчеловодства",
     "type": "subcategory",
-    "categoryId": 129
+    "categoryId": 129,
+    "slug": "bee-products"
   },
   {
     "externalId": 731,
     "name": "Ульи",
     "type": "subcategory",
-    "categoryId": 129
+    "categoryId": 129,
+    "slug": "beehives"
   },
   {
     "externalId": 732,
     "name": "Прочее",
     "type": "subcategory",
-    "categoryId": 129
+    "categoryId": 129,
+    "slug": "other-beekeeping"
   },
   {
     "externalId": 733,
     "name": "Бани",
     "type": "subcategory",
-    "categoryId": 130
+    "categoryId": 130,
+    "slug": "baths"
   },
   {
     "externalId": 734,
     "name": "Туалеты и санузлы",
     "type": "subcategory",
-    "categoryId": 130
+    "categoryId": 130,
+    "slug": "toilets"
   },
   {
     "externalId": 735,
     "name": "Хозблоки",
     "type": "subcategory",
-    "categoryId": 130
+    "categoryId": 130,
+    "slug": "outbuildings"
   },
   {
     "externalId": 736,
     "name": "Печи для бани",
     "type": "subcategory",
-    "categoryId": 130
+    "categoryId": 130,
+    "slug": "bath-stoves"
   },
   {
     "externalId": 737,
     "name": "Аксессуары для бань",
     "type": "subcategory",
-    "categoryId": 130
+    "categoryId": 130,
+    "slug": "bath-accessories"
   },
   {
     "externalId": 738,
     "name": "Прочее",
     "type": "subcategory",
-    "categoryId": 130
+    "categoryId": 130,
+    "slug": "other-baths"
   },
-
   {
     "externalId": 746,
     "name": "Антиквариат",
@@ -6497,7 +6460,6 @@
     "slug": "other-electric-transport",
     "categoryId": 145
   },
-
   {
     "externalId": 803,
     "name": "Подарочные наборы",
@@ -6582,7 +6544,6 @@
     "slug": "other-holiday-items",
     "categoryId": 151
   },
-
   {
     "externalId": 815,
     "name": "Детский",
@@ -6597,7 +6558,6 @@
     "slug": "adult-carnival-costumes",
     "categoryId": 152
   },
-
   {
     "externalId": 817,
     "name": "Кошки",
@@ -6647,7 +6607,6 @@
     "slug": "other-pets",
     "categoryId": 153
   },
-
   {
     "externalId": 824,
     "name": "Лошади",
@@ -6795,7 +6754,6 @@
     "slug": "other-pet-products",
     "categoryId": 155
   },
-
   {
     "externalId": 845,
     "name": "Бизнес в сфере услуг",

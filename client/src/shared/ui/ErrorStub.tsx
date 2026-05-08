@@ -14,7 +14,10 @@ export const ErrorStub = ({ status, onRetry, onBack }: Props) => {
   const Icon = config.icon;
 
   return (
-    <Group justify="center" style={{ width: '100%', alignSelf: 'center' }}>
+    <Group
+      justify="center"
+      style={{ width: '100%', height: '100%', alignSelf: 'center' }}
+    >
       <Stack align="center" gap="sm" maw={420}>
         {Icon && <Icon size={48} />}
         <Title order={3} ta="center">

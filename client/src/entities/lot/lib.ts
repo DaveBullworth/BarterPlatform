@@ -1,8 +1,22 @@
 import { LOT_STATUS, type LotStatus } from '@/shared/constants/lot-status';
-import { LOT_STATUS_META } from '@/shared/constants/lot-status-meta';
 import type { LotFilters } from '@/entities/lot';
 import type { CategorySelection } from '@/entities/taxonomy';
 import type { GeoFilterValue } from '@/shared/lib/geoFilter';
+
+export const LOT_STATUS_META: Record<LotStatus, LotStatusMeta> = {
+  [LOT_STATUS.ACTIVE]: {
+    color: 'green',
+    labelKey: 'lot.visibility.active',
+  },
+  [LOT_STATUS.HIDDEN]: {
+    color: 'red',
+    labelKey: 'lot.visibility.hidden',
+  },
+  [LOT_STATUS.ARCHIVED]: {
+    color: 'gray',
+    labelKey: 'lot.visibility.archived',
+  },
+};
 
 // Статус → метаданные для UI
 // Была inline логика в LotPage через useMemo + switch

@@ -1,12 +1,12 @@
-import { SegmentedControl, Center } from '@mantine/core';
+import { SegmentedControl, Center, useMantineColorScheme } from '@mantine/core';
 import { Sun, Moon, MonitorCog } from 'lucide-react';
-import { useTheme } from '@/shared/hooks/useTheme';
 import { USER_THEMES, type UserTheme } from '@/shared/constants/user-theme';
 
 const THEME_VALUES = Object.values(USER_THEMES) as UserTheme[];
 
 export const ThemeSwitcher = () => {
-  const { colorScheme, setLight, setDark, setSystem } = useTheme();
+  const { colorScheme, setColorScheme, clearColorScheme } =
+    useMantineColorScheme();
 
   const value: UserTheme =
     colorScheme === 'light'
@@ -20,18 +20,18 @@ export const ThemeSwitcher = () => {
       return;
     }
 
-    const theme = value as UserTheme;
-
-    switch (theme) {
+    switch (value as UserTheme) {
       case USER_THEMES.LIGHT:
-        setLight();
+        setColorScheme('light');
         break;
+
       case USER_THEMES.DARK:
-        setDark();
+        setColorScheme('dark');
         break;
+
       case USER_THEMES.SYSTEM:
       default:
-        setSystem();
+        clearColorScheme();
         break;
     }
   };

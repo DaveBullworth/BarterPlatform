@@ -34,8 +34,8 @@ export const lotKeys = {
   details: () => [...lotKeys.all(), 'detail'] as const,
   detail: (id: string) => [...lotKeys.details(), id] as const,
   images: (id: string) => [...lotKeys.detail(id), 'images'] as const,
-  mainImages: (ids: string[]) =>
-    [...lotKeys.all(), 'main-images', ids] as const,
+  mainImagesAll: () => [...lotKeys.all(), 'main-images'] as const,
+  mainImages: (ids: string[]) => [...lotKeys.mainImagesAll(), ids] as const,
 };
 
 // ============================================================
@@ -48,16 +48,19 @@ export const lotApi = {
     params: GetLotsParams,
     signal?: AbortSignal,
   ): Promise<PaginatedLots> => {
-    const { data } = await $host.get('/lot', { params, signal });
+    const { data } = await $authHost.get('/lot', { params, signal });
     return PaginatedLotsSchema.parse(data);
   },
 
-  getById: async (id: string, updatedAt?: string): Promise<Lot> => {
-    const etag = toLotEtag(updatedAt);
-    const { data } = await $authHost.get(`/lot/${id}`, {
+  getById: async (id: string, cached?: Lot): Promise<Lot> => {
+    const etag = toLotEtag(cached?.updatedAt);
+    const response = await $authHost.get(`/lot/${id}`, {
       headers: etag ? { 'If-None-Match': etag } : undefined,
+      validateStatus: (status) =>
+        status === 304 || (status >= 200 && status < 300),
     });
-    return LotSchema.parse(data);
+    if (response.status === 304 && cached) return cached;
+    return LotSchema.parse(response.data);
   },
 
   create: async (dto: CreateLotDto): Promise<Lot> => {
@@ -132,7 +135,7 @@ export const useLot = (id: string | undefined) => {
     queryKey: lotKeys.detail(id!),
     queryFn: () => {
       const cached = queryClient.getQueryData<Lot>(lotKeys.detail(id!));
-      return lotApi.getById(id!, cached?.updatedAt);
+      return lotApi.getById(id!, cached);
     },
     enabled: Boolean(id),
     staleTime: 1000 * 60,

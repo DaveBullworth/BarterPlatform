@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Group, Loader, SimpleGrid, Stack, Text } from '@mantine/core';
+import { SimpleGrid, Stack, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 
@@ -19,10 +19,15 @@ import { ErrorStub, ConfirmModal } from '@/shared/ui';
 import { getApiErrorStatusCode } from '@/shared/lib/';
 import { LotCardGrid } from './LotCardGrid';
 import { LotCardList } from './LotCardList';
+import { LotsFeedSkeleton } from './LotsFeedSkeleton';
 
 import { FeedControls, type FeedView, type LimitOption } from './FeedControls';
 
-export const LotsFeed = () => {
+type Props = {
+  selfOnly?: boolean;
+};
+
+export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
   const { t, i18n } = useTranslation();
   const { toLotView } = useNavigation();
   const isMobile = useMediaQuery('(max-width: 48em)');
@@ -40,10 +45,10 @@ export const LotsFeed = () => {
   // Строим фильтры
   const { query: searchQuery } = useSearchQuery();
 
-  const filters = useMemo(
-    () => buildLotFilters(geoFilter, selection, searchQuery),
-    [geoFilter, selection, searchQuery],
-  );
+  const filters = useMemo(() => {
+    const base = buildLotFilters(geoFilter, selection, searchQuery);
+    return selfOnly ? { ...base, selfOnly: true } : base;
+  }, [geoFilter, selection, searchQuery, selfOnly]);
   const filtersKey = JSON.stringify(filters);
   const hasFilters = filtersKey !== '{}';
 
@@ -62,6 +67,7 @@ export const LotsFeed = () => {
   const lots = lotsData?.data;
   const totalLots = lotsData?.total ?? 0;
   const totalPages = Math.max(Math.ceil(totalLots / limit), 1);
+  const gridCols = isMobile ? 2 : isWide ? 5 : 3;
 
   // lotIds стабильный — зависит от lotsData которое стабильно между ререндерами
   const lotIds = useMemo(() => (lots ?? []).map((l) => l.id), [lots]);
@@ -94,14 +100,6 @@ export const LotsFeed = () => {
     setPage(1);
   };
 
-  if (isLoading) {
-    return (
-      <Group justify="center" style={{ width: '100%', height: '100%' }}>
-        <Loader />
-      </Group>
-    );
-  }
-
   if (isError) {
     return <ErrorStub status={getApiErrorStatusCode(error)} />;
   }
@@ -110,7 +108,7 @@ export const LotsFeed = () => {
 
   return (
     <>
-      <Stack gap="md" w="100%" mx="auto">
+      <Stack gap="sm" w="100%" mx="auto">
         {/* Controls */}
         <FeedControls
           view={view}
@@ -125,16 +123,16 @@ export const LotsFeed = () => {
         />
 
         {/* Content */}
-        {lotsToRender.length === 0 && (
+        {isLoading && (
+          <LotsFeedSkeleton view={view} count={limit} cols={gridCols} />
+        )}
+
+        {!isLoading && lotsToRender.length === 0 && (
           <Text c="dimmed">{t('feed.noLotsFound')}</Text>
         )}
 
-        {lotsToRender.length > 0 && view === 'grid' && (
-          <SimpleGrid
-            cols={isMobile ? 2 : isWide ? 5 : 3}
-            spacing="md"
-            verticalSpacing="md"
-          >
+        {!isLoading && lotsToRender.length > 0 && view === 'grid' && (
+          <SimpleGrid cols={gridCols} spacing="md" verticalSpacing="md">
             {lotsToRender.map((lot) => (
               <LotCardGrid
                 key={lot.id}
@@ -148,7 +146,7 @@ export const LotsFeed = () => {
           </SimpleGrid>
         )}
 
-        {lotsToRender.length > 0 && view === 'list' && (
+        {!isLoading && lotsToRender.length > 0 && view === 'list' && (
           <Stack gap="sm">
             {lotsToRender.map((lot) => (
               <LotCardList

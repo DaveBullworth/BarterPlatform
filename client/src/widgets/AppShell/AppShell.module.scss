@@ -1,0 +1,9 @@
+@use '../../app/styles/variables.scss' as vars;
+
+.mainLayout {
+  display: flex;
+  @media (max-width: vars.$breakpoint-sm) {
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
+  }
+}

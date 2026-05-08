@@ -15,9 +15,9 @@ import {
   type AdminUser,
 } from '@/entities/user';
 import { USER_ROLES } from '@/shared/constants/user-role';
-import { ProfileHeaderBlock } from '@/features/profile/header';
-import { ProfileContactsBlock } from '@/features/profile/contacts';
-import { ProfilePreferencesBlock } from '@/features/profile/preferences';
+import { ProfileHeaderBlock } from '@/widgets/ProfileHeaderBlock';
+import { ProfileContactsBlock } from '@/widgets/ProfileContactsBlock';
+import { ProfilePreferencesBlock } from '@/widgets/ProfilePreferencesBlock';
 import { ProfileEditModal } from '@/features/profile/edit';
 import { AccountDeactivationModal } from '@/features/profile/deactivation';
 

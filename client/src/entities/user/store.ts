@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '@/app/store';
 import type { UserRole } from '@/shared/constants/user-role';
 
 // Минимум — только то что нужно глобально
@@ -9,6 +8,9 @@ type AuthState = {
   currentUserId: string | null;
   currentUserRole: string | null;
 };
+
+// Локальная типизация — entity не зависит от RootState из app
+type SliceState = { auth: AuthState };
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -48,7 +50,7 @@ export default slice.reducer;
 // Импортируют useAuthStore а не useSelector + RootState
 export const useAuthStore = () => {
   const dispatch = useDispatch();
-  const state = useSelector((s: RootState) => s.auth);
+  const state = useSelector((s: SliceState) => s.auth);
 
   return {
     isAuthenticated: state.isAuthenticated,

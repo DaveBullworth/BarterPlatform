@@ -30,3 +30,9 @@ export type GeoSelectOption = {
   value: string;
   label: string;
 };
+
+export type GeoValue = {
+  regionId: string;
+  cityId: string;
+  districtId: string;
+};

@@ -3,6 +3,9 @@ import type { SelfUser, AdminUser, PublicUser, AnyUser } from './model';
 
 // Type guards — были в profile/components/guard.ts
 // Теперь живут рядом с типами которые охраняют
+// isAdminUser — про SHAPE данных (admin-view с status/statusEmail), не про роль
+// смотрящего. Бэк отдаёт AdminUser shape, когда админ смотрит на любого юзера
+// (даже обычного) через /user/:id.
 export const isSelfUser = (user: AnyUser): user is SelfUser =>
   'language' in user && 'theme' in user;
 

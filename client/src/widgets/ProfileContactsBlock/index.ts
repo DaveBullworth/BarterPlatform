@@ -1,0 +1,1 @@
+export { ProfileContactsBlock } from './ProfileContactsBlock';

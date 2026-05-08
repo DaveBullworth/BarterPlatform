@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { Stack, Loader, Group } from '@mantine/core';
-import { useParams } from 'react-router-dom';
+import { useParams, useBlocker } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useSelfUser } from '@/entities/user';
 import { useTaxonomy, type Category } from '@/entities/taxonomy';
@@ -9,10 +11,8 @@ import {
   useDistrictOptions,
 } from '@/entities/geography';
 import { useNavigation } from '@/shared/lib/navigation';
-import { ErrorStub } from '@/shared/ui';
+import { ConfirmModal, ErrorStub } from '@/shared/ui';
 import {
-  LotForm,
-  LotFormHeader,
   useLotFormData,
   useLotFormState,
   useLotImages,
@@ -21,10 +21,12 @@ import {
   EMPTY_LOT_FORM,
 } from '@/features/lot-form';
 import { getApiErrorStatusCode } from '@/shared/lib';
+import { LotForm, LotFormHeader } from '@/widgets/LotForm';
 
 export const LotFormPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { back } = useNavigation();
+  const { t } = useTranslation();
+  const { back, toLotView } = useNavigation();
   const { data: selfUser } = useSelfUser();
   const { data: taxonomy = [] } = useTaxonomy();
 
@@ -77,18 +79,32 @@ export const LotFormPage = () => {
     .join(' → ');
 
   // Submit
+  const [savedLotId, setSavedLotId] = useState<string | null>(null);
+
   const { submit, isPending } = useLotSubmit({
     lotId: id,
     deletedImageIds: lotImages.deletedIds,
     pendingPrimaryId: lotImages.pendingPrimaryId,
     newImages: lotImages.newImages,
-    onSuccess: () => {
+    onSuccess: (lot) => {
       lotImages.reset();
       form.resetDirty();
+      setSavedLotId(lot.id);
     },
   });
 
   const isFormDirty = form.isDirty() || lotImages.isDirty;
+
+  // Навигация после сохранения — отложена до тех пор, пока isFormDirty не станет false,
+  // иначе useBlocker перехватит редирект ещё до того, как resetDirty отрисуется.
+  useEffect(() => {
+    if (savedLotId && !isFormDirty) {
+      toLotView(savedLotId);
+    }
+  }, [savedLotId, isFormDirty, toLotView]);
+
+  // Блокировка ухода со страницы при несохранённых изменениях
+  const blocker = useBlocker(isFormDirty);
 
   // Taxonomy pick handler
   const handleTaxonomyPick = (
@@ -151,6 +167,16 @@ export const LotFormPage = () => {
         isEditMode={isEditMode}
         lot={lot}
         loading={isPending}
+      />
+
+      <ConfirmModal
+        opened={blocker.state === 'blocked'}
+        title={t('lotForm.status.unsaved')}
+        message={t('lotForm.modal.unsavedWarning')}
+        confirmLabel={t('lotForm.actions.continue')}
+        cancelLabel={t('lotForm.actions.cancel')}
+        onConfirm={() => blocker.proceed?.()}
+        onCancel={() => blocker.reset?.()}
       />
     </Stack>
   );

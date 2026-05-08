@@ -6,6 +6,8 @@ import { DesktopHeader, MobileHeader } from '@/widgets/AppHeader';
 import { DesktopNavbar, MobileBottomNavbar } from '@/widgets/AppNavbar';
 import { CategoriesDrawer } from '@/features/category-filter';
 
+import styles from './AppShell.module.scss';
+
 export const AppShell = () => {
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [categoriesOpened, { open: openCategories, close: closeCategories }] =
@@ -42,7 +44,7 @@ export const AppShell = () => {
 
       <CategoriesDrawer opened={categoriesOpened} onClose={closeCategories} />
 
-      <MantineAppShell.Main>
+      <MantineAppShell.Main className={styles.mainLayout}>
         <Outlet />
       </MantineAppShell.Main>
     </MantineAppShell>

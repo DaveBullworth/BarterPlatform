@@ -66,6 +66,7 @@ export const ProfileEditModal = ({
         opened={discardOpen}
         onCancel={() => setDiscardOpen(false)}
         onConfirm={() => {
+          setHasChanges(false);
           setDiscardOpen(false);
           onClose();
         }}

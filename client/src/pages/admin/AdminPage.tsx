@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack, Title, Text, Loader, Center } from '@mantine/core';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
@@ -20,6 +20,8 @@ export const AdminPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuthStore();
   const { toUser, toProfile } = useNavigation();
+
+  const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -58,6 +60,16 @@ export const AdminPage = () => {
     placeholderData: keepPreviousData,
   });
 
+  useEffect(() => {
+    if (!isLoading && data) {
+      const id = requestAnimationFrame(() => setLoading(false));
+      return () => cancelAnimationFrame(id);
+    } else {
+      const id = setTimeout(() => setLoading(true), 0);
+      return () => clearTimeout(id);
+    }
+  }, [isLoading, data]);
+
   const handleRowClick = (row: { id: string }) => {
     if (row.id === currentUser?.id) {
       toProfile();
@@ -71,37 +83,35 @@ export const AdminPage = () => {
     setPage(1);
   };
 
-  if (isLoading && !data) {
-    return (
-      <Center py="xl">
-        <Loader />
-      </Center>
-    );
-  }
-
   return (
     <Stack gap="md" w="100%">
       <Title order={2}>{t('admin.title')}</Title>
-
       <AdminTableInfo />
+      {loading && (
+        <Center py="xl">
+          <Loader />
+        </Center>
+      )}
 
       {isError && <Text c="red">{t('admin.loadFailed')}</Text>}
 
-      <AdminTableFilters
-        local={localFilters}
-        onChange={setLocalFilters}
-        activeCount={activeFiltersCount}
-        onApply={() => {
-          applyFilters();
-          setPage(1);
-        }}
-        onReset={() => {
-          resetFilters();
-          setPage(1);
-        }}
-      />
+      {!loading && (
+        <AdminTableFilters
+          local={localFilters}
+          onChange={setLocalFilters}
+          activeCount={activeFiltersCount}
+          onApply={() => {
+            applyFilters();
+            setPage(1);
+          }}
+          onReset={() => {
+            resetFilters();
+            setPage(1);
+          }}
+        />
+      )}
 
-      {data && (
+      {!loading && data && (
         <>
           <AdminTableActions
             hasSorting={hasSorting}
