@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Button, Checkbox, Drawer, Group, Text } from '@mantine/core';
+import { Button, Checkbox, Drawer, Group, Text, Badge } from '@mantine/core';
+import { ChartColumnStacked, RotateCcw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -12,7 +13,7 @@ import {
 import { useCategorySelection } from './useCategorySelection';
 import { CATEGORY_PARAM } from '@/shared/constants/category-filter-param';
 
-import styles from '../../widgets/AppHeader/AppHeader.module.scss';
+import drawerStyles from '@/shared/ui/MobileDrawer.module.scss';
 
 type Props = {
   opened: boolean;
@@ -118,16 +119,39 @@ export const CategoriesDrawer = ({ opened, onClose }: Props) => {
       onClose={onClose}
       position="left"
       size="lg"
-      title={t('categories.title')}
+      title={
+        <Group gap="xs" wrap="nowrap" align="center">
+          <ChartColumnStacked
+            size={20}
+            color="var(--mantine-color-barter-6)"
+            strokeWidth={2}
+          />
+          <Text fw={700} size="md">
+            {t('categories.title')}
+          </Text>
+          {selection && (
+            <Badge size="sm" variant="light" color="accent">
+              1
+            </Badge>
+          )}
+        </Group>
+      }
       onEnterTransitionEnd={() => setShowContent(true)}
       onExitTransitionEnd={() => setShowContent(false)}
-      className={styles.drawer_}
+      className={drawerStyles.bottomTitleOnMobile}
     >
-      <Group mb="sm" justify="space-between">
-        <Text size="sm" c="dimmed">
+      <Group mb="md" justify="space-between" align="center">
+        <Text size="xs" c="dimmed" style={{ maxWidth: '70%' }}>
           {t('categories.hint')}
         </Text>
-        <Button variant="subtle" size="compact-sm" onClick={clear}>
+        <Button
+          variant="subtle"
+          color="gray"
+          size="compact-sm"
+          leftSection={<RotateCcw size={13} />}
+          onClick={clear}
+          disabled={!selection}
+        >
           {t('categories.reset')}
         </Button>
       </Group>

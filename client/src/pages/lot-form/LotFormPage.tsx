@@ -41,6 +41,7 @@ export const LotFormPage = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useLotFormData(id);
 
   const createModeDefaults =
@@ -128,7 +129,7 @@ export const LotFormPage = () => {
 
   if (isLoading) {
     return (
-      <Group justify="center" style={{ width: '100%' }}>
+      <Group justify="center" style={{ width: '100%' }} py="xl">
         <Loader />
       </Group>
     );
@@ -138,7 +139,7 @@ export const LotFormPage = () => {
     return (
       <ErrorStub
         status={getApiErrorStatusCode(error)}
-        onRetry={() => {}}
+        onRetry={() => refetch?.()}
         onBack={back}
       />
     );

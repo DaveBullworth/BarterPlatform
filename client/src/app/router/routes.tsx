@@ -1,89 +1,126 @@
+import { lazy, Suspense, type ReactElement } from 'react';
 import { Navigate, type RouteObject } from 'react-router-dom';
+
 import { RequireAuth } from './guards/RequireAuth';
 import { RequireAdmin } from './guards/RequireAdmin';
 import { AppShell } from '@/widgets/AppShell';
-import { FeedPage } from '@/pages/feed/FeedPage';
-import { ProfilePage } from '@/pages/profile/ProfilePage';
-import { AdminPage } from '@/pages/admin/AdminPage';
-import { AuthPage } from '@/pages/auth/AuthPage';
-import { MailConfirmPage } from '@/pages/mail-confirm/MailConfirmPage';
-import { ResetPasswordPage } from '@/pages/reset-password/ResetPasswordPage';
-import { LotFormPage } from '@/pages/lot-form/LotFormPage';
-import { LotPage } from '@/pages/lot/LotPage';
-import { MyLotsPage } from '@/pages/my-lots/MyLotsPage';
+import { FullPageLoader } from '@/shared/ui';
 import { ROUTES } from '@/shared/constants/routes';
+
+const FeedPage = lazy(() =>
+  import('@/pages/feed/FeedPage').then((m) => ({ default: m.FeedPage })),
+);
+const ProfilePage = lazy(() =>
+  import('@/pages/profile/ProfilePage').then((m) => ({
+    default: m.ProfilePage,
+  })),
+);
+const AdminPage = lazy(() =>
+  import('@/pages/admin/AdminPage').then((m) => ({ default: m.AdminPage })),
+);
+const AuthPage = lazy(() =>
+  import('@/pages/auth/AuthPage').then((m) => ({ default: m.AuthPage })),
+);
+const MailConfirmPage = lazy(() =>
+  import('@/pages/mail-confirm/MailConfirmPage').then((m) => ({
+    default: m.MailConfirmPage,
+  })),
+);
+const ResetPasswordPage = lazy(() =>
+  import('@/pages/reset-password/ResetPasswordPage').then((m) => ({
+    default: m.ResetPasswordPage,
+  })),
+);
+const LotFormPage = lazy(() =>
+  import('@/pages/lot-form/LotFormPage').then((m) => ({
+    default: m.LotFormPage,
+  })),
+);
+const LotPage = lazy(() =>
+  import('@/pages/lot/LotPage').then((m) => ({ default: m.LotPage })),
+);
+const MyLotsPage = lazy(() =>
+  import('@/pages/my-lots/MyLotsPage').then((m) => ({
+    default: m.MyLotsPage,
+  })),
+);
+
+/** Suspense-обёртка с fallback'ом для lazy-роутов. */
+const withSuspense = (node: ReactElement): ReactElement => (
+  <Suspense fallback={<FullPageLoader />}>{node}</Suspense>
+);
 
 export const routes: RouteObject[] = [
   {
     path: ROUTES.ROOT,
     element: <AppShell />,
     children: [
-      { index: true, element: <FeedPage /> },
+      { index: true, element: withSuspense(<FeedPage />) },
 
       {
         path: ROUTES.PROFILE,
-        element: (
+        element: withSuspense(
           <RequireAuth>
             <ProfilePage />
-          </RequireAuth>
+          </RequireAuth>,
         ),
       },
 
       {
         path: ROUTES.ADMIN,
-        element: (
+        element: withSuspense(
           <RequireAdmin>
             <AdminPage />
-          </RequireAdmin>
+          </RequireAdmin>,
         ),
       },
 
       {
         path: `${ROUTES.USERS}/:id`,
-        element: (
+        element: withSuspense(
           <RequireAuth>
             <ProfilePage />
-          </RequireAuth>
+          </RequireAuth>,
         ),
       },
 
       {
         path: ROUTES.LOT_CREATE,
-        element: (
+        element: withSuspense(
           <RequireAuth>
             <LotFormPage key="create" />
-          </RequireAuth>
+          </RequireAuth>,
         ),
       },
 
       {
         path: `${ROUTES.LOT_EDIT}/:id`,
-        element: (
+        element: withSuspense(
           <RequireAuth>
             <LotFormPage key="edit" />
-          </RequireAuth>
+          </RequireAuth>,
         ),
       },
 
       {
         path: `${ROUTES.LOT_VIEW}/:id`,
-        element: <LotPage />,
+        element: withSuspense(<LotPage />),
       },
 
       {
         path: ROUTES.MY_LOTS,
-        element: (
+        element: withSuspense(
           <RequireAuth>
             <MyLotsPage />
-          </RequireAuth>
+          </RequireAuth>,
         ),
       },
     ],
   },
 
-  { path: ROUTES.AUTH, element: <AuthPage /> },
-  { path: ROUTES.MAIL_CONFIRM, element: <MailConfirmPage /> },
-  { path: ROUTES.RESET_PASSWORD, element: <ResetPasswordPage /> },
+  { path: ROUTES.AUTH, element: withSuspense(<AuthPage />) },
+  { path: ROUTES.MAIL_CONFIRM, element: withSuspense(<MailConfirmPage />) },
+  { path: ROUTES.RESET_PASSWORD, element: withSuspense(<ResetPasswordPage />) },
 
   { path: '*', element: <Navigate to={ROUTES.ROOT} /> },
 ];

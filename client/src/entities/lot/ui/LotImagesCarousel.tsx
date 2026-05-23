@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from '@mantine/core';
-import { CameraOff, X } from 'lucide-react';
+import { ImageOff, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getLotOriginalImageUrl, type LotImage } from '@/entities/lot';
@@ -38,9 +38,10 @@ export const LotImagesCarousel = ({ images }: Props) => {
         <Stack
           gap="sm"
           align="center"
-          style={{ height: 140, justifyContent: 'center' }}
+          c="dimmed"
+          style={{ height: 180, justifyContent: 'center' }}
         >
-          <CameraOff size={42} />
+          <ImageOff size={42} strokeWidth={1.4} />
           <Text size="sm">{t('lot.noImages')}</Text>
         </Stack>
       </Card>
@@ -80,10 +81,19 @@ export const LotImagesCarousel = ({ images }: Props) => {
       >
         <ActionIcon
           onClick={handleClose}
-          variant="gradient"
-          gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+          variant="filled"
+          color="dark"
           size="lg"
-          style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}
+          radius="xl"
+          aria-label="close"
+          style={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            zIndex: 10,
+            backgroundColor: 'rgba(15, 23, 42, 0.7)',
+            backdropFilter: 'blur(6px)',
+          }}
         >
           <X size={18} />
         </ActionIcon>

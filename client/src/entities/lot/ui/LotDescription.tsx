@@ -50,7 +50,7 @@ export const LotDescription = ({ description }: Props) => {
 
   return (
     <Card withBorder>
-      <Badge mb={8} variant="light" color="orange">
+      <Badge mb={8} variant="light" color="accent">
         {t('lot.description')}
       </Badge>
       <div

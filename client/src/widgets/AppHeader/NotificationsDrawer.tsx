@@ -1,7 +1,7 @@
 import { Drawer, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
-import styles from './AppHeader.module.scss';
+import drawerStyles from '@/shared/ui/MobileDrawer.module.scss';
 
 type Props = {
   opened: boolean;
@@ -18,7 +18,7 @@ export const NotificationsDrawer = ({ opened, onClose }: Props) => {
       position="right"
       size="lg"
       title={t('notifications.title')}
-      className={styles.drawer_}
+      className={drawerStyles.bottomTitleOnMobile}
     >
       <Text size="sm" c="dimmed">
         {t('notifications.empty')}

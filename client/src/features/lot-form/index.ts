@@ -4,3 +4,4 @@ export { useLotImages } from './useLotImages';
 export { useLotSubmit } from './useLotSubmit';
 export { MAX_LOT_IMAGES, EMPTY_LOT_FORM } from './model';
 export type { LotFormValues } from './model';
+export type { RenderedImage, NewImage } from './useLotImages';

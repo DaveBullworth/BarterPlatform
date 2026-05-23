@@ -1,30 +1,97 @@
-@use '../../app/styles/variables.scss' as vars;
+@use '@/app/styles/variables.scss' as vars;
 
-.drawer_ {
-  section {
-    // Мобильная логика: если экран меньше $breakpoint-sm, перемещаем header вниз
-    @media (max-width: vars.$breakpoint-sm) {
-      display: flex;
-      flex-direction: column;
-      justify-content: end;
-      overflow-y: hidden;
-      header {
-        order: 2; // заголовок вниз
-        border-top: 1px solid grey;
-        border-radius: 8px;
-      }
-      :global(.mantine-Drawer-body) {
-        height: inherit;
-        padding: 1rem 0 0 0;
-        order: 1;
-        overflow-y: hidden;
-      }
-      // Отдельно применяем к верхнему Stack-root
-      :global(.mantine-Drawer-body > .mantine-Stack-root) {
-        max-height: 100%;
-        overflow-y: scroll;
-        padding-bottom: 3rem;
-      }
-    }
-  }
+/* Прозрачный sticky-header c subtle blur и тонкой нижней границей.
+   Mantine AppShell.Header сам управляет позиционированием — мы лишь оформляем. */
+.header {
+  height: 100%;
+  background: var(--mantine-color-body);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+}
+
+.logoButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 8px;
+  border-radius: var(--mantine-radius-md);
+  transition: background-color 150ms ease;
+}
+
+.logoButton:hover {
+  background: var(--mantine-color-default-hover);
+}
+
+.logoMark {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-barter-5),
+    var(--mantine-color-barter-7)
+  );
+  color: #fff;
+  box-shadow: 0 4px 12px -2px rgba(30, 162, 115, 0.45);
+  flex-shrink: 0;
+}
+
+.logoName {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  background: linear-gradient(
+    90deg,
+    var(--mantine-color-barter-7),
+    var(--mantine-color-barter-5)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+[data-mantine-color-scheme='dark'] .logoName {
+  background: linear-gradient(
+    90deg,
+    var(--mantine-color-barter-3),
+    var(--mantine-color-barter-5)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.searchInput {
+  width: 320px;
+  max-width: 100%;
+}
+
+.searchInput input {
+  background: var(--mantine-color-default-hover);
+  border-color: transparent;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.searchInput input:focus,
+.searchInput input:focus-within {
+  background: var(--mantine-color-body);
+  border-color: var(--mantine-color-barter-4);
+  box-shadow: 0 0 0 3px rgba(30, 162, 115, 0.15);
+}
+
+/* Бэдж активного фильтра-категории */
+.categoryActiveDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--mantine-color-accent-6);
+  margin-left: 4px;
 }

@@ -309,6 +309,8 @@
   },
   "feed": {
     "noLotsFound": "Nie znaleziono ofert",
+    "noLotsFoundFiltered": "Spróbuj zmienić filtry lub wyszukać coś innego.",
+    "noLotsFoundEmpty": "Nie ma jeszcze ofert — dodaj pierwszą.",
     "limit": "Limit",
     "info": "Informacje o kanale",
     "recordsOnPage": "Rekordy na stronie",

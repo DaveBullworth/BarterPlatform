@@ -1,4 +1,5 @@
-import { Title, Stack, Loader, Center, Button } from '@mantine/core';
+import { Title, Stack, Loader, Center, Button, Group } from '@mantine/core';
+import { Pencil, UserX } from 'lucide-react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -67,21 +68,27 @@ export const ProfilePage = () => {
         <ProfilePreferencesBlock user={user} />
       )}
 
-      {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
-        <Button onClick={() => setEditOpened(true)} maw="100%">
-          {t('profile.editData')}
-        </Button>
-      )}
+      <Group gap="sm" wrap="wrap">
+        {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
+          <Button
+            leftSection={<Pencil size={16} />}
+            onClick={() => setEditOpened(true)}
+          >
+            {t('profile.editData')}
+          </Button>
+        )}
 
-      {canDeactivate && (
-        <Button
-          color="red"
-          onClick={() => setDeactivationOpened(true)}
-          maw={600}
-        >
-          {t('deactivation.deactivate')}
-        </Button>
-      )}
+        {canDeactivate && (
+          <Button
+            variant="subtle"
+            color="red"
+            leftSection={<UserX size={16} />}
+            onClick={() => setDeactivationOpened(true)}
+          >
+            {t('deactivation.deactivate')}
+          </Button>
+        )}
+      </Group>
 
       {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
         <ProfileEditModal

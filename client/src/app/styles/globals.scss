@@ -1,21 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: light dark;
+  --barter-radius-card: var(--mantine-radius-lg);
+  --barter-shadow-card: var(--mantine-shadow-sm);
+  --barter-shadow-card-hover: var(--mantine-shadow-md);
+  --barter-surface-soft: rgba(30, 162, 115, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 html,
-body {
+body,
+#root {
   height: 100%;
 }
 
 body {
   margin: 0;
-  line-height: normal;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(30, 162, 115, 0.06), transparent 45%),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(72, 196, 129, 0.04),
+      transparent 40%
+    ),
+    var(--mantine-color-body);
+  background-attachment: fixed;
 }
 
+[data-mantine-color-scheme='dark'] body {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(30, 162, 115, 0.1), transparent 45%),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(48, 187, 110, 0.06),
+      transparent 40%
+    ),
+    var(--mantine-color-body);
+  background-attachment: fixed;
+}
+
+/* Полировка: глобальная типографика заголовков */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+/* Универсальный focus-ring через accessibility */
+:focus-visible {
+  outline: 2px solid var(--mantine-color-barter-5);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Тонкий брендовый scrollbar (опционально, не критично на мобиле) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mantine-color-gray-4) transparent;
+}
+
+[data-mantine-color-scheme='dark'] * {
+  scrollbar-color: var(--mantine-color-dark-3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--mantine-color-gray-4);
+  border-radius: 4px;
+}
+
+[data-mantine-color-scheme='dark'] *::-webkit-scrollbar-thumb {
+  background-color: var(--mantine-color-dark-3);
+}
+
+/* Полировка native-выделения текста */
+::selection {
+  background: var(--mantine-color-barter-2);
+  color: var(--mantine-color-barter-9);
+}
+
+[data-mantine-color-scheme='dark'] ::selection {
+  background: var(--mantine-color-barter-7);
+  color: white;
+}
+
+/* Точечные override-ы для нативных частей Mantine.
+   Локальный класс лучше глобала — оставляем минимум. */
 .mantine-Select-option[aria-selected='true'] {
-  font-weight: 700; /* выбранный элемент в dropdown */
-}
-
-.mantine-Select-input {
-  font-weight: 700; /* текст выбранного значения в самом input */
+  font-weight: 600;
 }
 
 .mantine-Table-td {
   vertical-align: middle;
+}
+
+/* Плавная посадка изображений */
+img {
+  -webkit-user-drag: none;
 }

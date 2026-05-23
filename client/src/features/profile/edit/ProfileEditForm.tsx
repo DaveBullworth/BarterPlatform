@@ -280,7 +280,7 @@ export const ProfileEditForm = ({
         message={t('profile.confirmUpdateMessage')}
         confirmLabel={t('profile.confirmDiscardConfirm')}
         cancelLabel={t('profile.confirmDiscardCancel')}
-        confirmColor="blue"
+        confirmColor="barter"
         loading={isPending}
       />
     </>

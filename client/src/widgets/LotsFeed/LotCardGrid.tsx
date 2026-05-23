@@ -1,5 +1,5 @@
-import { Card, Stack, Group, Text, Image, Button } from '@mantine/core';
-import { CameraOff } from 'lucide-react';
+import { Card, Stack, Text, Button } from '@mantine/core';
+import { ImageOff, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { KeyboardEvent } from 'react';
 
@@ -32,55 +32,57 @@ export const LotCardGrid = ({
     }
   };
 
+  const locationLabel = [lot.city?.name, lot.region?.name]
+    .filter(Boolean)
+    .join(', ');
+
   return (
     <Card
-      withBorder
-      padding="sm"
       className={styles.clickableCard}
+      padding="sm"
       role="link"
       tabIndex={0}
       onClick={() => onOpen(lot.id)}
       onKeyDown={handleKeyDown}
     >
       <Stack className={styles.gridCard}>
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={lot.generalDescription}
-            radius="sm"
-            style={{ aspectRatio: '1 / 1', height: '70%' }}
-            fit="cover"
-          />
-        ) : (
-          <Stack gap="sm" align="center" className={styles.gridImageFallback}>
-            <CameraOff size={42} />
-            <Text size="sm">{t('lot.noImages')}</Text>
-          </Stack>
-        )}
+        <div style={{ position: 'relative' }}>
+          {imageSrc ? (
+            <div className={styles.gridImage}>
+              <img src={imageSrc} alt={lot.generalDescription} loading="lazy" />
+            </div>
+          ) : (
+            <div className={styles.gridImageFallback}>
+              <ImageOff size={36} strokeWidth={1.5} />
+              <Text size="xs">{t('lot.noImages')}</Text>
+            </div>
+          )}
+
+          {lot.quantity > 1 && (
+            <span className={styles.quantityBadge}>×{lot.quantity}</span>
+          )}
+        </div>
 
         <Stack gap={4}>
-          <Text fw={700} lineClamp={2}>
+          <Text fw={700} lineClamp={2} style={{ minHeight: '2.6em' }}>
             {lot.generalDescription}
           </Text>
-          <Text
-            size="sm"
-            c="dimmed"
-            lineClamp={2}
-            style={{ minHeight: '40px' }}
-          >
+          <Text size="sm" c="dimmed" lineClamp={2} style={{ minHeight: '2.6em' }}>
             {lot.characteristicsDescription}
           </Text>
-          <Group justify="space-between" gap="xs">
-            <Text size="xs" c="dimmed">
-              {formatDate(lot.createdAt, locale)}
-            </Text>
-            {lot.quantity !== 1 && (
-              <Text fw={700} size="sm">
-                {lot.quantity}
-              </Text>
-            )}
-          </Group>
         </Stack>
+
+        <div className={styles.metaRow}>
+          {locationLabel && (
+            <span className={styles.locationChip}>
+              <MapPin size={12} strokeWidth={2} />
+              <span>{locationLabel}</span>
+            </span>
+          )}
+          <Text size="xs" c="dimmed">
+            {formatDate(lot.createdAt, locale)}
+          </Text>
+        </div>
 
         <Button
           mt="auto"

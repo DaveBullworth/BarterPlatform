@@ -10,48 +10,40 @@ type Props = {
 };
 
 const GridSkeletonCard = () => (
-  <Card withBorder padding="sm">
+  <Card padding="sm">
     <Stack className={styles.gridCard}>
-      <Skeleton
-        radius="sm"
-        style={{ aspectRatio: '1 / 1', height: '70%' }}
-      />
-      <Stack gap={4}>
-        <Skeleton height={18} width="80%" radius="sm" />
-        <Skeleton height={14} width="100%" radius="sm" mt={4} />
+      <Skeleton style={{ aspectRatio: '1 / 1', width: '100%' }} radius="md" />
+      <Stack gap={6}>
+        <Skeleton height={18} radius="sm" />
+        <Skeleton height={14} width="90%" radius="sm" />
         <Skeleton height={14} width="60%" radius="sm" />
-        <Group justify="space-between" gap="xs" mt={4}>
-          <Skeleton height={12} width={70} radius="sm" />
-          <Skeleton height={12} width={20} radius="sm" />
-        </Group>
       </Stack>
-      <Skeleton mt="auto" height={36} radius="sm" />
+      <Group justify="space-between" gap="xs">
+        <Skeleton height={12} width={110} radius="sm" />
+        <Skeleton height={12} width={48} radius="sm" />
+      </Group>
+      <Skeleton mt="auto" height={34} radius="md" />
     </Stack>
   </Card>
 );
 
 const ListSkeletonCard = () => (
-  <Card withBorder padding="sm">
-    <Group wrap="nowrap" align="stretch">
-      <Skeleton
-        width={100}
-        height={100}
-        radius="sm"
-        style={{ minWidth: 100, flexShrink: 0 }}
-      />
-      <Stack gap={6} className={styles.listCardBody}>
-        <Skeleton height={20} width="60%" radius="sm" />
+  <Card className={styles.listCard}>
+    <Group wrap="nowrap" align="stretch" gap="md">
+      <Skeleton width={96} height={96} radius="md" style={{ flexShrink: 0 }} />
+      <Stack gap={8} className={styles.listCardBody}>
+        <Skeleton height={18} width="55%" radius="sm" />
         <Skeleton height={14} width="100%" radius="sm" />
         <Skeleton height={14} width="80%" radius="sm" />
         <Group justify="space-between" mt="auto">
-          <Skeleton height={12} width={70} radius="sm" />
-          <Skeleton height={12} width={20} radius="sm" />
+          <Skeleton height={12} width={120} radius="sm" />
+          <Skeleton height={12} width={48} radius="sm" />
         </Group>
       </Stack>
       <Skeleton
-        width={32}
-        height={32}
-        radius="sm"
+        width={36}
+        height={36}
+        radius="md"
         className={styles.listAction}
       />
     </Group>

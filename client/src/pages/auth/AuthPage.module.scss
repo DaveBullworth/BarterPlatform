@@ -1,0 +1,94 @@
+.authShell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.authShell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at top left,
+      rgba(30, 162, 115, 0.16),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(72, 196, 129, 0.10),
+      transparent 50%
+    );
+  z-index: -1;
+}
+
+[data-mantine-color-scheme='dark'] .authShell::before {
+  background:
+    radial-gradient(
+      ellipse at top left,
+      rgba(48, 187, 110, 0.20),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(36, 130, 95, 0.16),
+      transparent 50%
+    );
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-bottom: 0.5rem;
+}
+
+.brandMark {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    var(--mantine-color-barter-5),
+    var(--mantine-color-barter-7)
+  );
+  color: #fff;
+  box-shadow: 0 6px 18px -4px rgba(30, 162, 115, 0.5);
+}
+
+.brandName {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+  background: linear-gradient(
+    90deg,
+    var(--mantine-color-barter-7),
+    var(--mantine-color-barter-5)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+[data-mantine-color-scheme='dark'] .brandName {
+  background: linear-gradient(
+    90deg,
+    var(--mantine-color-barter-3),
+    var(--mantine-color-barter-5)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  box-shadow: var(--mantine-shadow-lg);
+}

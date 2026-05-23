@@ -1,8 +1,9 @@
-import { configureApiClient } from '@/shared/api/client';
-import { useDispatch } from 'react-redux';
-import { rateLimitHit } from '@/entities/rate-limit';
-import { loggedOut } from '@/entities/user/store';
 import { useEffect, type PropsWithChildren } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { configureApiClient } from '@/shared/api/client';
+import { rateLimitHit } from '@/entities/rate-limit';
+import { loggedOut } from '@/entities/user';
 
 export const ApiProvider = ({ children }: PropsWithChildren) => {
   const dispatch = useDispatch();

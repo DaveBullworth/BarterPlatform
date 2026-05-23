@@ -9,6 +9,8 @@ import { GeoFilterButton } from '@/features/geo-filter';
 import { useSearchQuery } from '@/features/search-filter';
 import { ROUTES } from '@/shared/constants/routes';
 
+import styles from './AppHeader.module.scss';
+
 export const MobileHeader = () => {
   const { t } = useTranslation();
   const location = useLocation();
@@ -24,18 +26,28 @@ export const MobileHeader = () => {
   };
 
   return (
-    <Group h="100%" px="0.5rem" gap="0.5rem" hiddenFrom="sm" wrap="nowrap">
+    <Group
+      h="100%"
+      px="0.5rem"
+      gap="0.5rem"
+      hiddenFrom="sm"
+      wrap="nowrap"
+      className={styles.header}
+    >
       <ActionIcon
-        variant="light"
+        variant="subtle"
+        color="gray"
         size="lg"
         onClick={() => {
           if (!isRoot) toRoot();
         }}
+        aria-label="home"
       >
         <Home size={18} />
       </ActionIcon>
 
       <TextInput
+        className={styles.searchInput}
         placeholder={t('header.lotSearch')}
         value={localSearch}
         rightSection={
@@ -54,7 +66,7 @@ export const MobileHeader = () => {
 
       <GeoFilterButton />
 
-      <ActionIcon variant="filled" size="lg" onClick={toLotCreate}>
+      <ActionIcon variant="filled" size="lg" onClick={toLotCreate} aria-label="create">
         <Plus size={18} />
       </ActionIcon>
     </Group>

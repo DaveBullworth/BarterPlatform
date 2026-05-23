@@ -10,8 +10,7 @@ import { TaxonomySection } from '@/entities/taxonomy';
 import { GeoSection } from './sections/GeoSection';
 import { ImagesSection } from './sections/ImagesSection';
 import { BasicInfoSection } from './sections/BasicInfoSection';
-import type { LotFormValues } from '@/features/lot-form/model';
-import type { RenderedImage } from '@/features/lot-form/useLotImages';
+import type { LotFormValues, RenderedImage } from '@/features/lot-form';
 import type { Lot } from '@/entities/lot';
 import type { GeoValue } from '@/entities/geography';
 import type { Category } from '@/entities/taxonomy';
@@ -162,7 +161,7 @@ export const LotForm = ({
         message={t('lotForm.confirm.saveMessage')}
         confirmLabel={t('common.save')}
         cancelLabel={t('lotForm.actions.cancel')}
-        confirmColor="blue"
+        confirmColor="barter"
         loading={loading}
       />
     </>

@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { SimpleGrid, Stack, Text } from '@mantine/core';
+import { SimpleGrid, Stack } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
+import { SearchX, PackageOpen } from 'lucide-react';
 
 import {
   useLots,
@@ -17,8 +18,8 @@ import { useGeoFilter } from '@/features/geo-filter';
 import { useSearchQuery } from '@/features/search-filter';
 import { useNavigation } from '@/shared/lib/navigation';
 import { notify } from '@/shared/lib/notify';
-import { ErrorStub, ConfirmModal } from '@/shared/ui';
-import { getApiErrorStatusCode } from '@/shared/lib/';
+import { ErrorStub, ConfirmModal, EmptyState } from '@/shared/ui';
+import { getApiErrorStatusCode } from '@/shared/lib';
 import { LotCardGrid } from './LotCardGrid';
 import { LotCardList } from './LotCardList';
 import { LotsFeedSkeleton } from './LotsFeedSkeleton';
@@ -139,7 +140,20 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
         )}
 
         {!isLoading && lotsToRender.length === 0 && (
-          <Text c="dimmed">{t('feed.noLotsFound')}</Text>
+          <EmptyState
+            icon={hasFilters ? SearchX : PackageOpen}
+            title={t('feed.noLotsFound')}
+            description={
+              hasFilters
+                ? t('feed.noLotsFoundFiltered', {
+                    defaultValue:
+                      'Try adjusting filters or searching for something else.',
+                  })
+                : t('feed.noLotsFoundEmpty', {
+                    defaultValue: 'There are no lots yet — be the first to add one.',
+                  })
+            }
+          />
         )}
 
         {!isLoading && lotsToRender.length > 0 && view === 'grid' && (
@@ -181,7 +195,7 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
         message={t('feed.exchange.confirm')}
         confirmLabel={t('lotForm.actions.confirm')}
         cancelLabel={t('lotForm.actions.cancel')}
-        confirmColor="blue"
+        confirmColor="barter"
       />
     </>
   );

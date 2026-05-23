@@ -1,20 +1,52 @@
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid var(--mantine-color-default-border);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(30, 162, 115, 0.06),
+      transparent 60%
+    ),
+    var(--mantine-color-body);
+  box-shadow: var(--mantine-shadow-xs);
+}
+
+[data-mantine-color-scheme='dark'] .profileHeader {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(48, 187, 110, 0.10),
+      transparent 60%
+    ),
+    var(--mantine-color-body);
+}
+
 .avatarBox {
-  width: 120px;
-  height: 120px;
-  border-radius: var(--mantine-radius-md);
+  width: 112px;
+  height: 112px;
+  border-radius: var(--mantine-radius-lg);
   overflow: hidden;
-  cursor: pointer;
-  border: 1px solid #dee2e6; /* аналог gray[3] */
+  border: 2px solid var(--mantine-color-default-border);
   transition:
-    border-color 0.3s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    border-color: #228be6; /* голубой blue[5] */
-    transform: scale(1.05); /* лёгкое увеличение */
-  }
-
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--mantine-color-default);
+}
+
+.avatarBox.editable {
+  cursor: pointer;
+}
+
+.avatarBox.editable:hover {
+  border-color: var(--mantine-color-barter-5);
+  transform: scale(1.03);
+  box-shadow: 0 0 0 4px rgba(30, 162, 115, 0.12);
 }

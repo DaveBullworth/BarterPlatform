@@ -15,7 +15,10 @@ export const LotFormHeader = ({ isEditMode, isFormDirty }: Props) => {
         {isEditMode ? t('lotForm.title.edit') : t('lotForm.title.create')}
       </Title>
 
-      <Badge color={isFormDirty ? 'yellow' : 'green'}>
+      <Badge
+        variant="light"
+        color={isFormDirty ? 'accent' : 'barter'}
+      >
         {isFormDirty ? t('lotForm.status.unsaved') : t('lotForm.status.saved')}
       </Badge>
     </Group>

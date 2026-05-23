@@ -38,7 +38,7 @@ export const LotPage = () => {
   const { currentUser, isAuthenticated } = useAuthStore();
   const { data: taxonomy = [] } = useTaxonomy();
 
-  const { data: lot, isLoading, isError, error } = useLot(id);
+  const { data: lot, isLoading, isError, error, refetch } = useLot(id);
   const { data: images = [] } = useLotImages(id);
 
   const [exchangeOpened, setExchangeOpened] = useState(false);
@@ -84,7 +84,7 @@ export const LotPage = () => {
     return (
       <ErrorStub
         status={getApiErrorStatusCode(error)}
-        onRetry={() => {}}
+        onRetry={() => refetch()}
         onBack={back}
       />
     );
@@ -150,7 +150,7 @@ export const LotPage = () => {
         message={t('feed.exchange.confirm')}
         confirmLabel={t('lotForm.actions.confirm')}
         cancelLabel={t('lotForm.actions.cancel')}
-        confirmColor="blue"
+        confirmColor="barter"
       />
     </Stack>
   );

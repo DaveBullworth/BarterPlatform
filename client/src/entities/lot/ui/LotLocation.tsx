@@ -15,7 +15,7 @@ export const LotLocation = ({ region, city, district }: Props) => {
 
   return (
     <Card withBorder radius="md" p="md">
-      <Badge mb={8} variant="light" color="blue">
+      <Badge mb={8} variant="light" color="barter">
         {t('lot.location')}
       </Badge>
       <Stack gap={10}>

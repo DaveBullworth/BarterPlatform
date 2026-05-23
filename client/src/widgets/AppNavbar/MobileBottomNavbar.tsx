@@ -1,14 +1,5 @@
-import React from 'react';
-import {
-  Group,
-  Stack,
-  Text,
-  UnstyledButton,
-  Box,
-  useMantineTheme,
-  Indicator,
-} from '@mantine/core';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Group, Text, UnstyledButton, Indicator } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { User, ChartColumnStacked } from 'lucide-react';
@@ -22,6 +13,8 @@ import { ROUTES } from '@/shared/constants/routes';
 import { ProfileDrawer } from './ProfileDrawer';
 import { NAV_ITEMS } from './navigation';
 
+import styles from './AppNavbar.module.scss';
+
 type Props = {
   onOpenCategories: () => void;
 };
@@ -29,29 +22,26 @@ type Props = {
 type BottomNavItemProps = {
   label: string;
   icon: React.ReactNode;
-  color?: string;
+  active: boolean;
   onClick: () => void;
 };
 
-const BottomNavItem = ({ label, icon, color, onClick }: BottomNavItemProps) => (
-  <UnstyledButton onClick={onClick}>
-    <Stack align="center" gap={2}>
-      {icon}
-      <Text size="xs" c={color || 'inherit'}>
-        {label}
-      </Text>
-    </Stack>
+const BottomNavItem = ({ label, icon, active, onClick }: BottomNavItemProps) => (
+  <UnstyledButton
+    onClick={onClick}
+    className={styles.mobileItem}
+    data-active={active}
+  >
+    {icon}
+    <Text component="span" className={styles.mobileItemLabel}>
+      {label}
+    </Text>
   </UnstyledButton>
-);
-
-const Separator = () => (
-  <Box w={1} h="50%" bg="gray.4" style={{ alignSelf: 'center' }} />
 );
 
 export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
   const location = useLocation();
   const { t } = useTranslation();
-  const theme = useMantineTheme();
   const { isAuthenticated, currentUser } = useAuthStore();
   const { toAuth, toProfile, toMyLots } = useNavigation();
   const { selection } = useCategorySelection();
@@ -72,16 +62,17 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
 
   return (
     <>
-      <Group h="100%" justify="space-evenly" px="xs" align="center">
+      <Group
+        h="100%"
+        justify="space-around"
+        px="xs"
+        align="center"
+        className={styles.mobileBar}
+      >
         <BottomNavItem
           label={t('nav.profile')}
-          icon={
-            <User
-              size={20}
-              color={profileActive ? theme.colors.blue[6] : undefined}
-            />
-          }
-          color={profileActive ? theme.colors.blue[6] : undefined}
+          icon={<User size={20} />}
+          active={profileActive}
           onClick={() => setDrawerOpened(true)}
         />
 
@@ -94,32 +85,29 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
 
           return (
             <React.Fragment key={item.key}>
-              <Separator />
               <BottomNavItem
                 label={t(`nav.${item.key}`)}
-                icon={
-                  <Icon
-                    size={20}
-                    color={active ? theme.colors.blue[6] : undefined}
-                  />
-                }
-                color={active ? theme.colors.blue[6] : undefined}
+                icon={<Icon size={20} />}
+                active={active}
                 onClick={() => rawNavigate(item.to)}
               />
             </React.Fragment>
           );
         })}
 
-        <Separator />
-
         <BottomNavItem
           label={t('header.categories')}
           icon={
-            <Indicator disabled={!selection} size={10} color="red" offset={3}>
+            <Indicator
+              disabled={!selection}
+              size={8}
+              color="accent"
+              offset={3}
+            >
               <ChartColumnStacked size={20} />
             </Indicator>
           }
-          color={selection ? theme.colors.red[6] : undefined}
+          active={!!selection}
           onClick={onOpenCategories}
         />
       </Group>

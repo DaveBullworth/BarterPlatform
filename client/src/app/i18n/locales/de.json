@@ -308,6 +308,8 @@
   },
   "feed": {
     "noLotsFound": "Keine Anzeigen gefunden",
+    "noLotsFoundFiltered": "Passe die Filter an oder versuche eine andere Suche.",
+    "noLotsFoundEmpty": "Noch keine Anzeigen — füge die erste hinzu.",
     "limit": "Limit",
     "info": "Feed-Info",
     "recordsOnPage": "Einträge auf der Seite",

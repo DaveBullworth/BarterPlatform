@@ -1,4 +1,18 @@
-// --- Breakpoints ---
+// --- Breakpoints (mobile-first) ---
 $breakpoint-sm: 480px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// --- Layout sizes ---
+$header-height: 64px;
+$navbar-width: 264px;
+$mobile-footer-height: 64px;
+$content-max-width: 1280px;
+
+// --- Brand surfaces (синхронизировано с MantineProvider) ---
+$brand-50: #effaf5;
+$brand-100: #d3f1e2;
+$brand-500: #1ea273;
+$brand-600: #168760;
+$brand-700: #126b4d;

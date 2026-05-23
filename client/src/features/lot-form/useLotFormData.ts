@@ -4,7 +4,13 @@ import { LOT_STATUS } from '@/entities/lot';
 import type { LotFormValues } from './model';
 
 export const useLotFormData = (lotId: string | undefined) => {
-  const { data: lot, isLoading: isLotLoading, isError, error } = useLot(lotId);
+  const {
+    data: lot,
+    isLoading: isLotLoading,
+    isError,
+    error,
+    refetch,
+  } = useLot(lotId);
   const { data: images = [], isLoading: isImagesLoading } = useLotImages(lotId);
   const { data: taxonomy = [] } = useTaxonomy();
 
@@ -42,5 +48,6 @@ export const useLotFormData = (lotId: string | undefined) => {
     isLoading,
     isError,
     error,
+    refetch,
   };
 };

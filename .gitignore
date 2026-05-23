@@ -1,1 +1,52 @@
+# Logs
 /logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.cache/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# AI assistants / agentic tooling
+.claude/
+.claude-*/
+.cursor/
+.cursorrules
+.cursorignore
+.aider*
+.continue/
+.windsurf/
+.codeium/
+.github/copilot/
+.ai/
+ai-notes/
+ai-memory/
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+.codex/
+*.ai.md
+.ai.json
+.anthropic/
+.opencode/
+.claude-code/
+.claude-tasks/

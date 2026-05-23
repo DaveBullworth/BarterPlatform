@@ -9,6 +9,8 @@ import { NAV_ACCESS } from '@/shared/constants/nav-access';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { NAV_ITEMS } from './navigation';
 
+import styles from './AppNavbar.module.scss';
+
 export const DesktopNavbar = () => {
   const location = useLocation();
   const { t } = useTranslation();
@@ -25,7 +27,7 @@ export const DesktopNavbar = () => {
   });
 
   return (
-    <Stack gap={4}>
+    <Stack gap={4} className={styles.navStack}>
       {visibleItems.map((item) => {
         const Icon = item.icon;
         const active =
@@ -36,9 +38,9 @@ export const DesktopNavbar = () => {
         return (
           <NavLink
             key={item.key}
-            fw={600}
+            className={styles.navLink}
             label={t(`nav.${item.key}`)}
-            leftSection={<Icon size={16} />}
+            leftSection={<Icon size={18} />}
             active={active}
             component={Link}
             to={item.to}

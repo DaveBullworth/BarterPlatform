@@ -16,9 +16,9 @@ export const AppShell = () => {
 
   return (
     <MantineAppShell
-      header={{ height: 56 }}
+      header={{ height: 64 }}
       navbar={{
-        width: 260,
+        width: 264,
         breakpoint: 'sm',
         collapsed: { desktop: !desktopOpened, mobile: true },
       }}
@@ -45,7 +45,9 @@ export const AppShell = () => {
       <CategoriesDrawer opened={categoriesOpened} onClose={closeCategories} />
 
       <MantineAppShell.Main className={styles.mainLayout}>
-        <Outlet />
+        <div className={styles.mainContent}>
+          <Outlet />
+        </div>
       </MantineAppShell.Main>
     </MantineAppShell>
   );

@@ -1,4 +1,5 @@
 export { ConfirmModal } from './ConfirmModal';
+export { EmptyState } from './EmptyState';
 export { ErrorStub } from './ErrorStub';
 export { FullPageLoader } from './FullPageLoader';
 export { LanguageSwitcher } from './LanguageSwitcher';

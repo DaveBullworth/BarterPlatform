@@ -1,9 +1,21 @@
-@use '../../app/styles/variables.scss' as vars;
+@use '@/app/styles/variables.scss' as vars;
 
 .mainLayout {
   display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
   @media (max-width: vars.$breakpoint-sm) {
     padding-inline-start: 0.5rem;
     padding-inline-end: 0.5rem;
   }
+}
+
+.mainContent {
+  width: 100%;
+  max-width: vars.$content-max-width;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

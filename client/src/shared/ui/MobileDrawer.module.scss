@@ -1,0 +1,33 @@
+@use '@/app/styles/variables.scss' as vars;
+
+/* Drawer с заголовком, который "падает" вниз на мобильных экранах.
+   Удобен для тяжёлых drawer-ов навигации/фильтров. */
+.bottomTitleOnMobile {
+  section {
+    @media (max-width: vars.$breakpoint-sm) {
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      overflow-y: hidden;
+
+      header {
+        order: 2;
+        border-top: 1px solid var(--mantine-color-default-border);
+        border-radius: var(--mantine-radius-md);
+      }
+
+      :global(.mantine-Drawer-body) {
+        height: inherit;
+        padding: 1rem 0 0 0;
+        order: 1;
+        overflow-y: hidden;
+      }
+
+      :global(.mantine-Drawer-body > .mantine-Stack-root) {
+        max-height: 100%;
+        overflow-y: scroll;
+        padding-bottom: 3rem;
+      }
+    }
+  }
+}

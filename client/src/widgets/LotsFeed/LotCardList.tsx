@@ -1,14 +1,7 @@
-import {
-  Card,
-  Group,
-  Stack,
-  Text,
-  Image,
-  ActionIcon,
-  Tooltip,
-} from '@mantine/core';
-import { ArrowRightLeft, CameraOff } from 'lucide-react';
+import { Card, Group, Stack, Text, ActionIcon, Tooltip } from '@mantine/core';
+import { ArrowRightLeft, ImageOff, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useMediaQuery } from '@mantine/hooks';
 import type { KeyboardEvent } from 'react';
 
 import { formatDate } from '@/shared/lib/formatters';
@@ -32,6 +25,7 @@ export const LotCardList = ({
   onExchange,
 }: Props) => {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery('(max-width: 48em)');
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -40,55 +34,63 @@ export const LotCardList = ({
     }
   };
 
+  const locationLabel = [lot.city?.name, lot.region?.name]
+    .filter(Boolean)
+    .join(', ');
+
   return (
     <Card
-      withBorder
-      padding="sm"
-      className={styles.clickableCard}
+      className={`${styles.clickableCard} ${styles.listCard}`}
       role="link"
       tabIndex={0}
       onClick={() => onOpen(lot.id)}
       onKeyDown={handleKeyDown}
     >
-      <Group wrap="nowrap" align="stretch">
+      <Group wrap="nowrap" align="stretch" gap={`${isMobile ? 'xs' : 'md'}`}>
         {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={lot.generalDescription}
-            w={100}
-            h={100}
-            radius="sm"
-            fit="cover"
-          />
+          <div className={styles.listImage}>
+            <img src={imageSrc} alt={lot.generalDescription} loading="lazy" />
+          </div>
         ) : (
-          <Stack gap="sm" align="center" className={styles.listImageFallback}>
-            <CameraOff size={42} />
-          </Stack>
+          <div className={styles.listImageFallback}>
+            <ImageOff size={32} strokeWidth={1.5} />
+          </div>
         )}
 
-        <Stack gap={2} className={styles.listCardBody}>
-          <Text fw={700} size="lg" lineClamp={1}>
+        <Stack className={styles.listCardBody} gap={4}>
+          <Text fw={700} size="md" lineClamp={1}>
             {lot.generalDescription}
           </Text>
           <Text size="sm" c="dimmed" lineClamp={2}>
             {lot.characteristicsDescription}
           </Text>
-          <Group justify="space-between" mt="auto">
-            <Text size="xs" c="dimmed">
-              {formatDate(lot.createdAt, locale)}
-            </Text>
-            {lot.quantity !== 1 && (
-              <Text fw={700} size="sm">
-                {lot.quantity}
-              </Text>
+
+          <Group justify="space-between" mt="auto" gap="xs" wrap="nowrap">
+            {locationLabel ? (
+              <span className={styles.locationChip}>
+                <MapPin size={12} strokeWidth={2} />
+                <span className={styles.locationText}>{locationLabel}</span>
+              </span>
+            ) : (
+              <span />
             )}
+            <Group gap="sm">
+              {lot.quantity > 1 && (
+                <Text size="xs" fw={600} c="barter">
+                  ×{lot.quantity}
+                </Text>
+              )}
+              <Text size="xs" c="dimmed">
+                {formatDate(lot.createdAt, locale)}
+              </Text>
+            </Group>
           </Group>
         </Stack>
 
         <Tooltip label={t('feed.exchange.action')} withArrow position="top">
           <ActionIcon
             variant="light"
-            color="blue"
+            color="barter"
             size="lg"
             className={styles.listAction}
             aria-label={t('feed.exchange.action')}

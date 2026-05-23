@@ -5,7 +5,7 @@ import type { GeoFilterValue } from '@/shared/lib/geoFilter';
 
 export const LOT_STATUS_META: Record<LotStatus, LotStatusMeta> = {
   [LOT_STATUS.ACTIVE]: {
-    color: 'green',
+    color: 'barter',
     labelKey: 'lot.visibility.active',
   },
   [LOT_STATUS.HIDDEN]: {

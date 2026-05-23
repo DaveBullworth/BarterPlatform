@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack, Title, Text, Loader, Center } from '@mantine/core';
+import { Stack, Title, Text, Loader, Center, Group } from '@mantine/core';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 import { userApi, useAuthStore } from '@/entities/user';
@@ -85,8 +85,16 @@ export const AdminPage = () => {
 
   return (
     <Stack gap="md" w="100%">
-      <Title order={2}>{t('admin.title')}</Title>
-      <AdminTableInfo />
+      <Group justify="space-between" align="flex-start" wrap="nowrap">
+        <Stack gap={2}>
+          <Title order={2}>{t('admin.title')}</Title>
+          <Text size="sm" c="dimmed">
+            {t('admin.description')}
+          </Text>
+        </Stack>
+        <AdminTableInfo />
+      </Group>
+
       {loading && (
         <Center py="xl">
           <Loader />

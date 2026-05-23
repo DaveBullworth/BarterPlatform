@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '@/entities/user/store';
+import { authReducer } from '@/entities/user';
 import { rateLimitSlice } from '@/entities/rate-limit';
 
 export const store = configureStore({

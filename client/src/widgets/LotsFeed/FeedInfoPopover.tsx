@@ -20,7 +20,7 @@ export const FeedInfoPopover = ({ lotsOnPage, totalLots }: Props) => {
       <Popover.Target>
         <ActionIcon
           variant="light"
-          color="blue"
+          color="barter"
           size="sm"
           className={styles.pulseIcon}
           aria-label={t('feed.info')}

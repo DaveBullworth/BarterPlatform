@@ -14,11 +14,11 @@
     }
 
     &:focus {
-      border-color: var(--mantine-color-blue-filled);
+      border-color: var(--mantine-color-green-filled);
     }
 
     &:focus-within {
-      border-color: var(--mantine-color-blue-filled);
+      border-color: var(--mantine-color-green-filled);
     }
   }
 }

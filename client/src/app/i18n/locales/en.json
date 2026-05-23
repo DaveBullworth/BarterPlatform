@@ -310,6 +310,8 @@
   },
   "feed": {
     "noLotsFound": "No lots found",
+    "noLotsFoundFiltered": "Try adjusting your filters or searching for something else.",
+    "noLotsFoundEmpty": "There are no lots yet — be the first to add one.",
     "limit": "Limit",
     "info": "Feed info",
     "recordsOnPage": "Records on page",

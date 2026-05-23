@@ -6,7 +6,12 @@ import {
   Button,
   TextInput,
 } from '@mantine/core';
-import { Search, Plus, ChartColumnStacked } from 'lucide-react';
+import {
+  Search,
+  Plus,
+  ChartColumnStacked,
+  ArrowLeftRight,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +22,8 @@ import { useCategorySelection } from '@/features/category-filter';
 import { GeoFilterButton } from '@/features/geo-filter';
 import { useSearchQuery } from '@/features/search-filter';
 import { UserMenu } from './UserMenu';
+
+import styles from './AppHeader.module.scss';
 
 type Props = {
   desktopOpened: boolean;
@@ -43,32 +50,50 @@ export const DesktopHeader = ({
   };
 
   return (
-    <Group h="100%" px="md" justify="space-between" visibleFrom="sm">
-      <Group gap="sm">
+    <Group
+      h="100%"
+      px="md"
+      justify="space-between"
+      visibleFrom="sm"
+      className={styles.header}
+      wrap="nowrap"
+    >
+      <Group gap="sm" wrap="nowrap">
         <Burger
           opened={desktopOpened}
           onClick={onToggleDesktop}
           visibleFrom="sm"
           size="sm"
+          color="var(--mantine-color-dimmed)"
         />
 
-        <UnstyledButton onClick={toRoot} style={{ cursor: 'pointer' }}>
-          <Text fw={700} size="lg">
+        <UnstyledButton
+          onClick={toRoot}
+          className={styles.logoButton}
+          aria-label={t('header.title')}
+        >
+          <span className={styles.logoMark}>
+            <ArrowLeftRight size={18} strokeWidth={2.4} />
+          </span>
+          <Text className={styles.logoName} component="span">
             {t('header.title')}
           </Text>
         </UnstyledButton>
 
         <Button
-          variant={selection ? 'filled' : 'light'}
-          color={selection ? 'red' : undefined}
+          variant={selection ? 'filled' : 'subtle'}
+          color={selection ? 'accent' : 'gray'}
           leftSection={<ChartColumnStacked size={16} />}
           onClick={onOpenCategories}
+          size="sm"
         >
           {t('header.categories')}
+          {selection && <span className={styles.categoryActiveDot} />}
         </Button>
 
         <Group gap="xs" wrap="nowrap">
           <TextInput
+            className={styles.searchInput}
             placeholder={t('header.lotSearch')}
             value={localSearch}
             rightSection={
@@ -82,13 +107,12 @@ export const DesktopHeader = ({
               if (e.key === 'Enter') handleSearch();
             }}
             onChange={(e) => setLocalSearch(e.currentTarget.value)}
-            w={320}
           />
           <GeoFilterButton />
         </Group>
       </Group>
 
-      <Group gap="sm">
+      <Group gap="sm" wrap="nowrap">
         <Button
           leftSection={<Plus size={16} />}
           onClick={() =>

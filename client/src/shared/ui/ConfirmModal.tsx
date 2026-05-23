@@ -14,7 +14,6 @@ type ConfirmModalProps = {
   confirmColor?: string;
 
   loading?: boolean;
-  // для случаев когда нужен кастомный контент вместо message
   children?: ReactNode;
 };
 
@@ -36,19 +35,28 @@ export const ConfirmModal = ({
       onClose={onCancel}
       title={
         title && (
-          <Text fw={700} size="lg" td="underline">
+          <Text fw={700} size="md">
             {title}
           </Text>
         )
       }
       centered
+      size="md"
     >
-      <Stack>
-        {message && <Text>{message}</Text>}
+      <Stack gap="md">
+        {message && (
+          <Text size="sm" c="dimmed">
+            {message}
+          </Text>
+        )}
         {children}
 
-        <Group justify="flex-end">
-          <Button variant="default" onClick={onCancel} disabled={loading}>
+        <Group justify="flex-end" gap="xs">
+          <Button
+            variant="default"
+            onClick={onCancel}
+            disabled={loading}
+          >
             {cancelLabel}
           </Button>
           <Button color={confirmColor} onClick={onConfirm} loading={loading}>

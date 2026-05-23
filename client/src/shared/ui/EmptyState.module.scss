@@ -1,0 +1,96 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 1rem;
+  text-align: center;
+  border-radius: var(--mantine-radius-lg);
+  border: 1px dashed var(--mantine-color-default-border);
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(30, 162, 115, 0.05),
+      transparent 60%
+    ),
+    var(--mantine-color-body);
+}
+
+[data-mantine-color-scheme='dark'] .wrapper {
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(48, 187, 110, 0.08),
+      transparent 60%
+    ),
+    var(--mantine-color-body);
+}
+
+.iconBubble {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at 30% 30%,
+    var(--mantine-color-barter-1),
+    var(--mantine-color-barter-2)
+  );
+  color: var(--mantine-color-barter-7);
+  position: relative;
+  isolation: isolate;
+}
+
+.iconBubble::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: var(--mantine-color-barter-1);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+[data-mantine-color-scheme='dark'] .iconBubble {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(48, 187, 110, 0.22),
+    rgba(48, 187, 110, 0.12)
+  );
+  color: var(--mantine-color-barter-3);
+}
+
+[data-mantine-color-scheme='dark'] .iconBubble::after {
+  background: rgba(48, 187, 110, 0.06);
+  opacity: 1;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  color: var(--mantine-color-text);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--mantine-color-dimmed);
+  max-width: 32rem;
+}
+
+/* Компактный размер — для случаев, когда блок мал */
+.compact {
+  padding: 2rem 1rem;
+  gap: 0.75rem;
+}
+
+.compact .iconBubble {
+  width: 64px;
+  height: 64px;
+}
+
+.compact .iconBubble::after {
+  inset: -6px;
+}
