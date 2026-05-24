@@ -1,5 +1,5 @@
-import { Title, Stack, Loader, Center, Button, Group } from '@mantine/core';
-import { Pencil, UserX } from 'lucide-react';
+import { Stack, Loader, Center, Button, Tabs, Group } from '@mantine/core';
+import { Contact, Settings, Pencil, UserX, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +22,8 @@ import { ProfilePreferencesBlock } from '@/widgets/ProfilePreferencesBlock';
 import { ProfileEditModal } from '@/features/profile/edit';
 import { AccountDeactivationModal } from '@/features/profile/deactivation';
 
+import styles from './ProfilePage.module.scss';
+
 export const ProfilePage = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
@@ -33,7 +35,6 @@ export const ProfilePage = () => {
     currentUserRole: currentUser?.role,
   });
 
-  // Выбираем нужный query в зависимости от mode
   const selfQuery = useSelfUser();
   const otherQuery = useUserById(mode !== 'self' ? id : undefined);
 
@@ -45,7 +46,7 @@ export const ProfilePage = () => {
 
   if (query.isLoading) {
     return (
-      <Center w="100%">
+      <Center w="100%" py="xl">
         <Loader />
       </Center>
     );
@@ -54,43 +55,100 @@ export const ProfilePage = () => {
   if (!user) return null;
 
   const canEdit = mode === 'self' || mode === 'admin';
+  const canEditDetails = canEdit && (isSelfUser(user) || isAdminUser(user));
   const canDeactivate =
     currentUser?.role === USER_ROLES.USER && mode === 'self';
+  const showPreferencesTab = mode === 'self' && isSelfUser(user);
 
   return (
-    <Stack gap="lg" maw={860} w="100%" mx="auto">
-      <Title order={2}>{t('profile.title')}</Title>
-
+    <Stack gap="lg" maw={920} w="100%" mx="auto">
       <ProfileHeaderBlock user={user} mode={mode} />
-      <ProfileContactsBlock user={user} role={currentUser?.role} mode={mode} />
 
-      {mode === 'self' && isSelfUser(user) && (
-        <ProfilePreferencesBlock user={user} />
-      )}
-
-      <Group gap="sm" wrap="wrap">
-        {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
-          <Button
-            leftSection={<Pencil size={16} />}
-            onClick={() => setEditOpened(true)}
+      <Tabs
+        defaultValue="info"
+        keepMounted
+        className={styles.tabs}
+        classNames={{ list: styles.tabsList, tab: styles.tab }}
+        color="barter"
+      >
+        <Tabs.List>
+          <Tabs.Tab
+            value="info"
+            leftSection={<Contact size={15} strokeWidth={2} />}
           >
-            {t('profile.editData')}
-          </Button>
+            {t('profile.title')}
+          </Tabs.Tab>
+          {showPreferencesTab && (
+            <Tabs.Tab
+              value="preferences"
+              leftSection={<Settings size={15} strokeWidth={2} />}
+            >
+              {t('profile.savePreferences').split(' ')[0]}
+            </Tabs.Tab>
+          )}
+          {canDeactivate && (
+            <Tabs.Tab
+              value="danger"
+              leftSection={<ShieldAlert size={15} strokeWidth={2} />}
+              color="red"
+            >
+              {t('deactivation.title')}
+            </Tabs.Tab>
+          )}
+        </Tabs.List>
+
+        <Tabs.Panel value="info" className={styles.tabPanel}>
+          <Stack gap="lg">
+            <ProfileContactsBlock
+              user={user}
+              role={currentUser?.role}
+              mode={mode}
+            />
+
+            {canEditDetails && (
+              <Group justify="flex-end">
+                <Button
+                  leftSection={<Pencil size={16} />}
+                  onClick={() => setEditOpened(true)}
+                >
+                  {t('profile.editData')}
+                </Button>
+              </Group>
+            )}
+          </Stack>
+        </Tabs.Panel>
+
+        {showPreferencesTab && (
+          <Tabs.Panel value="preferences" className={styles.tabPanel}>
+            <ProfilePreferencesBlock user={user} />
+          </Tabs.Panel>
         )}
 
         {canDeactivate && (
-          <Button
-            variant="subtle"
-            color="red"
-            leftSection={<UserX size={16} />}
-            onClick={() => setDeactivationOpened(true)}
-          >
-            {t('deactivation.deactivate')}
-          </Button>
+          <Tabs.Panel value="danger" className={styles.tabPanel}>
+            <div className={styles.dangerZone}>
+              <div className={styles.dangerInfo}>
+                <span className={styles.dangerTitle}>
+                  {t('deactivation.title')}
+                </span>
+                <span className={styles.dangerText}>
+                  {t('deactivation.text')}
+                </span>
+              </div>
+              <Button
+                variant="filled"
+                color="red"
+                leftSection={<UserX size={16} />}
+                onClick={() => setDeactivationOpened(true)}
+              >
+                {t('deactivation.deactivate')}
+              </Button>
+            </div>
+          </Tabs.Panel>
         )}
-      </Group>
+      </Tabs>
 
-      {canEdit && (isSelfUser(user) || isAdminUser(user)) && (
+      {canEditDetails && (
         <ProfileEditModal
           user={user as SelfUser | AdminUser}
           role={currentUser?.role}

@@ -11,6 +11,12 @@ export type NavItem = {
   to: string;
   icon: LucideIcon;
   access: NavAccess;
+  /**
+   * Строковый ключ preload-чанка страницы.
+   * Сами фабрики import() регистрируются в `app/router/routes` через
+   * `registerPreloader` — нав-меню не знает про конкретные страницы.
+   */
+  preload?: string;
   description?: (ctx: { isAuthenticated: boolean }) => string | null;
   rightSection?: (ctx: { isAuthenticated: boolean }) => ReactNode;
 };
@@ -21,12 +27,14 @@ export const NAV_ITEMS: NavItem[] = [
     to: ROUTES.ROOT,
     icon: Home,
     access: NAV_ACCESS.PUBLIC,
+    preload: 'feed',
   },
   {
     key: 'profile',
     to: ROUTES.PROFILE,
     icon: User,
     access: NAV_ACCESS.AUTH,
+    preload: 'profile',
     description: ({ isAuthenticated }) =>
       !isAuthenticated ? 'nav.authRequired' : null,
     rightSection: ({ isAuthenticated }) =>
@@ -39,5 +47,6 @@ export const NAV_ITEMS: NavItem[] = [
     to: ROUTES.ADMIN,
     icon: Shield,
     access: NAV_ACCESS.ADMIN,
+    preload: 'admin',
   },
 ];

@@ -21,6 +21,7 @@ import { openAuthRequiredModal } from '@/features/auth';
 import { useCategorySelection } from '@/features/category-filter';
 import { GeoFilterButton } from '@/features/geo-filter';
 import { useSearchQuery } from '@/features/search-filter';
+import { preload } from '@/shared/lib/preload';
 import { UserMenu } from './UserMenu';
 
 import styles from './AppHeader.module.scss';
@@ -69,6 +70,7 @@ export const DesktopHeader = ({
 
         <UnstyledButton
           onClick={toRoot}
+          onMouseEnter={() => preload('feed')}
           className={styles.logoButton}
           aria-label={t('header.title')}
         >
@@ -115,6 +117,8 @@ export const DesktopHeader = ({
       <Group gap="sm" wrap="nowrap">
         <Button
           leftSection={<Plus size={16} />}
+          onMouseEnter={() => preload('lot-form')}
+          onFocus={() => preload('lot-form')}
           onClick={() =>
             isAuthenticated ? toLotCreate() : openAuthRequiredModal(toAuth, t)
           }

@@ -1,0 +1,206 @@
+@use '@/app/styles/variables.scss' as vars;
+
+/* ===== Общие переходы ===== */
+.chevron {
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  color: var(--mantine-color-dimmed);
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+  color: var(--mantine-color-barter-6);
+}
+
+[data-mantine-color-scheme='dark'] .chevronOpen {
+  color: var(--mantine-color-barter-4);
+}
+
+/* ===== Chapter ===== */
+
+.chapter {
+  width: 100%;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--mantine-color-default-border);
+  padding: 10px 12px;
+  background: var(--mantine-color-body);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+  cursor: pointer;
+}
+
+.chapter:hover {
+  background: var(--mantine-color-default-hover);
+  border-color: var(--mantine-color-barter-3);
+  transform: translateX(2px);
+}
+
+.chapterOpen {
+  background: var(--mantine-color-barter-light);
+  border-color: var(--mantine-color-barter-4);
+}
+
+[data-mantine-color-scheme='dark'] .chapterOpen {
+  background: rgba(48, 187, 110, 0.08);
+}
+
+.chapterSelected {
+  border-color: var(--mantine-color-barter-5);
+  box-shadow: 0 0 0 1px var(--mantine-color-barter-5) inset;
+}
+
+.chapterIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--mantine-color-default-hover);
+  color: var(--mantine-color-dimmed);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.chapter:hover .chapterIcon,
+.chapterOpen .chapterIcon {
+  background: var(--mantine-color-barter-1);
+  color: var(--mantine-color-barter-7);
+}
+
+[data-mantine-color-scheme='dark'] .chapter:hover .chapterIcon,
+[data-mantine-color-scheme='dark'] .chapterOpen .chapterIcon {
+  background: rgba(48, 187, 110, 0.16);
+  color: var(--mantine-color-barter-3);
+}
+
+.chapterName {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+}
+
+/* ===== Category ===== */
+
+.category {
+  width: 100%;
+  border-radius: var(--mantine-radius-sm);
+  padding: 7px 12px;
+  background: transparent;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+  cursor: pointer;
+}
+
+.category:hover {
+  background: var(--mantine-color-default-hover);
+  transform: translateX(2px);
+}
+
+.categoryClickable {
+  cursor: pointer;
+}
+
+.categoryStatic {
+  cursor: default;
+}
+
+.categoryStatic:hover {
+  background: transparent;
+  transform: none;
+}
+
+.categorySelected {
+  background: var(--mantine-color-barter-light);
+  color: var(--mantine-color-barter-7);
+  font-weight: 600;
+}
+
+[data-mantine-color-scheme='dark'] .categorySelected {
+  background: rgba(48, 187, 110, 0.10);
+  color: var(--mantine-color-barter-3);
+}
+
+.categoryName {
+  font-size: 13px;
+}
+
+/* ===== Subcategory ===== */
+
+.subcategory {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--mantine-radius-sm);
+  padding: 6px 12px;
+  background: transparent;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.subcategory:hover {
+  background: var(--mantine-color-default-hover);
+  transform: translateX(2px);
+}
+
+.subcategorySelected {
+  background: var(--mantine-color-barter-light);
+}
+
+[data-mantine-color-scheme='dark'] .subcategorySelected {
+  background: rgba(48, 187, 110, 0.10);
+}
+
+.subcategoryName {
+  font-size: 13px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subcategorySelected .subcategoryName {
+  font-weight: 600;
+  color: var(--mantine-color-barter-7);
+}
+
+[data-mantine-color-scheme='dark'] .subcategorySelected .subcategoryName {
+  color: var(--mantine-color-barter-3);
+}
+
+/* ===== Вложенные блоки (Collapse внутри) ===== */
+
+.nested {
+  padding-left: 10px;
+  margin-left: 13px;
+  border-left: 2px solid var(--mantine-color-default-border);
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nestedTight {
+  padding-left: 8px;
+  margin-left: 10px;
+  border-left: 2px solid var(--mantine-color-default-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+[data-mantine-color-scheme='dark'] .nested,
+[data-mantine-color-scheme='dark'] .nestedTight {
+  border-left-color: var(--mantine-color-dark-4);
+}

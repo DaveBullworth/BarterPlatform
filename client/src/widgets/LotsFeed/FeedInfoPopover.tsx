@@ -1,13 +1,46 @@
-import { ActionIcon, List, Popover, Text } from '@mantine/core';
+import { ActionIcon, Popover } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { BadgeInfo } from 'lucide-react';
+import { BadgeInfo, MapPin, Layers, Search, SlidersHorizontal } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 import { useFeedFilterSummaries } from './useFeedFilterSummaries';
-import styles from './LotsFeed.module.scss';
+import feedStyles from './LotsFeed.module.scss';
+import styles from './FeedInfoPopover.module.scss';
 
 type Props = {
   lotsOnPage: number;
   totalLots: number;
+};
+
+type FilterRowProps = {
+  icon: ReactNode;
+  label: string;
+  value: string;
+  notSelectedLabel: string;
+};
+
+const FilterRow = ({ icon, label, value, notSelectedLabel }: FilterRowProps) => {
+  const isActive = value !== notSelectedLabel;
+
+  return (
+    <div className={styles.filterRow}>
+      <span
+        className={`${styles.filterIcon} ${isActive ? styles.filterIconActive : ''}`}
+      >
+        {icon}
+      </span>
+      <div className={styles.filterText}>
+        <span className={styles.filterLabel}>{label}</span>
+        <span
+          className={`${styles.filterValue} ${
+            !isActive ? styles.filterValueMuted : ''
+          }`}
+        >
+          {value}
+        </span>
+      </div>
+    </div>
+  );
 };
 
 export const FeedInfoPopover = ({ lotsOnPage, totalLots }: Props) => {
@@ -15,62 +48,68 @@ export const FeedInfoPopover = ({ lotsOnPage, totalLots }: Props) => {
   const { geoSummary, categorySummary, searchSummary } =
     useFeedFilterSummaries();
 
+  const notSelected = t('feed.filters.notSelected');
+
   return (
-    <Popover position="right" width={280} withArrow>
+    <Popover
+      position="bottom-start"
+      width={320}
+      withArrow
+      shadow="lg"
+      transitionProps={{ transition: 'pop', duration: 180 }}
+    >
       <Popover.Target>
         <ActionIcon
           variant="light"
           color="barter"
-          size="sm"
-          className={styles.pulseIcon}
+          size="lg"
+          radius="md"
+          className={feedStyles.pulseIcon}
           aria-label={t('feed.info')}
         >
-          <BadgeInfo size={22} />
+          <BadgeInfo size={20} />
         </ActionIcon>
       </Popover.Target>
-      <Popover.Dropdown p="0.5rem">
-        <List spacing="xs" size="xs">
-          <List.Item>
-            <Text span fw={600}>
-              {t('feed.filters.geo')}:
-            </Text>{' '}
-            <Text span c="dimmed" className={styles.infoValue}>
-              {geoSummary}
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text span fw={600}>
-              {t('feed.filters.category')}:
-            </Text>{' '}
-            <Text span c="dimmed" className={styles.infoValue}>
-              {categorySummary}
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text span fw={600}>
-              {t('feed.filters.search')}:
-            </Text>{' '}
-            <Text span c="dimmed" className={styles.infoValue}>
-              {searchSummary}
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text span fw={600}>
-              {t('feed.recordsOnPage')}:
-            </Text>{' '}
-            <Text span c="dimmed">
-              {lotsOnPage}
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text span fw={600}>
-              {t('feed.recordsTotal')}:
-            </Text>{' '}
-            <Text span c="dimmed">
-              {totalLots}
-            </Text>
-          </List.Item>
-        </List>
+
+      <Popover.Dropdown className={styles.dropdown}>
+        <div className={styles.header}>
+          <span className={styles.headerIcon}>
+            <SlidersHorizontal size={15} strokeWidth={2.2} />
+          </span>
+          <span className={styles.headerTitle}>{t('feed.info')}</span>
+        </div>
+
+        <div className={styles.filters}>
+          <FilterRow
+            icon={<MapPin size={15} strokeWidth={2} />}
+            label={t('feed.filters.geo')}
+            value={geoSummary}
+            notSelectedLabel={notSelected}
+          />
+          <FilterRow
+            icon={<Layers size={15} strokeWidth={2} />}
+            label={t('feed.filters.category')}
+            value={categorySummary}
+            notSelectedLabel={notSelected}
+          />
+          <FilterRow
+            icon={<Search size={15} strokeWidth={2} />}
+            label={t('feed.filters.search')}
+            value={searchSummary}
+            notSelectedLabel={notSelected}
+          />
+        </div>
+
+        <div className={styles.stats}>
+          <div className={styles.statCell}>
+            <span className={styles.statLabel}>{t('feed.recordsOnPage')}</span>
+            <span className={styles.statValue}>{lotsOnPage}</span>
+          </div>
+          <div className={styles.statCell}>
+            <span className={styles.statLabel}>{t('feed.recordsTotal')}</span>
+            <span className={styles.statValue}>{totalLots}</span>
+          </div>
+        </div>
       </Popover.Dropdown>
     </Popover>
   );

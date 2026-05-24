@@ -12,6 +12,7 @@ import {
   Badge,
   Anchor,
   Title,
+  SegmentedControl,
   type MantineColorsTuple,
 } from '@mantine/core';
 import { localStorageColorSchemeManager } from '@mantine/core';
@@ -150,6 +151,13 @@ export const AppMantineProvider = ({ children }: Props) => {
       Title: Title.extend({
         styles: {
           root: { letterSpacing: '-0.01em' },
+        },
+      }),
+      SegmentedControl: SegmentedControl.extend({
+        defaultProps: {
+          // Mantine 7 по умолчанию ставит 0 — возвращаем плавную анимацию ползунка.
+          transitionDuration: 240,
+          transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
         },
       }),
     },

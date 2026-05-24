@@ -1,0 +1,467 @@
+@use '@/app/styles/variables.scss' as vars;
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  /* без min-width:0 вложенные flex/grid могут "распирать" родителя */
+  min-width: 0;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    gap: 12px;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-lg);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  min-width: 0;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    padding: 14px;
+    gap: 12px;
+    border-radius: var(--mantine-radius-md);
+  }
+}
+
+.section:focus-within {
+  border-color: var(--mantine-color-barter-3);
+  box-shadow: 0 0 0 3px rgba(30, 162, 115, 0.10);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.stepBadge {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--mantine-color-barter-light);
+  color: var(--mantine-color-barter-7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+
+[data-mantine-color-scheme='dark'] .stepBadge {
+  background: rgba(48, 187, 110, 0.16);
+  color: var(--mantine-color-barter-3);
+}
+
+.stepTitle {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--mantine-color-text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stepHint {
+  font-size: 12px;
+  color: var(--mantine-color-dimmed);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+/* ===== Summary chip (taxonomy/geo) ===== */
+
+.summary {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px dashed var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  gap: 12px;
+  background: var(--mantine-color-default-hover);
+  transition: border-color 180ms ease, background-color 180ms ease;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.summary.summaryFilled {
+  border-style: solid;
+  border-color: var(--mantine-color-barter-3);
+  background: var(--mantine-color-barter-light);
+}
+
+[data-mantine-color-scheme='dark'] .summary.summaryFilled {
+  background: rgba(48, 187, 110, 0.08);
+  border-color: rgba(48, 187, 110, 0.35);
+}
+
+.summaryIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mantine-color-body);
+  color: var(--mantine-color-dimmed);
+  flex-shrink: 0;
+}
+
+.summary.summaryFilled .summaryIcon {
+  color: var(--mantine-color-barter-7);
+}
+
+[data-mantine-color-scheme='dark'] .summary.summaryFilled .summaryIcon {
+  color: var(--mantine-color-barter-3);
+}
+
+.summaryBody {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.summaryPlaceholder {
+  font-size: 13px;
+  color: var(--mantine-color-dimmed);
+  font-style: italic;
+}
+
+.summaryPath {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--mantine-color-text);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.summaryError {
+  font-size: 12px;
+  color: var(--mantine-color-red-7);
+  margin-top: 4px;
+}
+
+[data-mantine-color-scheme='dark'] .summaryError {
+  color: var(--mantine-color-red-3);
+}
+
+/* Кнопка справа от summary — на мобиле уходит на свою строку и full-width */
+.summaryAction {
+  flex-shrink: 0;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    flex: 1 1 100%;
+  }
+}
+
+/* ===== Inputs grid ===== */
+
+.fieldsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 14px;
+  align-items: stretch;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Visibility tile ===== */
+
+.visibilityRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--mantine-radius-md);
+  border: 1px solid var(--mantine-color-default-border);
+  background: var(--mantine-color-default-hover);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.visibilityLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.visibilityTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--mantine-color-dimmed);
+}
+
+.visibilityHint {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mantine-color-text);
+}
+
+.visibilityControl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ===== Images grid ===== */
+
+.imagesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 8px;
+  }
+}
+
+.imageCard {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--mantine-color-default-border);
+  background: var(--mantine-color-default-hover);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.imageCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mantine-shadow-sm);
+}
+
+.imageCardPrimary {
+  border-color: var(--mantine-color-accent-5);
+  box-shadow: 0 0 0 3px rgba(237, 160, 19, 0.18);
+}
+
+.imageCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0) 50%,
+    rgba(15, 23, 42, 0.75) 100%
+  );
+  /* Touch-friendly: на сенсорах overlay всегда видим */
+  opacity: 1;
+  transition: opacity 180ms ease;
+
+  @media (hover: hover) {
+    opacity: 0;
+  }
+}
+
+@media (hover: hover) {
+  .imageCard:hover .imageOverlay,
+  .imageCardPrimary .imageOverlay {
+    opacity: 1;
+  }
+}
+
+.imageTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.imageDeleteBtn {
+  background: rgba(15, 23, 42, 0.7);
+  color: #fff;
+  border: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background-color 150ms ease;
+  flex-shrink: 0;
+}
+
+.imageDeleteBtn:hover {
+  background: var(--mantine-color-red-7);
+}
+
+.primaryBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--mantine-color-accent-6);
+  color: #fff;
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  max-width: calc(100% - 30px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.primaryStarBtn {
+  background: rgba(15, 23, 42, 0.7);
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  align-self: flex-start;
+  backdrop-filter: blur(4px);
+  transition: background-color 150ms ease;
+}
+
+.primaryStarBtn:hover {
+  background: var(--mantine-color-accent-6);
+}
+
+.dropzone {
+  border: 2px dashed var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-default-hover);
+  transition: border-color 180ms ease, background-color 180ms ease;
+  aspect-ratio: 1 / 1;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  min-height: 0;
+}
+
+.dropzone:hover {
+  border-color: var(--mantine-color-barter-5);
+  background: var(--mantine-color-barter-light);
+}
+
+[data-mantine-color-scheme='dark'] .dropzone:hover {
+  background: rgba(48, 187, 110, 0.08);
+}
+
+.dropzoneInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--mantine-color-dimmed);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* ===== Sticky footer ===== */
+
+.footer {
+  position: sticky;
+  bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--mantine-radius-lg);
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  box-shadow: var(--mantine-shadow-md);
+  flex-wrap: wrap;
+  z-index: 5;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    /* выше mobile bottom navbar (64px) + небольшой отступ */
+    bottom: 76px;
+    padding: 8px 10px;
+    border-radius: var(--mantine-radius-md);
+    gap: 8px;
+    /* На мобиле всё одной строкой: cancel-icon | (menu | save) — без wrap */
+    flex-wrap: nowrap;
+  }
+}
+
+.footerLeft {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  min-width: 0;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+  }
+}
+
+.footerRight {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto;
+  flex-wrap: wrap;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    margin-left: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+}
+
+/* Save-кнопка занимает всё доступное место в footerRight на мобиле,
+   чтобы быть главной точкой действия. Status-меню остаётся справа компактной иконкой. */
+.footerSave {
+  @media (max-width: vars.$breakpoint-sm) {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}

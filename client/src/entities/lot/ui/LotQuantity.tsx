@@ -1,19 +1,20 @@
-import { Card, Text } from '@mantine/core';
+import { Boxes } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-import styles from '../Lot.module.scss';
 
 type Props = {
   quantity: number;
+  className?: string;
 };
 
-export const LotQuantity = ({ quantity }: Props) => {
+export const LotQuantity = ({ quantity, className }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Card withBorder className={styles.quantity}>
-      <Text fw={700}>{t('lot.quantity')}:</Text>
-      <Text>{quantity}</Text>
-    </Card>
+    <span className={className}>
+      <Boxes size={14} strokeWidth={2.2} />
+      <span>
+        {t('lot.quantity')}: ×{quantity}
+      </span>
+    </span>
   );
 };

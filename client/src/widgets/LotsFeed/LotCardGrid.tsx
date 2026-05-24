@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { KeyboardEvent } from 'react';
 
 import { formatDate } from '@/shared/lib/formatters';
+import { preload } from '@/shared/lib/preload';
 import type { LotResponse } from '@/entities/lot';
 
 import styles from './LotsFeed.module.scss';
@@ -14,6 +15,8 @@ type Props = {
   locale: string;
   onOpen: (id: string) => void;
   onExchange: (lot: LotResponse) => void;
+  /** Не показывать кнопку "Обменяться" (например, в ленте "Мои лоты"). */
+  hideExchange?: boolean;
 };
 
 export const LotCardGrid = ({
@@ -22,6 +25,7 @@ export const LotCardGrid = ({
   locale,
   onOpen,
   onExchange,
+  hideExchange = false,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -43,6 +47,8 @@ export const LotCardGrid = ({
       role="link"
       tabIndex={0}
       onClick={() => onOpen(lot.id)}
+      onMouseEnter={() => preload('lot')}
+      onTouchStart={() => preload('lot')}
       onKeyDown={handleKeyDown}
     >
       <Stack className={styles.gridCard}>
@@ -84,17 +90,19 @@ export const LotCardGrid = ({
           </Text>
         </div>
 
-        <Button
-          mt="auto"
-          variant="light"
-          fullWidth
-          onClick={(e) => {
-            e.stopPropagation();
-            onExchange(lot);
-          }}
-        >
-          {t('feed.exchange.action')}
-        </Button>
+        {!hideExchange && (
+          <Button
+            mt="auto"
+            variant="light"
+            fullWidth
+            onClick={(e) => {
+              e.stopPropagation();
+              onExchange(lot);
+            }}
+          >
+            {t('feed.exchange.action')}
+          </Button>
+        )}
       </Stack>
     </Card>
   );

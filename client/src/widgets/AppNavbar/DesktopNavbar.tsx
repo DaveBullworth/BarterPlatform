@@ -7,6 +7,7 @@ import { useNavigation } from '@/shared/lib/navigation';
 import { openAuthRequiredModal } from '@/features/auth';
 import { NAV_ACCESS } from '@/shared/constants/nav-access';
 import { USER_ROLES } from '@/shared/constants/user-role';
+import { preload } from '@/shared/lib/preload';
 import { NAV_ITEMS } from './navigation';
 
 import styles from './AppNavbar.module.scss';
@@ -50,6 +51,15 @@ export const DesktopNavbar = () => {
                 : undefined
             }
             rightSection={item.rightSection?.({ isAuthenticated })}
+            onMouseEnter={
+              item.preload ? () => preload(item.preload!) : undefined
+            }
+            onFocus={
+              item.preload ? () => preload(item.preload!) : undefined
+            }
+            onTouchStart={
+              item.preload ? () => preload(item.preload!) : undefined
+            }
             onClick={(e) => {
               if (item.access === NAV_ACCESS.AUTH && !isAuthenticated) {
                 e.preventDefault();

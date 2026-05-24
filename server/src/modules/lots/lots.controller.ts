@@ -152,10 +152,12 @@ export class LotsController {
     Возвращает список лотов с учётом прав доступа, пагинации и фильтрации.
 
     Правила доступа:
-    - ADMIN — видит все лоты
-    - USER — видит только:
-      - активные лоты
-      - свои лоты (включая скрытые)
+    - Гость — только активные публичные лоты.
+    - ADMIN (без selfOnly) — видит все лоты системы.
+    - USER (без selfOnly) — видит только активные ЧУЖИЕ лоты;
+      свои собственные в общей ленте скрыты, для них существует selfOnly.
+    - Любой авторизованный с selfOnly=true — видит только свои лоты,
+      включая скрытые и архивные.
 
     Параметры:
     - page — номер страницы (по умолчанию 1)
@@ -171,6 +173,9 @@ export class LotsController {
     query:
       - поиск по generalDescription и characteristicsDescription
       - оператор: contains
+
+    selfOnly:
+      - boolean; для USER/ADMIN переключает ленту в режим "Мои лоты".
   `,
   })
   @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })

@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Info } from 'lucide-react';
-import { useDisclosure } from '@mantine/hooks';
-import { Badge, Divider, Group, Popover, Text } from '@mantine/core';
 import type { ReactNode } from 'react';
+import { Tooltip } from '@mantine/core';
 
 import styles from './ProfilePreferencesBlock.module.scss';
 
@@ -20,46 +18,38 @@ export const PreferenceRow = ({
   control,
 }: PreferenceRowProps) => {
   const { t } = useTranslation();
-  const [opened, { close, open }] = useDisclosure(false);
+
+  const cardClass = [
+    styles.preferenceCard,
+    isOutdated ? styles.preferenceCardOutdated : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <Badge
-      fullWidth
-      radius="md"
-      variant="light"
-      className={styles.contactBadge}
-    >
-      <Group gap="sm" wrap="nowrap">
-        <Group gap={6} className={styles.contactLabel} wrap="nowrap">
-          {icon}
-          <Text size="sm" fw={500}>
-            {label}
-          </Text>
-        </Group>
-
-        <Divider orientation="vertical" />
-
-        <Group gap="xs" wrap="nowrap" className={styles.contactValue}>
-          {control}
-
+    <div className={cardClass}>
+      <span className={styles.iconTile}>{icon}</span>
+      <div className={styles.body}>
+        <div className={styles.label}>
+          <span>{label}</span>
           {isOutdated && (
-            <Popover width={260} position="top" withArrow opened={opened}>
-              <Popover.Target>
-                <Info
-                  size={20}
-                  color="red"
-                  onMouseEnter={open}
-                  onMouseLeave={close}
-                  style={{ cursor: 'pointer' }}
-                />
-              </Popover.Target>
-              <Popover.Dropdown style={{ pointerEvents: 'none' }}>
-                <Text size="sm">{t('profile.settingMissmatch')}</Text>
-              </Popover.Dropdown>
-            </Popover>
+            <Tooltip
+              label={t('profile.settingMissmatch')}
+              withArrow
+              position="top"
+              multiline
+              w={240}
+            >
+              <span
+                className={styles.outdatedDot}
+                role="status"
+                aria-label="unsaved"
+              />
+            </Tooltip>
           )}
-        </Group>
-      </Group>
-    </Badge>
+        </div>
+        {control}
+      </div>
+    </div>
   );
 };

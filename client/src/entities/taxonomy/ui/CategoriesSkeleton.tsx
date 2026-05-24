@@ -1,32 +1,37 @@
-import { Skeleton, Stack, Group } from '@mantine/core';
+import { Skeleton, Stack } from '@mantine/core';
 
+/**
+ * Skeleton-вариант ChapterItem: повторяет визуал
+ * (tile-иконка → название → checkbox/chevron справа) из Taxonomy.module.scss,
+ * чтобы переход loading → real не "прыгал".
+ */
 const SkeletonRow = () => (
-  <Stack gap={0}>
-    <Group
-      justify="space-between"
-      wrap="nowrap"
-      gap="sm"
-      style={{
-        borderRadius: 10,
-        border: '1px solid var(--mantine-color-gray-3)',
-        padding: '8px 10px',
-      }}
-    >
-      <Group wrap="nowrap" gap="xs">
-        <Skeleton height={22} width={22} radius="sm" />
-        <Skeleton height={12} width={120} radius="sm" />
-      </Group>
-      <Group gap="xs" wrap="nowrap">
-        <Skeleton height={16} width={16} radius="sm" />
-        <Skeleton height={16} width={16} radius="sm" />
-      </Group>
-    </Group>
-  </Stack>
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 12,
+      padding: '10px 12px',
+      borderRadius: 10,
+      border: '1px solid var(--mantine-color-default-border)',
+      background: 'var(--mantine-color-body)',
+    }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
+      <Skeleton height={28} width={28} radius={8} />
+      <Skeleton height={14} width="55%" radius="sm" />
+    </div>
+    <div style={{ display: 'flex', gap: 8 }}>
+      <Skeleton height={16} width={16} radius="sm" />
+      <Skeleton height={20} width={20} radius="sm" />
+    </div>
+  </div>
 );
 
 export const CategoriesSkeleton = () => (
-  <Stack gap="sm">
-    {Array.from({ length: 16 }).map((_, i) => (
+  <Stack gap="xs">
+    {Array.from({ length: 12 }).map((_, i) => (
       <SkeletonRow key={i} />
     ))}
   </Stack>

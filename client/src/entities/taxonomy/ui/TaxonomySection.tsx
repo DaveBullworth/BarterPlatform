@@ -1,13 +1,6 @@
 import { useState } from 'react';
-import {
-  Card,
-  Stack,
-  Text,
-  TextInput,
-  Button,
-  Checkbox,
-  Modal,
-} from '@mantine/core';
+import { Button, Checkbox, Modal } from '@mantine/core';
+import { Layers, Pencil, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 
@@ -29,12 +22,29 @@ type Props = {
     category: Category,
     subcategoryId: number | null,
   ) => void;
+  /** Опциональные классы из page-родителя для summary-блока. */
+  classes?: {
+    summary?: string;
+    summaryFilled?: string;
+    summaryIcon?: string;
+    summaryBody?: string;
+    summaryPlaceholder?: string;
+    summaryPath?: string;
+    summaryError?: string;
+    summaryAction?: string;
+  };
 };
 
 const getCategoryKey = (chapterId: number, categoryId: number) =>
   `${chapterId}:${categoryId}`;
 
-export const TaxonomySection = ({ value, error, selected, onPick }: Props) => {
+export const TaxonomySection = ({
+  value,
+  error,
+  selected,
+  onPick,
+  classes = {},
+}: Props) => {
   const { t } = useTranslation();
   const { data: taxonomy = [], isLoading } = useTaxonomy();
   const [opened, setOpened] = useState(false);
@@ -48,7 +58,6 @@ export const TaxonomySection = ({ value, error, selected, onPick }: Props) => {
   const [showContent, setShowContent] = useState(false);
 
   const handleOpen = () => {
-    // Раскрываем до текущего выбора
     const chapters = new Set<number>();
     const categories = new Set<string>();
 
@@ -89,24 +98,42 @@ export const TaxonomySection = ({ value, error, selected, onPick }: Props) => {
     });
   };
 
+  const isFilled = Boolean(value);
+  const summaryClass = [
+    classes.summary,
+    isFilled ? classes.summaryFilled : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <>
-      <Card withBorder radius="md" p="md">
-        <Stack>
-          <Text fw={700}>{t('lotForm.taxonomy.title')}</Text>
-          <TextInput
-            label={t('lotForm.taxonomy.selected')}
-            placeholder={t('lotForm.taxonomy.placeholder')}
-            readOnly
-            value={value}
-            error={error}
-            styles={{ input: { fontStyle: 'italic' } }}
-          />
-          <Button variant="default" onClick={handleOpen}>
-            {t('lotForm.taxonomy.selectButton')}
-          </Button>
-        </Stack>
-      </Card>
+      <div className={summaryClass}>
+        <span className={classes.summaryIcon}>
+          <Layers size={16} strokeWidth={2} />
+        </span>
+        <div className={classes.summaryBody}>
+          {isFilled ? (
+            <span className={classes.summaryPath}>{value}</span>
+          ) : (
+            <span className={classes.summaryPlaceholder}>
+              {t('lotForm.taxonomy.placeholder')}
+            </span>
+          )}
+          {error && <span className={classes.summaryError}>{error}</span>}
+        </div>
+        <Button
+          variant={isFilled ? 'default' : 'filled'}
+          size="xs"
+          className={classes.summaryAction}
+          leftSection={
+            isFilled ? <Pencil size={14} /> : <Plus size={14} />
+          }
+          onClick={handleOpen}
+        >
+          {t('lotForm.taxonomy.selectButton')}
+        </Button>
+      </div>
 
       <Modal
         opened={opened}
@@ -138,6 +165,7 @@ export const TaxonomySection = ({ value, error, selected, onPick }: Props) => {
               if (hasSubcategories) return null;
               return (
                 <Checkbox
+                  color="barter"
                   checked={
                     selected.chapterId === chapterId &&
                     selected.categoryId === category.id &&

@@ -21,6 +21,7 @@
     "loginRateLimit": "Rate limit exceeded. Please wait 5 seconds.",
     "loginBruteforce": "Too many login attempts. Please wait 15 minutes to 1 hour.",
     "loginError": "Login error",
+    "loginFailed": "Login failed",
     "serverError": "Server unavailable",
     "passwordPlaceholder": "Enter your password",
     "or": "or",
@@ -45,6 +46,13 @@
     "emailAlreadyInUse": "Email is already in use",
     "loginAlreadyInUse": "Login is already in use",
     "countryNotFound": "Selected country not found",
+    "regionNotFound": "Selected region not found",
+    "cityNotFound": "Selected city not found",
+    "districtNotFound": "Selected district not found",
+    "chapterNotFound": "Section not found",
+    "categoryNotFound": "Category not found",
+    "subcategoryNotFound": "Subcategory not found",
+    "subcategoryRequired": "Subcategory is required",
     "registrationSuccess": "A confirmation email has been sent to your email address. Please confirm it to complete registration.",
     "registrationFailed": "Registration failed. Please try again later.",
     "resend": "Resend",
@@ -79,7 +87,8 @@
     "minLength": "{{field}} must be at least {{min}} characters long",
     "maxLength": "{{field}} must be at most {{max}} characters long",
     "invalidEmail": "Invalid email address",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "phone": "Invalid phone number"
   },
   "mailConfirm": {
     "loading": "Confirming your email…",
@@ -104,10 +113,14 @@
     "myLots": "My lots",
     "authRequired": "A login is required"
   },
+  "myLots": {
+    "description": "All lots you have published"
+  },
   "profile": {
+    "error": "Failed to load user data",
     "title": "Profile",
     "stub": "This is a profile page stub",
-    "missed": "Missed",
+    "missed": "Missing",
     "language": "Language",
     "theme": "Theme",
     "avatar": "Avatar",
@@ -116,6 +129,9 @@
     "confirmSaveText": "Are you sure you want to save the following personal settings globally?",
     "preferencesSavedSuccessfully": "User preferences have been saved!",
     "avatarError": "Error uploading avatar",
+    "avatarNotFound": "Avatar not found",
+    "avatarInvalidFormat": "Invalid image format",
+    "avatarProcessingError": "Failed to process the image",
     "sizeLimit": "File size must not exceed {{size}} MB",
     "avatarDrag": "Drag an image here or click to select",
     "avatarDragInfo": "Allowed types [png/jpeg], weight [< 5 mb]",
@@ -124,7 +140,13 @@
     "avatarDeleted": "Avatar successfully deleted",
     "editData": "Edit details",
     "dataUpdated": "Profile data updated successfully",
-    "countryNotSelected": "Please select a country"
+    "countryNotSelected": "Please select a country",
+    "lastAdminDeactivation": "You cannot deactivate the last system admin!",
+    "confirmTitle": "Confirmation",
+    "confirmUpdateMessage": "Are you sure you want to save the profile changes?",
+    "confirmDiscardMessage": "Are you sure you want to leave? All unsaved changes will be lost.",
+    "confirmDiscardConfirm": "Leave",
+    "confirmDiscardCancel": "Stay"
   },
   "deactivation": {
     "title": "Account Deactivation",
@@ -158,18 +180,25 @@
     },
     "selectOperator": "Specify an operator",
     "filter": {
+      "title": "Filter panel",
       "login": "Login",
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
       "role": "Role",
       "status": "Status",
+      "countryPlaceholder": "Select countries",
+      "noCountries": "No countries available",
+      "createdAtPlaceholder": "Specify range",
       "contains": "Contains",
       "equals": "Equals",
       "notContains": "Does not contain",
       "notEquals": "Does not equal",
+      "apply": "Apply filters",
       "reset": "Reset filters"
-    }
+    },
+    "saveColumnsPreset": "Save column width preset",
+    "resetColumnsPreset": "Reset column widths to default"
   },
   "authRequired": {
     "title": "Authentication required",
@@ -179,10 +208,13 @@
     "cancel": "Cancel"
   },
   "common": {
-    "error": "Error",
+    "actions": "Actions",
     "success": "Success",
+    "error": "Error",
+    "errorDescription": "Unknown error",
     "delete": "Delete",
     "save": "Save",
+    "copy": "Copy",
     "exit": "Exit",
     "exitQuestion": "Are you sure you want to exit?",
     "refreshTokenNotFound": "Refresh token not found",
@@ -196,7 +228,13 @@
     "noActive": "Inactive",
     "role": "Role",
     "status": "Status",
-    "createdAt": "Created At"
+    "statusEmail": "Email",
+    "createdAt": "Created",
+    "loading": "Loading…",
+    "others": "Others",
+    "back": "Back",
+    "retry": "Retry",
+    "noAccess": "No access"
   },
   "notifications": {
     "title": "Notifications",
@@ -217,36 +255,37 @@
       "saved": "Saved"
     },
     "taxonomy": {
-      "title": "1. Taxonomy",
+      "title": "Taxonomy",
       "selected": "Selected category",
       "selectButton": "Select taxonomy",
       "placeholder": "Click the button below to select a taxonomy"
     },
     "geo": {
-      "title": "2. Location",
+      "title": "Location",
       "selected": "Selected location",
       "selectButton": "Select location",
       "placeholder": "Click the button below to select location",
       "modalTitle": "Select location"
     },
     "images": {
-      "title": "3. Images",
+      "title": "Images",
       "primary": "Primary",
       "setPrimary": "Set as primary",
       "add": "Add"
     },
     "fields": {
-      "title": "4. Lot details",
+      "title": "Lot details",
       "generalDescriptionPlaceholder": "Short description",
       "characteristicsPlaceholder": "Detailed characteristics",
       "quantityPlaceholder": "Specify the quantity of the item",
       "generalDescription": "General description",
-      "characteristicsDescription": "Characteristics description",
+      "characteristics": "Characteristics",
       "quantity": "Quantity"
     },
     "visibility": {
       "visible": "visibility: visible",
-      "hidden": "visibility: hidden"
+      "hidden": "visibility: hidden",
+      "tooltip": "If the lot is hidden, it will not appear in search or on the lots page for other users. You can change this at any time."
     },
     "actions": {
       "cancel": "Cancel",
@@ -272,6 +311,10 @@
       "created": "Lot created",
       "deactivated": "Lot deactivated",
       "unarchived": "Lot unarchived"
+    },
+    "confirm": {
+      "saveTitle": "Save confirmation",
+      "saveMessage": "Are you sure you want to save changes to this lot?"
     }
   },
   "lot": {
@@ -287,9 +330,12 @@
     "owner": "Owner",
     "location": "Location",
     "edit": "Edit",
-    "createdAt": "Created At",
+    "createdAt": "Created",
     "notFound": "Lot not found",
+    "notFoundDescription": "Lot not found",
     "noImages": "No images available",
+    "notOwner": "You are not the owner of this lot",
+    "userArchived": "Owner's account is archived",
     "region": "Region",
     "city": "City",
     "district": "District"

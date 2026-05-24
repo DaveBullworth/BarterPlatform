@@ -4,11 +4,11 @@ import {
   Group,
   Text,
   Button,
-  Center,
   Alert,
   Modal,
+  ThemeIcon,
 } from '@mantine/core';
-import { Palette, Languages, ChevronRight } from 'lucide-react';
+import { Palette, Languages, ChevronRight, Save } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
@@ -46,75 +46,85 @@ export const ProfilePreferencesBlock = ({ user }: Props) => {
   };
 
   return (
-    <Stack gap="xs" className={styles.contactsBlock}>
-      <PreferenceRow
-        icon={<Languages size={14} />}
-        label={t('profile.language')}
-        isOutdated={isLanguageOutdated}
-        control={<LanguageSwitcher />}
-      />
+    <Stack gap="md">
+      <div className={styles.preferencesGrid}>
+        <PreferenceRow
+          icon={<Languages size={18} strokeWidth={2} />}
+          label={t('profile.language')}
+          isOutdated={isLanguageOutdated}
+          control={<LanguageSwitcher />}
+        />
 
-      <PreferenceRow
-        icon={<Palette size={14} />}
-        label={t('profile.theme')}
-        isOutdated={isThemeOutdated}
-        control={<ThemeSwitcher />}
-      />
+        <PreferenceRow
+          icon={<Palette size={18} strokeWidth={2} />}
+          label={t('profile.theme')}
+          isOutdated={isThemeOutdated}
+          control={<ThemeSwitcher />}
+        />
+      </div>
 
       {hasOutdated && (
-        <Button
-          variant="outline"
-          mt="sm"
-          onClick={() => setConfirmOpened(true)}
-        >
-          {t('profile.savePreferences')}
-        </Button>
+        <div className={styles.saveBar}>
+          <Text className={styles.saveBarText}>
+            {t('profile.settingMissmatch')}
+          </Text>
+          <Button
+            color="accent"
+            leftSection={<Save size={16} />}
+            onClick={() => setConfirmOpened(true)}
+            size="sm"
+          >
+            {t('profile.savePreferences')}
+          </Button>
+        </div>
       )}
 
       <Modal
         opened={confirmOpened}
         onClose={() => setConfirmOpened(false)}
-        centered
         title={
-          <Text fw={700} size="lg" td="underline">
+          <Text fw={700} size="md">
             {t('profile.confirmSaveTitle')}
           </Text>
         }
+        size="md"
       >
-        <Stack gap="sm">
-          <Text>{t('profile.confirmSaveText')}</Text>
+        <Stack gap="md">
+          <Text size="sm" c="dimmed">
+            {t('profile.confirmSaveText')}
+          </Text>
 
-          <Stack gap={6}>
+          <Stack gap={8}>
             {isThemeOutdated && (
-              <Group wrap="nowrap">
-                <Text c="dimmed" miw={100} w="30%">
+              <Group wrap="nowrap" gap="sm">
+                <ThemeIcon variant="light" color="barter" size="sm" radius="md">
+                  <Palette size={14} />
+                </ThemeIcon>
+                <Text size="sm" c="dimmed" miw={90}>
                   {t('profile.theme')}
                 </Text>
-                <Center w={24}>
-                  <ChevronRight size={18} />
-                </Center>
-                <Center miw={32} w="10%">
-                  {THEME_ICON_MAP[localTheme]}
-                </Center>
+                <ChevronRight size={14} color="var(--mantine-color-dimmed)" />
+                <Group gap={4}>{THEME_ICON_MAP[localTheme]}</Group>
               </Group>
             )}
 
             {isLanguageOutdated && (
-              <Group wrap="nowrap">
-                <Text c="dimmed" miw={100} w="30%">
+              <Group wrap="nowrap" gap="sm">
+                <ThemeIcon variant="light" color="barter" size="sm" radius="md">
+                  <Languages size={14} />
+                </ThemeIcon>
+                <Text size="sm" c="dimmed" miw={90}>
                   {t('profile.language')}
                 </Text>
-                <Center w={24}>
-                  <ChevronRight size={18} />
-                </Center>
-                <Text fw={600} miw={32} w="10%" ta="center">
+                <ChevronRight size={14} color="var(--mantine-color-dimmed)" />
+                <Text size="sm" fw={700}>
                   {localLanguage?.toUpperCase()}
                 </Text>
               </Group>
             )}
           </Stack>
 
-          <Group justify="flex-end" mt="md">
+          <Group justify="flex-end" mt="sm" gap="xs">
             <Button
               variant="default"
               onClick={() => setConfirmOpened(false)}

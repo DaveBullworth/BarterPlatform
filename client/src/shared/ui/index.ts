@@ -6,3 +6,4 @@ export { LanguageSwitcher } from './LanguageSwitcher';
 export { ThemeSwitcher } from './ThemeSwitcher';
 export { DateRangeDropdownInput } from './DateRangeDropdownInput';
 export { PhoneInput } from './PhoneInput';
+export { RouteProgressBar } from './RouteProgressBar';

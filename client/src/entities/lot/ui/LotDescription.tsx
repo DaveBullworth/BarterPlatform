@@ -1,17 +1,24 @@
-import { Badge, Card, Text, UnstyledButton } from '@mantine/core';
+import { UnstyledButton } from '@mantine/core';
 import { ChevronDown } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from '../Lot.module.scss';
 
-const COLLAPSED_HEIGHT = 200;
+const COLLAPSED_HEIGHT = 240;
 
 type Props = {
   description: string;
+  /** Опциональные классы из страницы-родителя для оформления секции. */
+  classes?: {
+    section?: string;
+    sectionTitle?: string;
+    sectionTitleAccent?: string;
+    text?: string;
+  };
 };
 
-export const LotDescription = ({ description }: Props) => {
+export const LotDescription = ({ description, classes = {} }: Props) => {
   const { t } = useTranslation();
   const contentRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
@@ -49,18 +56,26 @@ export const LotDescription = ({ description }: Props) => {
     .join(' ');
 
   return (
-    <Card withBorder>
-      <Badge mb={8} variant="light" color="accent">
-        {t('lot.description')}
-      </Badge>
+    <div className={classes.section}>
+      <div className={classes.sectionTitle}>
+        <span className={classes.sectionTitleAccent} />
+        <span>{t('lot.description')}</span>
+      </div>
+
       <div
         className={wrapperClass}
         style={maxHeight !== undefined ? { maxHeight } : undefined}
       >
         <div ref={contentRef}>
-          <Text style={{ overflowWrap: 'anywhere' }}>{description}</Text>
+          <p
+            className={classes.text}
+            style={{ margin: 0, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}
+          >
+            {description}
+          </p>
         </div>
       </div>
+
       {overflows && (
         <UnstyledButton
           className={styles.descriptionToggle}
@@ -71,6 +86,6 @@ export const LotDescription = ({ description }: Props) => {
           <ChevronDown size={16} className={chevronClass} />
         </UnstyledButton>
       )}
-    </Card>
+    </div>
   );
 };

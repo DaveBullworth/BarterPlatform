@@ -1,52 +1,168 @@
-.profileHeader {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  padding: 1.25rem;
+@use '@/app/styles/variables.scss' as vars;
+
+/* Hero-блок профиля: цветной banner + аватар, "вписанный" в нижний край. */
+.hero {
+  position: relative;
   border-radius: var(--mantine-radius-lg);
   border: 1px solid var(--mantine-color-default-border);
-  background:
-    linear-gradient(
-      135deg,
-      rgba(30, 162, 115, 0.06),
-      transparent 60%
-    ),
-    var(--mantine-color-body);
+  overflow: hidden;
+  background: var(--mantine-color-body);
   box-shadow: var(--mantine-shadow-xs);
 }
 
-[data-mantine-color-scheme='dark'] .profileHeader {
+.banner {
+  height: 140px;
   background:
+    radial-gradient(
+      circle at 25% 0%,
+      var(--mantine-color-barter-3),
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      var(--mantine-color-accent-3),
+      transparent 55%
+    ),
     linear-gradient(
       135deg,
-      rgba(48, 187, 110, 0.10),
-      transparent 60%
+      var(--mantine-color-barter-5),
+      var(--mantine-color-barter-7)
+    );
+}
+
+[data-mantine-color-scheme='dark'] .banner {
+  background:
+    radial-gradient(
+      circle at 25% 0%,
+      rgba(48, 187, 110, 0.45),
+      transparent 50%
     ),
-    var(--mantine-color-body);
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(237, 160, 19, 0.35),
+      transparent 55%
+    ),
+    linear-gradient(
+      135deg,
+      var(--mantine-color-barter-7),
+      var(--mantine-color-barter-9)
+    );
 }
 
-.avatarBox {
-  width: 112px;
-  height: 112px;
-  border-radius: var(--mantine-radius-lg);
-  overflow: hidden;
-  border: 2px solid var(--mantine-color-default-border);
-  transition:
-    border-color 180ms ease,
-    transform 180ms ease,
-    box-shadow 180ms ease;
+.bannerOverlay {
+  position: absolute;
+  inset: 0;
+  height: 140px;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.12) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+  pointer-events: none;
+}
+
+.body {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--mantine-color-default);
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 24px 20px;
+  position: relative;
 }
 
-.avatarBox.editable {
+@media (max-width: vars.$breakpoint-sm) {
+  .body {
+    padding: 0 16px 16px;
+  }
+}
+
+.avatarRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: -56px;
+}
+
+.avatarFrame {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--mantine-radius-lg);
+  background: var(--mantine-color-body);
+  padding: 4px;
+  box-shadow: var(--mantine-shadow-md);
+  flex-shrink: 0;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.avatarFrame.editable {
   cursor: pointer;
 }
 
-.avatarBox.editable:hover {
-  border-color: var(--mantine-color-barter-5);
-  transform: scale(1.03);
-  box-shadow: 0 0 0 4px rgba(30, 162, 115, 0.12);
+.avatarFrame.editable:hover {
+  transform: translateY(-3px);
+}
+
+.avatarFrame :global(.mantine-Avatar-root) {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: calc(var(--mantine-radius-lg) - 4px);
+}
+
+.editHint {
+  position: absolute;
+  inset: 4px;
+  border-radius: calc(var(--mantine-radius-lg) - 4px);
+  background: rgba(15, 23, 42, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.avatarFrame.editable:hover .editHint {
+  opacity: 1;
+}
+
+.avatarFrame {
+  position: relative;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--mantine-color-text);
+  line-height: 1.1;
+}
+
+.login {
+  font-size: 0.875rem;
+  color: var(--mantine-color-dimmed);
+  font-weight: 500;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
 }

@@ -1,7 +1,10 @@
-import { Stack, UnstyledButton, Group, Text, Box } from '@mantine/core';
+import { Stack, UnstyledButton, Group, Box } from '@mantine/core';
 import { ChevronRight } from 'lucide-react';
 import { type ReactNode } from 'react';
+
 import type { Category } from '@/entities/taxonomy';
+
+import styles from '../Taxonomy.module.scss';
 
 type CategoryItemProps = {
   category: Category;
@@ -22,29 +25,30 @@ export const CategoryItem = ({
   rightSection,
   children,
 }: CategoryItemProps) => {
+  const buttonClass = [
+    styles.category,
+    hasSubcategories ? styles.categoryClickable : styles.categoryStatic,
+    selected ? styles.categorySelected : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <Stack gap={4}>
       <UnstyledButton
+        component="div"
         onClick={hasSubcategories ? onToggle : undefined}
-        style={{
-          borderRadius: 8,
-          border: '1px solid var(--mantine-color-gray-2)',
-          padding: '6px 10px',
-          backgroundColor: selected
-            ? 'var(--mantine-color-blue-0)'
-            : 'transparent',
-        }}
+        className={buttonClass}
       >
         <Group justify="space-between" wrap="nowrap">
-          <Text size="sm">{category.name}</Text>
+          <span className={styles.categoryName}>{category.name}</span>
           <Group gap="xs" wrap="nowrap">
             {hasSubcategories ? (
               <ChevronRight
                 size={14}
-                style={{
-                  transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                  transition: 'transform 150ms ease',
-                }}
+                className={`${styles.chevron} ${
+                  expanded ? styles.chevronOpen : ''
+                }`}
               />
             ) : (
               <Box w={14} />
@@ -53,7 +57,7 @@ export const CategoryItem = ({
           </Group>
         </Group>
       </UnstyledButton>
-      {hasSubcategories && expanded && children}
+      {hasSubcategories && children}
     </Stack>
   );
 };

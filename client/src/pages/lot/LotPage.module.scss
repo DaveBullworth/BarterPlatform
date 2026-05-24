@@ -1,0 +1,271 @@
+@use '@/app/styles/variables.scss' as vars;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 0;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    gap: 12px;
+    padding: 8px 0;
+  }
+}
+
+.breadcrumbsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.breadcrumbItem {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--mantine-color-dimmed);
+  text-transform: uppercase;
+}
+
+.breadcrumbActive {
+  color: var(--mantine-color-text);
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--mantine-color-text);
+  line-height: 1.15;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    font-size: 1.375rem;
+  }
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--mantine-color-dimmed);
+  font-size: 13px;
+}
+
+.statusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mantine-color-dimmed);
+}
+
+/* ===== Двухколоночный layout: контент + sticky sidebar ===== */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+
+  @media (max-width: vars.$breakpoint-lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 80px;
+
+  @media (max-width: vars.$breakpoint-lg) {
+    position: static;
+  }
+}
+
+/* ===== Карточки внутри ===== */
+
+.sectionCard {
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-lg);
+  padding: 18px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--mantine-color-dimmed);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionTitleAccent {
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--mantine-color-barter-5);
+}
+
+.descriptionText {
+  color: var(--mantine-color-text);
+  line-height: 1.65;
+  font-size: 14.5px;
+  word-break: break-word;
+}
+
+/* ===== CTA / Sidebar actions ===== */
+
+.ctaCard {
+  background: linear-gradient(
+    160deg,
+    var(--mantine-color-barter-light),
+    transparent 70%
+  );
+  border: 1px solid var(--mantine-color-barter-3);
+  border-radius: var(--mantine-radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-mantine-color-scheme='dark'] .ctaCard {
+  background: linear-gradient(
+    160deg,
+    rgba(48, 187, 110, 0.10),
+    transparent 70%
+  );
+  border-color: rgba(48, 187, 110, 0.35);
+}
+
+.ctaHint {
+  font-size: 12px;
+  color: var(--mantine-color-dimmed);
+  line-height: 1.4;
+}
+
+/* ===== Location list ===== */
+
+.locationList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.locationRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.locationIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--mantine-color-default-hover);
+  color: var(--mantine-color-dimmed);
+}
+
+.locationLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--mantine-color-dimmed);
+  display: block;
+}
+
+.locationValue {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--mantine-color-text);
+}
+
+.locationValueMuted {
+  color: var(--mantine-color-dimmed);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ===== Status banner ===== */
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--mantine-color-default);
+  color: var(--mantine-color-text);
+}
+
+.statusBadgeActive {
+  background: var(--mantine-color-barter-light);
+  color: var(--mantine-color-barter-7);
+}
+
+[data-mantine-color-scheme='dark'] .statusBadgeActive {
+  background: rgba(48, 187, 110, 0.16);
+  color: var(--mantine-color-barter-3);
+}
+
+.statusBadgeArchived {
+  background: var(--mantine-color-default-hover);
+  color: var(--mantine-color-dimmed);
+}
+
+.statusBadgeHidden {
+  background: rgba(239, 68, 68, 0.10);
+  color: var(--mantine-color-red-7);
+}
+
+[data-mantine-color-scheme='dark'] .statusBadgeHidden {
+  background: rgba(239, 68, 68, 0.16);
+  color: var(--mantine-color-red-3);
+}
+
+/* ===== Quantity chip ===== */
+
+.quantityChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-accent-0);
+  color: var(--mantine-color-accent-7);
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid var(--mantine-color-accent-2);
+  width: max-content;
+}
+
+[data-mantine-color-scheme='dark'] .quantityChip {
+  background: rgba(237, 160, 19, 0.10);
+  border-color: rgba(237, 160, 19, 0.3);
+  color: var(--mantine-color-accent-3);
+}

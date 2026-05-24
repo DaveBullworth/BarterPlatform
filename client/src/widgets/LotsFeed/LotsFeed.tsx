@@ -166,6 +166,7 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                 locale={i18n.language}
                 onOpen={toLotView}
                 onExchange={handleExchange}
+                hideExchange={selfOnly}
               />
             ))}
           </SimpleGrid>
@@ -181,6 +182,7 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                 locale={i18n.language}
                 onOpen={toLotView}
                 onExchange={handleExchange}
+                hideExchange={selfOnly}
               />
             ))}
           </Stack>

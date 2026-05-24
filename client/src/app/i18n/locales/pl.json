@@ -21,6 +21,7 @@
     "loginRateLimit": "Przekroczono limit żądań. Proszę poczekać 5 sekund.",
     "loginBruteforce": "Zbyt wiele prób logowania. Proszę poczekać od 15 minut do godziny.",
     "loginError": "Błąd logowania",
+    "loginFailed": "Logowanie nie powiodło się",
     "serverError": "Serwer niedostępny",
     "passwordPlaceholder": "Wprowadź swoje hasło",
     "or": "lub",
@@ -45,6 +46,13 @@
     "emailAlreadyInUse": "Adres e-mail jest już używany",
     "loginAlreadyInUse": "Login jest już zajęty",
     "countryNotFound": "Wybrany kraj nie został znaleziony",
+    "regionNotFound": "Wybrany region nie został znaleziony",
+    "cityNotFound": "Wybrane miasto nie zostało znalezione",
+    "districtNotFound": "Wybrana dzielnica nie została znaleziona",
+    "chapterNotFound": "Sekcja nie została znaleziona",
+    "categoryNotFound": "Kategoria nie została znaleziona",
+    "subcategoryNotFound": "Podkategoria nie została znaleziona",
+    "subcategoryRequired": "Podkategoria jest wymagana",
     "registrationSuccess": "Na podany adres e-mail wysłano wiadomość z linkiem potwierdzającym. Potwierdź adres, aby zakończyć rejestrację.",
     "registrationFailed": "Rejestracja nie powiodła się. Spróbuj ponownie później.",
     "resend": "Wyślij ponownie",
@@ -79,7 +87,8 @@
     "minLength": "Pole „{{field}}” musi zawierać co najmniej {{min}} znaków",
     "maxLength": "Pole „{{field}}” może zawierać maksymalnie {{max}} znaków",
     "invalidEmail": "Nieprawidłowy adres e-mail",
-    "passwordsDoNotMatch": "Hasła nie są identyczne"
+    "passwordsDoNotMatch": "Hasła nie są identyczne",
+    "phone": "Nieprawidłowy numer telefonu"
   },
   "mailConfirm": {
     "loading": "Potwierdzanie adresu e-mail…",
@@ -104,18 +113,25 @@
     "myLots": "Moje ogłoszenia",
     "authRequired": "Wymagane logowanie"
   },
+  "myLots": {
+    "description": "Wszystkie opublikowane przez Ciebie oferty"
+  },
   "profile": {
+    "error": "Nie udało się załadować danych użytkownika",
     "title": "Profil",
     "stub": "To jest strona profilu (zaślepka)",
-    "missed": "Być nieobecnym",
+    "missed": "Brak",
     "language": "Język",
     "theme": "Motyw",
     "avatar": "Avatar",
     "savePreferences": "Zapisz ustawienia",
     "confirmSaveTitle": "Potwierdzenie",
     "confirmSaveText": "Czy na pewno chcesz zapisać globalnie następujące ustawienia osobiste?",
-    "preferencesSavedSuccessfully": "ustawienia użytkownika zapisane!",
+    "preferencesSavedSuccessfully": "Ustawienia użytkownika zapisane!",
     "avatarError": "Błąd podczas przesyłania awatara",
+    "avatarNotFound": "Awatar nie został znaleziony",
+    "avatarInvalidFormat": "Nieprawidłowy format obrazu",
+    "avatarProcessingError": "Nie udało się przetworzyć obrazu",
     "sizeLimit": "Rozmiar pliku nie może przekraczać {{size}} MB",
     "avatarDrag": "Przeciągnij obraz lub kliknij, aby wybrać",
     "avatarDragInfo": "dozwolone typy [png/jpeg], waga [< 5 MB]",
@@ -124,7 +140,13 @@
     "avatarDeleted": "Awatar został pomyślnie usunięty",
     "editData": "Edytuj dane",
     "dataUpdated": "Dane profilu zostały pomyślnie zaktualizowane",
-    "countryNotSelected": "Proszę wybrać kraj"
+    "countryNotSelected": "Proszę wybrać kraj",
+    "lastAdminDeactivation": "Nie można dezaktywować ostatniego administratora systemu!",
+    "confirmTitle": "Potwierdzenie",
+    "confirmUpdateMessage": "Czy na pewno chcesz zapisać zmiany w profilu?",
+    "confirmDiscardMessage": "Czy na pewno chcesz wyjść? Wszystkie niezapisane zmiany zostaną utracone.",
+    "confirmDiscardConfirm": "Wyjdź",
+    "confirmDiscardCancel": "Zostań"
   },
   "deactivation": {
     "title": "Dezaktywacja konta",
@@ -158,18 +180,25 @@
     },
     "selectOperator": "Określ instrukcję",
     "filter": {
+      "title": "Panel filtrów",
       "login": "Login",
       "name": "Imię",
       "email": "Email",
       "phone": "Telefon",
       "role": "Rola",
       "status": "Status",
+      "countryPlaceholder": "Wybierz kraje",
+      "noCountries": "Brak krajów",
+      "createdAtPlaceholder": "Określ zakres",
       "contains": "Zawiera",
       "equals": "Równe",
       "notContains": "Nie zawiera",
       "notEquals": "Nie równe",
+      "apply": "Zastosuj filtry",
       "reset": "Resetuj filtry"
-    }
+    },
+    "saveColumnsPreset": "Zapisz preset szerokości kolumn",
+    "resetColumnsPreset": "Przywróć domyślne szerokości kolumn"
   },
   "authRequired": {
     "title": "Wymagane logowanie",
@@ -179,13 +208,16 @@
     "cancel": "Anuluj"
   },
   "common": {
-    "error": "Błąd",
+    "actions": "Akcje",
     "success": "Sukces",
+    "error": "Błąd",
+    "errorDescription": "Nieznany błąd",
     "delete": "Usuń",
     "save": "Zapisz",
+    "copy": "Kopiuj",
     "exit": "Wyjdź",
     "exitQuestion": "Czy na pewno chcesz wyjść?",
-    "refreshTokenNotFound": " Nie znaleziono tokena odświeżania",
+    "refreshTokenNotFound": "Nie znaleziono tokena odświeżania",
     "sessionNotFound": "Nie znaleziono sesji",
     "userDeactivated": "Użytkownik dezaktywowany",
     "logoutFailed": "Nie udało się wylogować!",
@@ -194,8 +226,15 @@
     "admin": "Administrator",
     "active": "Aktywny",
     "noActive": "Nieaktywny",
-    "role": "Role",
-    "status": "Status"
+    "role": "Rola",
+    "status": "Status",
+    "statusEmail": "E-mail",
+    "createdAt": "Utworzono",
+    "loading": "Ładowanie…",
+    "others": "Inne",
+    "back": "Wstecz",
+    "retry": "Ponów",
+    "noAccess": "Brak dostępu"
   },
   "notifications": {
     "title": "Powiadomienia",
@@ -216,36 +255,37 @@
       "saved": "Zapisano"
     },
     "taxonomy": {
-      "title": "1. Kategoria",
+      "title": "Kategoria",
       "selected": "Wybrana kategoria",
       "selectButton": "Wybierz kategorię",
       "placeholder": "Kliknij przycisk poniżej, aby wybrać kategorię"
     },
     "geo": {
-      "title": "2. Lokalizacja",
+      "title": "Lokalizacja",
       "selected": "Wybrana lokalizacja",
       "selectButton": "Wybierz lokalizację",
       "placeholder": "Kliknij przycisk poniżej, aby wybrać lokalizację",
       "modalTitle": "Wybierz lokalizację"
     },
     "images": {
-      "title": "3. Obrazy",
+      "title": "Obrazy",
       "primary": "Główne",
       "setPrimary": "Ustaw jako główne",
       "add": "Dodaj"
     },
     "fields": {
-      "title": "4. Dane oferty",
+      "title": "Dane oferty",
       "generalDescriptionPlaceholder": "Krótki opis",
       "characteristicsPlaceholder": "Szczegółowe cechy",
       "quantityPlaceholder": "Podaj ilość towaru",
       "generalDescription": "Ogólne opis",
-      "characteristicsDescription": "Opis cech",
+      "characteristics": "Cechy",
       "quantity": "Ilość"
     },
     "visibility": {
       "visible": "widoczność: widoczny",
-      "hidden": "widoczność: ukryty"
+      "hidden": "widoczność: ukryty",
+      "tooltip": "Jeśli oferta jest ukryta, nie będzie widoczna w wyszukiwaniu ani na stronie ofert dla innych użytkowników. Możesz to zmienić w dowolnym momencie."
     },
     "actions": {
       "cancel": "Anuluj",
@@ -271,6 +311,10 @@
       "created": "Oferta utworzona",
       "deactivated": "Oferta została dezaktywowana",
       "unarchived": "Oferta została przywrócona z archiwum"
+    },
+    "confirm": {
+      "saveTitle": "Potwierdzenie zapisu",
+      "saveMessage": "Czy na pewno chcesz zapisać zmiany w tej ofercie?"
     }
   },
   "lot": {
@@ -288,7 +332,10 @@
     "edit": "Edytuj",
     "createdAt": "Utworzony",
     "notFound": "Oferta nie znaleziona",
+    "notFoundDescription": "Oferta nie została znaleziona",
     "noImages": "Brak obrazów",
+    "notOwner": "Nie jesteś właścicielem tej oferty",
+    "userArchived": "Konto właściciela jest zarchiwizowane",
     "region": "Region",
     "city": "Miasto",
     "district": "Dzielnica"

@@ -1,13 +1,6 @@
 import { useState } from 'react';
-import {
-  Card,
-  Stack,
-  Text,
-  TextInput,
-  Button,
-  Group,
-  Modal,
-} from '@mantine/core';
+import { Button, Modal, Stack, Group } from '@mantine/core';
+import { MapPin, Pencil, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ReactNode } from 'react';
 
@@ -18,6 +11,8 @@ import {
   GeoSelector,
   type GeoValue,
 } from '@/entities/geography';
+
+import styles from '../LotForm.module.scss';
 
 type Props = {
   value: GeoValue;
@@ -54,7 +49,7 @@ const GeoForm = ({
         cityOptions={cityOptions}
         districtOptions={districtOptions}
       />
-      <Group justify="flex-end" mt="sm">
+      <Group justify="flex-end" mt="sm" gap="xs">
         <Button variant="default" onClick={onClose}>
           {t('auth.close')}
         </Button>
@@ -75,25 +70,43 @@ const GeoForm = ({
 export const GeoSection = ({ value, displayPath, error, onChange }: Props) => {
   const { t } = useTranslation();
   const [opened, setOpened] = useState(false);
+  const isFilled = Boolean(displayPath);
+
+  const summaryClass = [
+    styles.summary,
+    isFilled ? styles.summaryFilled : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <>
-      <Card withBorder radius="md" p="md">
-        <Stack>
-          <Text fw={700}>{t('lotForm.geo.title')}</Text>
-          <TextInput
-            label={t('lotForm.geo.selected')}
-            placeholder={t('lotForm.geo.placeholder')}
-            readOnly
-            value={displayPath}
-            error={error}
-            styles={{ input: { fontStyle: 'italic' } }}
-          />
-          <Button variant="default" onClick={() => setOpened(true)}>
-            {t('lotForm.geo.selectButton')}
-          </Button>
-        </Stack>
-      </Card>
+      <div className={summaryClass}>
+        <span className={styles.summaryIcon}>
+          <MapPin size={16} strokeWidth={2} />
+        </span>
+        <div className={styles.summaryBody}>
+          {isFilled ? (
+            <span className={styles.summaryPath}>{displayPath}</span>
+          ) : (
+            <span className={styles.summaryPlaceholder}>
+              {t('lotForm.geo.placeholder')}
+            </span>
+          )}
+          {error && <span className={styles.summaryError}>{error}</span>}
+        </div>
+        <Button
+          variant={isFilled ? 'default' : 'filled'}
+          size="xs"
+          className={styles.summaryAction}
+          leftSection={
+            isFilled ? <Pencil size={14} /> : <Plus size={14} />
+          }
+          onClick={() => setOpened(true)}
+        >
+          {t('lotForm.geo.selectButton')}
+        </Button>
+      </div>
 
       <Modal
         opened={opened}

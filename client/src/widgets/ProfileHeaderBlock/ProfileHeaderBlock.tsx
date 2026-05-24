@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Stack, Text, Avatar, Badge } from '@mantine/core';
-import { User } from 'lucide-react';
+import { Avatar, Badge } from '@mantine/core';
+import { Camera, Crown, User as UserIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import {
   getUserAvatarUrl,
@@ -19,48 +20,74 @@ type Props = {
 };
 
 export const ProfileHeaderBlock = ({ user, mode }: Props) => {
+  const { t } = useTranslation();
   const [modalOpened, setModalOpened] = useState(false);
   const [avatarVersion, setAvatarVersion] = useState(() => Date.now());
 
   const isEditable = mode === 'self' || mode === 'admin';
-
   const targetUserId = mode === 'admin' ? user.id : undefined;
   const uploadMutation = useUploadAvatar(targetUserId);
   const deleteMutation = useDeleteAvatar(targetUserId);
 
   const isAdmin = 'role' in user && user.role === USER_ROLES.ADMIN;
+  const isActive = 'status' in user ? user.status : true;
 
   return (
-    <div className={styles.profileHeader}>
-      <div
-        className={`${styles.avatarBox} ${isEditable ? styles.editable : ''}`}
-        onClick={isEditable ? () => setModalOpened(true) : undefined}
-        role={isEditable ? 'button' : undefined}
-        tabIndex={isEditable ? 0 : undefined}
-      >
-        <Avatar
-          src={getUserAvatarUrl(user.id, avatarVersion)}
-          size={108}
-          radius="md"
-          color="barter"
-        >
-          <User size={44} />
-        </Avatar>
-      </div>
+    <div className={styles.hero}>
+      <div className={styles.banner} />
+      <div className={styles.bannerOverlay} />
 
-      <Stack gap={4} style={{ flex: 1, minWidth: 0 }}>
-        <Text fw={700} size="xl" lineClamp={1}>
-          {user.name}
-        </Text>
-        <Text size="sm" c="dimmed">
-          @{user.login}
-        </Text>
-        {isAdmin && (
-          <Badge mt={4} variant="light" color="accent" size="sm" w="fit-content">
-            Admin
-          </Badge>
-        )}
-      </Stack>
+      <div className={styles.body}>
+        <div className={styles.avatarRow}>
+          <div
+            className={`${styles.avatarFrame} ${
+              isEditable ? styles.editable : ''
+            }`}
+            onClick={isEditable ? () => setModalOpened(true) : undefined}
+            role={isEditable ? 'button' : undefined}
+            tabIndex={isEditable ? 0 : undefined}
+            aria-label={isEditable ? t('profile.avatar') : undefined}
+          >
+            <Avatar
+              src={getUserAvatarUrl(user.id, avatarVersion)}
+              size={108}
+              radius="md"
+              color="barter"
+            >
+              <UserIcon size={44} />
+            </Avatar>
+            {isEditable && (
+              <span className={styles.editHint}>
+                <Camera size={22} strokeWidth={2} />
+              </span>
+            )}
+          </div>
+
+          <div className={styles.identity}>
+            <div className={styles.nameRow}>
+              <span className={styles.name}>{user.name}</span>
+            </div>
+            <span className={styles.login}>@{user.login}</span>
+            <div className={styles.metaRow}>
+              {isAdmin && (
+                <Badge
+                  variant="light"
+                  color="accent"
+                  leftSection={<Crown size={12} strokeWidth={2.2} />}
+                >
+                  {t('common.admin')}
+                </Badge>
+              )}
+              <Badge
+                variant="light"
+                color={isActive ? 'barter' : 'gray'}
+              >
+                {isActive ? t('common.active') : t('common.noActive')}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {isEditable && (
         <AvatarEditModal

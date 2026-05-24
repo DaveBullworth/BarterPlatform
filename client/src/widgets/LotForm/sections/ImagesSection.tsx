@@ -1,18 +1,11 @@
-import {
-  Card,
-  Stack,
-  Group,
-  Text,
-  Badge,
-  Button,
-  ActionIcon,
-  Box,
-} from '@mantine/core';
+import { Stack, Text, Tooltip } from '@mantine/core';
 import { Dropzone } from '@mantine/dropzone';
 import { useTranslation } from 'react-i18next';
-import { Trash2, ImagePlus, X, Plus } from 'lucide-react';
+import { ImagePlus, Plus, Star, Trash2, X } from 'lucide-react';
 
-import type { RenderedImage } from '@/features/lot-form/useLotImages';
+import type { RenderedImage } from '@/features/lot-form';
+
+import styles from '../LotForm.module.scss';
 
 type Props = {
   images: RenderedImage[];
@@ -36,101 +29,92 @@ export const ImagesSection = ({
   onSetPrimaryNew,
 }: Props) => {
   const { t } = useTranslation();
+  const canAddMore = totalCount < maxImages;
 
   return (
-    <Card withBorder radius="md" p="md">
-      <Stack>
-        <Group justify="space-between">
-          <Text fw={700}>{t('lotForm.images.title')}</Text>
-          <Text size="sm" c="dimmed">
-            {totalCount}/{maxImages}
-          </Text>
-        </Group>
+    <div className={styles.imagesGrid}>
+      {images.map((image) => {
+        const cardClass = [
+          styles.imageCard,
+          image.isPrimary ? styles.imageCardPrimary : '',
+        ]
+          .filter(Boolean)
+          .join(' ');
 
-        <Group>
-          {images.map((image) => (
-            <Card key={image.key} withBorder p="xs" w={180}>
-              <Stack gap="xs">
-                <Box h={120} style={{ overflow: 'hidden', borderRadius: 8 }}>
-                  <img
-                    src={image.src}
-                    alt="lot"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                </Box>
-
-                <Group justify="space-between" wrap="nowrap">
-                  {image.isPrimary ? (
-                    <Badge color="yellow">{t('lotForm.images.primary')}</Badge>
-                  ) : (
-                    <Button
-                      variant="subtle"
-                      size="compact-xs"
+        return (
+          <div key={image.key} className={cardClass}>
+            <img src={image.src} alt="lot" loading="lazy" />
+            <div className={styles.imageOverlay}>
+              <div className={styles.imageTopRow}>
+                {image.isPrimary ? (
+                  <span className={styles.primaryBadge}>
+                    <Star size={11} fill="currentColor" />
+                    {t('lotForm.images.primary')}
+                  </span>
+                ) : (
+                  <Tooltip label={t('lotForm.images.setPrimary')} withArrow>
+                    <button
+                      type="button"
+                      className={styles.primaryStarBtn}
                       onClick={() =>
                         image.kind === 'existing'
                           ? onSetPrimaryExisting(image.imageId)
                           : onSetPrimaryNew(image.imageId)
                       }
+                      aria-label={t('lotForm.images.setPrimary')}
                     >
-                      {t('lotForm.images.setPrimary')}
-                    </Button>
-                  )}
-
-                  <ActionIcon
-                    color="red"
-                    variant="light"
+                      <Star size={11} />
+                    </button>
+                  </Tooltip>
+                )}
+                <Tooltip label={t('common.delete')} withArrow>
+                  <button
+                    type="button"
+                    className={styles.imageDeleteBtn}
                     onClick={() =>
                       image.kind === 'existing'
                         ? onRemoveExisting(image.imageId)
                         : onRemoveNew(image.imageId)
                     }
+                    aria-label={t('common.delete')}
                   >
                     <Trash2 size={14} />
-                  </ActionIcon>
-                </Group>
-              </Stack>
-            </Card>
-          ))}
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
+          </div>
+        );
+      })}
 
-          {totalCount < maxImages && (
-            <Dropzone
-              accept={['image/png', 'image/jpeg']}
-              maxSize={8 * 1024 * 1024}
-              onDrop={onAdd}
-              style={{
-                width: 180,
-                height: 180,
-                justifyContent: 'center',
-              }}
-              display="flex"
-            >
-              <Group
-                h="100%"
-                justify="center"
-                align="center"
-                style={{ pointerEvents: 'none' }}
-              >
-                <Stack align="center" justify="center" gap={6}>
-                  <Dropzone.Accept>
-                    <ImagePlus size={30} />
-                  </Dropzone.Accept>
-                  <Dropzone.Reject>
-                    <X size={30} />
-                  </Dropzone.Reject>
-                  <Dropzone.Idle>
-                    <Plus size={28} />
-                  </Dropzone.Idle>
-                  <Text size="sm">{t('lotForm.images.add')}</Text>
-                </Stack>
-              </Group>
-            </Dropzone>
-          )}
-        </Group>
-      </Stack>
-    </Card>
+      {canAddMore && (
+        <Dropzone
+          accept={['image/png', 'image/jpeg']}
+          maxSize={8 * 1024 * 1024}
+          onDrop={onAdd}
+          className={styles.dropzone}
+        >
+          <div className={styles.dropzoneInner}>
+            <Dropzone.Accept>
+              <ImagePlus size={26} />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <X size={26} />
+            </Dropzone.Reject>
+            <Dropzone.Idle>
+              <Plus size={26} />
+            </Dropzone.Idle>
+            <Stack gap={0} align="center">
+              <Text size="xs" fw={600}>
+                {t('lotForm.images.add')}
+              </Text>
+              <Text size="xs" c="dimmed">
+                {totalCount}/{maxImages}
+              </Text>
+            </Stack>
+          </div>
+        </Dropzone>
+      )}
+    </div>
   );
 };

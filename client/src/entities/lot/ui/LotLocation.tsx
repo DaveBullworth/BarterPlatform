@@ -1,4 +1,3 @@
-import { Badge, Box, Card, Group, Stack, Text } from '@mantine/core';
 import { Building2, Home, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,45 +7,61 @@ type Props = {
   region: GeoNode;
   city: GeoNode;
   district: GeoNode;
+  /** Возвращает классы из page module — компонент остаётся презентационным. */
+  classes?: {
+    section?: string;
+    sectionTitle?: string;
+    sectionTitleAccent?: string;
+    list?: string;
+    row?: string;
+    icon?: string;
+    label?: string;
+    value?: string;
+    valueMuted?: string;
+  };
 };
 
-export const LotLocation = ({ region, city, district }: Props) => {
+/**
+ * Презентация локации лота. Изначально жила в карточке с Badge,
+ * теперь принимает classes извне — стиль решает страница.
+ */
+export const LotLocation = ({ region, city, district, classes = {} }: Props) => {
   const { t } = useTranslation();
 
+  const rows: { icon: typeof MapPin; label: string; value: string | null }[] = [
+    { icon: MapPin, label: t('lot.region'), value: region?.name ?? null },
+    { icon: Building2, label: t('lot.city'), value: city?.name ?? null },
+    { icon: Home, label: t('lot.district'), value: district?.name ?? null },
+  ];
+
   return (
-    <Card withBorder radius="md" p="md">
-      <Badge mb={8} variant="light" color="barter">
-        {t('lot.location')}
-      </Badge>
-      <Stack gap={10}>
-        <Group gap={10}>
-          <MapPin size={16} />
-          <Text size="sm">
-            <Box component="span" w="4rem" fw={700}>
-              {t('lot.region')}:
-            </Box>{' '}
-            {region?.name ?? '—'}
-          </Text>
-        </Group>
-        <Group gap={10}>
-          <Building2 size={16} />
-          <Text size="sm">
-            <Box component="span" w="4rem" fw={700}>
-              {t('lot.city')}:
-            </Box>{' '}
-            {city?.name ?? '—'}
-          </Text>
-        </Group>
-        <Group gap={10}>
-          <Home size={16} />
-          <Text size="sm">
-            <Box component="span" w="4rem" fw={700}>
-              {t('lot.district')}:
-            </Box>{' '}
-            {district?.name ?? '—'}
-          </Text>
-        </Group>
-      </Stack>
-    </Card>
+    <div className={classes.section}>
+      <div className={classes.sectionTitle}>
+        <span className={classes.sectionTitleAccent} />
+        <span>{t('lot.location')}</span>
+      </div>
+      <div className={classes.list}>
+        {rows.map((row, i) => {
+          const Icon = row.icon;
+          return (
+            <div key={i} className={classes.row}>
+              <span className={classes.icon}>
+                <Icon size={14} strokeWidth={2} />
+              </span>
+              <div>
+                <span className={classes.label}>{row.label}</span>
+                <span
+                  className={`${classes.value} ${
+                    !row.value ? classes.valueMuted ?? '' : ''
+                  }`}
+                >
+                  {row.value ?? '—'}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };

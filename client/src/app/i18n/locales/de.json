@@ -21,6 +21,7 @@
     "loginRateLimit": "Limit für Anfragen überschritten. Bitte 5 Sekunden warten.",
     "loginBruteforce": "Zu viele Anmeldeversuche. Bitte 15 Minuten bis 1 Stunde warten.",
     "loginError": "Anmeldefehler",
+    "loginFailed": "Anmeldung fehlgeschlagen",
     "serverError": "Server nicht verfügbar",
     "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
     "or": "oder",
@@ -45,6 +46,13 @@
     "emailAlreadyInUse": "Die E-Mail-Adresse wird bereits verwendet",
     "loginAlreadyInUse": "Der Benutzername ist bereits vergeben",
     "countryNotFound": "Das ausgewählte Land wurde nicht gefunden",
+    "regionNotFound": "Die ausgewählte Region wurde nicht gefunden",
+    "cityNotFound": "Die ausgewählte Stadt wurde nicht gefunden",
+    "districtNotFound": "Der ausgewählte Bezirk wurde nicht gefunden",
+    "chapterNotFound": "Bereich nicht gefunden",
+    "categoryNotFound": "Kategorie nicht gefunden",
+    "subcategoryNotFound": "Unterkategorie nicht gefunden",
+    "subcategoryRequired": "Unterkategorie ist erforderlich",
     "registrationSuccess": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet. Bitte bestätigen Sie diese, um die Registrierung abzuschließen.",
     "registrationFailed": "Die Registrierung ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
     "resend": "Erneut senden",
@@ -78,7 +86,9 @@
     "required": "Das Feld „{{field}}“ ist erforderlich",
     "minLength": "Das Feld „{{field}}“ muss mindestens {{min}} Zeichen enthalten",
     "maxLength": "Das Feld „{{field}}“ darf höchstens {{max}} Zeichen enthalten",
-    "invalidEmail": "Ungültige E-Mail-Adresse"
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+    "phone": "Ungültige Telefonnummer"
   },
   "mailConfirm": {
     "loading": "E-Mail wird bestätigt…",
@@ -103,7 +113,11 @@
     "myLots": "Meine Anzeigen",
     "authRequired": "Anmeldung erforderlich"
   },
+  "myLots": {
+    "description": "Alle von Ihnen veröffentlichten Anzeigen"
+  },
   "profile": {
+    "error": "Benutzerdaten konnten nicht geladen werden",
     "title": "Profil",
     "stub": "Dies ist eine Platzhalter-Seite für das Profil",
     "missed": "Fehlt",
@@ -115,6 +129,9 @@
     "confirmSaveText": "Möchten Sie die folgenden persönlichen Einstellungen wirklich global speichern?",
     "preferencesSavedSuccessfully": "Benutzereinstellungen wurden gespeichert!",
     "avatarError": "Fehler beim Hochladen des Avatars",
+    "avatarNotFound": "Avatar nicht gefunden",
+    "avatarInvalidFormat": "Ungültiges Bildformat",
+    "avatarProcessingError": "Bild konnte nicht verarbeitet werden",
     "sizeLimit": "Dateigröße darf {{size}} MB nicht überschreiten",
     "avatarDrag": "Bild hierher ziehen oder klicken, um auszuwählen",
     "avatarDragInfo": "Typen [png/jpeg] sind zulässig, Gewicht [< 5 mb]",
@@ -123,7 +140,13 @@
     "avatarDeleted": "Avatar erfolgreich gelöscht",
     "editData": "Daten bearbeiten",
     "dataUpdated": "Profildaten wurden erfolgreich aktualisiert",
-    "countryNotSelected": "Bitte wählen Sie ein Land aus"
+    "countryNotSelected": "Bitte wählen Sie ein Land aus",
+    "lastAdminDeactivation": "Der letzte System-Admin kann nicht deaktiviert werden!",
+    "confirmTitle": "Bestätigung",
+    "confirmUpdateMessage": "Möchten Sie die Änderungen am Profil wirklich speichern?",
+    "confirmDiscardMessage": "Möchten Sie wirklich verlassen? Alle ungespeicherten Änderungen gehen verloren.",
+    "confirmDiscardConfirm": "Verlassen",
+    "confirmDiscardCancel": "Bleiben"
   },
   "deactivation": {
     "title": "Kontodeaktivierung",
@@ -157,18 +180,25 @@
     },
     "selectOperator": "Operator angeben",
     "filter": {
+      "title": "Filterbereich",
       "login": "Login",
       "name": "Name",
       "email": "E-Mail",
       "phone": "Telefon",
       "role": "Rolle",
       "status": "Status",
+      "countryPlaceholder": "Länder auswählen",
+      "noCountries": "Keine Länder verfügbar",
+      "createdAtPlaceholder": "Zeitraum angeben",
       "contains": "Enthält",
       "equals": "Gleich",
       "notContains": "Enthält nicht",
       "notEquals": "Ungleich",
+      "apply": "Filter anwenden",
       "reset": "Filter zurücksetzen"
-    }
+    },
+    "saveColumnsPreset": "Spaltenbreiten-Preset speichern",
+    "resetColumnsPreset": "Standard-Spaltenbreiten wiederherstellen"
   },
   "authRequired": {
     "title": "Anmeldung erforderlich",
@@ -178,10 +208,13 @@
     "cancel": "Abbrechen"
   },
   "common": {
-    "error": "Fehler",
+    "actions": "Aktionen",
     "success": "Erfolg",
+    "error": "Fehler",
+    "errorDescription": "Unbekannter Fehler",
     "delete": "Löschen",
     "save": "Speichern",
+    "copy": "Kopieren",
     "exit": "Beenden",
     "exitQuestion": "Sind Sie sicher, dass Sie ausgehen möchten?",
     "refreshTokenNotFound": "Kein Aktualisierungstoken gefunden",
@@ -194,7 +227,14 @@
     "active": "Aktiv",
     "noActive": "Inaktiv",
     "role": "Rolle",
-    "status": "Zustand"
+    "status": "Zustand",
+    "statusEmail": "E-Mail",
+    "createdAt": "Erstellt",
+    "loading": "Laden…",
+    "others": "Andere",
+    "back": "Zurück",
+    "retry": "Wiederholen",
+    "noAccess": "Kein Zugriff"
   },
   "notifications": {
     "title": "Benachrichtigungen",
@@ -215,36 +255,37 @@
       "saved": "Gespeichert"
     },
     "taxonomy": {
-      "title": "1. Kategorie",
+      "title": "Kategorie",
       "selected": "Ausgewählte Kategorie",
       "selectButton": "Kategorie auswählen",
       "placeholder": "Klicken Sie unten, um eine Kategorie auszuwählen"
     },
     "geo": {
-      "title": "2. Standort",
+      "title": "Standort",
       "selected": "Ausgewählter Standort",
       "selectButton": "Standort auswählen",
       "placeholder": "Klicken Sie unten, um den Standort auszuwählen",
       "modalTitle": "Standort auswählen"
     },
     "images": {
-      "title": "3. Bilder",
+      "title": "Bilder",
       "primary": "Hauptbild",
       "setPrimary": "Als Hauptbild setzen",
       "add": "Hinzufügen"
     },
     "fields": {
-      "title": "4. Anzeigendaten",
+      "title": "Anzeigendaten",
       "generalDescriptionPlaceholder": "Kurze Beschreibung",
       "characteristicsPlaceholder": "Detaillierte Eigenschaften",
       "quantityPlaceholder": "Menge angeben",
       "generalDescription": "Allgemeine Beschreibung",
-      "characteristicsDescription": "Charakteristik-Beschreibung",
+      "characteristics": "Eigenschaften",
       "quantity": "Menge"
     },
     "visibility": {
       "visible": "Sichtbarkeit: sichtbar",
-      "hidden": "Sichtbarkeit: verborgen"
+      "hidden": "Sichtbarkeit: verborgen",
+      "tooltip": "Wenn die Anzeige verborgen ist, erscheint sie nicht in der Suche oder auf der Anzeigenseite für andere Nutzer. Sie können dies jederzeit ändern."
     },
     "actions": {
       "cancel": "Abbrechen",
@@ -270,6 +311,10 @@
       "created": "Anzeige erstellt",
       "deactivated": "Anzeige deaktiviert",
       "unarchived": "Anzeige entarchiviert"
+    },
+    "confirm": {
+      "saveTitle": "Speichern bestätigen",
+      "saveMessage": "Möchten Sie die Änderungen an dieser Anzeige wirklich speichern?"
     }
   },
   "lot": {
@@ -287,7 +332,10 @@
     "edit": "Bearbeiten",
     "createdAt": "Erstellt am",
     "notFound": "Anzeige nicht gefunden",
+    "notFoundDescription": "Anzeige wurde nicht gefunden",
     "noImages": "Keine Bilder vorhanden",
+    "notOwner": "Sie sind nicht der Eigentümer dieser Anzeige",
+    "userArchived": "Das Konto des Besitzers ist archiviert",
     "region": "Region",
     "city": "Stadt",
     "district": "Bezirk"

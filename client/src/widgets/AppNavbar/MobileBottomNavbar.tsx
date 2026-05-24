@@ -10,6 +10,7 @@ import { useCategorySelection } from '@/features/category-filter';
 import { NAV_ACCESS } from '@/shared/constants/nav-access';
 import { USER_ROLES } from '@/shared/constants/user-role';
 import { ROUTES } from '@/shared/constants/routes';
+import { preload } from '@/shared/lib/preload';
 import { ProfileDrawer } from './ProfileDrawer';
 import { NAV_ITEMS } from './navigation';
 
@@ -24,11 +25,20 @@ type BottomNavItemProps = {
   icon: React.ReactNode;
   active: boolean;
   onClick: () => void;
+  onPreload?: () => void;
 };
 
-const BottomNavItem = ({ label, icon, active, onClick }: BottomNavItemProps) => (
+const BottomNavItem = ({
+  label,
+  icon,
+  active,
+  onClick,
+  onPreload,
+}: BottomNavItemProps) => (
   <UnstyledButton
     onClick={onClick}
+    onTouchStart={onPreload}
+    onMouseEnter={onPreload}
     className={styles.mobileItem}
     data-active={active}
   >
@@ -74,6 +84,7 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
           icon={<User size={20} />}
           active={profileActive}
           onClick={() => setDrawerOpened(true)}
+          onPreload={() => preload('profile')}
         />
 
         {items.map((item) => {
@@ -90,6 +101,9 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
                 icon={<Icon size={20} />}
                 active={active}
                 onClick={() => rawNavigate(item.to)}
+                onPreload={
+                  item.preload ? () => preload(item.preload!) : undefined
+                }
               />
             </React.Fragment>
           );

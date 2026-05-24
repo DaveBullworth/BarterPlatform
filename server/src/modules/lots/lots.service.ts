@@ -104,22 +104,35 @@ export class LotsService {
 
     const qb = this.lotsRepo.createQueryBuilder('lot');
 
-    // БАЗОВАЯ ЛОГИКА ДОСТУПА
+    /**
+     * БАЗОВАЯ ЛОГИКА ДОСТУПА И ВИДИМОСТИ
+     *
+     * - Гость: только активные публичные лоты.
+     * - selfOnly: всегда отдаёт лоты текущего пользователя (включая
+     *   скрытые/архивные) — это страница "Мои лоты".
+     * - ADMIN без selfOnly: видит абсолютно все лоты в системе.
+     * - Авторизованный USER без selfOnly: только активные ЧУЖИЕ лоты —
+     *   собственные в общей ленте не показываются, для них есть "Мои лоты".
+     */
+    const isAdmin = user?.role === UserRole.ADMIN;
+    const wantsSelfOnly = Boolean(user && filters?.selfOnly);
+
     if (!user) {
       qb.andWhere('lot.visibilityStatus = :active', {
         active: LotVisibilityStatus.ACTIVE,
       });
-    } else if (user.role !== UserRole.ADMIN) {
-      qb.andWhere('(lot.visibilityStatus = :active OR lot.userId = :userId)', {
-        active: LotVisibilityStatus.ACTIVE,
-        userId: user.sub,
-      });
-    }
-
-    // Фильтр своих лотов (для страницы "Мои лоты")
-    if (user && filters?.selfOnly) {
+    } else if (wantsSelfOnly) {
       qb.andWhere('lot.userId = :userId', { userId: user.sub });
+    } else if (!isAdmin) {
+      qb.andWhere(
+        'lot.visibilityStatus = :active AND lot.userId != :userId',
+        {
+          active: LotVisibilityStatus.ACTIVE,
+          userId: user.sub,
+        },
+      );
     }
+    // ADMIN без selfOnly — без andWhere, видит всё.
 
     // ID ФИЛЬТРЫ (строго equals)
     const idFiltersMap = [

@@ -5,47 +5,63 @@ import { RequireAuth } from './guards/RequireAuth';
 import { RequireAdmin } from './guards/RequireAdmin';
 import { AppShell } from '@/widgets/AppShell';
 import { FullPageLoader } from '@/shared/ui';
+import { registerPreloader } from '@/shared/lib/preload';
 import { ROUTES } from '@/shared/constants/routes';
 
+/* --- Page imports (вынесены в переменные для preload + lazy) --- */
+
+const importFeedPage = () => import('@/pages/feed/FeedPage');
+const importProfilePage = () => import('@/pages/profile/ProfilePage');
+const importAdminPage = () => import('@/pages/admin/AdminPage');
+const importAuthPage = () => import('@/pages/auth/AuthPage');
+const importMailConfirmPage = () =>
+  import('@/pages/mail-confirm/MailConfirmPage');
+const importResetPasswordPage = () =>
+  import('@/pages/reset-password/ResetPasswordPage');
+const importLotFormPage = () => import('@/pages/lot-form/LotFormPage');
+const importLotPage = () => import('@/pages/lot/LotPage');
+const importMyLotsPage = () => import('@/pages/my-lots/MyLotsPage');
+
+// Регистрируем preload-функции — нижние слои триггерят их по строковому ключу.
+registerPreloader('feed', importFeedPage);
+registerPreloader('profile', importProfilePage);
+registerPreloader('admin', importAdminPage);
+registerPreloader('auth', importAuthPage);
+registerPreloader('mail-confirm', importMailConfirmPage);
+registerPreloader('reset-password', importResetPasswordPage);
+registerPreloader('lot-form', importLotFormPage);
+registerPreloader('lot', importLotPage);
+registerPreloader('my-lots', importMyLotsPage);
+
 const FeedPage = lazy(() =>
-  import('@/pages/feed/FeedPage').then((m) => ({ default: m.FeedPage })),
+  importFeedPage().then((m) => ({ default: m.FeedPage })),
 );
 const ProfilePage = lazy(() =>
-  import('@/pages/profile/ProfilePage').then((m) => ({
-    default: m.ProfilePage,
-  })),
+  importProfilePage().then((m) => ({ default: m.ProfilePage })),
 );
 const AdminPage = lazy(() =>
-  import('@/pages/admin/AdminPage').then((m) => ({ default: m.AdminPage })),
+  importAdminPage().then((m) => ({ default: m.AdminPage })),
 );
 const AuthPage = lazy(() =>
-  import('@/pages/auth/AuthPage').then((m) => ({ default: m.AuthPage })),
+  importAuthPage().then((m) => ({ default: m.AuthPage })),
 );
 const MailConfirmPage = lazy(() =>
-  import('@/pages/mail-confirm/MailConfirmPage').then((m) => ({
-    default: m.MailConfirmPage,
-  })),
+  importMailConfirmPage().then((m) => ({ default: m.MailConfirmPage })),
 );
 const ResetPasswordPage = lazy(() =>
-  import('@/pages/reset-password/ResetPasswordPage').then((m) => ({
-    default: m.ResetPasswordPage,
-  })),
+  importResetPasswordPage().then((m) => ({ default: m.ResetPasswordPage })),
 );
 const LotFormPage = lazy(() =>
-  import('@/pages/lot-form/LotFormPage').then((m) => ({
-    default: m.LotFormPage,
-  })),
+  importLotFormPage().then((m) => ({ default: m.LotFormPage })),
 );
 const LotPage = lazy(() =>
-  import('@/pages/lot/LotPage').then((m) => ({ default: m.LotPage })),
+  importLotPage().then((m) => ({ default: m.LotPage })),
 );
 const MyLotsPage = lazy(() =>
-  import('@/pages/my-lots/MyLotsPage').then((m) => ({
-    default: m.MyLotsPage,
-  })),
+  importMyLotsPage().then((m) => ({ default: m.MyLotsPage })),
 );
 
-/** Suspense-обёртка с fallback'ом для lazy-роутов. */
+/** Suspense-обёртка с лёгким fallback'ом для lazy-роутов. */
 const withSuspense = (node: ReactElement): ReactElement => (
   <Suspense fallback={<FullPageLoader />}>{node}</Suspense>
 );

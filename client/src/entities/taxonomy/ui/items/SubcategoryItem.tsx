@@ -1,5 +1,8 @@
-import { Group, Text, Checkbox } from '@mantine/core';
+import { Checkbox } from '@mantine/core';
+
 import type { Subcategory } from '@/entities/taxonomy';
+
+import styles from '../Taxonomy.module.scss';
 
 type Props = {
   subcategory: Subcategory;
@@ -8,25 +11,36 @@ type Props = {
 };
 
 export const SubcategoryItem = ({ subcategory, selected, onSelect }: Props) => {
+  const className = [
+    styles.subcategory,
+    selected ? styles.subcategorySelected : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <Group
-      justify="space-between"
-      wrap="nowrap"
-      style={{
-        borderRadius: 8,
-        border: '1px solid var(--mantine-color-gray-2)',
-        padding: '4px 10px',
-        backgroundColor: selected
-          ? 'var(--mantine-color-blue-0)'
-          : 'transparent',
+    <div
+      className={className}
+      onClick={onSelect}
+      role="checkbox"
+      aria-checked={selected}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect();
+        }
       }}
     >
-      <Text size="sm">{subcategory.name}</Text>
+      <span className={styles.subcategoryName}>{subcategory.name}</span>
       <Checkbox
+        color="barter"
         checked={selected}
         onChange={onSelect}
+        onClick={(e) => e.stopPropagation()}
         aria-label={subcategory.name}
+        tabIndex={-1}
       />
-    </Group>
+    </div>
   );
 };

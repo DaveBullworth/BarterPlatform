@@ -16,3 +16,5 @@ export * from './alertPresets';
 export * from './errorHandler';
 // Утилиты разного назначения
 export * from './utils';
+// Реестр preload-функций (используется app/router и нав-меню)
+export * from './preload';

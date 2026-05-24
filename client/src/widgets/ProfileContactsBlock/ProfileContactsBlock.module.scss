@@ -1,21 +1,120 @@
+@use '@/app/styles/variables.scss' as vars;
+
 .contactsBlock {
-  max-width: 860px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+
+  @media (max-width: vars.$breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
 }
 
-.contactBadge {
-  padding: 10px 12px;
-  justify-content: flex-start;
+.contactsBlockFull {
+  grid-column: 1 / -1;
 }
 
-.contactLabel {
-  min-width: 95px;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
-}
-
-.contactValue {
+/* Info card — иконка слева в "плитке", label выше, value ниже. */
+.card {
   display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.card:hover {
+  border-color: var(--mantine-color-barter-3);
+  transform: translateY(-1px);
+  box-shadow: var(--mantine-shadow-xs);
+}
+
+.iconTile {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: inline-flex;
   align-items: center;
-  min-height: 20px;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--mantine-color-default-hover);
+  color: var(--mantine-color-dimmed);
+}
+
+.iconTileBarter {
+  background: var(--mantine-color-barter-light);
+  color: var(--mantine-color-barter-7);
+}
+
+[data-mantine-color-scheme='dark'] .iconTileBarter {
+  background: rgba(48, 187, 110, 0.16);
+  color: var(--mantine-color-barter-3);
+}
+
+.iconTileSuccess {
+  background: var(--mantine-color-barter-light);
+  color: var(--mantine-color-barter-7);
+}
+
+.iconTileWarning {
+  background: rgba(237, 160, 19, 0.14);
+  color: var(--mantine-color-accent-7);
+}
+
+[data-mantine-color-scheme='dark'] .iconTileSuccess {
+  background: rgba(48, 187, 110, 0.16);
+  color: var(--mantine-color-barter-3);
+}
+
+[data-mantine-color-scheme='dark'] .iconTileWarning {
+  background: rgba(237, 160, 19, 0.18);
+  color: var(--mantine-color-accent-3);
+}
+
+.iconTileDanger {
+  background: rgba(239, 68, 68, 0.10);
+  color: var(--mantine-color-red-7);
+}
+
+[data-mantine-color-scheme='dark'] .iconTileDanger {
+  background: rgba(239, 68, 68, 0.16);
+  color: var(--mantine-color-red-4);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--mantine-color-dimmed);
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--mantine-color-text);
+  word-break: break-word;
+  line-height: 1.35;
+}
+
+.valueMuted {
+  color: var(--mantine-color-dimmed);
+  font-style: italic;
+  font-weight: 400;
 }
 
 .alert {

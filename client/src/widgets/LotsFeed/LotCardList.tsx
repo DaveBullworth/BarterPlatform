@@ -5,6 +5,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import type { KeyboardEvent } from 'react';
 
 import { formatDate } from '@/shared/lib/formatters';
+import { preload } from '@/shared/lib/preload';
 import type { LotResponse } from '@/entities/lot';
 
 import styles from './LotsFeed.module.scss';
@@ -15,6 +16,8 @@ type Props = {
   locale: string;
   onOpen: (id: string) => void;
   onExchange: (lot: LotResponse) => void;
+  /** Не показывать кнопку "Обменяться" (например, в ленте "Мои лоты"). */
+  hideExchange?: boolean;
 };
 
 export const LotCardList = ({
@@ -23,6 +26,7 @@ export const LotCardList = ({
   locale,
   onOpen,
   onExchange,
+  hideExchange = false,
 }: Props) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery('(max-width: 48em)');
@@ -44,6 +48,8 @@ export const LotCardList = ({
       role="link"
       tabIndex={0}
       onClick={() => onOpen(lot.id)}
+      onMouseEnter={() => preload('lot')}
+      onTouchStart={() => preload('lot')}
       onKeyDown={handleKeyDown}
     >
       <Group wrap="nowrap" align="stretch" gap={`${isMobile ? 'xs' : 'md'}`}>
@@ -74,7 +80,7 @@ export const LotCardList = ({
             ) : (
               <span />
             )}
-            <Group gap="sm">
+            <Group gap="sm" wrap="nowrap">
               {lot.quantity > 1 && (
                 <Text size="xs" fw={600} c="barter">
                   ×{lot.quantity}
@@ -87,21 +93,23 @@ export const LotCardList = ({
           </Group>
         </Stack>
 
-        <Tooltip label={t('feed.exchange.action')} withArrow position="top">
-          <ActionIcon
-            variant="light"
-            color="barter"
-            size="lg"
-            className={styles.listAction}
-            aria-label={t('feed.exchange.action')}
-            onClick={(e) => {
-              e.stopPropagation();
-              onExchange(lot);
-            }}
-          >
-            <ArrowRightLeft size={18} />
-          </ActionIcon>
-        </Tooltip>
+        {!hideExchange && (
+          <Tooltip label={t('feed.exchange.action')} withArrow position="top">
+            <ActionIcon
+              variant="light"
+              color="barter"
+              size="lg"
+              className={styles.listAction}
+              aria-label={t('feed.exchange.action')}
+              onClick={(e) => {
+                e.stopPropagation();
+                onExchange(lot);
+              }}
+            >
+              <ArrowRightLeft size={18} />
+            </ActionIcon>
+          </Tooltip>
+        )}
       </Group>
     </Card>
   );
