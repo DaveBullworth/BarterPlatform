@@ -6,8 +6,8 @@ import { LotsService } from './lots.service';
 import { AuthModule } from '../auth/auth.module';
 import { RedisModule } from '../redis/redis.module';
 import { UsersModule } from '../users/users.module';
+import { TaxonomyModule } from '../taxonomy/taxonomy.module';
 import { LotUpdatedInterceptor } from './interceptors/lot.cache.interceptor';
-import { TaxonomyService } from './taxonomy.service';
 import { LotArchiveService } from './lot-archive.service';
 import { LotArchiveCleanupService } from './lot-archive-cleanup.service';
 
@@ -17,11 +17,11 @@ import { LotArchiveCleanupService } from './lot-archive-cleanup.service';
     AuthModule,
     RedisModule,
     UsersModule,
+    TaxonomyModule,
   ],
   controllers: [LotsController],
   providers: [
     LotsService,
-    TaxonomyService,
     LotArchiveService,
     LotArchiveCleanupService,
     LotUpdatedInterceptor,

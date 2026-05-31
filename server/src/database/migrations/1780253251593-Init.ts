@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1778247901231 implements MigrationInterface {
-    name = 'Init1778247901231'
+export class Init1780253251593 implements MigrationInterface {
+    name = 'Init1780253251593'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."users_role_enum" AS ENUM('user', 'admin')`);
@@ -21,6 +21,10 @@ export class Init1778247901231 implements MigrationInterface {
         await queryRunner.query(`CREATE TYPE "public"."lots_visibilitystatus_enum" AS ENUM('hidden', 'active', 'archived')`);
         await queryRunner.query(`CREATE TABLE "lots" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "userId" uuid NOT NULL, "chapterId" integer NOT NULL, "categoryId" integer NOT NULL, "subcategoryId" integer, "generalDescription" character varying NOT NULL, "characteristicsDescription" text NOT NULL, "quantity" integer NOT NULL DEFAULT '1', "visibilityStatus" "public"."lots_visibilitystatus_enum" NOT NULL DEFAULT 'hidden', "regionId" integer NOT NULL, "cityId" integer NOT NULL, "districtId" integer, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "imageLinks" text array NOT NULL DEFAULT '{}', CONSTRAINT "PK_2bb990a4015865cb1daa1d22fd9" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_5962d38c6ad9f759c74090eabf" ON "lots" ("userId") `);
+        await queryRunner.query(`CREATE TYPE "public"."user_taxonomy_preferences_targettype_enum" AS ENUM('chapter', 'category', 'subcategory')`);
+        await queryRunner.query(`CREATE TABLE "user_taxonomy_preferences" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "userId" uuid NOT NULL, "targetType" "public"."user_taxonomy_preferences_targettype_enum" NOT NULL, "targetId" integer NOT NULL, "weight" smallint NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "CHK_user_taxonomy_preferences_weight" CHECK ("weight" BETWEEN 1 AND 3), CONSTRAINT "PK_dec562699c2b78a343c76574b51" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_user_taxonomy_preferences_user_type" ON "user_taxonomy_preferences" ("userId", "targetType") `);
+        await queryRunner.query(`CREATE UNIQUE INDEX "UQ_user_taxonomy_preferences_target" ON "user_taxonomy_preferences" ("userId", "targetType", "targetId") `);
         await queryRunner.query(`ALTER TABLE "media_files" ADD CONSTRAINT "FK_8cfa31648f9bfdb58c30a128014" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "email_confirmations" ADD CONSTRAINT "FK_930e1d7c0171d23e5535b1e3873" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "password_reset_tokens" ADD CONSTRAINT "FK_52ac39dd8a28730c63aeb428c9c" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
@@ -34,6 +38,10 @@ export class Init1778247901231 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "password_reset_tokens" DROP CONSTRAINT "FK_52ac39dd8a28730c63aeb428c9c"`);
         await queryRunner.query(`ALTER TABLE "email_confirmations" DROP CONSTRAINT "FK_930e1d7c0171d23e5535b1e3873"`);
         await queryRunner.query(`ALTER TABLE "media_files" DROP CONSTRAINT "FK_8cfa31648f9bfdb58c30a128014"`);
+        await queryRunner.query(`DROP INDEX "public"."UQ_user_taxonomy_preferences_target"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_user_taxonomy_preferences_user_type"`);
+        await queryRunner.query(`DROP TABLE "user_taxonomy_preferences"`);
+        await queryRunner.query(`DROP TYPE "public"."user_taxonomy_preferences_targettype_enum"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_5962d38c6ad9f759c74090eabf"`);
         await queryRunner.query(`DROP TABLE "lots"`);
         await queryRunner.query(`DROP TYPE "public"."lots_visibilitystatus_enum"`);

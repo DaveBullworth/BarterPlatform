@@ -1,0 +1,32 @@
+.subcategoryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--mantine-radius-sm);
+  padding: 6px 12px;
+  background: transparent;
+  transition:
+    background-color 150ms ease,
+    transform 150ms ease;
+  gap: 8px;
+
+  &:hover {
+    background: var(--mantine-color-default-hover);
+    transform: translateX(2px);
+  }
+}
+
+.subcategoryName {
+  font-size: 13px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.treeWrapper {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}

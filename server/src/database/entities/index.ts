@@ -5,6 +5,7 @@ import { PasswordResetTokenEntity } from './password_reset_token.entity';
 import { SessionEntity } from './session.entity';
 import { AccountDeactivationCodeEntity } from './account_deactivation_code.entity';
 import { LotEntity } from './lot.entity';
+import { UserTaxonomyPreferenceEntity } from './user-taxonomy-preference.entity';
 
 export const entities = [
   UserEntity,
@@ -14,4 +15,5 @@ export const entities = [
   PasswordResetTokenEntity,
   AccountDeactivationCodeEntity,
   LotEntity,
+  UserTaxonomyPreferenceEntity,
 ];

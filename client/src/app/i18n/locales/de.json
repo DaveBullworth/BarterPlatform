@@ -378,5 +378,36 @@
       "grid": "Raster",
       "list": "Liste"
     }
+  },
+  "preferences": {
+    "menuItem": "Präferenzen",
+    "levelGroup": "Interessensgrad",
+    "levelTooltip": {
+      "1": "Könnte interessieren",
+      "2": "Interessant",
+      "3": "Will ich am meisten"
+    },
+    "modal": {
+      "title": "Präferenzen",
+      "subtitle": "Markieren Sie interessante Bereiche, Kategorien und Unterkategorien — passendere Lots erscheinen weiter oben im Feed."
+    },
+    "actions": {
+      "selectAll": "Alle auswählen",
+      "reset": "Zurücksetzen"
+    },
+    "notify": {
+      "savedTitle": "Präferenzen gespeichert",
+      "savedMessage": "Der Feed wird automatisch neu sortiert."
+    },
+    "help": {
+      "iconAria": "Hinweis zu Präferenzen",
+      "title": "Wie Präferenzen funktionieren",
+      "intro": "Weisen Sie einer beliebigen Taxonomie-Ebene (Bereich, Kategorie oder Unterkategorie) einen Interessensgrad zu. Je höher die Stufe und je präziser die Übereinstimmung, desto höher erscheint ein Lot im Feed.",
+      "level1": "1 — könnte interessieren",
+      "level2": "2 — interessant",
+      "level3": "3 — will ich am meisten",
+      "geo": "Zusätzlich wird Ihr Standort berücksichtigt: Bezirk > Stadt > Region.",
+      "notes": "Ohne Präferenzen wird der Feed nur nach Erstellungsdatum sortiert."
+    }
   }
 }

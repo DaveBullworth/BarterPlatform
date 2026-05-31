@@ -378,5 +378,36 @@
       "grid": "Siatka",
       "list": "Lista"
     }
+  },
+  "preferences": {
+    "menuItem": "Preferencje",
+    "levelGroup": "Poziom zainteresowania",
+    "levelTooltip": {
+      "1": "Mogę rozważyć",
+      "2": "Interesujące",
+      "3": "Najbardziej chcę"
+    },
+    "modal": {
+      "title": "Preferencje",
+      "subtitle": "Zaznacz interesujące działy, kategorie i podkategorie — lepiej dopasowane oferty pojawią się wyżej w liście."
+    },
+    "actions": {
+      "selectAll": "Zaznacz wszystkie",
+      "reset": "Resetuj"
+    },
+    "notify": {
+      "savedTitle": "Preferencje zapisane",
+      "savedMessage": "Lista zostanie automatycznie posortowana ponownie."
+    },
+    "help": {
+      "iconAria": "Wskazówka dot. preferencji",
+      "title": "Jak działają preferencje",
+      "intro": "Przypisz poziom zainteresowania dowolnemu węzłowi taksonomii (dział, kategoria lub podkategoria). Im wyższy poziom i bardziej szczegółowe dopasowanie, tym wyżej oferta pojawi się w liście.",
+      "level1": "1 — mogę rozważyć",
+      "level2": "2 — interesujące",
+      "level3": "3 — najbardziej chcę",
+      "geo": "Uwzględniamy również Twoją lokalizację: dopasowanie dzielnicy > miasta > regionu.",
+      "notes": "Bez preferencji lista jest sortowana wyłącznie wg daty utworzenia."
+    }
   }
 }

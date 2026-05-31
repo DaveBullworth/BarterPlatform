@@ -10,6 +10,7 @@ import {
   SubcategorySeed,
 } from './types/taxonomy.types';
 import { loadSeed } from '@/common/utils/load-seed.util';
+import { TaxonomyTargetType } from '@/database/entities/user-taxonomy-preference.entity';
 
 const chapters = loadSeed<ChapterSeed>('src/database/seeds/chapter.json');
 const categories = loadSeed<CategorySeed>('src/database/seeds/category.json');
@@ -84,5 +85,40 @@ export class TaxonomyService {
         });
       }
     }
+  }
+
+  /** Проверяет существование одиночного targetType+targetId (для предпочтений). */
+  targetExists(targetType: TaxonomyTargetType, targetId: number): boolean {
+    switch (targetType) {
+      case TaxonomyTargetType.CHAPTER:
+        return chapters.some((c) => c.externalId === targetId);
+      case TaxonomyTargetType.CATEGORY:
+        return categories.some((c) => c.externalId === targetId);
+      case TaxonomyTargetType.SUBCATEGORY:
+        return subcategories.some((s) => s.externalId === targetId);
+      default:
+        return false;
+    }
+  }
+
+  /** Плоский список всех узлов таксономии — нужен для "Выбрать все". */
+  listAllTargets(): Array<{
+    targetType: TaxonomyTargetType;
+    targetId: number;
+  }> {
+    return [
+      ...chapters.map((c) => ({
+        targetType: TaxonomyTargetType.CHAPTER,
+        targetId: c.externalId,
+      })),
+      ...categories.map((c) => ({
+        targetType: TaxonomyTargetType.CATEGORY,
+        targetId: c.externalId,
+      })),
+      ...subcategories.map((s) => ({
+        targetType: TaxonomyTargetType.SUBCATEGORY,
+        targetId: s.externalId,
+      })),
+    ];
   }
 }

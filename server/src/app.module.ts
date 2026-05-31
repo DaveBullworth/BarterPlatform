@@ -12,6 +12,8 @@ import { MediaModule } from './modules/media/media.module';
 import { PasswordResetModule } from './modules/password-reset/password-reset.module';
 import { DeactivationModule } from './modules/deactivation/deactivation.module';
 import { LotsModule } from './modules/lots/lots.module';
+import { TaxonomyModule } from './modules/taxonomy/taxonomy.module';
+import { UserPreferencesModule } from './modules/user-preferences/user-preferences.module';
 import { UserVersionSubscriber } from './database/subscribers/user-version.subscriber';
 import { LotVersionSubscriber } from './database/subscribers/lot-version.subscriber';
 import { ThrottlingModule } from './common/throttling/throttling.module';
@@ -36,8 +38,8 @@ import { ThrottlingModule } from './common/throttling/throttling.module';
         // Cущности
         autoLoadEntities: true, // Nest сам найдёт все Entity
 
-        // synchronize: false, // для новых миграций через dev контейнер
-        synchronize: config.get('NODE_ENV') === 'development', // dev only
+        synchronize: false, // для новых миграций через dev контейнер
+        // synchronize: config.get('NODE_ENV') === 'development', // dev only
         logging: config.get('NODE_ENV') === 'development', // dev only
         // SQL логирование
         logger: new TypeOrmLogger(),
@@ -54,6 +56,8 @@ import { ThrottlingModule } from './common/throttling/throttling.module';
     PasswordResetModule,
     DeactivationModule,
     LotsModule,
+    TaxonomyModule,
+    UserPreferencesModule,
     ThrottlingModule,
   ],
   providers: [UserVersionSubscriber, LotVersionSubscriber],

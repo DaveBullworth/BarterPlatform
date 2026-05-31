@@ -7,12 +7,21 @@ import {
   Button,
   Indicator,
 } from '@mantine/core';
-import { User, LogIn, LogOut, HatGlasses, Bell, Package } from 'lucide-react';
+import {
+  User,
+  LogIn,
+  LogOut,
+  HatGlasses,
+  Bell,
+  Package,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuthStore, useSelfUser } from '@/entities/user';
 import { LogoutModal } from '@/features/auth';
+import { TaxonomyPreferencesModal } from '@/features/taxonomy-preferences';
 import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 import { NotificationsDrawer } from '@/widgets/AppHeader';
 
@@ -38,6 +47,7 @@ export const ProfileDrawer = ({
   const { data: user } = useSelfUser();
   const [logoutOpened, setLogoutOpened] = useState(false);
   const [notificationsOpened, setNotificationsOpened] = useState(false);
+  const [preferencesOpened, setPreferencesOpened] = useState(false);
 
   const unreadCount = 4; // TODO: заменить на реальные данные
 
@@ -102,6 +112,17 @@ export const ProfileDrawer = ({
 
               <Button
                 variant="light"
+                leftSection={<SlidersHorizontal size={16} />}
+                onClick={() => {
+                  setPreferencesOpened(true);
+                  onClose();
+                }}
+              >
+                {t('preferences.menuItem')}
+              </Button>
+
+              <Button
+                variant="light"
                 leftSection={
                   <Indicator
                     inline
@@ -151,6 +172,11 @@ export const ProfileDrawer = ({
       <NotificationsDrawer
         opened={notificationsOpened}
         onClose={() => setNotificationsOpened(false)}
+      />
+
+      <TaxonomyPreferencesModal
+        opened={preferencesOpened}
+        onClose={() => setPreferencesOpened(false)}
       />
 
       <LogoutModal

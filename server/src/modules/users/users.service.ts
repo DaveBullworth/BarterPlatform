@@ -246,6 +246,24 @@ export class UsersService {
     };
   }
 
+  /** Лёгкий лукап гео текущего пользователя для рекомендационной сортировки лотов. */
+  async findGeoById(userId: string): Promise<{
+    regionId: number | null;
+    cityId: number | null;
+    districtId: number | null;
+  } | null> {
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      select: ['regionId', 'cityId', 'districtId'],
+    });
+    if (!user) return null;
+    return {
+      regionId: user.regionId,
+      cityId: user.cityId,
+      districtId: user.districtId,
+    };
+  }
+
   async getById(targetUserId: string, requester: JwtPayload) {
     const user = await this.userRepo.findOne({ where: { id: targetUserId } });
 

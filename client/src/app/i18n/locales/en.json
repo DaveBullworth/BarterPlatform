@@ -378,5 +378,36 @@
       "grid": "Grid",
       "list": "List"
     }
+  },
+  "preferences": {
+    "menuItem": "Preferences",
+    "levelGroup": "Desirability level",
+    "levelTooltip": {
+      "1": "Might consider",
+      "2": "Interesting",
+      "3": "Want most of all"
+    },
+    "modal": {
+      "title": "Preferences",
+      "subtitle": "Mark sections, categories and subcategories you're interested in — better matches show higher in the feed."
+    },
+    "actions": {
+      "selectAll": "Select all",
+      "reset": "Reset"
+    },
+    "notify": {
+      "savedTitle": "Preferences saved",
+      "savedMessage": "Your feed will be re-ranked automatically."
+    },
+    "help": {
+      "iconAria": "Preferences hint",
+      "title": "How preferences work",
+      "intro": "Assign a desirability level to any taxonomy node (section, category or subcategory). The higher the level and the more specific the match, the higher a lot appears in your feed.",
+      "level1": "1 — might consider",
+      "level2": "2 — interesting",
+      "level3": "3 — want most of all",
+      "geo": "We also consider your location: district match > city match > region match.",
+      "notes": "Without any preferences, the feed is sorted by lot creation date only."
+    }
   }
 }

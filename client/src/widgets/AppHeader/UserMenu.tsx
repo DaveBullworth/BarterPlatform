@@ -1,11 +1,19 @@
 import { Menu, ActionIcon, Avatar, Group, Indicator } from '@mantine/core';
-import { User, LogIn, LogOut, Bell, Package } from 'lucide-react';
+import {
+  User,
+  LogIn,
+  LogOut,
+  Bell,
+  Package,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuthStore, useSelfUser } from '@/entities/user';
 import { useNavigation } from '@/shared/lib/navigation';
 import { LogoutModal } from '@/features/auth';
+import { TaxonomyPreferencesModal } from '@/features/taxonomy-preferences';
 import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 import { NotificationsDrawer } from './NotificationsDrawer';
 
@@ -17,6 +25,7 @@ export const UserMenu = () => {
 
   const [logoutOpened, setLogoutOpened] = useState(false);
   const [notificationsOpened, setNotificationsOpened] = useState(false);
+  const [preferencesOpened, setPreferencesOpened] = useState(false);
 
   const unreadCount = 4; // TODO: реальные данные
 
@@ -74,6 +83,13 @@ export const UserMenu = () => {
               </Menu.Item>
 
               <Menu.Item
+                leftSection={<SlidersHorizontal size={16} />}
+                onClick={() => setPreferencesOpened(true)}
+              >
+                {t('preferences.menuItem')}
+              </Menu.Item>
+
+              <Menu.Item
                 leftSection={
                   <Indicator
                     inline
@@ -116,6 +132,11 @@ export const UserMenu = () => {
       <NotificationsDrawer
         opened={notificationsOpened}
         onClose={() => setNotificationsOpened(false)}
+      />
+
+      <TaxonomyPreferencesModal
+        opened={preferencesOpened}
+        onClose={() => setPreferencesOpened(false)}
       />
 
       <LogoutModal
