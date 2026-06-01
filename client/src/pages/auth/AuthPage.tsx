@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Container, Stack, Title, Card, Group, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { ArrowLeftRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,11 +14,12 @@ type AuthMode = 'login' | 'register';
 
 export const AuthPage = () => {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery('(max-width: 48em)');
   const [mode, setMode] = useState<AuthMode>('login');
 
   return (
     <div className={styles.authShell}>
-      <Container size={440} w="100%">
+      <Container size={440} w="100%" px={isMobile ? 0 : `md`}>
         <Stack gap="md">
           <div className={styles.brand}>
             <span className={styles.brandMark}>
@@ -31,7 +33,7 @@ export const AuthPage = () => {
           <Card
             className={styles.card}
             radius="lg"
-            p="xl"
+            p={isMobile ? `md` : `xl`}
             withBorder
             bg="var(--mantine-color-body)"
           >

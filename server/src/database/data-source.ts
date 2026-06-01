@@ -15,6 +15,6 @@ export const AppDataSource = new DataSource({
   database: process.env.POSTGRES_DB,
   entities: entities as EntityClass[],
   migrations: ['dist/database/migrations/*.js'], // для получения папки содержащей миграции
-  synchronize: false, // для новых миграций через dev контейнер
-  // synchronize: process.env.NODE_ENV === 'development',
+  //   synchronize: false, // для новых миграций через dev контейнер
+  synchronize: process.env.NODE_ENV === 'development',
 });

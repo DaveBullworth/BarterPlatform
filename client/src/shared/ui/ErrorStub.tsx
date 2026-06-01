@@ -2,6 +2,8 @@ import { Button, Group, Stack, Text, Title } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { CONFIG_BY_STATUS, DEFAULT_CONFIG } from '../constants/error-config';
 
+import styles from './ErrorStub.module.scss';
+
 type Props = {
   status?: number;
   onRetry?: () => void;
@@ -14,15 +16,7 @@ export const ErrorStub = ({ status, onRetry, onBack }: Props) => {
   const Icon = config.icon;
 
   return (
-    <Group
-      justify="center"
-      style={{
-        width: '100%',
-        height: '100%',
-        alignSelf: 'center',
-        marginTop: '50%',
-      }}
-    >
+    <Group justify="center" className={styles.root}>
       <Stack align="center" gap="sm" maw={420}>
         {Icon && <Icon size={48} />}
         <Title order={3} ta="center">

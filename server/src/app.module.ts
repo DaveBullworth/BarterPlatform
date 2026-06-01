@@ -38,8 +38,8 @@ import { ThrottlingModule } from './common/throttling/throttling.module';
         // Cущности
         autoLoadEntities: true, // Nest сам найдёт все Entity
 
-        synchronize: false, // для новых миграций через dev контейнер
-        // synchronize: config.get('NODE_ENV') === 'development', // dev only
+        // synchronize: false, // для новых миграций через dev контейнер
+        synchronize: config.get('NODE_ENV') === 'development', // dev only
         logging: config.get('NODE_ENV') === 'development', // dev only
         // SQL логирование
         logger: new TypeOrmLogger(),

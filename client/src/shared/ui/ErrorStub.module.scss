@@ -1,0 +1,12 @@
+@use '@/app/styles/variables.scss' as vars;
+
+.root {
+  width: 100%;
+  height: 100%;
+  align-self: center;
+  margin-top: 20%;
+
+  @media (max-width: vars.$breakpoint-md) {
+    margin-top: 30%;
+  }
+}

@@ -150,7 +150,8 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                       'Try adjusting filters or searching for something else.',
                   })
                 : t('feed.noLotsFoundEmpty', {
-                    defaultValue: 'There are no lots yet — be the first to add one.',
+                    defaultValue:
+                      'There are no lots yet — be the first to add one.',
                   })
             }
           />
