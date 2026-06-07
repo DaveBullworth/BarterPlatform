@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import { MAX_LOT_IMAGES } from './model';
 import { toLotImageSrc, type LotImage } from '@/entities/lot';
+import { normalizeUploadImage } from '@/shared/lib/normalizeUploadImage';
+import { uid } from '@/shared/lib/uid';
 
 export type NewImage = {
   id: string;
@@ -66,23 +68,32 @@ export const useLotImages = (serverImages: LotImage[] = []) => {
   const isDirty =
     deletedIds.length > 0 || newImages.length > 0 || pendingPrimaryId !== null;
 
-  // Добавление новых изображений
+  // Добавление новых изображений.
+  // HEIC с iPhone конвертируем в JPEG в браузере (сервер HEIC не читает).
   const addImages = (files: File[]) => {
     const freeSlots = MAX_LOT_IMAGES - totalCount;
     if (freeSlots <= 0) return;
 
-    const hasPrimary =
-      existingImages.some((i) => i.isPrimary) ||
-      newImages.some((i) => i.isPrimary);
+    void (async () => {
+      const normalized = await Promise.all(
+        files.slice(0, freeSlots).map((file) => normalizeUploadImage(file)),
+      );
 
-    const added = files.slice(0, freeSlots).map((file, index) => ({
-      id: crypto.randomUUID(),
-      file,
-      previewUrl: URL.createObjectURL(file),
-      isPrimary: !hasPrimary && index === 0,
-    }));
+      setNewImages((prev) => {
+        const hasPrimary =
+          existingImages.some((i) => i.isPrimary) ||
+          prev.some((i) => i.isPrimary);
 
-    setNewImages((prev) => [...prev, ...added]);
+        const added = normalized.map((file, index) => ({
+          id: uid(),
+          file,
+          previewUrl: URL.createObjectURL(file),
+          isPrimary: !hasPrimary && index === 0,
+        }));
+
+        return [...prev, ...added];
+      });
+    })();
   };
 
   // Установить главное — existing

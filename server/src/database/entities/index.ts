@@ -6,6 +6,8 @@ import { SessionEntity } from './session.entity';
 import { AccountDeactivationCodeEntity } from './account_deactivation_code.entity';
 import { LotEntity } from './lot.entity';
 import { UserTaxonomyPreferenceEntity } from './user-taxonomy-preference.entity';
+import { OfferEntity } from './offer.entity';
+import { NotificationEntity } from './notification.entity';
 
 export const entities = [
   UserEntity,
@@ -16,4 +18,6 @@ export const entities = [
   AccountDeactivationCodeEntity,
   LotEntity,
   UserTaxonomyPreferenceEntity,
+  OfferEntity,
+  NotificationEntity,
 ];

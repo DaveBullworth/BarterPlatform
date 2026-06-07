@@ -89,7 +89,7 @@ export const ImagesSection = ({
 
       {canAddMore && (
         <Dropzone
-          accept={['image/png', 'image/jpeg']}
+          accept={['image/*']}
           maxSize={8 * 1024 * 1024}
           onDrop={onAdd}
           className={styles.dropzone}

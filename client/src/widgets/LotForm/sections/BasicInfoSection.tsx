@@ -95,6 +95,7 @@ export const BasicInfoSection = ({
                 multiline
                 w={260}
                 position="top-end"
+                events={{ hover: true, focus: true, touch: true }}
               >
                 <Info
                   size={16}

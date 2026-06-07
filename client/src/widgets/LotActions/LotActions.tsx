@@ -14,12 +14,7 @@ import {
   useLotStatus,
   type LotStatusAction,
 } from '@/features/lot-status';
-import {
-  isLotArchived,
-  type Lot,
-  type LotActions as LotActionsType,
-} from '@/entities/lot';
-import { useAuthStore } from '@/entities/user';
+import { type Lot, type LotActions as LotActionsType } from '@/entities/lot';
 import { useNavigation } from '@/shared/lib/navigation';
 
 type Props = {
@@ -31,7 +26,6 @@ type Props = {
 export const LotActions = ({ lot, actions, isAdmin }: Props) => {
   const { t } = useTranslation();
   const { toUser, toLotEdit } = useNavigation();
-  const { isAuthenticated } = useAuthStore();
 
   const [pendingAction, setPendingAction] = useState<LotStatusAction | null>(
     null,
@@ -42,9 +36,10 @@ export const LotActions = ({ lot, actions, isAdmin }: Props) => {
     onSuccess: () => setPendingAction(null),
   });
 
-  const archived = isLotArchived(lot.visibilityStatus);
-  const showDeactivate = !archived && isAuthenticated;
-  const showUnarchive = archived && isAuthenticated;
+  // Действия видны только тем, у кого есть права (владелец/админ),
+  // а не любому авторизованному пользователю.
+  const showDeactivate = actions.canDeactivate;
+  const showUnarchive = actions.canUnarchive;
 
   const hasItems =
     isAdmin || actions.canEdit || showDeactivate || showUnarchive;

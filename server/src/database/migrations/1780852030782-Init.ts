@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1780253251593 implements MigrationInterface {
-    name = 'Init1780253251593'
+export class Init1780852030782 implements MigrationInterface {
+    name = 'Init1780852030782'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."users_role_enum" AS ENUM('user', 'admin')`);
@@ -25,6 +25,15 @@ export class Init1780253251593 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "user_taxonomy_preferences" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "userId" uuid NOT NULL, "targetType" "public"."user_taxonomy_preferences_targettype_enum" NOT NULL, "targetId" integer NOT NULL, "weight" smallint NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "CHK_user_taxonomy_preferences_weight" CHECK ("weight" BETWEEN 1 AND 3), CONSTRAINT "PK_dec562699c2b78a343c76574b51" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_user_taxonomy_preferences_user_type" ON "user_taxonomy_preferences" ("userId", "targetType") `);
         await queryRunner.query(`CREATE UNIQUE INDEX "UQ_user_taxonomy_preferences_target" ON "user_taxonomy_preferences" ("userId", "targetType", "targetId") `);
+        await queryRunner.query(`CREATE TYPE "public"."offers_status_enum" AS ENUM('pending', 'accepted', 'completed', 'rejected')`);
+        await queryRunner.query(`CREATE TABLE "offers" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "proposerId" uuid NOT NULL, "recipientId" uuid NOT NULL, "lotId" uuid NOT NULL, "offeredLotIds" uuid array NOT NULL DEFAULT '{}', "status" "public"."offers_status_enum" NOT NULL DEFAULT 'pending', "proposerCompletionConfirmed" boolean NOT NULL DEFAULT false, "recipientCompletionConfirmed" boolean NOT NULL DEFAULT false, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_4c88e956195bba85977da21b8f4" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_offers_lot" ON "offers" ("lotId") `);
+        await queryRunner.query(`CREATE INDEX "IDX_offers_proposer_status" ON "offers" ("proposerId", "status") `);
+        await queryRunner.query(`CREATE INDEX "IDX_offers_recipient_status" ON "offers" ("recipientId", "status") `);
+        await queryRunner.query(`CREATE TYPE "public"."notifications_type_enum" AS ENUM('system', 'exchange', 'chat')`);
+        await queryRunner.query(`CREATE TABLE "notifications" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "userId" uuid NOT NULL, "type" "public"."notifications_type_enum" NOT NULL, "subtype" character varying NOT NULL, "payload" jsonb NOT NULL DEFAULT '{}', "entityType" character varying, "entityId" character varying, "isRead" boolean NOT NULL DEFAULT false, "readAt" TIMESTAMP WITH TIME ZONE, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_6a72c3c0f683f6462415e653c3a" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE INDEX "IDX_notifications_user_created" ON "notifications" ("userId", "createdAt") `);
+        await queryRunner.query(`CREATE INDEX "IDX_notifications_user_read" ON "notifications" ("userId", "isRead") `);
         await queryRunner.query(`ALTER TABLE "media_files" ADD CONSTRAINT "FK_8cfa31648f9bfdb58c30a128014" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "email_confirmations" ADD CONSTRAINT "FK_930e1d7c0171d23e5535b1e3873" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "password_reset_tokens" ADD CONSTRAINT "FK_52ac39dd8a28730c63aeb428c9c" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
@@ -38,6 +47,15 @@ export class Init1780253251593 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "password_reset_tokens" DROP CONSTRAINT "FK_52ac39dd8a28730c63aeb428c9c"`);
         await queryRunner.query(`ALTER TABLE "email_confirmations" DROP CONSTRAINT "FK_930e1d7c0171d23e5535b1e3873"`);
         await queryRunner.query(`ALTER TABLE "media_files" DROP CONSTRAINT "FK_8cfa31648f9bfdb58c30a128014"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_notifications_user_read"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_notifications_user_created"`);
+        await queryRunner.query(`DROP TABLE "notifications"`);
+        await queryRunner.query(`DROP TYPE "public"."notifications_type_enum"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_offers_recipient_status"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_offers_proposer_status"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_offers_lot"`);
+        await queryRunner.query(`DROP TABLE "offers"`);
+        await queryRunner.query(`DROP TYPE "public"."offers_status_enum"`);
         await queryRunner.query(`DROP INDEX "public"."UQ_user_taxonomy_preferences_target"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_user_taxonomy_preferences_user_type"`);
         await queryRunner.query(`DROP TABLE "user_taxonomy_preferences"`);

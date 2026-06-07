@@ -41,4 +41,8 @@ export class LotFiltersDto {
 
   @IsOptional()
   selfOnly?: boolean;
+
+  /** Константный фильтр для модалки обмена: исключить деактивированные (архивные) лоты. */
+  @IsOptional()
+  excludeArchived?: boolean;
 }

@@ -146,6 +146,7 @@
     "confirmUpdateMessage": "Möchten Sie die Änderungen am Profil wirklich speichern?",
     "confirmDiscardMessage": "Möchten Sie wirklich verlassen? Alle ungespeicherten Änderungen gehen verloren.",
     "confirmDiscardConfirm": "Verlassen",
+    "confirmDiscardSave": "Speichern",
     "confirmDiscardCancel": "Bleiben"
   },
   "deactivation": {
@@ -238,7 +239,63 @@
   },
   "notifications": {
     "title": "Benachrichtigungen",
-    "empty": "Sie haben keine neuen Benachrichtigungen"
+    "empty": "Sie haben keine neuen Benachrichtigungen",
+    "markAllRead": "Alle als gelesen markieren",
+    "items": {
+      "fallback": { "title": "Benachrichtigung", "body": "" },
+      "system": {
+        "account_deactivated": {
+          "title": "Konto deaktiviert",
+          "body": "Ihr Konto wurde von einem Administrator deaktiviert. Falls dies ein Fehler ist, wenden Sie sich an den Support."
+        },
+        "account_reactivated": {
+          "title": "Konto wiederhergestellt",
+          "body": "Ihr Konto ist wieder aktiv."
+        },
+        "role_changed": {
+          "title": "Rolle geändert",
+          "body": "Ihre Rolle wurde zu „{{role}}“ geändert."
+        },
+        "new_login": {
+          "title": "Neue Anmeldung",
+          "body": "Eine Anmeldung bei Ihrem Konto wurde erkannt. Falls Sie das nicht waren, ändern Sie Ihr Passwort."
+        },
+        "password_changed": {
+          "title": "Passwort geändert",
+          "body": "Das Passwort Ihres Kontos wurde geändert. Falls Sie das nicht waren, wenden Sie sich sofort an den Support."
+        },
+        "lot_deactivated": {
+          "title": "Anzeigenstatus geändert",
+          "body": "Ein Administrator hat den Status Ihrer Anzeige „{{lotTitle}}“ geändert."
+        },
+        "lot_removed": {
+          "title": "Anzeige entfernt",
+          "body": "Ein Administrator hat Ihre Anzeige „{{lotTitle}}“ entfernt."
+        },
+        "lot_deletion_scheduled": {
+          "title": "Anzeige wird bald gelöscht",
+          "body": "Ihre archivierte Anzeige „{{lotTitle}}“ wird in {{daysLeft}} Tag(en) endgültig gelöscht. Stellen Sie sie wieder her, falls noch benötigt."
+        }
+      },
+      "exchange": {
+        "offer_received": {
+          "title": "Neues Tauschangebot",
+          "body": "Sie haben ein Tauschangebot für „{{lotTitle}}“ erhalten ({{offeredCount}} Anzeige(n))."
+        },
+        "offer_accepted": {
+          "title": "Angebot angenommen",
+          "body": "Ihr Tauschangebot wurde angenommen."
+        },
+        "offer_rejected": {
+          "title": "Angebot abgelehnt",
+          "body": "Ein Tauschangebot wurde abgelehnt."
+        },
+        "offer_completed": {
+          "title": "Tausch abgeschlossen",
+          "body": "Der Tausch wurde erfolgreich abgeschlossen."
+        }
+      }
+    }
   },
   "categories": {
     "title": "Kategorien",
@@ -315,7 +372,8 @@
     "confirm": {
       "saveTitle": "Speichern bestätigen",
       "saveMessage": "Möchten Sie die Änderungen an dieser Anzeige wirklich speichern?"
-    }
+    },
+    "saving": "Anzeige wird gespeichert…"
   },
   "lot": {
     "visibility": {
@@ -369,6 +427,18 @@
       "notSelected": "Nicht ausgewählt"
     },
     "exchange": {
+      "modalTitle": "Anzeigen für den Tausch wählen",
+      "modalSubtitle": "Wählen Sie bis zu {{max}} Ihrer Anzeigen, die zu den Präferenzen des Eigentümers passen",
+      "select": "Auswählen",
+      "selected": "Ausgewählt",
+      "notOfferable": "Passt nicht zu den Präferenzen des Eigentümers",
+      "submit": "Angebot senden",
+      "maxReached": "Sie können höchstens {{max}} Anzeigen auswählen",
+      "empty": "Keine Anzeigen für den Tausch verfügbar",
+      "selectedCount": "Ausgewählt: {{count}} von {{max}}",
+      "ownLot": "Eigene Anzeige kann nicht getauscht werden",
+      "offerSent": "Tauschangebot gesendet",
+      "noPrefs": "Der Eigentümer hat keine Präferenzen festgelegt — nichts auszuwählen",
       "action": "Tauschen",
       "title": "Tausch vorschlagen",
       "confirm": "Möchten Sie dem Besitzer dieses Lots einen Tausch vorschlagen?",

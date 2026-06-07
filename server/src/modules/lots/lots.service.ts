@@ -17,8 +17,10 @@ import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query
 import { LotOneResponseDto } from './dto/getOneLot.dto';
 import { LotArchiveService } from './lot-archive.service';
 import { GeographyService } from '../users/geography.service';
-import { UsersService } from '../users/users.service';
 import { TaxonomyService } from './taxonomy.service';
+import { LotRelevanceService } from './lot-relevance.service';
+import { NotificationsService } from '../notifications/notifications.service';
+import { notificationBuilders } from '../notifications/notification.builders';
 
 const TAXONOMY_ID_FIELDS = [
   'chapterId',
@@ -51,8 +53,9 @@ export class LotsService {
     private readonly lotsRepo: Repository<LotEntity>,
     private readonly lotArchiveService: LotArchiveService,
     private readonly geographyService: GeographyService,
-    private readonly usersService: UsersService,
     private readonly taxonomyService: TaxonomyService,
+    private readonly relevanceService: LotRelevanceService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   private applyTextFilter = applyTextFilterImported<LotEntity>;
@@ -127,14 +130,32 @@ export class LotsService {
     this.applyVisibilityScope(ctx);
     this.applyIdFilters(ctx);
     this.applyTextSearch(ctx);
-    await this.applyRecommendationOrder(ctx);
+
+    const plan = await this.relevanceService.applyOrder(ctx.qb, {
+      user: ctx.user,
+      wantsSelfOnly: ctx.wantsSelfOnly,
+      hasTaxonomyFilter: TAXONOMY_ID_FIELDS.some(
+        (field) => ctx.filters?.[field],
+      ),
+      hasGeoFilter: GEO_ID_FIELDS.some((field) => ctx.filters?.[field]),
+    });
+
     this.applyPagination(ctx, page, limit);
 
-    const [lots, total] = await ctx.qb.getManyAndCount();
+    // entities — это лоты, raw — те же строки, но со скоринговыми колонками,
+    // из которых берём relevanceLevel (в саму сущность они не попадают).
+    const { entities, raw } = await ctx.qb.getRawAndEntities();
+    const rawRows = raw as Array<Record<string, unknown>>;
+    const total = await ctx.qb.getCount();
 
     return {
       total,
-      data: lots.map((lot) => this.toResponseDto(lot)),
+      data: entities.map((lot, index) =>
+        this.toResponseDto(
+          lot,
+          this.relevanceService.computeLevel(rawRows[index], plan),
+        ),
+      ),
     };
   }
 
@@ -160,7 +181,7 @@ export class LotsService {
    *  - Авторизованный USER без selfOnly: только активные чужие лоты.
    */
   private applyVisibilityScope(ctx: LotQueryContext) {
-    const { qb, user, isAdmin, wantsSelfOnly } = ctx;
+    const { qb, user, filters, isAdmin, wantsSelfOnly } = ctx;
 
     if (!user) {
       qb.andWhere('lot.visibilityStatus = :active', {
@@ -171,6 +192,14 @@ export class LotsService {
 
     if (wantsSelfOnly) {
       qb.andWhere('lot.userId = :userId', { userId: user.sub });
+
+      // Константный фильтр для модалки обмена: предлагать можно только
+      // не-деактивированные лоты (ACTIVE/HIDDEN), архивные исключаем.
+      if (filters?.excludeArchived) {
+        qb.andWhere('lot.visibilityStatus != :archived', {
+          archived: LotVisibilityStatus.ARCHIVED,
+        });
+      }
       return;
     }
 
@@ -201,111 +230,14 @@ export class LotsService {
     this.applyTextFilter(qb, 'lot.generalDescription', filters.query, 'query');
   }
 
-  /**
-   * Рекомендационная сортировка. Применяется только для авторизованных
-   * пользователей, не использующих selfOnly. Состоит из двух независимых
-   * приоритетов:
-   *  1) taxonomy_score = sub*100 + cat*10 + chp  — если нет фильтров taxonomy
-   *  2) geo_score (3/2/1/0) по совпадению district/city/region пользователя — если нет фильтров гео
-   * Fallback всегда — lot.createdAt DESC.
-   *
-   * Важно: TypeORM в режиме skip/take + joins сплитит выражения ORDER BY по
-   * точке, чтобы переписать их через подзапрос пагинации. Чтобы это не
-   * валило сложные выражения вроде "COALESCE(chp_pref.weight, 0)", регистрируем
-   * их через addSelect с алиасами без точек ('tax_score', 'geo_score') и
-   * упорядочиваем по этим алиасам.
-   */
-  private async applyRecommendationOrder(ctx: LotQueryContext) {
-    const { qb, user, filters, wantsSelfOnly } = ctx;
-
-    if (!user || wantsSelfOnly) {
-      qb.orderBy('lot.createdAt', 'DESC');
-      return;
-    }
-
-    const hasTaxonomyFilter = TAXONOMY_ID_FIELDS.some(
-      (field) => filters?.[field],
-    );
-    const hasGeoFilter = GEO_ID_FIELDS.some((field) => filters?.[field]);
-
-    let firstOrder = true;
-    const addOrder = (expr: string, dir: 'ASC' | 'DESC') => {
-      if (firstOrder) {
-        qb.orderBy(expr, dir);
-        firstOrder = false;
-      } else {
-        qb.addOrderBy(expr, dir);
-      }
-    };
-
-    if (!hasTaxonomyFilter) {
-      this.joinTaxonomyPreferences(qb, user.sub);
-      qb.addSelect(
-        `COALESCE(chp_pref.weight, 0) + COALESCE(cat_pref.weight, 0) * 10 + COALESCE(sub_pref.weight, 0) * 100`,
-        'tax_score',
-      );
-      addOrder('tax_score', 'DESC');
-    }
-
-    if (!hasGeoFilter) {
-      const geo = await this.usersService.findGeoById(user.sub);
-      const hasAnyGeo = Boolean(
-        geo && (geo.regionId || geo.cityId || geo.districtId),
-      );
-      if (hasAnyGeo && geo) {
-        qb.setParameter('uRegion', geo.regionId);
-        qb.setParameter('uCity', geo.cityId);
-        qb.setParameter('uDistrict', geo.districtId);
-        qb.addSelect(
-          `CASE
-            WHEN lot."districtId" IS NOT NULL AND lot."districtId" = :uDistrict THEN 3
-            WHEN lot."cityId" = :uCity THEN 2
-            WHEN lot."regionId" = :uRegion THEN 1
-            ELSE 0
-          END`,
-          'geo_score',
-        );
-        addOrder('geo_score', 'DESC');
-      }
-    }
-
-    addOrder('lot.createdAt', 'DESC');
-  }
-
-  private joinTaxonomyPreferences(
-    qb: SelectQueryBuilder<LotEntity>,
-    userId: string,
-  ) {
-    qb.setParameter('recUserId', userId);
-
-    qb.leftJoin(
-      'user_taxonomy_preferences',
-      'chp_pref',
-      `chp_pref."userId" = :recUserId
-        AND chp_pref."targetType" = 'chapter'
-        AND chp_pref."targetId" = lot."chapterId"`,
-    );
-    qb.leftJoin(
-      'user_taxonomy_preferences',
-      'cat_pref',
-      `cat_pref."userId" = :recUserId
-        AND cat_pref."targetType" = 'category'
-        AND cat_pref."targetId" = lot."categoryId"`,
-    );
-    qb.leftJoin(
-      'user_taxonomy_preferences',
-      'sub_pref',
-      `sub_pref."userId" = :recUserId
-        AND sub_pref."targetType" = 'subcategory'
-        AND sub_pref."targetId" = lot."subcategoryId"`,
-    );
-  }
-
   private applyPagination(ctx: LotQueryContext, page: number, limit: number) {
     ctx.qb.skip((page - 1) * limit).take(limit);
   }
 
-  private toResponseDto(lot: LotEntity): LotResponseDto {
+  private toResponseDto(
+    lot: LotEntity,
+    relevanceLevel?: number,
+  ): LotResponseDto {
     const geo = this.geographyService.build({
       regionId: lot.regionId,
       cityId: lot.cityId,
@@ -314,6 +246,7 @@ export class LotsService {
 
     return {
       id: lot.id,
+      userId: lot.userId,
       chapterId: lot.chapterId,
       categoryId: lot.categoryId,
       subcategoryId: lot.subcategoryId ?? undefined,
@@ -328,6 +261,7 @@ export class LotsService {
       createdAt: lot.createdAt,
       updatedAt: lot.updatedAt,
       imageLinks: lot.imageLinks ?? [],
+      relevanceLevel,
     };
   }
 
@@ -365,7 +299,6 @@ export class LotsService {
 
     return {
       ...this.toResponseDto(lot),
-      userId: lot.userId,
       archivationDate: archivationDate ? archivationDate.toISOString() : null,
     };
   }
@@ -434,6 +367,24 @@ export class LotsService {
     });
 
     const savedLot = await this.lotsRepo.save(lot);
+
+    // Модерация: админ сменил статус ЧУЖОГО лота на неактивный → владельцу.
+    if (
+      isAdmin &&
+      savedLot.userId !== user.sub &&
+      savedLot.visibilityStatus !== previousStatus &&
+      savedLot.visibilityStatus !== LotVisibilityStatus.ACTIVE
+    ) {
+      this.notificationsService.emit(
+        notificationBuilders.lotModerated({
+          userId: savedLot.userId,
+          lotId: savedLot.id,
+          lotTitle: savedLot.generalDescription,
+          status: savedLot.visibilityStatus,
+        }),
+      );
+    }
+
     let archivationDate = await this.lotArchiveService.sync(
       savedLot.id,
       previousStatus,
@@ -479,8 +430,23 @@ export class LotsService {
         message: 'Only admin can delete lot',
       });
 
+    const ownerId = lot.userId;
+    const lotTitle = lot.generalDescription;
+    const removedLotId = lot.id;
+
     await this.lotsRepo.remove(lot);
-    await this.lotArchiveService.remove(lot.id);
+    await this.lotArchiveService.remove(removedLotId);
+
+    // Админ удалил ЧУЖОЙ лот → уведомляем владельца.
+    if (ownerId !== user.sub) {
+      this.notificationsService.emit(
+        notificationBuilders.lotRemoved({
+          userId: ownerId,
+          lotId: removedLotId,
+          lotTitle,
+        }),
+      );
+    }
 
     return { success: true };
   }

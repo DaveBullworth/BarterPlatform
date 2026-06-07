@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Post,
   Put,
 } from '@nestjs/common';
@@ -24,6 +25,7 @@ import {
   UserPreferenceResponseDto,
   UserPreferencesListResponseDto,
 } from './dto/preference-response.dto';
+import { PreferenceAvailabilityDto } from './dto/preference-availability.dto';
 import { UserPreferenceErrorCode } from './errors/user-preferences-error-codes';
 import { UserPreferencesService } from './user-preferences.service';
 
@@ -105,5 +107,20 @@ export class UserPreferencesController {
   ): Promise<UserPreferencesListResponseDto> {
     const items = await this.userPreferencesService.selectAll(user.sub);
     return { items: items as UserPreferenceResponseDto[] };
+  }
+
+  @Get(':userId/availability')
+  @ApiOperation({
+    summary: 'Маскированные предпочтения чужого пользователя',
+    description:
+      'Возвращает только МНОЖЕСТВА id категорий, которые интересны пользователю (true/false без весов). Используется при выборе своих лотов для предложения обмена.',
+  })
+  @ApiOkResponse({ type: PreferenceAvailabilityDto })
+  @ApiForbiddenResponse({ description: 'Пользователь не авторизован' })
+  @ApiInternalServerErrorResponse({ description: 'Внутренняя ошибка сервера' })
+  async getAvailability(
+    @Param('userId') userId: string,
+  ): Promise<PreferenceAvailabilityDto> {
+    return this.userPreferencesService.getAvailabilityForUser(userId);
   }
 }

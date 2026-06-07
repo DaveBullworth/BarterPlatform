@@ -2,11 +2,15 @@ import {
   Injectable,
   UnauthorizedException,
   ForbiddenException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { Repository, Not, IsNull } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { NotificationsService } from '../notifications/notifications.service';
+import { notificationBuilders } from '../notifications/notification.builders';
 import { SessionPolicyService } from './policies/session-policy.service';
 import { LoginBruteforcePolicy } from './policies/login-bruteforce.policy';
 import { UserEntity } from '../../database/entities/user.entity';
@@ -26,6 +30,8 @@ export class AuthService {
     private readonly sessionPolicy: SessionPolicyService,
     private readonly loginBruteforcePolicy: LoginBruteforcePolicy,
     private readonly redisSessionService: RedisSessionService,
+    @Inject(forwardRef(() => NotificationsService))
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   // Логин
@@ -132,6 +138,15 @@ export class AuthService {
     // ===== НОВАЯ СЕССИЯ =====
     await this.sessionPolicy.assertCanCreateSession(user.id);
 
+    // Знакомое ли устройство: есть ли у пользователя прошлые сессии с этим
+    // deviceId (любого статуса). Нужно, чтобы НЕ слать уведомление о входе при
+    // обычном повторном логине (logout деактивирует сессию, а не удаляет).
+    const isKnownDevice = deviceId
+      ? (await this.sessionRepo.count({
+          where: { user: { id: user.id }, deviceId },
+        })) > 0
+      : false;
+
     const session = this.sessionRepo.create({
       user,
       ip,
@@ -158,6 +173,18 @@ export class AuthService {
       },
       30 * 24 * 60 * 60,
     );
+
+    // Уведомляем только о входе с НОВОГО устройства, а не при каждом логине.
+    if (!isKnownDevice) {
+      this.notificationsService.emit(
+        notificationBuilders.newLogin({
+          userId: user.id,
+          ip,
+          deviceId,
+          userAgent,
+        }),
+      );
+    }
 
     return { accessToken, refreshToken };
   }

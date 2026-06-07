@@ -146,6 +146,7 @@
     "confirmUpdateMessage": "Are you sure you want to save the profile changes?",
     "confirmDiscardMessage": "Are you sure you want to leave? All unsaved changes will be lost.",
     "confirmDiscardConfirm": "Leave",
+    "confirmDiscardSave": "Save",
     "confirmDiscardCancel": "Stay"
   },
   "deactivation": {
@@ -238,7 +239,63 @@
   },
   "notifications": {
     "title": "Notifications",
-    "empty": "You have no new notifications"
+    "empty": "You have no new notifications",
+    "markAllRead": "Mark all as read",
+    "items": {
+      "fallback": { "title": "Notification", "body": "" },
+      "system": {
+        "account_deactivated": {
+          "title": "Account deactivated",
+          "body": "Your account was deactivated by an administrator. If this is a mistake, please contact support."
+        },
+        "account_reactivated": {
+          "title": "Account restored",
+          "body": "Your account is active again."
+        },
+        "role_changed": {
+          "title": "Role changed",
+          "body": "Your role was changed to “{{role}}”."
+        },
+        "new_login": {
+          "title": "New sign-in",
+          "body": "A sign-in to your account was detected. If it wasn't you, change your password."
+        },
+        "password_changed": {
+          "title": "Password changed",
+          "body": "Your account password was changed. If it wasn't you, contact support immediately."
+        },
+        "lot_deactivated": {
+          "title": "Lot status changed",
+          "body": "An administrator changed the status of your lot “{{lotTitle}}”."
+        },
+        "lot_removed": {
+          "title": "Lot removed",
+          "body": "An administrator removed your lot “{{lotTitle}}”."
+        },
+        "lot_deletion_scheduled": {
+          "title": "Lot will be deleted soon",
+          "body": "Your archived lot “{{lotTitle}}” will be permanently deleted in {{daysLeft}} day(s). Restore it if you still need it."
+        }
+      },
+      "exchange": {
+        "offer_received": {
+          "title": "New exchange offer",
+          "body": "You received an exchange offer for “{{lotTitle}}” ({{offeredCount}} lot(s))."
+        },
+        "offer_accepted": {
+          "title": "Offer accepted",
+          "body": "Your exchange offer was accepted."
+        },
+        "offer_rejected": {
+          "title": "Offer rejected",
+          "body": "An exchange offer was rejected."
+        },
+        "offer_completed": {
+          "title": "Exchange completed",
+          "body": "The exchange was completed successfully."
+        }
+      }
+    }
   },
   "categories": {
     "title": "Categories",
@@ -315,7 +372,8 @@
     "confirm": {
       "saveTitle": "Save confirmation",
       "saveMessage": "Are you sure you want to save changes to this lot?"
-    }
+    },
+    "saving": "Saving lot…"
   },
   "lot": {
     "visibility": {
@@ -369,6 +427,18 @@
       "notSelected": "Not selected"
     },
     "exchange": {
+      "modalTitle": "Choose lots to exchange",
+      "modalSubtitle": "Select up to {{max}} of your lots that match the owner's preferences",
+      "select": "Select",
+      "selected": "Selected",
+      "notOfferable": "Doesn't match the owner's preferences",
+      "submit": "Send offer",
+      "maxReached": "You can select at most {{max}} lots",
+      "empty": "No lots available for exchange",
+      "selectedCount": "Selected: {{count}} of {{max}}",
+      "ownLot": "You can't exchange your own lot",
+      "offerSent": "Exchange offer sent",
+      "noPrefs": "The lot owner has no preferences set — nothing to select",
       "action": "Exchange",
       "title": "Suggest an exchange",
       "confirm": "Suggest an exchange to this lot owner?",

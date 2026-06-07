@@ -1,4 +1,12 @@
-import { Card, Group, Stack, Text, ActionIcon, Tooltip } from '@mantine/core';
+import {
+  Card,
+  Group,
+  Stack,
+  Text,
+  ActionIcon,
+  Tooltip,
+  Checkbox,
+} from '@mantine/core';
 import { ArrowRightLeft, ImageOff, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mantine/hooks';
@@ -9,6 +17,7 @@ import { preload } from '@/shared/lib/preload';
 import type { LotResponse } from '@/entities/lot';
 
 import styles from './LotsFeed.module.scss';
+import { relevanceGlowClass } from './relevanceGlow';
 
 type Props = {
   lot: LotResponse;
@@ -18,6 +27,15 @@ type Props = {
   onExchange: (lot: LotResponse) => void;
   /** Не показывать кнопку "Обменяться" (например, в ленте "Мои лоты"). */
   hideExchange?: boolean;
+  /** Кнопка обмена видна, но заблокирована (исключительный случай — админ). */
+  exchangeDisabled?: boolean;
+
+  /** Режим выбора (модалка обмена): вместо кнопки — чекбокс. */
+  selectable?: boolean;
+  selected?: boolean;
+  /** Лот вне предпочтений получателя — выбрать нельзя. */
+  selectionDisabled?: boolean;
+  onSelectToggle?: (lot: LotResponse) => void;
 };
 
 export const LotCardList = ({
@@ -27,14 +45,27 @@ export const LotCardList = ({
   onOpen,
   onExchange,
   hideExchange = false,
+  exchangeDisabled = false,
+  selectable = false,
+  selected = false,
+  selectionDisabled = false,
+  onSelectToggle,
 }: Props) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery('(max-width: 48em)');
 
+  const handleActivate = () => {
+    if (selectable) {
+      if (!selectionDisabled) onSelectToggle?.(lot);
+      return;
+    }
+    onOpen(lot.id);
+  };
+
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onOpen(lot.id);
+      handleActivate();
     }
   };
 
@@ -42,14 +73,26 @@ export const LotCardList = ({
     .filter(Boolean)
     .join(', ');
 
+  const cardClass = [
+    styles.clickableCard,
+    styles.listCard,
+    selectable ? '' : relevanceGlowClass(lot.relevanceLevel),
+    selectable && selected ? styles.selectedCard : '',
+    selectable && selectionDisabled ? styles.disabledCard : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <Card
-      className={`${styles.clickableCard} ${styles.listCard}`}
-      role="link"
-      tabIndex={0}
-      onClick={() => onOpen(lot.id)}
-      onMouseEnter={() => preload('lot')}
-      onTouchStart={() => preload('lot')}
+      className={cardClass}
+      role={selectable ? 'checkbox' : 'link'}
+      aria-checked={selectable ? selected : undefined}
+      aria-disabled={selectable && selectionDisabled ? true : undefined}
+      tabIndex={selectable && selectionDisabled ? -1 : 0}
+      onClick={handleActivate}
+      onMouseEnter={selectable ? undefined : () => preload('lot')}
+      onTouchStart={selectable ? undefined : () => preload('lot')}
       onKeyDown={handleKeyDown}
     >
       <Group wrap="nowrap" align="stretch" gap={`${isMobile ? 'xs' : 'md'}`}>
@@ -93,22 +136,43 @@ export const LotCardList = ({
           </Group>
         </Stack>
 
-        {!hideExchange && (
-          <Tooltip label={t('feed.exchange.action')} withArrow position="top">
-            <ActionIcon
-              variant="light"
-              color="barter"
-              size="lg"
-              className={styles.listAction}
-              aria-label={t('feed.exchange.action')}
-              onClick={(e) => {
-                e.stopPropagation();
-                onExchange(lot);
-              }}
+        {selectable ? (
+          <Checkbox
+            className={styles.listAction}
+            checked={selected}
+            disabled={selectionDisabled}
+            readOnly
+            color="barter"
+            aria-label={t('feed.exchange.select')}
+          />
+        ) : (
+          !hideExchange && (
+            <Tooltip
+              label={
+                exchangeDisabled
+                  ? t('feed.exchange.ownLot')
+                  : t('feed.exchange.action')
+              }
+              withArrow
+              position="top"
             >
-              <ArrowRightLeft size={18} />
-            </ActionIcon>
-          </Tooltip>
+              <ActionIcon
+                variant="light"
+                color="barter"
+                size="lg"
+                className={styles.listAction}
+                aria-label={t('feed.exchange.action')}
+                data-disabled={exchangeDisabled || undefined}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (exchangeDisabled) return;
+                  onExchange(lot);
+                }}
+              >
+                <ArrowRightLeft size={18} />
+              </ActionIcon>
+            </Tooltip>
+          )
         )}
       </Group>
     </Card>

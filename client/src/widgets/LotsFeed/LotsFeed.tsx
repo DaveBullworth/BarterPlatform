@@ -17,12 +17,12 @@ import { useCategorySelection } from '@/features/category-filter';
 import { useGeoFilter } from '@/features/geo-filter';
 import { useSearchQuery } from '@/features/search-filter';
 import { useNavigation } from '@/shared/lib/navigation';
-import { notify } from '@/shared/lib/notify';
-import { ErrorStub, ConfirmModal, EmptyState } from '@/shared/ui';
+import { ErrorStub, EmptyState } from '@/shared/ui';
 import { getApiErrorStatusCode } from '@/shared/lib';
 import { LotCardGrid } from './LotCardGrid';
 import { LotCardList } from './LotCardList';
 import { LotsFeedSkeleton } from './LotsFeedSkeleton';
+import { ExchangeOfferModal } from './ExchangeOfferModal';
 
 import { FeedControls, type FeedView, type LimitOption } from './FeedControls';
 
@@ -33,7 +33,7 @@ type Props = {
 export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
   const { t, i18n } = useTranslation();
   const { toLotView, toAuth } = useNavigation();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, currentUser } = useAuthStore();
   const isMobile = useMediaQuery('(max-width: 48em)');
   const isWide = useMediaQuery('(min-width: 90em)');
 
@@ -92,19 +92,6 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
     }
     return map;
   }, [mainImages]);
-
-  // Exchange
-  const handleConfirmExchange = () => {
-    if (!exchangeLot) return;
-    notify({
-      title: t('common.success'),
-      message: t('feed.exchange.success', {
-        title: exchangeLot.generalDescription,
-      }),
-      color: 'green',
-    });
-    setExchangeLot(null);
-  };
 
   // Сброс страницы при смене лимита
   const handleLimitChange = (value: string | null) => {
@@ -168,6 +155,9 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                 onOpen={toLotView}
                 onExchange={handleExchange}
                 hideExchange={selfOnly}
+                exchangeDisabled={Boolean(
+                  currentUser && lot.userId === currentUser.id,
+                )}
               />
             ))}
           </SimpleGrid>
@@ -184,21 +174,19 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
                 onOpen={toLotView}
                 onExchange={handleExchange}
                 hideExchange={selfOnly}
+                exchangeDisabled={Boolean(
+                  currentUser && lot.userId === currentUser.id,
+                )}
               />
             ))}
           </Stack>
         )}
       </Stack>
 
-      <ConfirmModal
+      <ExchangeOfferModal
         opened={Boolean(exchangeLot)}
-        onConfirm={handleConfirmExchange}
-        onCancel={() => setExchangeLot(null)}
-        title={t('feed.exchange.title')}
-        message={t('feed.exchange.confirm')}
-        confirmLabel={t('lotForm.actions.confirm')}
-        cancelLabel={t('lotForm.actions.cancel')}
-        confirmColor="barter"
+        targetLot={exchangeLot}
+        onClose={() => setExchangeLot(null)}
       />
     </>
   );

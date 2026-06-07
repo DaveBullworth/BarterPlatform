@@ -18,10 +18,10 @@ import { resolveBreadcrumbs, useTaxonomy } from '@/entities/taxonomy';
 import { useAuthStore } from '@/entities/user';
 import { openAuthRequiredModal } from '@/features/auth';
 import { USER_ROLES } from '@/shared/constants/user-role';
-import { ConfirmModal, ErrorStub } from '@/shared/ui';
+import { ErrorStub } from '@/shared/ui';
 import { getApiErrorStatusCode, useNavigation } from '@/shared/lib';
-import { notify } from '@/shared/lib/notify';
 import { LotActions } from '@/widgets/LotActions';
+import { ExchangeOfferModal } from '@/widgets/LotsFeed';
 
 import styles from './LotPage.module.scss';
 
@@ -43,18 +43,6 @@ export const LotPage = () => {
       return;
     }
     setExchangeOpened(true);
-  };
-
-  const handleConfirmExchange = () => {
-    if (!lot) return;
-    notify({
-      title: t('common.success'),
-      message: t('feed.exchange.success', {
-        title: lot.generalDescription,
-      }),
-      color: 'green',
-    });
-    setExchangeOpened(false);
   };
 
   const breadcrumbs = useMemo(() => {
@@ -226,15 +214,10 @@ export const LotPage = () => {
         </aside>
       </div>
 
-      <ConfirmModal
+      <ExchangeOfferModal
         opened={exchangeOpened}
-        onConfirm={handleConfirmExchange}
-        onCancel={() => setExchangeOpened(false)}
-        title={t('feed.exchange.title')}
-        message={t('feed.exchange.confirm')}
-        confirmLabel={t('lotForm.actions.confirm')}
-        cancelLabel={t('lotForm.actions.cancel')}
-        confirmColor="barter"
+        targetLot={lot}
+        onClose={() => setExchangeOpened(false)}
       />
     </div>
   );

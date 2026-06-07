@@ -27,6 +27,8 @@ import { UserFiltersDto } from './dto/userFilters.dto';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query-filters.util';
 import { GeographyService } from './geography.service';
+import { NotificationsService } from '../notifications/notifications.service';
+import { notificationBuilders } from '../notifications/notification.builders';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +37,7 @@ export class UsersService {
     private readonly userRepo: Repository<UserEntity>,
     private readonly emailConfirmationService: MailConfirmService,
     private readonly geographyService: GeographyService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   private detectLanguage(req: AppRequest): UserLanguage {
@@ -378,6 +381,12 @@ export class UsersService {
       user.statusEmail === true &&
       dto.statusEmail === false;
 
+    // Транзишены для уведомлений считаем ДО мутации user.*
+    const wantsReactivateStatus =
+      dto.status !== undefined && user.status === false && dto.status === true;
+    const wantsRoleChange = dto.role !== undefined && dto.role !== user.role;
+    const wantsPasswordChange = Boolean(dto.password);
+
     if (
       isAdmin &&
       isActive &&
@@ -450,6 +459,28 @@ export class UsersService {
     }
 
     await this.userRepo.save(user);
+
+    // Системные уведомления админских действий (fire-and-forget, без перехода).
+    if (wantsDeactivateStatus) {
+      this.notificationsService.emit(
+        notificationBuilders.accountDeactivated(user.id),
+      );
+    }
+    if (wantsReactivateStatus) {
+      this.notificationsService.emit(
+        notificationBuilders.accountReactivated(user.id),
+      );
+    }
+    if (wantsRoleChange) {
+      this.notificationsService.emit(
+        notificationBuilders.roleChanged({ userId: user.id, role: user.role }),
+      );
+    }
+    if (wantsPasswordChange) {
+      this.notificationsService.emit(
+        notificationBuilders.passwordChanged(user.id),
+      );
+    }
 
     return new AdminUserDto(
       user,

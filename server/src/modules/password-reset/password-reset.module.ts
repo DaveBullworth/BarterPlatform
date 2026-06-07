@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailModule } from '../mail/mail.module';
 import { RedisModule } from '../redis/redis.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { PasswordResetController } from './password-reset.controller';
 import { PasswordResetService } from './password-reset.service';
 import { PasswordResetPolicy } from './policies/password-reset.policy';
@@ -13,6 +14,7 @@ import { UserEntity } from '@/database/entities/user.entity';
     TypeOrmModule.forFeature([PasswordResetTokenEntity, UserEntity]),
     MailModule,
     RedisModule,
+    NotificationsModule,
   ],
   controllers: [PasswordResetController],
   providers: [PasswordResetService, PasswordResetPolicy],

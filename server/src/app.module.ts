@@ -14,6 +14,8 @@ import { DeactivationModule } from './modules/deactivation/deactivation.module';
 import { LotsModule } from './modules/lots/lots.module';
 import { TaxonomyModule } from './modules/taxonomy/taxonomy.module';
 import { UserPreferencesModule } from './modules/user-preferences/user-preferences.module';
+import { OffersModule } from './modules/offers/offers.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { UserVersionSubscriber } from './database/subscribers/user-version.subscriber';
 import { LotVersionSubscriber } from './database/subscribers/lot-version.subscriber';
 import { ThrottlingModule } from './common/throttling/throttling.module';
@@ -58,6 +60,8 @@ import { ThrottlingModule } from './common/throttling/throttling.module';
     LotsModule,
     TaxonomyModule,
     UserPreferencesModule,
+    OffersModule,
+    NotificationsModule,
     ThrottlingModule,
   ],
   providers: [UserVersionSubscriber, LotVersionSubscriber],

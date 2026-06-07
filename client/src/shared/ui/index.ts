@@ -2,6 +2,7 @@ export { ConfirmModal } from './ConfirmModal';
 export { EmptyState } from './EmptyState';
 export { ErrorStub } from './ErrorStub';
 export { FullPageLoader } from './FullPageLoader';
+export { SavingOverlay } from './SavingOverlay';
 export { LanguageSwitcher } from './LanguageSwitcher';
 export { ThemeSwitcher } from './ThemeSwitcher';
 export { DateRangeDropdownInput } from './DateRangeDropdownInput';

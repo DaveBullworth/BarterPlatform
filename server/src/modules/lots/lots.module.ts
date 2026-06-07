@@ -7,9 +7,11 @@ import { AuthModule } from '../auth/auth.module';
 import { RedisModule } from '../redis/redis.module';
 import { UsersModule } from '../users/users.module';
 import { TaxonomyModule } from '../taxonomy/taxonomy.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { LotUpdatedInterceptor } from './interceptors/lot.cache.interceptor';
 import { LotArchiveService } from './lot-archive.service';
 import { LotArchiveCleanupService } from './lot-archive-cleanup.service';
+import { LotRelevanceService } from './lot-relevance.service';
 
 @Module({
   imports: [
@@ -18,10 +20,12 @@ import { LotArchiveCleanupService } from './lot-archive-cleanup.service';
     RedisModule,
     UsersModule,
     TaxonomyModule,
+    NotificationsModule,
   ],
   controllers: [LotsController],
   providers: [
     LotsService,
+    LotRelevanceService,
     LotArchiveService,
     LotArchiveCleanupService,
     LotUpdatedInterceptor,

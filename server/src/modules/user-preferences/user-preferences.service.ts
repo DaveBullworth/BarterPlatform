@@ -2,9 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 
-import { UserTaxonomyPreferenceEntity } from '@/database/entities/user-taxonomy-preference.entity';
+import {
+  TaxonomyTargetType,
+  UserTaxonomyPreferenceEntity,
+} from '@/database/entities/user-taxonomy-preference.entity';
 import { TaxonomyService } from '@/modules/lots/taxonomy.service';
 import { UpsertPreferenceItemDto } from './dto/upsert-preferences.dto';
+import { PreferenceAvailabilityDto } from './dto/preference-availability.dto';
 import { UserPreferenceErrorCode } from './errors/user-preferences-error-codes';
 
 @Injectable()
@@ -26,6 +30,42 @@ export class UserPreferencesService {
       targetId: row.targetId,
       weight: row.weight,
     }));
+  }
+
+  /**
+   * Маскированные предпочтения: возвращает только МНОЖЕСТВА id узлов, в которых
+   * у пользователя есть интерес (любой вес 1..3), без самих весов. Любой лот,
+   * чей chapter/category/subcategory попадает в одно из множеств, считается
+   * интересным получателю (матрёшка раздел→категория→подкатегория обеспечивается
+   * тем, что лот несёт весь свой путь идентификаторов).
+   */
+  async getAvailabilityForUser(
+    userId: string,
+  ): Promise<PreferenceAvailabilityDto> {
+    const rows = await this.preferencesRepo.find({
+      where: { userId },
+      select: ['targetType', 'targetId'],
+    });
+
+    const chapterIds = new Set<number>();
+    const categoryIds = new Set<number>();
+    const subcategoryIds = new Set<number>();
+
+    for (const row of rows) {
+      if (row.targetType === TaxonomyTargetType.CHAPTER) {
+        chapterIds.add(row.targetId);
+      } else if (row.targetType === TaxonomyTargetType.CATEGORY) {
+        categoryIds.add(row.targetId);
+      } else if (row.targetType === TaxonomyTargetType.SUBCATEGORY) {
+        subcategoryIds.add(row.targetId);
+      }
+    }
+
+    return {
+      chapterIds: [...chapterIds],
+      categoryIds: [...categoryIds],
+      subcategoryIds: [...subcategoryIds],
+    };
   }
 
   /**
@@ -98,5 +138,4 @@ export class UserPreferencesService {
       }
     }
   }
-
 }

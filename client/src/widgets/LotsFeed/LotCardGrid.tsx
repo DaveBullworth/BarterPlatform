@@ -1,4 +1,4 @@
-import { Card, Stack, Text, Button } from '@mantine/core';
+import { Card, Stack, Text, Button, Checkbox, Tooltip } from '@mantine/core';
 import { ImageOff, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { KeyboardEvent } from 'react';
@@ -8,6 +8,7 @@ import { preload } from '@/shared/lib/preload';
 import type { LotResponse } from '@/entities/lot';
 
 import styles from './LotsFeed.module.scss';
+import { relevanceGlowClass } from './relevanceGlow';
 
 type Props = {
   lot: LotResponse;
@@ -17,6 +18,15 @@ type Props = {
   onExchange: (lot: LotResponse) => void;
   /** Не показывать кнопку "Обменяться" (например, в ленте "Мои лоты"). */
   hideExchange?: boolean;
+  /** Кнопка обмена видна, но заблокирована (исключительный случай — админ). */
+  exchangeDisabled?: boolean;
+
+  /** Режим выбора (модалка обмена): вместо кнопки — чекбокс. */
+  selectable?: boolean;
+  selected?: boolean;
+  /** Лот вне предпочтений получателя — выбрать нельзя. */
+  selectionDisabled?: boolean;
+  onSelectToggle?: (lot: LotResponse) => void;
 };
 
 export const LotCardGrid = ({
@@ -26,13 +36,26 @@ export const LotCardGrid = ({
   onOpen,
   onExchange,
   hideExchange = false,
+  exchangeDisabled = false,
+  selectable = false,
+  selected = false,
+  selectionDisabled = false,
+  onSelectToggle,
 }: Props) => {
   const { t } = useTranslation();
+
+  const handleActivate = () => {
+    if (selectable) {
+      if (!selectionDisabled) onSelectToggle?.(lot);
+      return;
+    }
+    onOpen(lot.id);
+  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onOpen(lot.id);
+      handleActivate();
     }
   };
 
@@ -40,15 +63,32 @@ export const LotCardGrid = ({
     .filter(Boolean)
     .join(', ');
 
+  const cardClass = [
+    styles.clickableCard,
+    selectable ? '' : relevanceGlowClass(lot.relevanceLevel),
+    selectable && selected ? styles.selectedCard : '',
+    selectable && selectionDisabled ? styles.disabledCard : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const selectLabel = selectionDisabled
+    ? t('feed.exchange.notOfferable')
+    : selected
+      ? t('feed.exchange.selected')
+      : t('feed.exchange.select');
+
   return (
     <Card
-      className={styles.clickableCard}
+      className={cardClass}
       padding="sm"
-      role="link"
-      tabIndex={0}
-      onClick={() => onOpen(lot.id)}
-      onMouseEnter={() => preload('lot')}
-      onTouchStart={() => preload('lot')}
+      role={selectable ? 'checkbox' : 'link'}
+      aria-checked={selectable ? selected : undefined}
+      aria-disabled={selectable && selectionDisabled ? true : undefined}
+      tabIndex={selectable && selectionDisabled ? -1 : 0}
+      onClick={handleActivate}
+      onMouseEnter={selectable ? undefined : () => preload('lot')}
+      onTouchStart={selectable ? undefined : () => preload('lot')}
       onKeyDown={handleKeyDown}
     >
       <Stack className={styles.gridCard}>
@@ -90,18 +130,37 @@ export const LotCardGrid = ({
           </Text>
         </div>
 
-        {!hideExchange && (
-          <Button
+        {selectable ? (
+          <Checkbox
             mt="auto"
-            variant="light"
-            fullWidth
-            onClick={(e) => {
-              e.stopPropagation();
-              onExchange(lot);
-            }}
-          >
-            {t('feed.exchange.action')}
-          </Button>
+            checked={selected}
+            disabled={selectionDisabled}
+            readOnly
+            color="barter"
+            label={selectLabel}
+          />
+        ) : (
+          !hideExchange && (
+            <Tooltip
+              label={t('feed.exchange.ownLot')}
+              disabled={!exchangeDisabled}
+              withArrow
+            >
+              <Button
+                mt="auto"
+                variant="light"
+                fullWidth
+                data-disabled={exchangeDisabled || undefined}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (exchangeDisabled) return;
+                  onExchange(lot);
+                }}
+              >
+                {t('feed.exchange.action')}
+              </Button>
+            </Tooltip>
+          )
         )}
       </Stack>
     </Card>

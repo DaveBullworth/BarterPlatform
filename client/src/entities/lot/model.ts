@@ -11,6 +11,7 @@ const GeoNodeSchema = z.object({
 // Базовый лот — поля общие для всех представлений
 const BaseLotSchema = z.object({
   id: z.uuid(),
+  userId: z.uuid(),
   chapterId: z.number().int().positive(),
   categoryId: z.number().int().positive(),
   subcategoryId: z.number().int().positive().nullish(),
@@ -24,14 +25,16 @@ const BaseLotSchema = z.object({
   archivationDate: z.iso.datetime().nullable().optional(),
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
+  // Уровень релевантности 0–5 для неоновой подсветки карточки в ленте.
+  // Приходит только в рекомендательной ленте авторизованного пользователя.
+  relevanceLevel: z.number().int().min(0).max(5).optional(),
 });
 
-// Полный лот (владелец/админ видят userId)
-export const LotSchema = BaseLotSchema.extend({
-  userId: z.uuid(),
-});
+// userId отдаётся во всех представлениях (как и в getOne) — бизнес-правила
+// скрывать владельца лота нет.
+export const LotSchema = BaseLotSchema;
 
-// Публичное представление лота (в ленте — без userId)
+// Представление лота в ленте
 export const LotResponseSchema = BaseLotSchema;
 
 // Пагинированный ответ
@@ -110,4 +113,6 @@ export type LotFilters = {
   subcategoryId?: IDFilter;
   query?: TextFilter;
   selfOnly?: boolean;
+  /** Константный фильтр для модалки обмена: исключить деактивированные (архивные) лоты. */
+  excludeArchived?: boolean;
 };

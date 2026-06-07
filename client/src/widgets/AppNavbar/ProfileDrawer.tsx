@@ -24,6 +24,7 @@ import { LogoutModal } from '@/features/auth';
 import { TaxonomyPreferencesModal } from '@/features/taxonomy-preferences';
 import { LanguageSwitcher, ThemeSwitcher } from '@/shared/ui';
 import { NotificationsDrawer } from '@/widgets/AppHeader';
+import { useUnreadCount } from '@/entities/notification';
 
 import styles from './AppNavbar.module.scss';
 
@@ -49,7 +50,7 @@ export const ProfileDrawer = ({
   const [notificationsOpened, setNotificationsOpened] = useState(false);
   const [preferencesOpened, setPreferencesOpened] = useState(false);
 
-  const unreadCount = 4; // TODO: заменить на реальные данные
+  const { data: unreadCount = 0 } = useUnreadCount(isAuthenticated);
 
   return (
     <>

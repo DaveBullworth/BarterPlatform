@@ -146,6 +146,7 @@
     "confirmUpdateMessage": "Czy na pewno chcesz zapisać zmiany w profilu?",
     "confirmDiscardMessage": "Czy na pewno chcesz wyjść? Wszystkie niezapisane zmiany zostaną utracone.",
     "confirmDiscardConfirm": "Wyjdź",
+    "confirmDiscardSave": "Zapisz",
     "confirmDiscardCancel": "Zostań"
   },
   "deactivation": {
@@ -238,7 +239,63 @@
   },
   "notifications": {
     "title": "Powiadomienia",
-    "empty": "Nie masz nowych powiadomień"
+    "empty": "Nie masz nowych powiadomień",
+    "markAllRead": "Oznacz wszystkie jako przeczytane",
+    "items": {
+      "fallback": { "title": "Powiadomienie", "body": "" },
+      "system": {
+        "account_deactivated": {
+          "title": "Konto dezaktywowane",
+          "body": "Twoje konto zostało dezaktywowane przez administratora. Jeśli to pomyłka, skontaktuj się z pomocą."
+        },
+        "account_reactivated": {
+          "title": "Konto przywrócone",
+          "body": "Twoje konto jest znów aktywne."
+        },
+        "role_changed": {
+          "title": "Zmieniono rolę",
+          "body": "Twoja rola została zmieniona na „{{role}}”."
+        },
+        "new_login": {
+          "title": "Nowe logowanie",
+          "body": "Wykryto logowanie do Twojego konta. Jeśli to nie Ty, zmień hasło."
+        },
+        "password_changed": {
+          "title": "Hasło zmienione",
+          "body": "Hasło Twojego konta zostało zmienione. Jeśli to nie Ty, natychmiast skontaktuj się z pomocą."
+        },
+        "lot_deactivated": {
+          "title": "Zmieniono status oferty",
+          "body": "Administrator zmienił status Twojej oferty „{{lotTitle}}”."
+        },
+        "lot_removed": {
+          "title": "Oferta usunięta",
+          "body": "Administrator usunął Twoją ofertę „{{lotTitle}}”."
+        },
+        "lot_deletion_scheduled": {
+          "title": "Oferta wkrótce zostanie usunięta",
+          "body": "Zarchiwizowana oferta „{{lotTitle}}” zostanie trwale usunięta za {{daysLeft}} dni. Przywróć ją, jeśli nadal jest potrzebna."
+        }
+      },
+      "exchange": {
+        "offer_received": {
+          "title": "Nowa propozycja wymiany",
+          "body": "Otrzymałeś propozycję wymiany za „{{lotTitle}}” (ofert: {{offeredCount}})."
+        },
+        "offer_accepted": {
+          "title": "Propozycja zaakceptowana",
+          "body": "Twoja propozycja wymiany została zaakceptowana."
+        },
+        "offer_rejected": {
+          "title": "Propozycja odrzucona",
+          "body": "Propozycja wymiany została odrzucona."
+        },
+        "offer_completed": {
+          "title": "Wymiana zakończona",
+          "body": "Wymiana zakończona pomyślnie."
+        }
+      }
+    }
   },
   "categories": {
     "title": "Kategorie",
@@ -315,7 +372,8 @@
     "confirm": {
       "saveTitle": "Potwierdzenie zapisu",
       "saveMessage": "Czy na pewno chcesz zapisać zmiany w tej ofercie?"
-    }
+    },
+    "saving": "Zapisywanie oferty…"
   },
   "lot": {
     "visibility": {
@@ -369,6 +427,18 @@
       "notSelected": "Nie wybrano"
     },
     "exchange": {
+      "modalTitle": "Wybierz oferty do wymiany",
+      "modalSubtitle": "Zaznacz do {{max}} swoich ofert pasujących do preferencji właściciela",
+      "select": "Wybierz",
+      "selected": "Wybrano",
+      "notOfferable": "Nie pasuje do preferencji właściciela",
+      "submit": "Wyślij propozycję",
+      "maxReached": "Można wybrać maksymalnie {{max}} ofert",
+      "empty": "Brak ofert dostępnych do wymiany",
+      "selectedCount": "Wybrano: {{count}} z {{max}}",
+      "ownLot": "Nie można wymienić własnej oferty",
+      "offerSent": "Propozycja wymiany została wysłana",
+      "noPrefs": "Właściciel oferty nie ma ustawionych preferencji — nie ma czego wybrać",
       "action": "Wymień się",
       "title": "Zaproponuj wymianę",
       "confirm": "Czy zaproponować wymianę właścicielowi tej oferty?",

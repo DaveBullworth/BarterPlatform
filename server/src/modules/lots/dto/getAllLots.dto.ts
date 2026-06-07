@@ -28,6 +28,12 @@ export class LotResponseDto {
   id!: string;
 
   @ApiProperty({
+    example: '550e8400-e29b-41d4-a716-446655440000',
+    description: 'ID владельца лота',
+  })
+  userId!: string;
+
+  @ApiProperty({
     example: 1,
     description: 'ID раздела (chapter)',
   })
@@ -107,4 +113,13 @@ export class LotResponseDto {
     format: 'date-time',
   })
   updatedAt!: Date;
+
+  @ApiPropertyOptional({
+    example: 4,
+    minimum: 0,
+    maximum: 5,
+    description:
+      'Уровень релевантности 0–5 для неоновой подсветки карточки. Отражает силу взаимного бартерного интереса (want + offer). 0 = совпадений нет. Присутствует только в рекомендательной ленте авторизованного пользователя.',
+  })
+  relevanceLevel?: number;
 }

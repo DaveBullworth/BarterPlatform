@@ -7,6 +7,8 @@ import * as bcrypt from 'bcryptjs';
 import { UserEntity } from '@/database/entities/user.entity';
 import { PasswordResetTokenEntity } from '@/database/entities/password_reset_token.entity';
 import { MailService } from '@/modules/mail/mail.service';
+import { NotificationsService } from '@/modules/notifications/notifications.service';
+import { notificationBuilders } from '@/modules/notifications/notification.builders';
 import { PasswordResetPolicy } from './policies/password-reset.policy';
 import { PasswordResetRequestResult } from './dto/passwordResetRequestDto';
 
@@ -24,6 +26,7 @@ export class PasswordResetService {
 
     private readonly mailService: MailService,
     private readonly resetPolicy: PasswordResetPolicy,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   /**
@@ -124,6 +127,11 @@ export class PasswordResetService {
     // 3. обновляем пароль
     token.user.password = passwordHash;
     await this.userRepo.save(token.user);
+
+    // Security-уведомление: пароль изменён (чтобы юзер успел забить тревогу).
+    this.notificationsService.emit(
+      notificationBuilders.passwordChanged(token.user.id),
+    );
 
     // 4. помечаем токен использованным
     token.used = true;

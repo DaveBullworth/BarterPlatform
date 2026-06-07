@@ -11,7 +11,7 @@ import {
   useDistrictOptions,
 } from '@/entities/geography';
 import { useNavigation } from '@/shared/lib/navigation';
-import { ConfirmModal, ErrorStub } from '@/shared/ui';
+import { ConfirmModal, ErrorStub, SavingOverlay } from '@/shared/ui';
 import {
   useLotFormData,
   useLotFormState,
@@ -147,6 +147,8 @@ export const LotFormPage = () => {
 
   return (
     <Stack maw={860} w="100%" mx="auto">
+      <SavingOverlay visible={isPending} label={t('lotForm.saving')} />
+
       <LotFormHeader isEditMode={isEditMode} isFormDirty={isFormDirty} />
 
       <LotForm

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailConfirmModule } from '../mail-confirm/mail-confirm.module';
 import { RedisModule } from '../redis/redis.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { UsersService } from './users.service';
 import { UserEntity } from 'src/database/entities/user.entity';
 import { UsersController } from './users.controller';
@@ -16,6 +17,7 @@ import { GeographyService } from './geography.service';
     MailConfirmModule,
     AuthModule,
     RedisModule,
+    NotificationsModule,
   ],
   providers: [UsersService, GeographyService, UserUpdatedInterceptor],
   exports: [UsersService, GeographyService],

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuthStore, useSelfUser } from '@/entities/user';
+import { useUnreadCount } from '@/entities/notification';
 import { useNavigation } from '@/shared/lib/navigation';
 import { LogoutModal } from '@/features/auth';
 import { TaxonomyPreferencesModal } from '@/features/taxonomy-preferences';
@@ -27,7 +28,7 @@ export const UserMenu = () => {
   const [notificationsOpened, setNotificationsOpened] = useState(false);
   const [preferencesOpened, setPreferencesOpened] = useState(false);
 
-  const unreadCount = 4; // TODO: реальные данные
+  const { data: unreadCount = 0 } = useUnreadCount(isAuthenticated);
 
   const initial =
     isAuthenticated && user?.name ? user.name[0].toUpperCase() : null;

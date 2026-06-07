@@ -243,3 +243,120 @@
   flex-wrap: wrap;
   padding: 0.5rem 0;
 }
+
+/* ===== Relevance neon glow =====
+   Подсветка карточки по уровню взаимного бартерного интереса (0–5).
+   Градиентная рамка реализована трюком в два фона (padding-box + border-box):
+   внутренний слой = фон карточки, внешний = вращающийся конический градиент,
+   видимый только в зоне 2px-бордера. Снаружи — пульсирующее неоновое гало
+   через box-shadow (не обрезается overflow:hidden карточки). */
+
+@property --glow-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.clickableCard.glow {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(var(--mantine-color-body), var(--mantine-color-body)),
+    conic-gradient(from var(--glow-angle), var(--glow-stops));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    0 0 var(--glow-blur) var(--glow-shadow),
+    0 0 calc(var(--glow-blur) * 2.2) var(--glow-shadow);
+  animation:
+    glow-spin var(--glow-speed) linear infinite,
+    glow-pulse calc(var(--glow-speed) / 2) ease-in-out infinite;
+}
+
+/* hover не должен перекрывать градиентную рамку сплошным цветом */
+.clickableCard.glow:hover {
+  border-color: transparent;
+}
+
+@keyframes glow-spin {
+  to {
+    --glow-angle: 360deg;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 var(--glow-blur) var(--glow-shadow),
+      0 0 calc(var(--glow-blur) * 2) var(--glow-shadow);
+  }
+  50% {
+    box-shadow:
+      0 0 calc(var(--glow-blur) * 1.7) var(--glow-shadow),
+      0 0 calc(var(--glow-blur) * 3.2) var(--glow-shadow);
+  }
+}
+
+/* Уровни: от прохладного бирюзового (слабое совпадение)
+   до «джекпота» — радужного неона (идеальный взаимный матч). */
+.glow1 {
+  --glow-stops: #2dd4bf, #14b8a6, #2dd4bf;
+  --glow-shadow: rgba(45, 212, 191, 0.45);
+  --glow-blur: 9px;
+  --glow-speed: 7s;
+}
+
+.glow2 {
+  --glow-stops: #22d3ee, #38bdf8, #3b82f6, #22d3ee;
+  --glow-shadow: rgba(56, 189, 248, 0.5);
+  --glow-blur: 11px;
+  --glow-speed: 6s;
+}
+
+.glow3 {
+  --glow-stops: #a78bfa, #8b5cf6, #6366f1, #a78bfa;
+  --glow-shadow: rgba(139, 92, 246, 0.55);
+  --glow-blur: 13px;
+  --glow-speed: 5s;
+}
+
+.glow4 {
+  --glow-stops: #f472b6, #ec4899, #d946ef, #f472b6;
+  --glow-shadow: rgba(236, 72, 153, 0.6);
+  --glow-blur: 16px;
+  --glow-speed: 4.5s;
+}
+
+.glow5 {
+  --glow-stops: #fbbf24, #f43f5e, #ec4899, #8b5cf6, #22d3ee, #fbbf24;
+  --glow-shadow: rgba(244, 114, 182, 0.65);
+  --glow-blur: 20px;
+  --glow-speed: 3.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clickableCard.glow {
+    animation: none;
+  }
+}
+
+/* ===== Selection mode (модалка обмена) ===== */
+
+.selectedCard {
+  border-color: var(--mantine-color-barter-5);
+  box-shadow:
+    inset 0 0 0 2px var(--mantine-color-barter-5),
+    0 8px 20px -10px rgba(30, 162, 115, 0.45);
+}
+
+.disabledCard {
+  opacity: 0.5;
+  filter: grayscale(0.45);
+  cursor: not-allowed;
+}
+
+.disabledCard:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--mantine-color-default-border);
+}

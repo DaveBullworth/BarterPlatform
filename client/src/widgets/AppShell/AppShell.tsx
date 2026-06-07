@@ -6,6 +6,8 @@ import { DesktopHeader, MobileHeader } from '@/widgets/AppHeader';
 import { DesktopNavbar, MobileBottomNavbar } from '@/widgets/AppNavbar';
 import { CategoriesDrawer } from '@/features/category-filter';
 import { RouteProgressBar } from '@/shared/ui';
+import { useAuthStore } from '@/entities/user';
+import { useNotificationsStream } from '@/entities/notification';
 
 import styles from './AppShell.module.scss';
 
@@ -14,6 +16,10 @@ export const AppShell = () => {
   const [categoriesOpened, { open: openCategories, close: closeCategories }] =
     useDisclosure(false);
   const isMobile = useMediaQuery('(max-width: 48em)');
+
+  // Один SSE-стрим уведомлений на всю сессию (только для авторизованных).
+  const { isAuthenticated } = useAuthStore();
+  useNotificationsStream(isAuthenticated);
 
   return (
     <>
