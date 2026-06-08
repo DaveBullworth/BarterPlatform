@@ -32,6 +32,7 @@ export enum NotificationSubtype {
   // system — безопасность
   NEW_LOGIN = 'system.new_login',
   PASSWORD_CHANGED = 'system.password_changed',
+  SESSION_TERMINATED = 'system.session_terminated',
   // system — лоты / модерация
   LOT_DEACTIVATED = 'system.lot_deactivated',
   LOT_REMOVED = 'system.lot_removed',

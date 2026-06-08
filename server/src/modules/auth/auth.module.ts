@@ -29,6 +29,12 @@ import { LoginBruteforcePolicy } from './policies/login-bruteforce.policy';
     LoginBruteforcePolicy,
   ],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard, SessionGuard, JwtModule],
+  exports: [
+    AuthService,
+    AuthGuard,
+    SessionGuard,
+    SessionPolicyService,
+    JwtModule,
+  ],
 })
 export class AuthModule {}

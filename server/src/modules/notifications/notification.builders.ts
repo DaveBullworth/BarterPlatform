@@ -96,6 +96,21 @@ export const notificationBuilders = {
     subtype: NotificationSubtype.PASSWORD_CHANGED,
   }),
 
+  // Старая сессия завершена автоматически при входе с нового устройства
+  // (достигнут лимит одновременных сессий).
+  sessionTerminated: (p: {
+    userId: string;
+    ip?: string | null;
+    userAgent?: string | null;
+  }): CreateNotificationInput => ({
+    userId: p.userId,
+    subtype: NotificationSubtype.SESSION_TERMINATED,
+    payload: {
+      ip: p.ip ?? null,
+      userAgent: p.userAgent ?? null,
+    },
+  }),
+
   // ───────── lots / moderation ─────────
   lotModerated: (p: {
     userId: string;

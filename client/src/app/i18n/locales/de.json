@@ -1,4 +1,27 @@
 {
+  "sessions": {
+    "title": "Sitzungen",
+    "subtitle": "Geräte, die in Ihrem Konto angemeldet sind.",
+    "subtitleAdmin": "Geräte, die im Konto des Benutzers angemeldet sind.",
+    "current": "Dieses Gerät",
+    "lastActive": "Aktiv: {{date}}",
+    "unknownDevice": "Unbekanntes Gerät",
+    "empty": "Keine aktiven Sitzungen.",
+    "terminate": "Sitzung beenden",
+    "terminateOthers": "Alle anderen Sitzungen beenden",
+    "terminateAll": "Alle Sitzungen beenden",
+    "confirmTitle": "Sitzung beenden?",
+    "confirmText": "Dieses Gerät wird abgemeldet und muss sich erneut anmelden.",
+    "confirmOthersTitle": "Andere Sitzungen beenden?",
+    "confirmOthersText": "Alle Geräte außer dem aktuellen werden abgemeldet.",
+    "confirmAllTitle": "Alle Sitzungen beenden?",
+    "confirmAllText": "Alle Geräte des Benutzers werden abgemeldet.",
+    "confirm": "Beenden",
+    "cancel": "Abbrechen",
+    "terminated": "Sitzung beendet.",
+    "terminatedOthers": "Andere Sitzungen beendet.",
+    "error": "Sitzung konnte nicht beendet werden."
+  },
   "auth": {
     "title": "Anmeldung",
     "registration": "Registrierung",
@@ -263,6 +286,10 @@
         "password_changed": {
           "title": "Passwort geändert",
           "body": "Das Passwort Ihres Kontos wurde geändert. Falls Sie das nicht waren, wenden Sie sich sofort an den Support."
+        },
+        "session_terminated": {
+          "title": "Sitzung beendet",
+          "body": "Eine ältere Sitzung wurde aufgrund einer neuen Anmeldung beendet (Sitzungslimit erreicht)."
         },
         "lot_deactivated": {
           "title": "Anzeigenstatus geändert",

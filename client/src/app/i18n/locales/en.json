@@ -1,4 +1,27 @@
 {
+  "sessions": {
+    "title": "Sessions",
+    "subtitle": "Devices that are signed in to your account.",
+    "subtitleAdmin": "Devices that are signed in to this user's account.",
+    "current": "This device",
+    "lastActive": "Active: {{date}}",
+    "unknownDevice": "Unknown device",
+    "empty": "No active sessions.",
+    "terminate": "End session",
+    "terminateOthers": "End all other sessions",
+    "terminateAll": "End all sessions",
+    "confirmTitle": "End session?",
+    "confirmText": "This device will be signed out and will need to log in again.",
+    "confirmOthersTitle": "End other sessions?",
+    "confirmOthersText": "All devices except the current one will be signed out.",
+    "confirmAllTitle": "End all sessions?",
+    "confirmAllText": "All of the user's devices will be signed out.",
+    "confirm": "End",
+    "cancel": "Cancel",
+    "terminated": "Session ended.",
+    "terminatedOthers": "Other sessions ended.",
+    "error": "Couldn't end the session."
+  },
   "auth": {
     "title": "Sign in",
     "registration": "Registration",
@@ -263,6 +286,10 @@
         "password_changed": {
           "title": "Password changed",
           "body": "Your account password was changed. If it wasn't you, contact support immediately."
+        },
+        "session_terminated": {
+          "title": "Session ended",
+          "body": "An older session was ended because of a new sign-in (session limit reached)."
         },
         "lot_deactivated": {
           "title": "Lot status changed",

@@ -90,6 +90,10 @@ export class AuthService {
     // БРУТФОРС - успех → сбрасываем счётчик
     await this.loginBruteforcePolicy.reset({ deviceId, ip });
 
+    // Гасим протухшие сессии, чтобы они не занимали лимит и не мешали
+    // переиспользованию сессии этого устройства.
+    await this.sessionPolicy.cleanupExpired(user.id);
+
     // ===== ИЩЕМ СУЩЕСТВУЮ СЕССИЮ С ЭТОГО УСТРОЙСТВА =====
     const existingSession = await this.sessionRepo.findOne({
       where: {
@@ -100,9 +104,6 @@ export class AuthService {
       },
     });
 
-    // Проверка ограничения по кол-ву одновременных сессий
-    await this.sessionPolicy.assertCanCreateSession(user.id);
-
     // Создаём сессию ПЕРЕД токенами
     const sessionDuration = remember
       ? 30 * 24 * 60 * 60 * 1000
@@ -111,6 +112,7 @@ export class AuthService {
     // ===== ПЕРЕИСПОЛЬЗОВАНИЕ =====
     if (existingSession) {
       existingSession.expiresAt = new Date(Date.now() + sessionDuration);
+      existingSession.lastSeenAt = new Date();
 
       const accessToken = this.generateAccessToken(user, existingSession.id);
       const refreshToken = this.generateRefreshToken(
@@ -136,7 +138,9 @@ export class AuthService {
     }
 
     // ===== НОВАЯ СЕССИЯ =====
-    await this.sessionPolicy.assertCanCreateSession(user.id);
+    // Освобождаем место под новую сессию: чистим протухшие и при необходимости
+    // вытесняем самую старую активную (скользящее окно — вход доступен всегда).
+    await this.sessionPolicy.enforceSessionLimit(user.id);
 
     // Знакомое ли устройство: есть ли у пользователя прошлые сессии с этим
     // deviceId (любого статуса). Нужно, чтобы НЕ слать уведомление о входе при
@@ -153,6 +157,7 @@ export class AuthService {
       userAgent,
       deviceId,
       expiresAt: new Date(Date.now() + sessionDuration),
+      lastSeenAt: new Date(),
       status: true,
     });
 
@@ -244,6 +249,11 @@ export class AuthService {
         });
       }
 
+      // Обновляем «последнюю активность» — refresh служит естественным
+      // heartbeat'ом активной сессии (раз в ~15 мин на живом клиенте).
+      session.lastSeenAt = new Date();
+      await this.sessionRepo.save(session);
+
       const accessToken = this.generateAccessToken(session.user, session.id);
       const newRefreshToken = this.generateRefreshToken(
         session.user,
@@ -290,11 +300,8 @@ export class AuthService {
         session.refreshTokenHash!,
       );
       if (isMatch) {
-        session.status = false;
-        // Сохраняем сессию с новым статусом с БД
-        await this.sessionRepo.save(session);
-        // Удаляем сессию из Redis
-        await this.redisSessionService.revokeSession(session.id);
+        // Единая точка отзыва: status=false + удаление ключа из Redis.
+        await this.sessionPolicy.revoke(session);
         return;
       }
     }

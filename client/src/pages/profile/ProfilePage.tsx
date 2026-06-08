@@ -1,5 +1,12 @@
 import { Stack, Loader, Center, Button, Tabs, Group } from '@mantine/core';
-import { Contact, Settings, Pencil, UserX, ShieldAlert } from 'lucide-react';
+import {
+  Contact,
+  Settings,
+  Pencil,
+  UserX,
+  ShieldAlert,
+  MonitorSmartphone,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +26,7 @@ import { USER_ROLES } from '@/shared/constants/user-role';
 import { ProfileHeaderBlock } from '@/widgets/ProfileHeaderBlock';
 import { ProfileContactsBlock } from '@/widgets/ProfileContactsBlock';
 import { ProfilePreferencesBlock } from '@/widgets/ProfilePreferencesBlock';
+import { ProfileSessionsBlock } from '@/widgets/ProfileSessionsBlock';
 import { ProfileEditModal } from '@/features/profile/edit';
 import { AccountDeactivationModal } from '@/features/profile/deactivation';
 
@@ -59,6 +67,7 @@ export const ProfilePage = () => {
   const canDeactivate =
     currentUser?.role === USER_ROLES.USER && mode === 'self';
   const showPreferencesTab = mode === 'self' && isSelfUser(user);
+  const showSessionsTab = mode === 'self' || mode === 'admin';
 
   return (
     <Stack gap="lg" maw={920} w="100%" mx="auto">
@@ -84,6 +93,14 @@ export const ProfilePage = () => {
               leftSection={<Settings size={15} strokeWidth={2} />}
             >
               {t('profile.savePreferences').split(' ')[0]}
+            </Tabs.Tab>
+          )}
+          {showSessionsTab && (
+            <Tabs.Tab
+              value="sessions"
+              leftSection={<MonitorSmartphone size={15} strokeWidth={2} />}
+            >
+              {t('sessions.title')}
             </Tabs.Tab>
           )}
           {canDeactivate && (
@@ -121,6 +138,12 @@ export const ProfilePage = () => {
         {showPreferencesTab && (
           <Tabs.Panel value="preferences" className={styles.tabPanel}>
             <ProfilePreferencesBlock user={user} />
+          </Tabs.Panel>
+        )}
+
+        {showSessionsTab && (
+          <Tabs.Panel value="sessions" className={styles.tabPanel}>
+            <ProfileSessionsBlock userId={mode === 'self' ? undefined : id} />
           </Tabs.Panel>
         )}
 

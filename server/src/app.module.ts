@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MiddlewareModule } from './common/middlewares/middleware.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { SessionsModule } from './modules/sessions/sessions.module';
 import { UsersModule } from './modules/users/users.module';
 import { TypeOrmLogger } from './common/services/logger/typeorm.logger';
 import { MailModule } from './modules/mail/mail.module';
@@ -50,6 +51,7 @@ import { ThrottlingModule } from './common/throttling/throttling.module';
 
     MiddlewareModule,
     AuthModule,
+    SessionsModule,
     UsersModule,
     MailModule,
     MailConfirmModule,

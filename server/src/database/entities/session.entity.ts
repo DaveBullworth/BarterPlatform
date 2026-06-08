@@ -66,6 +66,14 @@ export class SessionEntity {
   createdAt!: Date;
 
   @ApiProperty({
+    example: '2026-01-15T08:12:00.000Z',
+    description: 'Время последней активности сессии (обновляется при refresh)',
+    nullable: true,
+  })
+  @Column({ type: 'timestamptz', nullable: true })
+  lastSeenAt!: Date | null;
+
+  @ApiProperty({
     example: '2026-01-18T10:30:00.000Z',
     description: 'Дата и время окончания сессии',
   })

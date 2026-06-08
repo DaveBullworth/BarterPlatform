@@ -1,4 +1,27 @@
 {
+  "sessions": {
+    "title": "Sesje",
+    "subtitle": "Urządzenia zalogowane na Twoim koncie.",
+    "subtitleAdmin": "Urządzenia zalogowane na koncie użytkownika.",
+    "current": "To urządzenie",
+    "lastActive": "Aktywność: {{date}}",
+    "unknownDevice": "Nieznane urządzenie",
+    "empty": "Brak aktywnych sesji.",
+    "terminate": "Zakończ sesję",
+    "terminateOthers": "Zakończ pozostałe sesje",
+    "terminateAll": "Zakończ wszystkie sesje",
+    "confirmTitle": "Zakończyć sesję?",
+    "confirmText": "To urządzenie zostanie wylogowane i będzie wymagać ponownego logowania.",
+    "confirmOthersTitle": "Zakończyć pozostałe sesje?",
+    "confirmOthersText": "Wszystkie urządzenia poza bieżącym zostaną wylogowane.",
+    "confirmAllTitle": "Zakończyć wszystkie sesje?",
+    "confirmAllText": "Wszystkie urządzenia użytkownika zostaną wylogowane.",
+    "confirm": "Zakończ",
+    "cancel": "Anuluj",
+    "terminated": "Sesja zakończona.",
+    "terminatedOthers": "Pozostałe sesje zakończone.",
+    "error": "Nie udało się zakończyć sesji."
+  },
   "auth": {
     "title": "Logowanie",
     "registration": "Rejestracja",
@@ -263,6 +286,10 @@
         "password_changed": {
           "title": "Hasło zmienione",
           "body": "Hasło Twojego konta zostało zmienione. Jeśli to nie Ty, natychmiast skontaktuj się z pomocą."
+        },
+        "session_terminated": {
+          "title": "Sesja zakończona",
+          "body": "Starsza sesja została zakończona z powodu nowego logowania (osiągnięto limit sesji)."
         },
         "lot_deactivated": {
           "title": "Zmieniono status oferty",

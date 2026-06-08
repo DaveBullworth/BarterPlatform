@@ -20,6 +20,7 @@ export const NOTIFICATION_SUBTYPE_TYPE: Record<
   [NotificationSubtype.ROLE_CHANGED]: NotificationType.SYSTEM,
   [NotificationSubtype.NEW_LOGIN]: NotificationType.SYSTEM,
   [NotificationSubtype.PASSWORD_CHANGED]: NotificationType.SYSTEM,
+  [NotificationSubtype.SESSION_TERMINATED]: NotificationType.SYSTEM,
   [NotificationSubtype.LOT_DEACTIVATED]: NotificationType.SYSTEM,
   [NotificationSubtype.LOT_REMOVED]: NotificationType.SYSTEM,
   [NotificationSubtype.LOT_DELETION_SCHEDULED]: NotificationType.SYSTEM,
