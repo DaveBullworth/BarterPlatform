@@ -1,5 +1,7 @@
 export {
   NOTIFICATION_TYPE,
+  NOTIFICATION_ENTITY_TYPE,
+  NOTIFICATION_SUBTYPE,
   NotificationSchema,
   NotificationListSchema,
   UnreadCountSchema,

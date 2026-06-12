@@ -1,4 +1,68 @@
 {
+  "offers": {
+    "errors": {
+      "duplicateOffer": "Masz już aktywną ofertę dla tego ogłoszenia.",
+      "mirrorOffer": "Oferta odwrotna z tymi ogłoszeniami już istnieje - sprawdź oferty przychodzące.",
+      "notPreferred": "Część wybranych ogłoszeń nie pasuje do preferencji odbiorcy - odśwież wybór.",
+      "cooldown": "Niedawno złożyłeś już ofertę dla tego ogłoszenia. Spróbuj ponownie za {{minutes}} min."
+    },
+    "title": "Oferty",
+    "description": "Wysłane i otrzymane oferty wymiany",
+    "role": { "incoming": "Otrzymane", "outgoing": "Wysłane" },
+    "status": {
+      "pending": "Oczekuje",
+      "accepted": "Zaakceptowano",
+      "completed": "Zakończono",
+      "rejected": "Odrzucono"
+    },
+    "filterStatuses": "Filtruj według statusu",
+    "admin": {
+      "viewAs": "Zobacz jako użytkownik…",
+      "typeToSearch": "Zacznij pisać, aby wyszukać",
+      "notFound": "Nie znaleziono użytkowników"
+    },
+    "empty": {
+      "title": "Brak ofert",
+      "description": "Brak ofert pasujących do wybranych filtrów."
+    },
+    "detail": {
+      "createdAt": "Utworzono: {{date}}",
+      "exchangeTitle": "Co na co jest wymieniane",
+      "unknownUser": "Użytkownik",
+      "lotUnavailable": "Ogłoszenie niedostępne"
+    },
+    "actions": {
+      "accept": "Akceptuj",
+      "accepted": "Oferta zaakceptowana.",
+      "confirm": "Potwierdź wymianę",
+      "confirmed": "Wymiana potwierdzona.",
+      "reject": "Odrzuć",
+      "rejected": "Oferta odrzucona.",
+      "rejectTitle": "Odrzucić ofertę?",
+      "rejectText": "Oferta zostanie przeniesiona do statusu odrzuconej. Nie można tego cofnąć.",
+      "acceptTitle": "Przyjąć ofertę?",
+      "acceptText": "Zgadzasz się na wymianę - oferta przejdzie do statusu „Zaakceptowano”. Po wymianie obie strony potwierdzają jej zakończenie.",
+      "confirmTitle": "Potwierdzić wymianę?",
+      "confirmText": "Potwierdź tylko wtedy, gdy wymiana naprawdę się odbyła. Transakcja zakończy się, gdy potwierdzą obie strony.",
+      "completedHint": "Wymiana zakończona - działania dotyczące transakcji są niedostępne.",
+      "rejectedHint": "Oferta odrzucona - działania dotyczące transakcji są niedostępne.",
+      "waitingOther": "Potwierdziłeś wymianę - czekamy na potwierdzenie drugiej strony.",
+      "dealZone": "Decyzja w sprawie transakcji",
+      "helpZone": "Kontakt i zgłoszenia"
+    },
+    "report": {
+      "button": "Zgłoś",
+      "title": "Zgłosić tę ofertę?",
+      "text": "Skarga na tę ofertę zostanie wysłana do administratorów.",
+      "confirm": "Zgłoś",
+      "sent": "Twoje zgłoszenie zostało wysłane do administratorów."
+    },
+    "chat": {
+      "button": "Czat",
+      "soon": "Czat będzie dostępny wkrótce."
+    },
+    "cancel": "Anuluj"
+  },
   "sessions": {
     "title": "Sesje",
     "subtitle": "Urządzenia zalogowane na Twoim koncie.",
@@ -134,6 +198,7 @@
     "profile": "Profil",
     "admin": "Panel admina",
     "myLots": "Moje ogłoszenia",
+    "offers": "Oferty",
     "authRequired": "Wymagane logowanie"
   },
   "myLots": {
@@ -291,6 +356,10 @@
           "title": "Sesja zakończona",
           "body": "Starsza sesja została zakończona z powodu nowego logowania (osiągnięto limit sesji)."
         },
+        "offer_reported": {
+          "title": "Zgłoszono ofertę",
+          "body": "Użytkownik zgłosił ofertę wymiany. Sprawdź ją w moderacji."
+        },
         "lot_deactivated": {
           "title": "Zmieniono status oferty",
           "body": "Administrator zmienił status Twojej oferty „{{lotTitle}}”."
@@ -442,7 +511,7 @@
   "feed": {
     "noLotsFound": "Nie znaleziono ofert",
     "noLotsFoundFiltered": "Spróbuj zmienić filtry lub wyszukać coś innego.",
-    "noLotsFoundEmpty": "Nie ma jeszcze ofert — dodaj pierwszą.",
+    "noLotsFoundEmpty": "Nie ma jeszcze ofert - dodaj pierwszą.",
     "limit": "Limit",
     "info": "Informacje o kanale",
     "recordsOnPage": "Rekordy na stronie",
@@ -465,7 +534,7 @@
       "selectedCount": "Wybrano: {{count}} z {{max}}",
       "ownLot": "Nie można wymienić własnej oferty",
       "offerSent": "Propozycja wymiany została wysłana",
-      "noPrefs": "Właściciel oferty nie ma ustawionych preferencji — nie ma czego wybrać",
+      "noPrefs": "Właściciel oferty nie ma ustawionych preferencji - nie ma czego wybrać",
       "action": "Wymień się",
       "title": "Zaproponuj wymianę",
       "confirm": "Czy zaproponować wymianę właścicielowi tej oferty?",
@@ -486,7 +555,7 @@
     },
     "modal": {
       "title": "Preferencje",
-      "subtitle": "Zaznacz interesujące działy, kategorie i podkategorie — lepiej dopasowane oferty pojawią się wyżej w liście."
+      "subtitle": "Zaznacz interesujące działy, kategorie i podkategorie - lepiej dopasowane oferty pojawią się wyżej w liście."
     },
     "actions": {
       "selectAll": "Zaznacz wszystkie",
@@ -500,9 +569,9 @@
       "iconAria": "Wskazówka dot. preferencji",
       "title": "Jak działają preferencje",
       "intro": "Przypisz poziom zainteresowania dowolnemu węzłowi taksonomii (dział, kategoria lub podkategoria). Im wyższy poziom i bardziej szczegółowe dopasowanie, tym wyżej oferta pojawi się w liście.",
-      "level1": "1 — mogę rozważyć",
-      "level2": "2 — interesujące",
-      "level3": "3 — najbardziej chcę",
+      "level1": "1 - mogę rozważyć",
+      "level2": "2 - interesujące",
+      "level3": "3 - najbardziej chcę",
       "geo": "Uwzględniamy również Twoją lokalizację: dopasowanie dzielnicy > miasta > regionu.",
       "notes": "Bez preferencji lista jest sortowana wyłącznie wg daty utworzenia."
     }

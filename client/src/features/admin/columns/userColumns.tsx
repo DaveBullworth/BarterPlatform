@@ -124,7 +124,7 @@ export const getUserColumns = (t: TFunction): ColumnDef<AdminUser>[] => [
   {
     id: 'phone',
     header: t('auth.phone'),
-    width: 140,
+    width: 180,
     resizable: false,
     accessorFn: (row) => row.phone ?? '',
     cell: ({ row }) =>

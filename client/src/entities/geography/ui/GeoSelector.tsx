@@ -34,6 +34,7 @@ export const GeoSelector = ({
         data={regionOptions}
         searchable
         clearable
+        maxLength={100}
         value={value.regionId || null}
         error={errors?.regionId}
         onChange={(val) =>
@@ -48,6 +49,7 @@ export const GeoSelector = ({
         data={cityOptions}
         searchable
         clearable
+        maxLength={100}
         disabled={!value.regionId}
         value={value.cityId || null}
         error={errors?.cityId}
@@ -69,6 +71,7 @@ export const GeoSelector = ({
         data={districtOptions}
         searchable
         clearable
+        maxLength={100}
         disabled={!value.cityId || districtOptions.length === 0}
         value={value.districtId || null}
         onChange={(val) => onChange({ ...value, districtId: val ?? '' })}

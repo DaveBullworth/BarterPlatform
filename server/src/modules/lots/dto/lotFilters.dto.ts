@@ -45,4 +45,8 @@ export class LotFiltersDto {
   /** Константный фильтр для модалки обмена: исключить деактивированные (архивные) лоты. */
   @IsOptional()
   excludeArchived?: boolean;
+
+  /** Только ADMIN + selfOnly: смотреть лоты указанного пользователя. */
+  @IsOptional()
+  asUserId?: string;
 }

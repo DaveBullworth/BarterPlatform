@@ -1,4 +1,68 @@
 {
+  "offers": {
+    "errors": {
+      "duplicateOffer": "Sie haben bereits ein aktives Angebot für diese Anzeige.",
+      "mirrorOffer": "Ein Gegenangebot mit diesen Anzeigen existiert bereits - prüfen Sie Ihre eingehenden Angebote.",
+      "notPreferred": "Einige ausgewählte Anzeigen passen nicht zu den Präferenzen des Empfängers - aktualisieren Sie Ihre Auswahl.",
+      "cooldown": "Sie haben kürzlich bereits ein Angebot für diese Anzeige gemacht. Versuchen Sie es in {{minutes}} Min. erneut."
+    },
+    "title": "Angebote",
+    "description": "Gesendete und erhaltene Tauschangebote",
+    "role": { "incoming": "Erhalten", "outgoing": "Gesendet" },
+    "status": {
+      "pending": "Ausstehend",
+      "accepted": "Angenommen",
+      "completed": "Abgeschlossen",
+      "rejected": "Abgelehnt"
+    },
+    "filterStatuses": "Nach Status filtern",
+    "admin": {
+      "viewAs": "Als Benutzer ansehen…",
+      "typeToSearch": "Zum Suchen tippen",
+      "notFound": "Keine Benutzer gefunden"
+    },
+    "empty": {
+      "title": "Keine Angebote",
+      "description": "Es gibt keine Angebote für die gewählten Filter."
+    },
+    "detail": {
+      "createdAt": "Erstellt: {{date}}",
+      "exchangeTitle": "Was wird getauscht",
+      "unknownUser": "Benutzer",
+      "lotUnavailable": "Anzeige nicht verfügbar"
+    },
+    "actions": {
+      "accept": "Annehmen",
+      "accepted": "Angebot angenommen.",
+      "confirm": "Tausch bestätigen",
+      "confirmed": "Tausch bestätigt.",
+      "reject": "Ablehnen",
+      "rejected": "Angebot abgelehnt.",
+      "rejectTitle": "Angebot ablehnen?",
+      "rejectText": "Das Angebot wird in den Status „abgelehnt“ versetzt. Dies kann nicht rückgängig gemacht werden.",
+      "acceptTitle": "Angebot annehmen?",
+      "acceptText": "Sie stimmen dem Tausch zu - das Angebot wechselt in den Status „Angenommen“. Nach dem Tausch bestätigen beide Seiten den Abschluss.",
+      "confirmTitle": "Tausch bestätigen?",
+      "confirmText": "Bestätigen Sie nur, wenn der Tausch tatsächlich stattgefunden hat. Der Handel ist abgeschlossen, sobald beide Seiten bestätigen.",
+      "completedHint": "Der Tausch ist abgeschlossen - Aktionen zum Handel sind nicht mehr verfügbar.",
+      "rejectedHint": "Das Angebot wurde abgelehnt - Aktionen zum Handel sind nicht mehr verfügbar.",
+      "waitingOther": "Sie haben den Tausch bestätigt - wir warten auf die andere Seite.",
+      "dealZone": "Entscheidung zum Handel",
+      "helpZone": "Kontakt & Meldungen"
+    },
+    "report": {
+      "button": "Melden",
+      "title": "Dieses Angebot melden?",
+      "text": "Eine Beschwerde über dieses Angebot wird an die Administratoren gesendet.",
+      "confirm": "Melden",
+      "sent": "Ihre Meldung wurde an die Administratoren gesendet."
+    },
+    "chat": {
+      "button": "Chat",
+      "soon": "Der Chat wird bald verfügbar sein."
+    },
+    "cancel": "Abbrechen"
+  },
   "sessions": {
     "title": "Sitzungen",
     "subtitle": "Geräte, die in Ihrem Konto angemeldet sind.",
@@ -134,6 +198,7 @@
     "profile": "Profil",
     "admin": "Admin",
     "myLots": "Meine Anzeigen",
+    "offers": "Angebote",
     "authRequired": "Anmeldung erforderlich"
   },
   "myLots": {
@@ -291,6 +356,10 @@
           "title": "Sitzung beendet",
           "body": "Eine ältere Sitzung wurde aufgrund einer neuen Anmeldung beendet (Sitzungslimit erreicht)."
         },
+        "offer_reported": {
+          "title": "Angebot gemeldet",
+          "body": "Ein Benutzer hat ein Tauschangebot gemeldet. Bitte in der Moderation prüfen."
+        },
         "lot_deactivated": {
           "title": "Anzeigenstatus geändert",
           "body": "Ein Administrator hat den Status Ihrer Anzeige „{{lotTitle}}“ geändert."
@@ -442,7 +511,7 @@
   "feed": {
     "noLotsFound": "Keine Anzeigen gefunden",
     "noLotsFoundFiltered": "Passe die Filter an oder versuche eine andere Suche.",
-    "noLotsFoundEmpty": "Noch keine Anzeigen — füge die erste hinzu.",
+    "noLotsFoundEmpty": "Noch keine Anzeigen - füge die erste hinzu.",
     "limit": "Limit",
     "info": "Feed-Info",
     "recordsOnPage": "Einträge auf der Seite",
@@ -465,7 +534,7 @@
       "selectedCount": "Ausgewählt: {{count}} von {{max}}",
       "ownLot": "Eigene Anzeige kann nicht getauscht werden",
       "offerSent": "Tauschangebot gesendet",
-      "noPrefs": "Der Eigentümer hat keine Präferenzen festgelegt — nichts auszuwählen",
+      "noPrefs": "Der Eigentümer hat keine Präferenzen festgelegt - nichts auszuwählen",
       "action": "Tauschen",
       "title": "Tausch vorschlagen",
       "confirm": "Möchten Sie dem Besitzer dieses Lots einen Tausch vorschlagen?",
@@ -486,7 +555,7 @@
     },
     "modal": {
       "title": "Präferenzen",
-      "subtitle": "Markieren Sie interessante Bereiche, Kategorien und Unterkategorien — passendere Lots erscheinen weiter oben im Feed."
+      "subtitle": "Markieren Sie interessante Bereiche, Kategorien und Unterkategorien - passendere Lots erscheinen weiter oben im Feed."
     },
     "actions": {
       "selectAll": "Alle auswählen",
@@ -500,9 +569,9 @@
       "iconAria": "Hinweis zu Präferenzen",
       "title": "Wie Präferenzen funktionieren",
       "intro": "Weisen Sie einer beliebigen Taxonomie-Ebene (Bereich, Kategorie oder Unterkategorie) einen Interessensgrad zu. Je höher die Stufe und je präziser die Übereinstimmung, desto höher erscheint ein Lot im Feed.",
-      "level1": "1 — könnte interessieren",
-      "level2": "2 — interessant",
-      "level3": "3 — will ich am meisten",
+      "level1": "1 - könnte interessieren",
+      "level2": "2 - interessant",
+      "level3": "3 - will ich am meisten",
       "geo": "Zusätzlich wird Ihr Standort berücksichtigt: Bezirk > Stadt > Region.",
       "notes": "Ohne Präferenzen wird der Feed nur nach Erstellungsdatum sortiert."
     }

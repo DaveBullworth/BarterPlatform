@@ -111,6 +111,19 @@ export const notificationBuilders = {
     },
   }),
 
+  // Жалоба на предложение — уведомление администратору (по одному на каждого).
+  offerReported: (p: {
+    adminId: string;
+    offerId: string;
+    reporterId: string;
+  }): CreateNotificationInput => ({
+    userId: p.adminId,
+    subtype: NotificationSubtype.OFFER_REPORTED,
+    entityType: NotificationEntityType.OFFER,
+    entityId: p.offerId,
+    payload: { reporterId: p.reporterId },
+  }),
+
   // ───────── lots / moderation ─────────
   lotModerated: (p: {
     userId: string;

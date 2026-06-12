@@ -1,0 +1,25 @@
+.bar {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  align-items: stretch;
+}
+
+.dealZone {
+  flex: 1;
+  min-width: 0;
+}
+
+.sideZone {
+  flex-shrink: 0;
+}
+
+@media (max-width: 48em) {
+  .bar {
+    flex-direction: column;
+  }
+
+  // В столбце кнопки решений растягиваем на всю ширину — крупные цели нажатия
+  .dealButton {
+    flex: 1 1 100%;
+  }
+}

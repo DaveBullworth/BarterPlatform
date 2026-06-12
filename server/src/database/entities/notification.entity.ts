@@ -26,6 +26,7 @@ export enum NotificationSubtype {
   // system — аккаунт
   ADMIN_MESSAGE = 'system.admin_message',
   SUSPICIOUS_ACTIVITY = 'system.suspicious_activity',
+  OFFER_REPORTED = 'system.offer_reported',
   ACCOUNT_DEACTIVATED = 'system.account_deactivated',
   ACCOUNT_REACTIVATED = 'system.account_reactivated',
   ROLE_CHANGED = 'system.role_changed',

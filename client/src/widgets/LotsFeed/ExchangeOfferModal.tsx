@@ -92,6 +92,11 @@ const ExchangeOfferContent = ({ targetLot, onClose }: ContentProps) => {
   const total = lotsData?.total ?? 0;
   const totalPages = Math.max(Math.ceil(total / LIMIT), 1);
 
+  // Страница могла опустеть (свои лоты изменились) — откатываемся на последнюю.
+  if (lotsData && page > totalPages) {
+    setPage(totalPages);
+  }
+
   const lotIds = useMemo(() => lots.map((l) => l.id), [lots]);
   const { data: mainImages = [] } = useLotsMainImages(lotIds);
   const imageMap = useMemo(() => {

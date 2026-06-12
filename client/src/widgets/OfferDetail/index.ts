@@ -1,0 +1,1 @@
+export { OfferDetail } from './OfferDetail';

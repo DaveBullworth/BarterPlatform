@@ -21,6 +21,8 @@ const importResetPasswordPage = () =>
 const importLotFormPage = () => import('@/pages/lot-form/LotFormPage');
 const importLotPage = () => import('@/pages/lot/LotPage');
 const importMyLotsPage = () => import('@/pages/my-lots/MyLotsPage');
+const importOffersPage = () => import('@/pages/offers/OffersPage');
+const importOfferPage = () => import('@/pages/offer/OfferPage');
 
 // Регистрируем preload-функции — нижние слои триггерят их по строковому ключу.
 registerPreloader('feed', importFeedPage);
@@ -32,6 +34,8 @@ registerPreloader('reset-password', importResetPasswordPage);
 registerPreloader('lot-form', importLotFormPage);
 registerPreloader('lot', importLotPage);
 registerPreloader('my-lots', importMyLotsPage);
+registerPreloader('offers', importOffersPage);
+registerPreloader('offer', importOfferPage);
 
 const FeedPage = lazy(() =>
   importFeedPage().then((m) => ({ default: m.FeedPage })),
@@ -59,6 +63,12 @@ const LotPage = lazy(() =>
 );
 const MyLotsPage = lazy(() =>
   importMyLotsPage().then((m) => ({ default: m.MyLotsPage })),
+);
+const OffersPage = lazy(() =>
+  importOffersPage().then((m) => ({ default: m.OffersPage })),
+);
+const OfferPage = lazy(() =>
+  importOfferPage().then((m) => ({ default: m.OfferPage })),
 );
 
 /** Suspense-обёртка с лёгким fallback'ом для lazy-роутов. */
@@ -128,6 +138,24 @@ export const routes: RouteObject[] = [
         element: withSuspense(
           <RequireAuth>
             <MyLotsPage />
+          </RequireAuth>,
+        ),
+      },
+
+      {
+        path: ROUTES.OFFERS,
+        element: withSuspense(
+          <RequireAuth>
+            <OffersPage />
+          </RequireAuth>,
+        ),
+      },
+
+      {
+        path: `${ROUTES.OFFERS}/:id`,
+        element: withSuspense(
+          <RequireAuth>
+            <OfferPage />
           </RequireAuth>,
         ),
       },

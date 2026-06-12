@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LotEntity } from '@/database/entities/lot.entity';
+import { OfferEntity } from '@/database/entities/offer.entity';
 import { LotsController } from './lots.controller';
 import { LotsService } from './lots.service';
 import { AuthModule } from '../auth/auth.module';
@@ -15,7 +16,7 @@ import { LotRelevanceService } from './lot-relevance.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([LotEntity]),
+    TypeOrmModule.forFeature([LotEntity, OfferEntity]),
     AuthModule,
     RedisModule,
     UsersModule,

@@ -25,6 +25,10 @@ export const ERROR_TYPES = {
   TOO_MANY_REQUESTS: 'TOO_MANY_REQUESTS',
   REFRESH_TOKEN_MISSING: 'REFRESH_TOKEN_MISSING',
   SESSION_NOT_FOUND: 'SESSION_NOT_FOUND',
+  DUPLICATE_OFFER: 'DUPLICATE_OFFER', // активное предложение на лот уже есть
+  MIRROR_OFFER_EXISTS: 'MIRROR_OFFER_EXISTS', // встречное (зеркальное) предложение уже есть
+  OFFER_COOLDOWN: 'OFFER_COOLDOWN', // повторное предложение тому же лоту раньше часа
+  OFFERED_LOT_NOT_PREFERRED: 'OFFERED_LOT_NOT_PREFERRED', // лот вне предпочтений получателя
   AVATAR_INVALID_FORMAT: 'AVATAR_INVALID_FORMAT', // файл не JPG/PNG
   AVATAR_PROCESSING_ERROR: 'AVATAR_PROCESSING_ERROR', // ошибка при обработке
   AVATAR_NOT_FOUND: 'AVATAR_NOT_FOUND', // попытка удалить отсутствующий аватар

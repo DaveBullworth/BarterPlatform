@@ -9,6 +9,20 @@ export const NOTIFICATION_TYPE = {
 export type NotificationType =
   (typeof NOTIFICATION_TYPE)[keyof typeof NOTIFICATION_TYPE];
 
+/** entityType с сервера — к какой сущности привязан deep-link уведомления. */
+export const NOTIFICATION_ENTITY_TYPE = {
+  OFFER: 'offer',
+  LOT: 'lot',
+} as const;
+
+/** Подтипы с особой логикой перехода. */
+export const NOTIFICATION_SUBTYPE = {
+  /** Жалоба на предложение — админ открывает его от лица отправителя жалобы. */
+  OFFER_REPORTED: 'system.offer_reported',
+  /** Лот удалён — переходить некуда. */
+  LOT_REMOVED: 'system.lot_removed',
+} as const;
+
 // subtype приходит строкой (varchar на бэке) — он же якорь i18n-ключа на клиенте.
 export const NotificationSchema = z.object({
   id: z.uuid(),

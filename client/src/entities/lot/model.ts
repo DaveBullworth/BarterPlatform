@@ -115,4 +115,6 @@ export type LotFilters = {
   selfOnly?: boolean;
   /** Константный фильтр для модалки обмена: исключить деактивированные (архивные) лоты. */
   excludeArchived?: boolean;
+  /** Только ADMIN + selfOnly: смотреть лоты указанного пользователя. */
+  asUserId?: string;
 };

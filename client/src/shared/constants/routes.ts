@@ -8,6 +8,7 @@ export const ROUTES = {
   LOT_EDIT: '/lot/edit',
   LOT_VIEW: '/lot',
   MY_LOTS: '/my-lots',
+  OFFERS: '/offers',
 
   MAIL_CONFIRM: '/mail-confirm',
   RESET_PASSWORD: '/reset-password',

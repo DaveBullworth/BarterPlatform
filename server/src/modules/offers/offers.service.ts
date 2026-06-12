@@ -10,14 +10,25 @@ import { In, Repository } from 'typeorm';
 
 import { OfferEntity, OfferStatus } from '@/database/entities/offer.entity';
 import { LotEntity, LotVisibilityStatus } from '@/database/entities/lot.entity';
+import { UserEntity, UserRole } from '@/database/entities/user.entity';
 import { UserPreferencesService } from '../user-preferences/user-preferences.service';
+import { LotsService } from '../lots/lots.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { notificationBuilders } from '../notifications/notification.builders';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { OfferResponseDto } from './dto/offer-response.dto';
 import { GetOffersQueryDto } from './dto/get-offers-query.dto';
+import {
+  OfferFeedItemDto,
+  OfferLotSummaryDto,
+  OffersFeedResponseDto,
+} from './dto/offer-feed.dto';
+import { OfferDetailDto } from './dto/offer-detail.dto';
 import { PreferenceAvailabilityDto } from '../user-preferences/dto/preference-availability.dto';
 import { OfferErrorCode } from './errors/offers-error-codes';
+
+/** Повторное предложение тому же лоту — не раньше часа с предыдущего. */
+const OFFER_REPEAT_COOLDOWN_MS = 60 * 60 * 1000;
 
 @Injectable()
 export class OffersService {
@@ -26,7 +37,10 @@ export class OffersService {
     private readonly offersRepo: Repository<OfferEntity>,
     @InjectRepository(LotEntity)
     private readonly lotsRepo: Repository<LotEntity>,
+    @InjectRepository(UserEntity)
+    private readonly usersRepo: Repository<UserEntity>,
     private readonly userPreferencesService: UserPreferencesService,
+    private readonly lotsService: LotsService,
     private readonly notificationsService: NotificationsService,
   ) {}
 
@@ -114,6 +128,49 @@ export class OffersService {
       });
     }
 
+    // 5) Зеркальный дубликат: у получателя уже есть активное встречное
+    //    предложение, где целевой и предлагаемые лоты поменяны местами.
+    const mirrorExists = await this.offersRepo
+      .createQueryBuilder('offer')
+      .where('offer.proposerId = :recipientId', { recipientId })
+      .andWhere('offer.recipientId = :proposerId', { proposerId })
+      .andWhere('offer.status IN (:...activeStatuses)', {
+        activeStatuses: [OfferStatus.PENDING, OfferStatus.ACCEPTED],
+      })
+      .andWhere('offer.lotId IN (:...offeredLotIds)', { offeredLotIds })
+      .andWhere(':targetLotId = ANY(offer.offeredLotIds)', {
+        targetLotId: dto.lotId,
+      })
+      .getExists();
+    if (mirrorExists) {
+      throw new ConflictException({
+        code: OfferErrorCode.MIRROR_OFFER_EXISTS,
+        message: 'A mirrored counter-offer with these lots already exists',
+      });
+    }
+
+    // 6) Кулдаун: предыдущее предложение этому лоту (включая отклонённое)
+    //    было меньше часа назад — просим подождать остаток времени.
+    const lastOffer = await this.offersRepo.findOne({
+      where: { proposerId, lotId: dto.lotId },
+      order: { createdAt: 'DESC' },
+    });
+    if (lastOffer) {
+      const elapsedMs = Date.now() - lastOffer.createdAt.getTime();
+      if (elapsedMs < OFFER_REPEAT_COOLDOWN_MS) {
+        const waitMinutes = Math.max(
+          Math.ceil((OFFER_REPEAT_COOLDOWN_MS - elapsedMs) / 60_000),
+          1,
+        );
+        throw new ConflictException({
+          code: OfferErrorCode.OFFER_COOLDOWN,
+          message:
+            'An offer for this lot was made recently. Please wait before retrying',
+          meta: { waitMinutes },
+        });
+      }
+    }
+
     const offer = this.offersRepo.create({
       proposerId,
       recipientId,
@@ -137,10 +194,19 @@ export class OffersService {
     return this.toResponseDto(saved);
   }
 
+  /**
+   * Лента предложений пользователя: пагинация, фильтр по роли и статусам,
+   * сортировка по дате изменения. Каждый элемент обогащается сводками лотов
+   * (раздел + краткое описание) и id участника-контрагента — чтобы клиент
+   * рисовал строку без доп. запросов на каждый лот.
+   */
   async findForUser(
     userId: string,
     query: GetOffersQueryDto,
-  ): Promise<OfferResponseDto[]> {
+  ): Promise<OffersFeedResponseDto> {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 10;
+
     const qb = this.offersRepo.createQueryBuilder('offer');
 
     if (query.role === 'incoming') {
@@ -153,18 +219,67 @@ export class OffersService {
       });
     }
 
-    if (query.status) {
-      qb.andWhere('offer.status = :status', { status: query.status });
+    if (query.statuses?.length) {
+      qb.andWhere('offer.status IN (:...statuses)', {
+        statuses: query.statuses,
+      });
     }
 
-    qb.orderBy('offer.createdAt', 'DESC');
-    const offers = await qb.getMany();
-    return offers.map((offer) => this.toResponseDto(offer));
+    qb.orderBy('offer.updatedAt', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    const [offers, total] = await qb.getManyAndCount();
+
+    // Одним запросом тянем сводки всех задействованных лотов (целевой + предлагаемые).
+    const lotIds = new Set<string>();
+    for (const offer of offers) {
+      lotIds.add(offer.lotId);
+      offer.offeredLotIds.forEach((id) => lotIds.add(id));
+    }
+
+    const lots = lotIds.size
+      ? await this.lotsRepo.find({
+          where: { id: In([...lotIds]) },
+          select: ['id', 'generalDescription', 'chapterId'],
+        })
+      : [];
+
+    const lotMap = new Map<string, OfferLotSummaryDto>(
+      lots.map((lot) => [
+        lot.id,
+        {
+          id: lot.id,
+          generalDescription: lot.generalDescription,
+          chapterId: lot.chapterId,
+        },
+      ]),
+    );
+
+    const data: OfferFeedItemDto[] = offers.map((offer) => {
+      const isOutgoing = offer.proposerId === userId;
+      return {
+        id: offer.id,
+        status: offer.status,
+        role: isOutgoing ? 'outgoing' : 'incoming',
+        counterpartId: isOutgoing ? offer.recipientId : offer.proposerId,
+        targetLot: lotMap.get(offer.lotId) ?? null,
+        // Удалённые лоты просто выпадают из списка предлагаемых.
+        offeredLots: offer.offeredLotIds.flatMap((id) => {
+          const lot = lotMap.get(id);
+          return lot ? [lot] : [];
+        }),
+        createdAt: offer.createdAt,
+        updatedAt: offer.updatedAt,
+      };
+    });
+
+    return { data, total };
   }
 
-  async findOne(id: string, userId: string): Promise<OfferResponseDto> {
+  async findOne(id: string, userId: string): Promise<OfferDetailDto> {
     const offer = await this.getParticipantOffer(id, userId);
-    return this.toResponseDto(offer);
+    return this.buildDetail(offer, userId);
   }
 
   /**
@@ -186,7 +301,7 @@ export class OffersService {
   }
 
   /** Получатель принимает предложение: PENDING → ACCEPTED. */
-  async accept(id: string, userId: string): Promise<OfferResponseDto> {
+  async accept(id: string, userId: string): Promise<OfferDetailDto> {
     const offer = await this.getParticipantOffer(id, userId);
 
     if (offer.recipientId !== userId) {
@@ -200,6 +315,7 @@ export class OffersService {
     }
 
     offer.status = OfferStatus.ACCEPTED;
+    offer.acceptedAt = new Date();
     const saved = await this.offersRepo.save(offer);
 
     this.notificationsService.emit(
@@ -209,11 +325,11 @@ export class OffersService {
       }),
     );
 
-    return this.toResponseDto(saved);
+    return this.buildDetail(saved, userId);
   }
 
   /** Любой участник отказывается: PENDING|ACCEPTED → REJECTED. */
-  async reject(id: string, userId: string): Promise<OfferResponseDto> {
+  async reject(id: string, userId: string): Promise<OfferDetailDto> {
     const offer = await this.getParticipantOffer(id, userId);
 
     if (
@@ -224,6 +340,7 @@ export class OffersService {
     }
 
     offer.status = OfferStatus.REJECTED;
+    offer.rejectedAt = new Date();
     const saved = await this.offersRepo.save(offer);
 
     // Уведомляем ДРУГУЮ сторону (не того, кто отклонил).
@@ -236,17 +353,15 @@ export class OffersService {
       }),
     );
 
-    return this.toResponseDto(saved);
+    return this.buildDetail(saved, userId);
   }
 
   /**
    * Участник подтверждает факт обмена. Когда подтвердили ОБА — ACCEPTED →
-   * COMPLETED.
+   * COMPLETED: лоты переходят к новым владельцам со статусом HIDDEN, а
+   * конкурирующие активные предложения на эти лоты автоматически отклоняются.
    */
-  async confirmCompletion(
-    id: string,
-    userId: string,
-  ): Promise<OfferResponseDto> {
+  async confirmCompletion(id: string, userId: string): Promise<OfferDetailDto> {
     const offer = await this.getParticipantOffer(id, userId);
 
     if (offer.status !== OfferStatus.ACCEPTED) {
@@ -256,35 +371,192 @@ export class OffersService {
     if (offer.proposerId === userId) offer.proposerCompletionConfirmed = true;
     if (offer.recipientId === userId) offer.recipientCompletionConfirmed = true;
 
-    if (
-      offer.proposerCompletionConfirmed &&
-      offer.recipientCompletionConfirmed
-    ) {
-      offer.status = OfferStatus.COMPLETED;
+    const bothConfirmed =
+      offer.proposerCompletionConfirmed && offer.recipientCompletionConfirmed;
+
+    if (!bothConfirmed) {
+      const saved = await this.offersRepo.save(offer);
+      return this.buildDetail(saved, userId);
     }
 
-    const saved = await this.offersRepo.save(offer);
+    offer.status = OfferStatus.COMPLETED;
+    offer.completedAt = new Date();
+
+    // Завершение, передача лотов и отмена конкурирующих предложений —
+    // атомарно: нельзя оставить лоты у старых владельцев при упавшем шаге.
+    const movedLotIds = [offer.lotId, ...offer.offeredLotIds];
+    let staleOffers: OfferEntity[] = [];
+
+    const saved = await this.offersRepo.manager.transaction(async (manager) => {
+      const savedOffer = await manager.save(offer);
+
+      // Целевой лот уходит предлагавшему, предложенные — получателю.
+      // Все переданные лоты скрываются: новый владелец сам решает, когда
+      // выставить их снова.
+      await manager.update(
+        LotEntity,
+        { id: savedOffer.lotId },
+        {
+          userId: savedOffer.proposerId,
+          visibilityStatus: LotVisibilityStatus.HIDDEN,
+        },
+      );
+      if (savedOffer.offeredLotIds.length) {
+        await manager.update(
+          LotEntity,
+          { id: In(savedOffer.offeredLotIds) },
+          {
+            userId: savedOffer.recipientId,
+            visibilityStatus: LotVisibilityStatus.HIDDEN,
+          },
+        );
+      }
+
+      // Остальные активные предложения, ссылающиеся на переданные лоты
+      // (как на целевой или как на предлагаемые), больше не валидны —
+      // их получатели/отправители уже не владеют этими лотами.
+      staleOffers = await manager
+        .getRepository(OfferEntity)
+        .createQueryBuilder('offer')
+        .where('offer.id != :completedId', { completedId: savedOffer.id })
+        .andWhere('offer.status IN (:...activeStatuses)', {
+          activeStatuses: [OfferStatus.PENDING, OfferStatus.ACCEPTED],
+        })
+        .andWhere(
+          '(offer.lotId IN (:...movedIds) OR offer.offeredLotIds && :movedArr::uuid[])',
+          { movedIds: movedLotIds, movedArr: movedLotIds },
+        )
+        .getMany();
+
+      if (staleOffers.length) {
+        const rejectedAt = new Date();
+        for (const stale of staleOffers) {
+          stale.status = OfferStatus.REJECTED;
+          stale.rejectedAt = rejectedAt;
+        }
+        await manager.save(staleOffers);
+      }
+
+      return savedOffer;
+    });
 
     // Обмен завершён — уведомляем обе стороны.
-    if (saved.status === OfferStatus.COMPLETED) {
+    this.notificationsService.emit(
+      notificationBuilders.offerCompleted({
+        userId: saved.proposerId,
+        offerId: saved.id,
+      }),
+    );
+    this.notificationsService.emit(
+      notificationBuilders.offerCompleted({
+        userId: saved.recipientId,
+        offerId: saved.id,
+      }),
+    );
+
+    // Участников авто-отклонённых предложений тоже уведомляем.
+    for (const stale of staleOffers) {
       this.notificationsService.emit(
-        notificationBuilders.offerCompleted({
-          userId: saved.proposerId,
-          offerId: saved.id,
+        notificationBuilders.offerRejected({
+          userId: stale.proposerId,
+          offerId: stale.id,
         }),
       );
       this.notificationsService.emit(
-        notificationBuilders.offerCompleted({
-          userId: saved.recipientId,
-          offerId: saved.id,
+        notificationBuilders.offerRejected({
+          userId: stale.recipientId,
+          offerId: stale.id,
         }),
       );
     }
 
-    return this.toResponseDto(saved);
+    return this.buildDetail(saved, userId);
+  }
+
+  /**
+   * Жалоба участника на предложение — уведомление всем администраторам.
+   * Сам инициатор (или админ от его лица) должен быть участником.
+   */
+  async report(id: string, userId: string): Promise<{ success: true }> {
+    await this.getParticipantOffer(id, userId);
+
+    const admins = await this.usersRepo.find({
+      where: { role: UserRole.ADMIN, status: true },
+      select: ['id'],
+    });
+
+    for (const admin of admins) {
+      this.notificationsService.emit(
+        notificationBuilders.offerReported({
+          adminId: admin.id,
+          offerId: id,
+          reporterId: userId,
+        }),
+      );
+    }
+
+    return { success: true };
   }
 
   // ───────────────────────── helpers ─────────────────────────
+
+  /** Собирает обогащённую карточку предложения для просматривающего. */
+  private async buildDetail(
+    offer: OfferEntity,
+    viewerUserId: string,
+  ): Promise<OfferDetailDto> {
+    const isOutgoing = offer.proposerId === viewerUserId;
+    const counterpartId = isOutgoing ? offer.recipientId : offer.proposerId;
+
+    const counterpart = await this.usersRepo.findOne({
+      where: { id: counterpartId },
+      select: ['id', 'name'],
+    });
+
+    const [targetCard] = await this.lotsService.getCardsByIds([offer.lotId]);
+    const offeredLots = await this.lotsService.getCardsByIds(
+      offer.offeredLotIds,
+    );
+
+    const viewerConfirmed = isOutgoing
+      ? offer.proposerCompletionConfirmed
+      : offer.recipientCompletionConfirmed;
+
+    const isParticipant =
+      offer.proposerId === viewerUserId || offer.recipientId === viewerUserId;
+
+    return {
+      id: offer.id,
+      status: offer.status,
+      role: isOutgoing ? 'outgoing' : 'incoming',
+      counterpart: {
+        id: counterpartId,
+        name: counterpart?.name ?? '',
+      },
+      targetLot: targetCard ?? null,
+      offeredLots,
+      proposerCompletionConfirmed: offer.proposerCompletionConfirmed,
+      recipientCompletionConfirmed: offer.recipientCompletionConfirmed,
+      viewerConfirmed,
+      actions: {
+        canAccept:
+          !isOutgoing && isParticipant && offer.status === OfferStatus.PENDING,
+        canReject:
+          isParticipant &&
+          (offer.status === OfferStatus.PENDING ||
+            offer.status === OfferStatus.ACCEPTED),
+        canConfirm:
+          isParticipant &&
+          offer.status === OfferStatus.ACCEPTED &&
+          !viewerConfirmed,
+      },
+      createdAt: offer.createdAt,
+      acceptedAt: offer.acceptedAt,
+      completedAt: offer.completedAt,
+      rejectedAt: offer.rejectedAt,
+      updatedAt: offer.updatedAt,
+    };
+  }
 
   private async getParticipantOffer(
     id: string,

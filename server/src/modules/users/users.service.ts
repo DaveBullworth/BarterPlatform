@@ -24,6 +24,7 @@ import { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { MailConfirmService } from '../mail-confirm/mail-confirm.service';
 import { UserErrorCode } from './errors/users-error-codes';
 import { UserFiltersDto } from './dto/userFilters.dto';
+import { UserSearchItemDto } from './dto/userSearch.dto';
 import { SortItemDto } from '@/common/dtos/sort-item.dto';
 import { applyTextFilter as applyTextFilterImported } from '@/common/utils/query-filters.util';
 import { GeographyService } from './geography.service';
@@ -130,6 +131,34 @@ export class UsersService {
     return { message: 'Registration successful. Please confirm your email.' };
   }
 
+  /**
+   * Поиск пользователей по login / name / email (для админского селекта
+   * «смотреть от лица»). Пустой запрос возвращает пустой список — не выгружаем
+   * всех пользователей.
+   */
+  async search(q: string, limit = 10): Promise<UserSearchItemDto[]> {
+    // Кап длины — защита от произвольно длинных ILIKE-паттернов.
+    const term = q?.trim().slice(0, 200);
+    if (!term) return [];
+
+    const users = await this.userRepo
+      .createQueryBuilder('user')
+      .where(
+        '(user.login ILIKE :q OR user.name ILIKE :q OR user.email ILIKE :q)',
+        { q: `%${term}%` },
+      )
+      .orderBy('user.login', 'ASC')
+      .take(Math.min(Math.max(limit, 1), 20))
+      .getMany();
+
+    return users.map((user) => ({
+      id: user.id,
+      login: user.login,
+      name: user.name,
+      email: user.email,
+    }));
+  }
+
   async getAll(params: {
     page: number;
     limit: number;
@@ -197,23 +226,40 @@ export class UsersService {
     }
 
     if (sorting && sorting.length > 0) {
-      const allowedFields = [
-        'email',
-        'login',
-        'name',
-        'role',
+      // id колонок клиента → колонки сущности (гео-колонки на клиенте
+      // называются region/city/district, в БД — regionId/cityId/districtId).
+      const sortFieldMap: Record<string, string> = {
+        email: 'email',
+        login: 'login',
+        name: 'name',
+        role: 'role',
+        phone: 'phone',
+        status: 'status',
+        createdAt: 'createdAt',
+        region: 'regionId',
+        city: 'cityId',
+        district: 'districtId',
+        regionId: 'regionId',
+        cityId: 'cityId',
+        districtId: 'districtId',
+      };
+
+      // NULL-значения держим в конце при любом направлении сортировки.
+      const nullableFields = new Set([
         'phone',
-        'status',
-        'createdAt',
         'regionId',
         'cityId',
         'districtId',
-      ];
+      ]);
 
       for (const sort of sorting) {
-        if (allowedFields.includes(sort.id)) {
-          qb.addOrderBy(`user.${sort.id}`, sort.desc ? 'DESC' : 'ASC');
-        }
+        const field = sortFieldMap[sort.id];
+        if (!field) continue;
+        qb.addOrderBy(
+          `user.${field}`,
+          sort.desc ? 'DESC' : 'ASC',
+          nullableFields.has(field) ? 'NULLS LAST' : undefined,
+        );
       }
     } else {
       qb.addOrderBy('user.createdAt', 'DESC');

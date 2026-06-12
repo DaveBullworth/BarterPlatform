@@ -1,0 +1,28 @@
+.exchange {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.exchangeColumn {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.side {
+  flex: 1;
+  min-width: 0;
+}
+
+.exchangeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  flex-shrink: 0;
+  color: var(--mantine-color-barter-6);
+}
+
+.exchangeColumn .exchangeIcon {
+  transform: rotate(90deg);
+}

@@ -1,4 +1,4 @@
-import { Home, User, Shield, CircleAlert } from 'lucide-react';
+import { Home, User, Shield, CircleAlert, Handshake } from 'lucide-react';
 import { createElement } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -35,6 +35,19 @@ export const NAV_ITEMS: NavItem[] = [
     icon: User,
     access: NAV_ACCESS.AUTH,
     preload: 'profile',
+    description: ({ isAuthenticated }) =>
+      !isAuthenticated ? 'nav.authRequired' : null,
+    rightSection: ({ isAuthenticated }) =>
+      !isAuthenticated
+        ? createElement(CircleAlert, { size: 16, color: 'red' })
+        : null,
+  },
+  {
+    key: 'offers',
+    to: ROUTES.OFFERS,
+    icon: Handshake,
+    access: NAV_ACCESS.AUTH,
+    preload: 'offers',
     description: ({ isAuthenticated }) =>
       !isAuthenticated ? 'nav.authRequired' : null,
     rightSection: ({ isAuthenticated }) =>

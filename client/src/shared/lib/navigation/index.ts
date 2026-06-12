@@ -27,6 +27,11 @@ export const navigationTo = {
 
   myLots: (navigate: ReturnType<typeof useNavigate>) =>
     navigate(ROUTES.MY_LOTS),
+
+  offers: (navigate: ReturnType<typeof useNavigate>) => navigate(ROUTES.OFFERS),
+
+  offerView: (navigate: ReturnType<typeof useNavigate>, id: string) =>
+    navigate(`${ROUTES.OFFERS}/${id}`),
 };
 
 // Хук — удобнее когда нужна навигация внутри компонента
@@ -44,6 +49,13 @@ export const useNavigation = () => {
     toLotEdit: (id: string) => navigate(`${ROUTES.LOT_EDIT}/${id}`),
     toLotView: (id: string) => navigate(`${ROUTES.LOT_VIEW}/${id}`),
     toMyLots: () => navigate(ROUTES.MY_LOTS),
+    toOffers: () => navigate(ROUTES.OFFERS),
+    toOfferView: (id: string, asUserId?: string) =>
+      navigate(
+        asUserId
+          ? `${ROUTES.OFFERS}/${id}?asUser=${asUserId}`
+          : `${ROUTES.OFFERS}/${id}`,
+      ),
     back: () => navigate(-1),
   };
 };

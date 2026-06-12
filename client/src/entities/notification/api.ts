@@ -1,10 +1,15 @@
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
 
 import { $authHost } from '@/shared/api';
+import { lotKeys } from '@/entities/lot';
+import { offerKeys } from '@/entities/offer';
 import {
   NotificationListSchema,
   UnreadCountSchema,
+  NOTIFICATION_TYPE,
+  NOTIFICATION_ENTITY_TYPE,
   type NotificationList,
 } from './model';
 
@@ -84,10 +89,43 @@ export const useMarkAllNotificationsRead = () => {
   });
 };
 
+type StreamNotification = {
+  type?: string;
+  entityType?: string | null;
+};
+
 type StreamEvent =
-  | { kind: 'notification:new' }
+  | { kind: 'notification:new'; notification?: StreamNotification }
   | { kind: 'notification:unread'; unreadCount: number }
   | { kind: 'ping' };
+
+/**
+ * Доменные события из SSE сразу освежают связанные кэши: предложение
+ * создано/принято/отклонено/завершено — обновляем ленты предложений и лотов;
+ * лот изменён модерацией — обновляем лоты. Без этого пользователь видит
+ * устаревшие данные до конца staleTime.
+ */
+const invalidateByNotification = (
+  queryClient: QueryClient,
+  notification?: StreamNotification,
+) => {
+  if (!notification) return;
+
+  const isExchange =
+    notification.type === NOTIFICATION_TYPE.EXCHANGE ||
+    notification.entityType === NOTIFICATION_ENTITY_TYPE.OFFER;
+
+  if (isExchange) {
+    void queryClient.invalidateQueries({ queryKey: offerKeys.all() });
+    // Завершение обмена меняет владельцев и видимость лотов — обновляем
+    // и списки, и детали.
+    void queryClient.invalidateQueries({ queryKey: lotKeys.all() });
+  }
+
+  if (notification.entityType === NOTIFICATION_ENTITY_TYPE.LOT) {
+    void queryClient.invalidateQueries({ queryKey: lotKeys.all() });
+  }
+};
 
 /**
  * Подключает один SSE-стрим уведомлений на сессию. EventSource не умеет слать
@@ -117,6 +155,7 @@ export const useNotificationsStream = (enabled: boolean) => {
           const event = JSON.parse(e.data) as StreamEvent;
           if (event.kind === 'notification:new') {
             queryClient.invalidateQueries({ queryKey: notificationKeys.lists() });
+            invalidateByNotification(queryClient, event.notification);
           } else if (event.kind === 'notification:unread') {
             queryClient.setQueryData(
               notificationKeys.unreadCount(),

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1780852030782 implements MigrationInterface {
-    name = 'Init1780852030782'
+export class Init1781253235780 implements MigrationInterface {
+    name = 'Init1781253235780'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."users_role_enum" AS ENUM('user', 'admin')`);
@@ -15,7 +15,7 @@ export class Init1780852030782 implements MigrationInterface {
         await queryRunner.query(`CREATE INDEX "IDX_8cfa31648f9bfdb58c30a12801" ON "media_files" ("user_id") `);
         await queryRunner.query(`CREATE TABLE "email_confirmations" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "token" character varying NOT NULL, "expiresAt" TIMESTAMP NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" uuid, CONSTRAINT "UQ_05ca1f7be84ddf4039009f8221e" UNIQUE ("token"), CONSTRAINT "PK_178b5599cd7e3ec9cfdfb144b50" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "password_reset_tokens" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "tokenHash" character varying NOT NULL, "expiresAt" TIMESTAMP NOT NULL, "used" boolean NOT NULL DEFAULT false, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "user_id" uuid, CONSTRAINT "PK_d16bebd73e844c48bca50ff8d3d" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "sessions" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "refreshTokenHash" text, "ip" character varying, "userAgent" character varying, "deviceId" uuid, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "expiresAt" TIMESTAMP WITH TIME ZONE NOT NULL, "status" boolean NOT NULL DEFAULT true, "user_id" uuid NOT NULL, CONSTRAINT "PK_3238ef96f18b355b671619111bc" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "sessions" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "refreshTokenHash" text, "ip" character varying, "userAgent" character varying, "deviceId" uuid, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "lastSeenAt" TIMESTAMP WITH TIME ZONE, "expiresAt" TIMESTAMP WITH TIME ZONE NOT NULL, "status" boolean NOT NULL DEFAULT true, "user_id" uuid NOT NULL, CONSTRAINT "PK_3238ef96f18b355b671619111bc" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "account_deactivation_codes" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "codeHash" character varying NOT NULL, "expiresAt" TIMESTAMP NOT NULL, "used" boolean NOT NULL DEFAULT false, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "user_id" uuid, CONSTRAINT "PK_0785adfe2b68873106c5ad4f422" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_812d432fc516e311aa2ec3c407" ON "account_deactivation_codes" ("user_id", "createdAt") `);
         await queryRunner.query(`CREATE TYPE "public"."lots_visibilitystatus_enum" AS ENUM('hidden', 'active', 'archived')`);
@@ -26,7 +26,7 @@ export class Init1780852030782 implements MigrationInterface {
         await queryRunner.query(`CREATE INDEX "IDX_user_taxonomy_preferences_user_type" ON "user_taxonomy_preferences" ("userId", "targetType") `);
         await queryRunner.query(`CREATE UNIQUE INDEX "UQ_user_taxonomy_preferences_target" ON "user_taxonomy_preferences" ("userId", "targetType", "targetId") `);
         await queryRunner.query(`CREATE TYPE "public"."offers_status_enum" AS ENUM('pending', 'accepted', 'completed', 'rejected')`);
-        await queryRunner.query(`CREATE TABLE "offers" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "proposerId" uuid NOT NULL, "recipientId" uuid NOT NULL, "lotId" uuid NOT NULL, "offeredLotIds" uuid array NOT NULL DEFAULT '{}', "status" "public"."offers_status_enum" NOT NULL DEFAULT 'pending', "proposerCompletionConfirmed" boolean NOT NULL DEFAULT false, "recipientCompletionConfirmed" boolean NOT NULL DEFAULT false, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_4c88e956195bba85977da21b8f4" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "offers" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "proposerId" uuid NOT NULL, "recipientId" uuid NOT NULL, "lotId" uuid NOT NULL, "offeredLotIds" uuid array NOT NULL DEFAULT '{}', "status" "public"."offers_status_enum" NOT NULL DEFAULT 'pending', "proposerCompletionConfirmed" boolean NOT NULL DEFAULT false, "recipientCompletionConfirmed" boolean NOT NULL DEFAULT false, "acceptedAt" TIMESTAMP WITH TIME ZONE, "completedAt" TIMESTAMP WITH TIME ZONE, "rejectedAt" TIMESTAMP WITH TIME ZONE, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_4c88e956195bba85977da21b8f4" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_offers_lot" ON "offers" ("lotId") `);
         await queryRunner.query(`CREATE INDEX "IDX_offers_proposer_status" ON "offers" ("proposerId", "status") `);
         await queryRunner.query(`CREATE INDEX "IDX_offers_recipient_status" ON "offers" ("recipientId", "status") `);

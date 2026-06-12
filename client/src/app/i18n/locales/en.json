@@ -1,4 +1,68 @@
 {
+  "offers": {
+    "errors": {
+      "duplicateOffer": "You already have an active offer for this lot.",
+      "mirrorOffer": "A counter offer with these lots already exists - check your incoming offers.",
+      "notPreferred": "Some selected lots are outside the recipient's preferences - refresh your selection.",
+      "cooldown": "You recently made an offer for this lot. You can try again in {{minutes}} min."
+    },
+    "title": "Offers",
+    "description": "Exchange offers you sent and received",
+    "role": { "incoming": "Received", "outgoing": "Sent" },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "completed": "Completed",
+      "rejected": "Rejected"
+    },
+    "filterStatuses": "Filter by status",
+    "admin": {
+      "viewAs": "View as user…",
+      "typeToSearch": "Start typing to search",
+      "notFound": "No users found"
+    },
+    "empty": {
+      "title": "No offers",
+      "description": "There are no offers matching the selected filters."
+    },
+    "detail": {
+      "createdAt": "Created: {{date}}",
+      "exchangeTitle": "What is being exchanged",
+      "unknownUser": "User",
+      "lotUnavailable": "Lot unavailable"
+    },
+    "actions": {
+      "accept": "Accept",
+      "accepted": "Offer accepted.",
+      "confirm": "Confirm exchange",
+      "confirmed": "Exchange confirmed.",
+      "reject": "Reject",
+      "rejected": "Offer rejected.",
+      "rejectTitle": "Reject offer?",
+      "rejectText": "The offer will be moved to the rejected state. This cannot be undone.",
+      "acceptTitle": "Accept the offer?",
+      "acceptText": "You agree to the exchange - the offer will move to “Accepted”. After the exchange both sides confirm its completion.",
+      "confirmTitle": "Confirm the exchange?",
+      "confirmText": "Confirm only if the exchange has actually happened. The deal is completed once both sides confirm.",
+      "completedHint": "The exchange is completed - deal actions are no longer available.",
+      "rejectedHint": "The offer was rejected - deal actions are no longer available.",
+      "waitingOther": "You have confirmed the exchange - waiting for the other side.",
+      "dealZone": "Deal decision",
+      "helpZone": "Contact & reports"
+    },
+    "report": {
+      "button": "Report",
+      "title": "Report this offer?",
+      "text": "A complaint about this offer will be sent to the administrators.",
+      "confirm": "Report",
+      "sent": "Your report has been sent to the administrators."
+    },
+    "chat": {
+      "button": "Chat",
+      "soon": "Chat will be available soon."
+    },
+    "cancel": "Cancel"
+  },
   "sessions": {
     "title": "Sessions",
     "subtitle": "Devices that are signed in to your account.",
@@ -134,6 +198,7 @@
     "profile": "Profile",
     "admin": "Admin",
     "myLots": "My lots",
+    "offers": "Offers",
     "authRequired": "A login is required"
   },
   "myLots": {
@@ -291,6 +356,10 @@
           "title": "Session ended",
           "body": "An older session was ended because of a new sign-in (session limit reached)."
         },
+        "offer_reported": {
+          "title": "Offer reported",
+          "body": "A user reported an exchange offer. Review it in moderation."
+        },
         "lot_deactivated": {
           "title": "Lot status changed",
           "body": "An administrator changed the status of your lot “{{lotTitle}}”."
@@ -442,7 +511,7 @@
   "feed": {
     "noLotsFound": "No lots found",
     "noLotsFoundFiltered": "Try adjusting your filters or searching for something else.",
-    "noLotsFoundEmpty": "There are no lots yet — be the first to add one.",
+    "noLotsFoundEmpty": "There are no lots yet - be the first to add one.",
     "limit": "Limit",
     "info": "Feed info",
     "recordsOnPage": "Records on page",
@@ -465,7 +534,7 @@
       "selectedCount": "Selected: {{count}} of {{max}}",
       "ownLot": "You can't exchange your own lot",
       "offerSent": "Exchange offer sent",
-      "noPrefs": "The lot owner has no preferences set — nothing to select",
+      "noPrefs": "The lot owner has no preferences set - nothing to select",
       "action": "Exchange",
       "title": "Suggest an exchange",
       "confirm": "Suggest an exchange to this lot owner?",
@@ -486,7 +555,7 @@
     },
     "modal": {
       "title": "Preferences",
-      "subtitle": "Mark sections, categories and subcategories you're interested in — better matches show higher in the feed."
+      "subtitle": "Mark sections, categories and subcategories you're interested in - better matches show higher in the feed."
     },
     "actions": {
       "selectAll": "Select all",
@@ -500,9 +569,9 @@
       "iconAria": "Preferences hint",
       "title": "How preferences work",
       "intro": "Assign a desirability level to any taxonomy node (section, category or subcategory). The higher the level and the more specific the match, the higher a lot appears in your feed.",
-      "level1": "1 — might consider",
-      "level2": "2 — interesting",
-      "level3": "3 — want most of all",
+      "level1": "1 - might consider",
+      "level2": "2 - interesting",
+      "level3": "3 - want most of all",
       "geo": "We also consider your location: district match > city match > region match.",
       "notes": "Without any preferences, the feed is sorted by lot creation date only."
     }

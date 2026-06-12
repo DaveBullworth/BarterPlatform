@@ -59,6 +59,7 @@ export const MultiTextFilterInput = ({
         rightSection={loading ? <Loader size="xs" /> : null}
         searchable
         clearable
+        maxLength={100}
         placeholder={loading ? t('common.loading') : placeholder}
         data={options}
         value={values}

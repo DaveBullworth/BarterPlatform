@@ -4,8 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { In, Repository, SelectQueryBuilder } from 'typeorm';
 import { LotEntity, LotVisibilityStatus } from '@/database/entities/lot.entity';
+import { OfferEntity, OfferStatus } from '@/database/entities/offer.entity';
 import { UserRole } from '@/database/entities/user.entity';
 import type { JwtPayload } from '@/common/interfaces/jwt-payload.interface';
 import { CreateLotDto } from './dto/create-lot.dto';
@@ -30,6 +31,10 @@ const TAXONOMY_ID_FIELDS = [
 
 const GEO_ID_FIELDS = ['regionId', 'cityId', 'districtId'] as const;
 
+/** asUserId приходит в JSON-фильтрах мимо валидации DTO — проверяем формат сами. */
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 type LotIdField =
   | (typeof TAXONOMY_ID_FIELDS)[number]
   | (typeof GEO_ID_FIELDS)[number];
@@ -51,12 +56,47 @@ export class LotsService {
   constructor(
     @InjectRepository(LotEntity)
     private readonly lotsRepo: Repository<LotEntity>,
+    @InjectRepository(OfferEntity)
+    private readonly offersRepo: Repository<OfferEntity>,
     private readonly lotArchiveService: LotArchiveService,
     private readonly geographyService: GeographyService,
     private readonly taxonomyService: TaxonomyService,
     private readonly relevanceService: LotRelevanceService,
     private readonly notificationsService: NotificationsService,
   ) {}
+
+  /**
+   * Карточки лотов по списку id (в порядке запроса) — для модулей, которые уже
+   * авторизовали доступ (например, страница предложения показывает скрытые
+   * предлагаемые лоты участникам). Видимость здесь НЕ проверяется.
+   */
+  async getCardsByIds(ids: string[]): Promise<LotResponseDto[]> {
+    if (!ids.length) return [];
+    const lots = await this.lotsRepo.find({ where: { id: In(ids) } });
+    const byId = new Map(lots.map((lot) => [lot.id, lot]));
+    return ids
+      .map((id) => byId.get(id))
+      .filter((lot): lot is LotEntity => Boolean(lot))
+      .map((lot) => this.toResponseDto(lot));
+  }
+
+  /**
+   * Есть ли у пользователя доступ к лоту через участие в предложении: лот
+   * фигурирует как целевой (lotId) или предлагаемый (offeredLotIds), а
+   * пользователь — участник этого предложения. Нужно, чтобы скрытые лоты,
+   * предложенные к обмену, открывались по id второму участнику.
+   */
+  private hasOfferAccess(lotId: string, userId: string): Promise<boolean> {
+    return this.offersRepo
+      .createQueryBuilder('offer')
+      .where('(offer.proposerId = :userId OR offer.recipientId = :userId)', {
+        userId,
+      })
+      .andWhere('(offer.lotId = :lotId OR :lotId = ANY(offer.offeredLotIds))', {
+        lotId,
+      })
+      .getExists();
+  }
 
   private applyTextFilter = applyTextFilterImported<LotEntity>;
 
@@ -191,7 +231,13 @@ export class LotsService {
     }
 
     if (wantsSelfOnly) {
-      qb.andWhere('lot.userId = :userId', { userId: user.sub });
+      // «От лица пользователя» — привилегия администратора: его selfOnly-лента
+      // показывает лоты выбранного пользователя. Остальным asUserId игнорируем.
+      const ownerId =
+        isAdmin && filters?.asUserId && UUID_RE.test(filters.asUserId)
+          ? filters.asUserId
+          : user.sub;
+      qb.andWhere('lot.userId = :userId', { userId: ownerId });
 
       // Константный фильтр для модалки обмена: предлагать можно только
       // не-деактивированные лоты (ACTIVE/HIDDEN), архивные исключаем.
@@ -208,6 +254,23 @@ export class LotsService {
         active: LotVisibilityStatus.ACTIVE,
         userId: user.sub,
       });
+
+      // Лот, на который пользователь уже отправил активное предложение,
+      // из его ленты исчезает — повторное предложение всё равно запрещено.
+      qb.andWhere(
+        `NOT EXISTS (
+          SELECT 1 FROM offers o
+          WHERE o."proposerId" = :userId
+            AND o."lotId" = lot.id
+            AND o.status IN (:...viewerActiveOfferStatuses)
+        )`,
+        {
+          viewerActiveOfferStatuses: [
+            OfferStatus.PENDING,
+            OfferStatus.ACCEPTED,
+          ],
+        },
+      );
     }
     // ADMIN без selfOnly — без andWhere, видит всё.
   }
@@ -285,10 +348,18 @@ export class LotsService {
       lot.userId !== user.sub &&
       lot.visibilityStatus !== LotVisibilityStatus.ACTIVE
     ) {
-      throw new ForbiddenException({
-        code: LotErrorCode.NO_ACCESS,
-        message: 'No access to this lot',
-      });
+      // Скрытый лот, предложенный к обмену, доступен по id второму участнику
+      // предложения (архивные при этом остаются недоступными).
+      const allowedViaOffer =
+        lot.visibilityStatus === LotVisibilityStatus.HIDDEN &&
+        (await this.hasOfferAccess(lot.id, user.sub));
+
+      if (!allowedViaOffer) {
+        throw new ForbiddenException({
+          code: LotErrorCode.NO_ACCESS,
+          message: 'No access to this lot',
+        });
+      }
     }
 
     let archivationDate: Date | null = null;

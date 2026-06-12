@@ -27,6 +27,9 @@ export interface ApiErrorData {
     // mail confirm / resend
     loginOrEmail?: string;
     waitHours?: number;
+
+    // offers
+    waitMinutes?: number;
   };
 }
 
@@ -241,6 +244,30 @@ export const handleApiError = (
           message = t('lot.userArchived');
           color = 'red';
           icon = createElement(UserRoundX, { size: 18 });
+          break;
+
+        /** OFFERS */
+        case ERROR_TYPES.DUPLICATE_OFFER:
+          message = t('offers.errors.duplicateOffer');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.MIRROR_OFFER_EXISTS:
+          message = t('offers.errors.mirrorOffer');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.OFFERED_LOT_NOT_PREFERRED:
+          message = t('offers.errors.notPreferred');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.OFFER_COOLDOWN:
+          message = t('offers.errors.cooldown', {
+            minutes: data.meta?.waitMinutes ?? 60,
+          });
+          color = 'yellow';
+          icon = createElement(ClockAlert, { size: 18 });
           break;
 
         default:

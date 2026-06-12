@@ -28,9 +28,11 @@ import { FeedControls, type FeedView, type LimitOption } from './FeedControls';
 
 type Props = {
   selfOnly?: boolean;
+  /** Только ADMIN + selfOnly: лента лотов указанного пользователя. */
+  asUserId?: string;
 };
 
-export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
+export const LotsFeed = ({ selfOnly = false, asUserId }: Props = {}) => {
   const { t, i18n } = useTranslation();
   const { toLotView, toAuth } = useNavigation();
   const { isAuthenticated, currentUser } = useAuthStore();
@@ -59,10 +61,21 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
 
   const filters = useMemo(() => {
     const base = buildLotFilters(geoFilter, selection, searchQuery);
-    return selfOnly ? { ...base, selfOnly: true } : base;
-  }, [geoFilter, selection, searchQuery, selfOnly]);
+    if (!selfOnly) return base;
+    return asUserId
+      ? { ...base, selfOnly: true, asUserId }
+      : { ...base, selfOnly: true };
+  }, [geoFilter, selection, searchQuery, selfOnly, asUserId]);
   const filtersKey = JSON.stringify(filters);
   const hasFilters = filtersKey !== '{}';
+
+  // Сброс на первую страницу при смене любого фильтра (категория/гео/поиск).
+  // Корректировка состояния прямо в рендере — без лишнего запроса со старой страницей.
+  const [prevFiltersKey, setPrevFiltersKey] = useState(filtersKey);
+  if (filtersKey !== prevFiltersKey) {
+    setPrevFiltersKey(filtersKey);
+    setPage(1);
+  }
 
   // Загрузка данных
   const {
@@ -80,6 +93,11 @@ export const LotsFeed = ({ selfOnly = false }: Props = {}) => {
   const totalLots = lotsData?.total ?? 0;
   const totalPages = Math.max(Math.ceil(totalLots / limit), 1);
   const gridCols = isMobile ? 2 : isWide ? 5 : 3;
+
+  // Страница могла опустеть (лоты исчезли из выдачи) — откатываемся на последнюю.
+  if (lotsData && page > totalPages) {
+    setPage(totalPages);
+  }
 
   // lotIds стабильный — зависит от lotsData которое стабильно между ререндерами
   const lotIds = useMemo(() => (lots ?? []).map((l) => l.id), [lots]);

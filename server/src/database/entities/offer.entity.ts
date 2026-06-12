@@ -89,6 +89,30 @@ export class OfferEntity {
   @Column({ type: 'boolean', default: false })
   recipientCompletionConfirmed!: boolean;
 
+  @ApiProperty({
+    example: '2026-06-06T11:00:00.000Z',
+    nullable: true,
+    description: 'Когда предложение было принято (ACCEPTED)',
+  })
+  @Column({ type: 'timestamptz', nullable: true })
+  acceptedAt!: Date | null;
+
+  @ApiProperty({
+    example: '2026-06-06T12:30:00.000Z',
+    nullable: true,
+    description: 'Когда обмен был завершён (COMPLETED)',
+  })
+  @Column({ type: 'timestamptz', nullable: true })
+  completedAt!: Date | null;
+
+  @ApiProperty({
+    example: '2026-06-06T11:30:00.000Z',
+    nullable: true,
+    description: 'Когда предложение было отклонено/отменено (REJECTED)',
+  })
+  @Column({ type: 'timestamptz', nullable: true })
+  rejectedAt!: Date | null;
+
   @ApiProperty({ example: '2026-06-06T10:30:00.000Z' })
   @CreateDateColumn()
   createdAt!: Date;

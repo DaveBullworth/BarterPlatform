@@ -12,6 +12,14 @@ const TEXT_OPERATORS: { value: TextOperator; labelKey: string }[] = [
   { value: 'not_equals', labelKey: 'admin.filter.notEquals' },
 ];
 
+// Лимиты совпадают с валидацией соответствующих полей на сервере.
+const FIELD_MAX_LENGTH: Record<string, number> = {
+  login: 60,
+  name: 200,
+  email: 200,
+  phone: 11,
+};
+
 type Props = {
   fieldKey: string;
   filter?: TextFilter;
@@ -36,14 +44,16 @@ export const TextFilterInput = ({ fieldKey, filter, onCommit }: Props) => {
   );
 
   const scheduleCommit = useCallback(
-    (value: string) => {
+    (raw: string) => {
+      // Телефон хранится цифрами — нецифровые символы в фильтре бессмысленны.
+      const value = fieldKey === 'phone' ? raw.replace(/\D/g, '') : raw;
       setLocalValue(value);
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = window.setTimeout(() => {
         commit(value, operator);
       }, 200);
     },
-    [commit, operator],
+    [commit, operator, fieldKey],
   );
 
   const handleClear = () => {
@@ -70,6 +80,7 @@ export const TextFilterInput = ({ fieldKey, filter, onCommit }: Props) => {
       <TextInput
         placeholder={t(`admin.filter.${fieldKey}`)}
         value={localValue}
+        maxLength={FIELD_MAX_LENGTH[fieldKey] ?? 200}
         onChange={(e) => scheduleCommit(e.currentTarget.value)}
         onBlur={() => {
           if (timerRef.current) {

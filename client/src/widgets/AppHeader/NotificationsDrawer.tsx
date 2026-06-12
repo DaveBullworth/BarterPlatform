@@ -9,6 +9,7 @@ import {
   Text,
   UnstyledButton,
 } from '@mantine/core';
+import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { useAuthStore } from '@/entities/user';
@@ -16,8 +17,11 @@ import {
   useNotifications,
   useMarkAllNotificationsRead,
   useMarkNotificationRead,
+  NOTIFICATION_ENTITY_TYPE,
+  NOTIFICATION_SUBTYPE,
   type Notification,
 } from '@/entities/notification';
+import { useNavigation } from '@/shared/lib/navigation';
 import { formatDate } from '@/shared/lib/formatters';
 import drawerStyles from '@/shared/ui/MobileDrawer.module.scss';
 
@@ -29,6 +33,7 @@ type Props = {
 export const NotificationsDrawer = ({ opened, onClose }: Props) => {
   const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuthStore();
+  const { toOfferView, toLotView } = useNavigation();
 
   const { data, isLoading } = useNotifications(
     { page: 1, limit: 20 },
@@ -39,6 +44,35 @@ export const NotificationsDrawer = ({ opened, onClose }: Props) => {
 
   const items = data?.data ?? [];
   const hasUnread = items.some((n) => !n.isRead);
+
+  /**
+   * Переход по deep-link уведомления: предложения открываются на странице
+   * предложения (жалобу админ смотрит от лица её отправителя — иначе сервер
+   * не пустит не-участника), лоты — на странице лота. Возвращает null, если
+   * переходить некуда (нет привязки или сущность удалена).
+   */
+  const resolveNavigation = (n: Notification): (() => void) | null => {
+    const { entityType, entityId, subtype, payload } = n;
+    if (!entityId) return null;
+
+    if (entityType === NOTIFICATION_ENTITY_TYPE.OFFER) {
+      const reporterId =
+        subtype === NOTIFICATION_SUBTYPE.OFFER_REPORTED &&
+        typeof payload.reporterId === 'string'
+          ? payload.reporterId
+          : undefined;
+      return () => toOfferView(entityId, reporterId);
+    }
+
+    if (
+      entityType === NOTIFICATION_ENTITY_TYPE.LOT &&
+      subtype !== NOTIFICATION_SUBTYPE.LOT_REMOVED
+    ) {
+      return () => toLotView(entityId);
+    }
+
+    return null;
+  };
 
   return (
     <Drawer
@@ -75,16 +109,24 @@ export const NotificationsDrawer = ({ opened, onClose }: Props) => {
           </Text>
         )}
 
-        {items.map((notification) => (
-          <NotificationItem
-            key={notification.id}
-            notification={notification}
-            locale={i18n.language}
-            onClick={() => {
-              if (!notification.isRead) markOne.mutate(notification.id);
-            }}
-          />
-        ))}
+        {items.map((notification) => {
+          const navigate = resolveNavigation(notification);
+          return (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+              locale={i18n.language}
+              hasLink={Boolean(navigate)}
+              onClick={() => {
+                if (!notification.isRead) markOne.mutate(notification.id);
+                if (navigate) {
+                  navigate();
+                  onClose();
+                }
+              }}
+            />
+          );
+        })}
       </Stack>
     </Drawer>
   );
@@ -93,10 +135,16 @@ export const NotificationsDrawer = ({ opened, onClose }: Props) => {
 type ItemProps = {
   notification: Notification;
   locale: string;
+  hasLink: boolean;
   onClick: () => void;
 };
 
-const NotificationItem = ({ notification, locale, onClick }: ItemProps) => {
+const NotificationItem = ({
+  notification,
+  locale,
+  hasLink,
+  onClick,
+}: ItemProps) => {
   const { t } = useTranslation();
 
   const base = `notifications.items.${notification.subtype}`;
@@ -134,18 +182,21 @@ const NotificationItem = ({ notification, locale, onClick }: ItemProps) => {
             {formatDate(notification.createdAt, locale)}
           </Text>
         </div>
-        {!notification.isRead && (
-          <Box
-            w={8}
-            h={8}
-            mt={6}
-            style={{
-              borderRadius: '50%',
-              background: 'var(--mantine-color-red-6)',
-              flexShrink: 0,
-            }}
-          />
-        )}
+        <Group gap={6} wrap="nowrap" align="center" style={{ flexShrink: 0 }}>
+          {!notification.isRead && (
+            <Box
+              w={8}
+              h={8}
+              style={{
+                borderRadius: '50%',
+                background: 'var(--mantine-color-red-6)',
+              }}
+            />
+          )}
+          {hasLink && (
+            <ChevronRight size={16} color="var(--mantine-color-dimmed)" />
+          )}
+        </Group>
       </Group>
     </UnstyledButton>
   );

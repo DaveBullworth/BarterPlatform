@@ -47,7 +47,8 @@ export const GeoFilterForm = ({
         <Button variant="default" onClick={onReset}>
           {t('categories.reset')}
         </Button>
-        <Button variant="default" onClick={onClose}>
+        {/* На мобильном модалка закрывается крестиком — дублирующая кнопка лишняя */}
+        <Button variant="default" onClick={onClose} visibleFrom="sm">
           {t('auth.close')}
         </Button>
         <Button onClick={() => onApply(draft)}>{t('common.save')}</Button>

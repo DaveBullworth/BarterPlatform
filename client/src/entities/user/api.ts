@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod';
 import { $host, $authHost, type PaginatedResponse } from '@/shared/api';
 import {
   SelfUserSchema,
@@ -16,7 +17,18 @@ const toUserEtag = createEtagBuilder('user');
 export const userKeys = {
   self: () => ['user', 'self'] as const,
   byId: (id: string) => ['user', id] as const,
+  search: (q: string) => ['user', 'search', q] as const,
 };
+
+// Минимальная карточка пользователя из admin-поиска (селект «от лица»).
+export const UserSearchItemSchema = z.object({
+  id: z.string(),
+  login: z.string(),
+  name: z.string(),
+  email: z.string(),
+});
+
+export type UserSearchItem = z.infer<typeof UserSearchItemSchema>;
 
 // Fetcher-ы
 
@@ -137,6 +149,14 @@ export const userApi = {
     await $host.post('/mail-confirm/resend', { loginOrEmail });
   },
 
+  // ADMIN: поиск пользователей по login/name/email.
+  searchUsers: async (q: string, limit = 10): Promise<UserSearchItem[]> => {
+    const { data } = await $authHost.get('/user/search', {
+      params: { q, limit },
+    });
+    return z.array(UserSearchItemSchema).parse(data);
+  },
+
   confirmEmail: async (token: string) => {
     await $host.get('/mail-confirm/confirm-email', {
       params: { token },
@@ -162,6 +182,16 @@ export const useSelfUser = () => {
     },
     enabled: Boolean(localStorage.getItem('accessToken')),
     staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useUserSearch = (q: string) => {
+  const term = q.trim();
+  return useQuery({
+    queryKey: userKeys.search(term),
+    queryFn: () => userApi.searchUsers(term),
+    enabled: term.length > 0,
+    staleTime: 1000 * 30,
   });
 };
 

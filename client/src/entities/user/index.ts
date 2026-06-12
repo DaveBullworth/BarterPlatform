@@ -31,12 +31,14 @@ export {
 export {
   useSelfUser,
   useUserById,
+  useUserSearch,
   useUpdateSelfUser,
   useUploadAvatar,
   useDeleteAvatar,
   getUserAvatarUrl,
   userApi,
   userKeys,
+  type UserSearchItem,
 } from './api';
 
 // Auth store хук

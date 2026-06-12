@@ -98,6 +98,7 @@ export const DesktopHeader = ({
             className={styles.searchInput}
             placeholder={t('header.lotSearch')}
             value={localSearch}
+            maxLength={255}
             rightSection={
               <Search
                 size={16}

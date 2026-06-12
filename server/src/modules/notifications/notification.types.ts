@@ -15,6 +15,7 @@ export const NOTIFICATION_SUBTYPE_TYPE: Record<
 > = {
   [NotificationSubtype.ADMIN_MESSAGE]: NotificationType.SYSTEM,
   [NotificationSubtype.SUSPICIOUS_ACTIVITY]: NotificationType.SYSTEM,
+  [NotificationSubtype.OFFER_REPORTED]: NotificationType.SYSTEM,
   [NotificationSubtype.ACCOUNT_DEACTIVATED]: NotificationType.SYSTEM,
   [NotificationSubtype.ACCOUNT_REACTIVATED]: NotificationType.SYSTEM,
   [NotificationSubtype.ROLE_CHANGED]: NotificationType.SYSTEM,

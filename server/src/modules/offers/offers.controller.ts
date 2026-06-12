@@ -17,7 +17,10 @@ import { OffersService } from './offers.service';
 import { CreateOfferDto } from './dto/create-offer.dto';
 import { GetOffersQueryDto } from './dto/get-offers-query.dto';
 import { OfferResponseDto } from './dto/offer-response.dto';
+import { OffersFeedResponseDto } from './dto/offer-feed.dto';
+import { OfferDetailDto } from './dto/offer-detail.dto';
 import { PreferenceAvailabilityDto } from '../user-preferences/dto/preference-availability.dto';
+import { UserRole } from '@/database/entities/user.entity';
 
 @ApiBearerAuth()
 @ApiTags('Offers')
@@ -45,14 +48,21 @@ export class OffersController {
 
   @Get()
   @ApiOperation({
-    summary: 'Список моих предложений (входящие/исходящие)',
+    summary: 'Лента предложений (входящие/исходящие) с пагинацией и фильтрами',
+    description:
+      'role — отправленные/полученные; statuses[] — фильтр по статусам; page/limit — пагинация; сортировка по дате изменения. asUserId доступен только ADMIN — просмотр от лица пользователя.',
   })
-  @ApiOkResponse({ type: [OfferResponseDto] })
+  @ApiOkResponse({ type: OffersFeedResponseDto })
   findMine(
     @CurrentUser() user: JwtPayload,
     @Query() query: GetOffersQueryDto,
-  ): Promise<OfferResponseDto[]> {
-    return this.offersService.findForUser(user.sub, query);
+  ): Promise<OffersFeedResponseDto> {
+    // «От лица пользователя» — привилегия администратора; остальным игнорируем.
+    const effectiveUserId =
+      query.asUserId && user.role === UserRole.ADMIN
+        ? query.asUserId
+        : user.sub;
+    return this.offersService.findForUser(effectiveUserId, query);
   }
 
   @Get('availability/:lotId')
@@ -70,46 +80,77 @@ export class OffersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Получить предложение по id (только участник)' })
-  @ApiOkResponse({ type: OfferResponseDto })
+  @ApiOperation({
+    summary: 'Получить предложение по id (только участник; ADMIN — от лица)',
+  })
+  @ApiOkResponse({ type: OfferDetailDto })
   @ApiForbiddenResponse({ description: 'Вы не участник предложения' })
   @ApiNotFoundResponse({ description: 'Предложение не найдено' })
   findOne(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,
-  ): Promise<OfferResponseDto> {
-    return this.offersService.findOne(id, user.sub);
+    @Query('asUserId') asUserId?: string,
+  ): Promise<OfferDetailDto> {
+    return this.offersService.findOne(id, this.effectiveUser(user, asUserId));
   }
 
   @Post(':id/accept')
   @ApiOperation({ summary: 'Принять предложение (получатель)' })
-  @ApiOkResponse({ type: OfferResponseDto })
+  @ApiOkResponse({ type: OfferDetailDto })
   accept(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,
-  ): Promise<OfferResponseDto> {
-    return this.offersService.accept(id, user.sub);
+    @Query('asUserId') asUserId?: string,
+  ): Promise<OfferDetailDto> {
+    return this.offersService.accept(id, this.effectiveUser(user, asUserId));
   }
 
   @Post(':id/reject')
   @ApiOperation({ summary: 'Отклонить/отменить предложение (любой участник)' })
-  @ApiOkResponse({ type: OfferResponseDto })
+  @ApiOkResponse({ type: OfferDetailDto })
   reject(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,
-  ): Promise<OfferResponseDto> {
-    return this.offersService.reject(id, user.sub);
+    @Query('asUserId') asUserId?: string,
+  ): Promise<OfferDetailDto> {
+    return this.offersService.reject(id, this.effectiveUser(user, asUserId));
   }
 
   @Post(':id/confirm')
   @ApiOperation({
     summary: 'Подтвердить факт обмена (когда подтвердят оба — выполнено)',
   })
-  @ApiOkResponse({ type: OfferResponseDto })
+  @ApiOkResponse({ type: OfferDetailDto })
   confirm(
     @CurrentUser() user: JwtPayload,
     @Param('id') id: string,
-  ): Promise<OfferResponseDto> {
-    return this.offersService.confirmCompletion(id, user.sub);
+    @Query('asUserId') asUserId?: string,
+  ): Promise<OfferDetailDto> {
+    return this.offersService.confirmCompletion(
+      id,
+      this.effectiveUser(user, asUserId),
+    );
+  }
+
+  @Post(':id/report')
+  @ApiOperation({
+    summary: 'Пожаловаться на предложение — уведомить всех администраторов',
+  })
+  @ApiOkResponse({ schema: { example: { success: true } } })
+  @ApiForbiddenResponse({ description: 'Вы не участник предложения' })
+  report(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Query('asUserId') asUserId?: string,
+  ): Promise<{ success: true }> {
+    return this.offersService.report(id, this.effectiveUser(user, asUserId));
+  }
+
+  /**
+   * «От лица пользователя» — привилегия администратора. Остальным asUserId
+   * игнорируется (работают только от своего имени).
+   */
+  private effectiveUser(user: JwtPayload, asUserId?: string): string {
+    return asUserId && user.role === UserRole.ADMIN ? asUserId : user.sub;
   }
 }

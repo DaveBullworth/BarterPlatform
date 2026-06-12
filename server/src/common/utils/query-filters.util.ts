@@ -7,7 +7,9 @@ export function applyTextFilter<T extends ObjectLiteral>(
   filter: TextFilterDto,
   paramKey: string,
 ) {
-  const value = filter.value;
+  // Фильтры приходят JSON-строкой мимо валидации DTO — кап длины здесь,
+  // в единственной точке применения, защищает от произвольно длинных паттернов.
+  const value = filter.value.slice(0, 255);
 
   switch (filter.operator) {
     case 'contains':

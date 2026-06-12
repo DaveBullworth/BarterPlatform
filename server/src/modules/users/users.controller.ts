@@ -46,6 +46,7 @@ import { UpdateSelfUserDto } from './dto/updateSelfUser.dto';
 import { AdminUpdateUserDto } from './dto/updateUserAdmin.dto';
 import { AdminCreateUserDto } from './dto/createUserAdmin.dto';
 import { UserFiltersDto } from './dto/userFilters.dto';
+import { UserSearchItemDto } from './dto/userSearch.dto';
 import { DistrictDto, GeoItemDto } from './dto/geo.dto';
 import { UserUpdatedInterceptor } from './interceptors/user.cache.interseptor';
 import { GeographyService } from './geography.service';
@@ -325,6 +326,23 @@ export class UsersController {
   getSelf(@CurrentUser() user: JwtPayload) {
     const { sub: userId } = user;
     return this.usersService.getById(userId, user);
+  }
+
+  @Authenticated()
+  @Roles(UserRole.ADMIN)
+  @Get('search')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Поиск пользователей по login/name/email (ADMIN)',
+    description:
+      'Для админского селекта «смотреть предложения от лица пользователя». Пустой q возвращает пустой массив.',
+  })
+  @ApiQuery({ name: 'q', required: true, example: 'ivan' })
+  @ApiQuery({ name: 'limit', required: false, example: 10 })
+  @ApiOkResponse({ type: UserSearchItemDto, isArray: true })
+  @ApiForbiddenResponse({ description: 'Недостаточно прав (только ADMIN)' })
+  searchUsers(@Query('q') q?: string, @Query('limit') limit?: string) {
+    return this.usersService.search(q ?? '', limit ? Number(limit) : 10);
   }
 
   // GET-запрос на 'users/:id' для получения конкретного пользователя
