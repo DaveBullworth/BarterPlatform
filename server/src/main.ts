@@ -26,6 +26,14 @@ async function prepareDatabase() {
     await seedModule.runSeeds();
   }
 
+  if (process.env.SEED_DEV === 'true') {
+    console.log(
+      '🌱 Running dev seeds automatically in prod for mocking data...',
+    );
+    const seedModule = await import('./database/seed-dev.js');
+    await seedModule.main();
+  }
+
   console.log('✅ Database ready');
 }
 

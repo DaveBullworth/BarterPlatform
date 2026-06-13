@@ -4,6 +4,8 @@
 
 ![Concept](./business.png)
 
+> 📘 Полное описание всего функционала системы — роли, страницы, модули, бизнес-правила и лимиты — в [PLATFORM_GUIDE.md](./PLATFORM_GUIDE.md).
+
 ## Overview
 
 This project is a web-based barter marketplace where users exchange goods directly with each other instead of using money.  
@@ -100,7 +102,9 @@ Key properties:
 
 ## Communication
 
-Each exchange creates a **private chat** between involved users.
+> 🚧 **Status: planned — next milestone.** Notification types and entity bindings for chats are already in place; today negotiation happens through the offer flow (accept / reject / mutual confirmation) with real-time notifications.
+
+Each exchange will create a **private chat** between involved users.
 
 Chat features:
 
@@ -179,13 +183,14 @@ sequenceDiagram
 - **Язык:** TypeScript
 - **Фреймворк:** React
 - **UI-библиотека:** Mantine
-- **State-manager:** Redux
+- **State-manager:** Redux Toolkit + TanStack Query (серверный кеш)
+- **Валидация ответов API:** zod
 - **Иконки** Lucide
 - **Стили:** SCSS
 - **Кодстайл:** Prettier + ESLint
 - **Адаптивность:** mobile-first, responsive design
-- **Архитектура:** соблюдение SOLID, компонентная архитектура, хуки, сервисы
-- **WebSocket:** Socket.IO для уведомлений и чатов
+- **Архитектура:** Feature-Sliced Design (FSD), SOLID, хуки, сервисы
+- **Real-time:** SSE (Server-Sent Events) для уведомлений
 
 ### Backend
 
@@ -193,14 +198,14 @@ sequenceDiagram
 - **Фреймворк:** NestJS
 - **ORM:** TypeORM
 - **База данных:** PostgreSQL
-- **WebSocket:** Socket.IO (реализация через Gateway NestJS)
+- **Real-time:** SSE (Server-Sent Events) + Redis pub/sub для доставки уведомлений
 - **Аутентификация:** JWT + bcryptjs (offline-совместимый)
 - **Валидация:** class-validator, DTO
 - **Защита от DOS атак:** redis
 - **Логирование:** winston, nest-winston
 - **Письма email:** nodemailer (с обёрткой @nestjs-modules/mailer для NestJS)
 - **API документация**: nestjs/swagger (встроенный в NestJS).
-- **Файловая безопасность:** локальный антивирусный сервис (проверка PNG, JPG, PDF)
+- **Файловая безопасность:** валидация типов изображений (PNG, JPG); локальный антивирусный сервис — план этапа чатов
 - **Медиа:** jimp для обработки изображений
 - **Архитектура:** модульная, SOLID, DI, слои: контроллеры → сервисы → репозитории
 - **DevOps:** Docker, локальный npm-кэш, оффлайн сборка
@@ -209,7 +214,7 @@ sequenceDiagram
 
 ## Дорожная карта разработки
 
-### Этап 1: Пользователи и админка
+### ✅ Этап 1: Пользователи и админка (готово)
 
 - Регистрация и авторизация (JWT, bcryptjs)
 - Роли пользователей (admin / user)
@@ -217,16 +222,23 @@ sequenceDiagram
 - Структура проекта: модуль Auth, модуль Users
 - Настройка Docker для локальной разработки и оффлайн сборки
 
-### Этап 2: Лоты, категории и обмены
+### ✅ Этап 2: Лоты, категории и обмены (готово)
 
-- CRUD для категорий (иерархическая структура)
-- CRUD для лотов (одиночные и мульти-лоты)
-- Настройка правил обмена (mandatory / optional preferences)
-- Механизм counter-offers и уведомлений
+- Категорийное дерево: раздел → категория → подкатегория (сиды, мультиязычные слаги)
+- CRUD для лотов (статусы hidden/active/archived, до 3 фото, гео-привязка)
+- Правила обмена через предпочтения категорий (веса 1–3) и гейтинг предложений
+- Полный жизненный цикл предложений: pending → accepted → completed / rejected
+- Центр уведомлений + real-time доставка (SSE + Redis pub/sub)
 - Валидация правил обмена на backend
-- Структура проекта: модуль Lots, модуль Categories, модуль ExchangeOffers
+- Структура проекта: модули Lots, Taxonomy, Offers, UserPreferences, Notifications
 
-### Этап 3: Чат с файлообменником
+Сверх плана:
+
+- Система сессий устройств (просмотр и завершение, лимит одновременных входов)
+- Рекомендательная лента (гео + взаимные предпочтения, свечение карточек)
+- Архив лотов с автоудалением через 30 дней
+
+### 🚧 Этап 3: Чат с файлообменником (следующий этап)
 
 - Реализация WebSocket чатов через NestJS Gateway
 - Привязка чатов к конкретным лотам и сделкам
@@ -234,12 +246,12 @@ sequenceDiagram
 - Интеграция локального антивируса для проверки файлов
 - Структура проекта: модуль Chat, модуль Attachments
 
-### Этап 4: Дополнительно (опционально)
+### 🟡 Этап 4: Дополнительно (опционально, частично готово)
 
+- ✅ Рекомендации по лотам (гео + взаимный интерес предпочтений)
+- ✅ Система уведомлений на Redis pub/sub (мультиинстансная доставка)
 - Репутация пользователей
-- Рекомендации по лотам и пользователям
-- Модерация контента
-- Расширение системы уведомлений и масштабирование (в будущем Redis)
+- Модерация контента (база готова: жалобы, режим «от лица пользователя»)
 
 ---
 
@@ -281,19 +293,24 @@ barter-platform/
 │ │ │ ├── lot-form/                    # Создание / редактирование лота
 │ │ │ ├── mail-confirm/                # Подтверждение email
 │ │ │ ├── my-lots/                     # Лоты текущего пользователя
+│ │ │ ├── offer/                       # Страница одного предложения обмена
+│ │ │ ├── offers/                      # Лента предложений (входящие/исходящие)
 │ │ │ ├── profile/                     # Профиль пользователя
 │ │ │ └── reset-password/              # Сброс пароля
 │ │ │
 │ │ ├── widgets/                       # Композитные UI-блоки
-│ │ │ ├── AppHeader/                   # Шапка приложения
-│ │ │ ├── AppNavbar/                   # Боковая навигация
+│ │ │ ├── AppHeader/                   # Шапка (+ NotificationsDrawer, UserMenu)
+│ │ │ ├── AppNavbar/                   # Навигация (desktop + mobile bottom bar)
 │ │ │ ├── AppShell/                    # Каркас layout’а
 │ │ │ ├── LotActions/                  # Действия над лотом
 │ │ │ ├── LotForm/                     # Форма лота с секциями
-│ │ │ ├── LotsFeed/                    # Лента карточек лотов
+│ │ │ ├── LotsFeed/                    # Лента карточек лотов (+ свечение релевантности)
+│ │ │ ├── OfferDetail/                 # Карточка предложения (степпер статуса, действия)
+│ │ │ ├── OffersFeed/                  # Лента предложений
 │ │ │ ├── ProfileContactsBlock/
 │ │ │ ├── ProfileHeaderBlock/
-│ │ │ └── ProfilePreferencesBlock/
+│ │ │ ├── ProfilePreferencesBlock/
+│ │ │ └── ProfileSessionsBlock/        # Активные сессии в профиле
 │ │ │
 │ │ ├── features/                      # Пользовательские сценарии (feature-слои FSD)
 │ │ │ ├── admin/                       # Таблицы, фильтры и колонки админки
@@ -303,14 +320,19 @@ barter-platform/
 │ │ │ ├── lot-form/                    # Логика формы лота (state, submit, images)
 │ │ │ ├── lot-status/                  # Смена статуса лота
 │ │ │ ├── profile/                     # avatar, deactivation, edit
-│ │ │ └── search-filter/               # Поиск
+│ │ │ ├── search-filter/               # Поиск
+│ │ │ └── taxonomy-preferences/        # Настройка предпочтений категорий
 │ │ │
 │ │ ├── entities/                      # Доменные сущности (модели + API + UI)
-│ │ │ ├── geography/                   # Страны / регионы / города / районы
+│ │ │ ├── geography/                   # Регионы / города / районы
 │ │ │ ├── lot/                         # Лоты
+│ │ │ ├── notification/                # Уведомления (REST + SSE)
+│ │ │ ├── offer/                       # Предложения обмена
 │ │ │ ├── rate-limit/                  # Состояние rate-limit
-│ │ │ ├── taxonomy/                    # Главы и категории
-│ │ │ └── user/                        # Пользователь
+│ │ │ ├── session/                     # Сессии устройств
+│ │ │ ├── taxonomy/                    # Разделы и категории
+│ │ │ ├── user/                        # Пользователь
+│ │ │ └── userPreferences/             # Предпочтения категорий
 │ │ │
 │ │ └── shared/                        # Переиспользуемое ядро
 │ │   ├── api/                         # axios-клиент и interceptors (auth, language, rateLimit)
@@ -342,19 +364,24 @@ barter-platform/
 │ │ │ └── utils/                       # query-filters, load-seed, …
 │ │ │
 │ │ ├── modules/                       # Доменные модули приложения
-│ │ │ ├── auth/                        # Регистрация, логин, JWT, guards, policies
-│ │ │ ├── users/                       # Управление пользователями (self + admin)
-│ │ │ ├── mail/                        # Отправка писем (nodemailer + шаблоны)
+│ │ │ ├── auth/                        # Логин, JWT, guards
+│ │ │ ├── users/                       # Пользователи (self + admin) + география
+│ │ │ ├── sessions/                    # Сессии устройств (self + admin)
+│ │ │ ├── user-preferences/            # Предпочтения категорий (веса 1–3)
+│ │ │ ├── lots/                        # Лоты, релевантность ленты, архив (30 дней)
+│ │ │ ├── taxonomy/                    # Категорийное дерево
+│ │ │ ├── offers/                      # Предложения обмена (жизненный цикл сделки)
+│ │ │ ├── notifications/               # Уведомления + SSE real-time
+│ │ │ ├── media/                       # Аватары и фото лотов (jimp, 3 размера)
+│ │ │ ├── mail/                        # Отправка писем (nodemailer, 4 языка)
 │ │ │ ├── mail-confirm/                # Подтверждение email
 │ │ │ ├── password-reset/              # Сброс пароля
 │ │ │ ├── deactivation/                # Деактивация аккаунта
-│ │ │ ├── media/                       # Загрузка/обработка медиа (jimp), guards
-│ │ │ ├── lots/                        # Лоты, таксономия, DTO и ошибки
-│ │ │ └── redis/                       # Redis-модуль (сессии, throttling)
+│ │ │ └── redis/                       # Redis-модуль (троттлинг, pub/sub, архив)
 │ │ │
 │ │ └── database/                      # TypeORM
 │ │   ├── data-source.ts               # Конфигурация DataSource
-│ │   ├── entities/                    # Entity-классы (User, Lot, Session, MediaFile, …)
+│ │   ├── entities/                    # User, Lot, Offer, Notification, Session, MediaFile, …
 │ │   ├── migrations/                  # Миграции БД
 │ │   ├── seeds/                       # Начальные данные (geography, chapter, category, admin, …)
 │ │   ├── subscribers/                 # TypeORM-подписчики
@@ -434,6 +461,12 @@ _Создание контроллера `NestJS`_
 ```bash
 cd server
 nest g controller modules/{entityName}
+```
+
+_Наполнение базы тестовыми данными (пользователи, лоты, предложения) — из контейнера сервера или локально при доступной БД_
+
+```bash
+npm run seed:dev
 ```
 
 ---
@@ -521,7 +554,7 @@ npm run migration:run
 
 ---
 
-> **Логика работы REST API в NextJS:**
+> **Логика работы REST API в NestJS:**
 
 В `NestJS` ВСЁ строится вокруг модулей.
 
@@ -534,5 +567,5 @@ Controller  →  Service  →  Repository (TypeORM)  →  Database
 - **Controller** — принимает HTTP-запросы
 - **Service** — бизнес-логика
 - **Repository** — работа с БД (через TypeORM)
-- **Database** — непосредственно БД (Postgre)
+- **Database** — непосредственно БД (PostgreSQL)
 - **Module** — склеивает всё это вместе
