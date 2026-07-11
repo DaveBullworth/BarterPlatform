@@ -23,6 +23,7 @@ import {
   type OfferStatus,
 } from '@/entities/offer';
 import { useLotsMainImages, toLotImageSrc } from '@/entities/lot';
+import { useChatUnreadByOffer } from '@/entities/chat';
 import { useTaxonomy } from '@/entities/taxonomy';
 import { useAuthStore } from '@/entities/user';
 import { USER_ROLES } from '@/shared/constants/user-role';
@@ -37,7 +38,7 @@ const LIMIT = 10;
 
 export const OffersFeed = () => {
   const { t, i18n } = useTranslation();
-  const { toOfferView } = useNavigation();
+  const { toOfferView, toOfferChat } = useNavigation();
   const { currentUser } = useAuthStore();
   const isAdmin = currentUser?.role === USER_ROLES.ADMIN;
   const isMobile = useMediaQuery('(max-width: 48em)');
@@ -80,6 +81,9 @@ export const OffersFeed = () => {
     for (const img of mainImages) map[img.lotId] = toLotImageSrc(img);
     return map;
   }, [mainImages]);
+
+  // Непрочитанные сообщения по офферам — для бейджей на карточках.
+  const { data: unreadByOffer = {} } = useChatUnreadByOffer(!asUserId);
 
   // Резолв иконки раздела: chapterId → slug → иконка.
   const { data: taxonomy = [] } = useTaxonomy();
@@ -181,10 +185,12 @@ export const OffersFeed = () => {
                 offer={offer}
                 imageSrc={imageMap[offer.targetLot?.id ?? ''] ?? null}
                 locale={i18n.language}
+                unread={unreadByOffer[offer.id] ?? 0}
                 getChapterIcon={getChapterIcon}
                 onOpen={(id) =>
                   toOfferView(id, isAdmin && asUserId ? asUserId : undefined)
                 }
+                onOpenChat={toOfferChat}
               />
             ))}
           </Stack>

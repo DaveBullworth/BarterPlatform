@@ -2,7 +2,10 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { NotificationEntity } from '@/database/entities/notification.entity';
+import {
+  NotificationEntity,
+  NotificationSubtype,
+} from '@/database/entities/notification.entity';
 import { NotificationsRealtimeService } from './notifications.realtime.service';
 import { NotificationResponseDto } from './dto/notification-response.dto';
 import { NotificationListResponseDto } from './dto/notification-list-response.dto';
@@ -67,6 +70,72 @@ export class NotificationsService {
         `Notification emit failed (${input.subtype}): ${String(err)}`,
       ),
     );
+  }
+
+  /**
+   * Fire-and-forget уведомление о новом сообщении в чате с КОАЛЕСЦИРОВАНИЕМ:
+   * пока получатель не открыл диалог, на оффер держится одно непрочитанное
+   * уведомление — новое сообщение лишь обновляет его превью и поднимает наверх,
+   * а не плодит десятки записей в колокольчике. entityId — это offerId.
+   */
+  emitChatMessage(input: CreateNotificationInput): void {
+    void this.createOrTouchChatMessage(input).catch((err) =>
+      this.logger.warn(`Chat notification emit failed: ${String(err)}`),
+    );
+  }
+
+  private async createOrTouchChatMessage(
+    input: CreateNotificationInput,
+  ): Promise<void> {
+    const existing = await this.repo.findOne({
+      where: {
+        userId: input.userId,
+        subtype: NotificationSubtype.CHAT_MESSAGE,
+        entityId: input.entityId ?? undefined,
+        isRead: false,
+      },
+    });
+
+    if (!existing) {
+      await this.create(input);
+      return;
+    }
+
+    existing.payload = input.payload ?? {};
+    existing.createdAt = new Date(); // поднять наверх ленты колокольчика
+    const dto = this.toDto(await this.repo.save(existing));
+
+    try {
+      await this.realtime.publish(input.userId, {
+        kind: 'notification:new',
+        notification: dto,
+      });
+    } catch (err) {
+      this.logger.warn(`Realtime publish failed: ${String(err)}`);
+    }
+    await this.emitUnread(input.userId);
+  }
+
+  /**
+   * Гасит колокольчик-уведомление чата для конкретного оффера (вызывается, когда
+   * пользователь открыл диалог и прочитал сообщения).
+   */
+  async markChatNotificationRead(
+    userId: string,
+    offerId: string,
+  ): Promise<void> {
+    const result = await this.repo.update(
+      {
+        userId,
+        subtype: NotificationSubtype.CHAT_MESSAGE,
+        entityId: offerId,
+        isRead: false,
+      },
+      { isRead: true, readAt: new Date() },
+    );
+    if (result.affected) {
+      await this.emitUnread(userId);
+    }
   }
 
   async findForUser(

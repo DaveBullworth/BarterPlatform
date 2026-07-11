@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { Button, Divider, Group, Paper, Stack, Text } from '@mantine/core';
+import {
+  Button,
+  Divider,
+  Group,
+  Indicator,
+  Paper,
+  Stack,
+  Text,
+} from '@mantine/core';
+import { useSearchParams } from 'react-router-dom';
 import { Check, X, MessageCircle, Flag, Handshake } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -11,6 +20,8 @@ import {
   OFFER_STATUS,
   type OfferDetail,
 } from '@/entities/offer';
+import { useChatUnreadByOffer } from '@/entities/chat';
+import { ChatPanel } from '@/widgets/ChatPanel';
 import { ConfirmModal } from '@/shared/ui';
 import { handleApiError, notify } from '@/shared/lib';
 
@@ -37,6 +48,15 @@ export const OfferActions = ({ offer, asUserId }: Props) => {
   const reject = useRejectOffer(offer.id, asUserId);
   const confirm = useConfirmOffer(offer.id, asUserId);
   const report = useReportOffer(offer.id, asUserId);
+
+  // Глубокая ссылка из ленты предложений / уведомления: ?chat=1 → открыть диалог
+  // сразу при монтировании (страница оффера ремаунтится на смену id).
+  const [searchParams] = useSearchParams();
+  const [chatOpened, setChatOpened] = useState(
+    () => searchParams.get('chat') === '1',
+  );
+  const { data: unreadByOffer } = useChatUnreadByOffer();
+  const chatUnread = unreadByOffer?.[offer.id] ?? 0;
 
   const confirmMeta: Record<
     PendingAction,
@@ -117,9 +137,6 @@ export const OfferActions = ({ offer, asUserId }: Props) => {
         break;
     }
   };
-
-  const onChat = () =>
-    notify({ message: t('offers.chat.soon'), color: 'blue' });
 
   const { canAccept, canConfirm, canReject } = offer.actions;
   const hasDealActions = canAccept || canConfirm || canReject;
@@ -209,13 +226,21 @@ export const OfferActions = ({ offer, asUserId }: Props) => {
             </Text>
 
             <Group gap="xs" wrap="wrap">
-              <Button
-                variant="default"
-                leftSection={<MessageCircle size={16} />}
-                onClick={onChat}
+              <Indicator
+                color="red"
+                size={18}
+                label={chatUnread > 0 ? chatUnread : undefined}
+                disabled={chatUnread === 0}
+                offset={4}
               >
-                {t('offers.chat.button')}
-              </Button>
+                <Button
+                  variant="default"
+                  leftSection={<MessageCircle size={16} />}
+                  onClick={() => setChatOpened(true)}
+                >
+                  {t('offers.chat.button')}
+                </Button>
+              </Indicator>
 
               <Button
                 variant="subtle"
@@ -240,6 +265,13 @@ export const OfferActions = ({ offer, asUserId }: Props) => {
         loading={meta?.loading ?? false}
         onConfirm={runPendingAction}
         onCancel={() => setPendingAction(null)}
+      />
+
+      <ChatPanel
+        offerId={offer.id}
+        counterpartName={offer.counterpart.name}
+        opened={chatOpened}
+        onClose={() => setChatOpened(false)}
       />
     </>
   );

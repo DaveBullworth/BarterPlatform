@@ -5,6 +5,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { $authHost } from '@/shared/api';
 import { lotKeys } from '@/entities/lot';
 import { offerKeys } from '@/entities/offer';
+import { chatKeys } from '@/entities/chat';
 import {
   NotificationListSchema,
   UnreadCountSchema,
@@ -97,6 +98,9 @@ type StreamNotification = {
 type StreamEvent =
   | { kind: 'notification:new'; notification?: StreamNotification }
   | { kind: 'notification:unread'; unreadCount: number }
+  | { kind: 'chat:message'; offerId: string }
+  | { kind: 'chat:read'; offerId: string }
+  | { kind: 'chat:unread'; unreadCount: number }
   | { kind: 'ping' };
 
 /**
@@ -161,6 +165,20 @@ export const useNotificationsStream = (enabled: boolean) => {
               notificationKeys.unreadCount(),
               event.unreadCount,
             );
+          } else if (event.kind === 'chat:message') {
+            // Новое сообщение: открытый диалог подтянет его, бейджи обновятся.
+            queryClient.invalidateQueries({
+              queryKey: chatKeys.messages(event.offerId),
+            });
+            queryClient.invalidateQueries({ queryKey: chatKeys.unread() });
+            queryClient.invalidateQueries({ queryKey: chatKeys.unreadByOffer() });
+          } else if (event.kind === 'chat:read') {
+            // Вторая сторона прочитала — перерисовать наши галочки.
+            queryClient.invalidateQueries({
+              queryKey: chatKeys.messages(event.offerId),
+            });
+          } else if (event.kind === 'chat:unread') {
+            queryClient.setQueryData(chatKeys.unread(), event.unreadCount);
           }
         } catch {
           /* пропускаем некорректный пейлоад */

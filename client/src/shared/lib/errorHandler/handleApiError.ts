@@ -270,6 +270,30 @@ export const handleApiError = (
           icon = createElement(ClockAlert, { size: 18 });
           break;
 
+        /** CHAT — вложения */
+        case ERROR_TYPES.CHAT_FILE_WRONG_TYPE:
+          message = t('chat.errors.wrongType');
+          color = 'red';
+          icon = createElement(ImageOff, { size: 18 });
+          break;
+
+        case ERROR_TYPES.CHAT_FILE_TOO_LARGE:
+          message = t('chat.errors.tooLargeGeneric');
+          color = 'yellow';
+          break;
+
+        case ERROR_TYPES.CHAT_FILE_INFECTED:
+          message = t('chat.errors.infected');
+          color = 'red';
+          icon = createElement(AlertCircle, { size: 18 });
+          break;
+
+        case ERROR_TYPES.CHAT_FILE_SCAN_FAILED:
+          message = t('chat.errors.scanUnavailable');
+          color = 'yellow';
+          icon = createElement(ClockAlert, { size: 18 });
+          break;
+
         default:
           message = data.message || message;
           color = 'red';

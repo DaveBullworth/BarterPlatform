@@ -102,9 +102,9 @@ Key properties:
 
 ## Communication
 
-> 🚧 **Status: planned — next milestone.** Notification types and entity bindings for chats are already in place; today negotiation happens through the offer flow (accept / reject / mutual confirmation) with real-time notifications.
+> ✅ **Status: shipped.** Each exchange offer has a **private chat** between its two participants, opened from the offer page. Real-time delivery rides the existing SSE stream (no separate socket); file attachments are virus-scanned through a pluggable ClamAV port (disabled by default for offline/dev).
 
-Each exchange will create a **private chat** between involved users.
+Each offer has a **private chat** between its two participants.
 
 Chat features:
 
@@ -113,7 +113,9 @@ Chat features:
   - PNG
   - JPG
   - PDF
-- Exchange context awareness (linked to specific lots)
+- Read receipts and message timestamps
+- Exchange context awareness (linked to the specific offer)
+- Optional antivirus scanning of attachments (local ClamAV service)
 
 Chats exist to:
 
@@ -238,13 +240,13 @@ sequenceDiagram
 - Рекомендательная лента (гео + взаимные предпочтения, свечение карточек)
 - Архив лотов с автоудалением через 30 дней
 
-### 🚧 Этап 3: Чат с файлообменником (следующий этап)
+### ✅ Этап 3: Чат с файлообменником (готово)
 
-- Реализация WebSocket чатов через NestJS Gateway
-- Привязка чатов к конкретным лотам и сделкам
-- Поддержка вложений: PNG, JPG, PDF
-- Интеграция локального антивируса для проверки файлов
-- Структура проекта: модуль Chat, модуль Attachments
+- Real-time чаты по предложениям обмена через существующий SSE-поток (без отдельного сокета)
+- Диалог привязан к офферу; участники — стороны предложения
+- Вложения: PNG, JPG, PDF (приватные, отдаются только участникам); время и отметка о прочтении
+- Подключаемый антивирус (ClamAV по TCP/INSTREAM), по умолчанию выключен — работает offline/dev
+- Структура проекта: модуль Chat (сообщения + вложения + порт антивируса)
 
 ### 🟡 Этап 4: Дополнительно (опционально, частично готово)
 
@@ -407,6 +409,17 @@ barter-platform/
 ├── icon.png
 └── README.md
 ```
+
+## Конфигурация (.env)
+
+Перед первым запуском создайте env-файлы из шаблонов — docker-compose подключает их через `env_file` и без них не стартует:
+
+```bash
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+```
+
+Назначение каждой переменной описано комментариями внутри шаблонов. Минимум, что стоит поменять для не-локального окружения: секреты JWT (`ACCESS_TOKEN_SECRET` / `REFRESH_TOKEN_SECRET`), пароль администратора и SMTP-доступ.
 
 ## Запуск через `Docker` из корня проекта
 

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { User, ChartColumnStacked } from 'lucide-react';
 
 import { useAuthStore } from '@/entities/user';
+import { useChatUnreadCount } from '@/entities/chat';
 import { useNavigation } from '@/shared/lib/navigation';
 import { useCategorySelection } from '@/features/category-filter';
 import { NAV_ACCESS } from '@/shared/constants/nav-access';
@@ -53,6 +54,7 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
   const location = useLocation();
   const { t } = useTranslation();
   const { isAuthenticated, currentUser } = useAuthStore();
+  const { data: chatUnread = 0 } = useChatUnreadCount(isAuthenticated);
   const { toAuth, toProfile, toMyLots } = useNavigation();
   const { selection } = useCategorySelection();
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -94,11 +96,21 @@ export const MobileBottomNavbar = ({ onOpenCategories }: Props) => {
               ? location.pathname === ROUTES.ROOT
               : location.pathname.startsWith(item.to);
 
+          const showChatBadge = item.key === 'offers' && chatUnread > 0;
+
           return (
             <React.Fragment key={item.key}>
               <BottomNavItem
                 label={t(`nav.${item.key}`)}
-                icon={<Icon size={20} />}
+                icon={
+                  showChatBadge ? (
+                    <Indicator color="red" size={8} offset={2}>
+                      <Icon size={20} />
+                    </Indicator>
+                  ) : (
+                    <Icon size={20} />
+                  )
+                }
                 active={active}
                 onClick={() => rawNavigate(item.to)}
                 onPreload={

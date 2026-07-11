@@ -7,6 +7,7 @@ import {
   Badge,
   ThemeIcon,
   ActionIcon,
+  Indicator,
   Tooltip,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -17,7 +18,6 @@ import type { LucideIcon } from 'lucide-react';
 
 import { type OfferFeedItem } from '@/entities/offer';
 import { getUserAvatarUrl } from '@/entities/user';
-import { notify } from '@/shared/lib';
 import { formatDate } from '@/shared/lib/formatters';
 import { preload } from '@/shared/lib/preload';
 import { OfferStatusBadge } from './OfferStatusBadge';
@@ -28,16 +28,20 @@ type Props = {
   offer: OfferFeedItem;
   imageSrc: string | null;
   locale: string;
+  unread: number;
   getChapterIcon: (chapterId: number) => LucideIcon;
   onOpen: (id: string) => void;
+  onOpenChat: (id: string) => void;
 };
 
 export const OfferCardList = ({
   offer,
   imageSrc,
   locale,
+  unread,
   getChapterIcon,
   onOpen,
+  onOpenChat,
 }: Props) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery('(max-width: 48em)');
@@ -139,21 +143,29 @@ export const OfferCardList = ({
           )}
         </Stack>
 
-        {/* Чат с контрагентом — пока заглушка до запуска модуля чатов */}
+        {/* Чат с контрагентом — открывает страницу предложения с диалогом */}
         <Tooltip label={t('offers.chat.button')} withArrow position="top">
-          <ActionIcon
-            variant="light"
-            color="barter"
-            size="lg"
-            className={styles.offerAction}
-            aria-label={t('offers.chat.button')}
-            onClick={(e) => {
-              e.stopPropagation();
-              notify({ message: t('offers.chat.soon'), color: 'blue' });
-            }}
+          <Indicator
+            color="red"
+            size={16}
+            label={unread > 0 ? unread : undefined}
+            disabled={unread === 0}
+            offset={4}
           >
-            <MessageCircle size={18} />
-          </ActionIcon>
+            <ActionIcon
+              variant="light"
+              color="barter"
+              size="lg"
+              className={styles.offerAction}
+              aria-label={t('offers.chat.button')}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenChat(offer.id);
+              }}
+            >
+              <MessageCircle size={18} />
+            </ActionIcon>
+          </Indicator>
         </Tooltip>
       </Group>
     </Card>

@@ -58,10 +58,26 @@
       "sent": "Ihre Meldung wurde an die Administratoren gesendet."
     },
     "chat": {
-      "button": "Chat",
-      "soon": "Der Chat wird bald verfügbar sein."
+      "button": "Chat"
     },
     "cancel": "Abbrechen"
+  },
+  "chat": {
+    "title": "Chat",
+    "empty": "Noch keine Nachrichten. Schreiben Sie als Erster.",
+    "loadOlder": "Frühere anzeigen",
+    "inputPlaceholder": "Nachricht schreiben…",
+    "attach": "Datei anhängen",
+    "send": "Senden",
+    "removeAttachment": "Anhang entfernen",
+    "errors": {
+      "wrongType": "Es werden nur PNG, JPG und PDF unterstützt.",
+      "tooLarge": "Die Datei ist zu groß (bis zu {{size}} MB).",
+      "tooLargeGeneric": "Die Datei ist zu groß.",
+      "tooMany": "Pro Nachricht können maximal 5 Dateien angehängt werden.",
+      "infected": "Die Datei hat die Virenprüfung nicht bestanden.",
+      "scanUnavailable": "Die Virenprüfung ist vorübergehend nicht verfügbar, bitte später erneut versuchen."
+    }
   },
   "sessions": {
     "title": "Sitzungen",
@@ -389,6 +405,12 @@
         "offer_completed": {
           "title": "Tausch abgeschlossen",
           "body": "Der Tausch wurde erfolgreich abgeschlossen."
+        }
+      },
+      "chat": {
+        "message_received": {
+          "title": "Neue Nachricht",
+          "body": "{{senderName}}: {{preview}}"
         }
       }
     }

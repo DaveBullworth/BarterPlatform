@@ -19,6 +19,17 @@ services:
     ports:
       - "6379:6379"
 
+  clamav:
+    image: clamav/clamav:latest
+    container_name: barter-clamav
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
+    # Если сеть не даёт скачивать обновления баз (freshclam сыпет WARNING/ERROR),
+    # демона обновлений можно выключить — сканирование работает на базе из образа:
+    # environment:
+    #   - CLAMAV_NO_FRESHCLAMD=true
+
   server:
     build:
       context: ..
@@ -31,6 +42,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - clamav
     ports:
       - "3000:3000"
     volumes:

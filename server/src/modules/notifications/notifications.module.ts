@@ -17,6 +17,6 @@ import { SseAuthGuard } from './guards/sse-auth.guard';
   ],
   controllers: [NotificationsController],
   providers: [NotificationsService, NotificationsRealtimeService, SseAuthGuard],
-  exports: [NotificationsService],
+  exports: [NotificationsService, NotificationsRealtimeService],
 })
 export class NotificationsModule {}

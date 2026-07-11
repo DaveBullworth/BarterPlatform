@@ -45,4 +45,9 @@ export type CreateNotificationInput = {
 export type NotificationStreamEvent =
   | { kind: 'notification:new'; notification: NotificationResponseDto }
   | { kind: 'notification:unread'; unreadCount: number }
+  // Чат переиспользует тот же per-user SSE-канал, что и уведомления:
+  // отдельное соединение не нужно. offerId служит идентификатором диалога.
+  | { kind: 'chat:message'; offerId: string; messageId: string; senderId: string }
+  | { kind: 'chat:read'; offerId: string; readerId: string }
+  | { kind: 'chat:unread'; unreadCount: number }
   | { kind: 'ping' };

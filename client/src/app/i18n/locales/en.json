@@ -58,10 +58,26 @@
       "sent": "Your report has been sent to the administrators."
     },
     "chat": {
-      "button": "Chat",
-      "soon": "Chat will be available soon."
+      "button": "Chat"
     },
     "cancel": "Cancel"
+  },
+  "chat": {
+    "title": "Chat",
+    "empty": "No messages yet. Be the first to write.",
+    "loadOlder": "Show earlier",
+    "inputPlaceholder": "Type a message…",
+    "attach": "Attach a file",
+    "send": "Send",
+    "removeAttachment": "Remove attachment",
+    "errors": {
+      "wrongType": "Only PNG, JPG and PDF are supported.",
+      "tooLarge": "File is too large (up to {{size}} MB).",
+      "tooLargeGeneric": "File is too large.",
+      "tooMany": "You can attach up to 5 files per message.",
+      "infected": "The file failed the antivirus check.",
+      "scanUnavailable": "Antivirus check is temporarily unavailable, please try again later."
+    }
   },
   "sessions": {
     "title": "Sessions",
@@ -389,6 +405,12 @@
         "offer_completed": {
           "title": "Exchange completed",
           "body": "The exchange was completed successfully."
+        }
+      },
+      "chat": {
+        "message_received": {
+          "title": "New message",
+          "body": "{{senderName}}: {{preview}}"
         }
       }
     }

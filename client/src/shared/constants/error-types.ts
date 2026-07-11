@@ -33,6 +33,11 @@ export const ERROR_TYPES = {
   AVATAR_PROCESSING_ERROR: 'AVATAR_PROCESSING_ERROR', // ошибка при обработке
   AVATAR_NOT_FOUND: 'AVATAR_NOT_FOUND', // попытка удалить отсутствующий аватар
   LAST_ADMIN_DEACTIVATION_FORBIDDEN: 'LAST_ADMIN_DEACTIVATION_FORBIDDEN', // попытка деактивации последнего админа
+  // chat — вложения
+  CHAT_FILE_WRONG_TYPE: 'CHAT_FILE_WRONG_TYPE', // не PNG/JPG/PDF
+  CHAT_FILE_TOO_LARGE: 'CHAT_FILE_TOO_LARGE', // превышен лимит размера
+  CHAT_FILE_INFECTED: 'CHAT_FILE_INFECTED', // антивирус нашёл угрозу
+  CHAT_FILE_SCAN_FAILED: 'CHAT_FILE_SCAN_FAILED', // антивирус недоступен
 } as const;
 
 export type ErrorTypes = (typeof ERROR_TYPES)[keyof typeof ERROR_TYPES];

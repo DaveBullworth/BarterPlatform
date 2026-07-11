@@ -18,7 +18,7 @@ services:
       - "6379:6379"
 
   server:
-    image: ghcr.io/davebullworth/barter-server:1.0
+    image: ghcr.io/davebullworth/barter-server:1.1
     restart: unless-stopped
     env_file:
       - ../server/.env
@@ -31,7 +31,7 @@ services:
       - redis
 
   client:
-    image: ghcr.io/davebullworth/barter-client:1.0
+    image: ghcr.io/davebullworth/barter-client:1.1
     restart: unless-stopped
     env_file:
       - ../client/.env

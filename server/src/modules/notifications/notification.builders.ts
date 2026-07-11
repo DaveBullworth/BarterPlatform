@@ -162,4 +162,21 @@ export const notificationBuilders = {
     entityId: p.lotId,
     payload: { lotTitle: p.lotTitle, daysLeft: p.daysLeft },
   }),
+
+  // ───────── chat ─────────
+  // Диалог привязан к офферу, поэтому deep-link ведёт на страницу предложения
+  // (entityType OFFER), где открывается чат. Коалесцируется по entityId в
+  // NotificationsService.emitChatMessage — одно уведомление на оффер.
+  chatMessage: (p: {
+    recipientId: string;
+    offerId: string;
+    senderName: string;
+    preview: string;
+  }): CreateNotificationInput => ({
+    userId: p.recipientId,
+    subtype: NotificationSubtype.CHAT_MESSAGE,
+    entityType: NotificationEntityType.OFFER,
+    entityId: p.offerId,
+    payload: { senderName: p.senderName, preview: p.preview },
+  }),
 };

@@ -8,6 +8,8 @@ import { LotEntity } from './lot.entity';
 import { UserTaxonomyPreferenceEntity } from './user-taxonomy-preference.entity';
 import { OfferEntity } from './offer.entity';
 import { NotificationEntity } from './notification.entity';
+import { ChatMessageEntity } from './chat-message.entity';
+import { ChatAttachmentEntity } from './chat-attachment.entity';
 
 export const entities = [
   UserEntity,
@@ -20,4 +22,6 @@ export const entities = [
   UserTaxonomyPreferenceEntity,
   OfferEntity,
   NotificationEntity,
+  ChatMessageEntity,
+  ChatAttachmentEntity,
 ];

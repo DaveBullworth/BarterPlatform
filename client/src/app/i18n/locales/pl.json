@@ -58,10 +58,26 @@
       "sent": "Twoje zgłoszenie zostało wysłane do administratorów."
     },
     "chat": {
-      "button": "Czat",
-      "soon": "Czat będzie dostępny wkrótce."
+      "button": "Czat"
     },
     "cancel": "Anuluj"
+  },
+  "chat": {
+    "title": "Czat",
+    "empty": "Nie ma jeszcze wiadomości. Napisz pierwszy.",
+    "loadOlder": "Pokaż wcześniejsze",
+    "inputPlaceholder": "Napisz wiadomość…",
+    "attach": "Załącz plik",
+    "send": "Wyślij",
+    "removeAttachment": "Usuń załącznik",
+    "errors": {
+      "wrongType": "Obsługiwane są tylko PNG, JPG i PDF.",
+      "tooLarge": "Plik jest za duży (do {{size}} MB).",
+      "tooLargeGeneric": "Plik jest za duży.",
+      "tooMany": "Do wiadomości można dołączyć maksymalnie 5 plików.",
+      "infected": "Plik nie przeszedł kontroli antywirusowej.",
+      "scanUnavailable": "Kontrola antywirusowa jest chwilowo niedostępna, spróbuj ponownie później."
+    }
   },
   "sessions": {
     "title": "Sesje",
@@ -389,6 +405,12 @@
         "offer_completed": {
           "title": "Wymiana zakończona",
           "body": "Wymiana zakończona pomyślnie."
+        }
+      },
+      "chat": {
+        "message_received": {
+          "title": "Nowa wiadomość",
+          "body": "{{senderName}}: {{preview}}"
         }
       }
     }

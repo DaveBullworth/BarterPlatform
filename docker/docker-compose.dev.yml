@@ -19,6 +19,18 @@ services:
     ports:
       - "6379:6379"
 
+  # Антивирус для вложений чата. Выключен по умолчанию — раскомментируйте сервис
+  # и зависимость у server, затем в server/.env поставьте ANTIVIRUS_ENABLED=true.
+  # clamav:
+  #   image: clamav/clamav:latest
+  #   container_name: barter-clamav
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3310:3310"
+  #   # Если freshclam не может скачать базы (сеть блокирует) — выключить обновления:
+  #   # environment:
+  #   #   - CLAMAV_NO_FRESHCLAMD=true
+
   server:
     build:
       context: ..
@@ -31,6 +43,7 @@ services:
     depends_on:
       - postgres
       - redis
+      # - clamav
     ports:
       - "3000:3000"
     volumes:

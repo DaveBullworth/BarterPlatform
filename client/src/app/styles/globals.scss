@@ -116,3 +116,15 @@ h6 {
 img {
   -webkit-user-drag: none;
 }
+
+/* iOS Safari принудительно зумит страницу при фокусе на поле ввода с
+   font-size < 16px (включая скрытый input[type=file] за кнопкой-скрепкой),
+   и внутри Drawer зум потом не отщипнуть. 16px на тач-устройствах убирает
+   сам триггер; на десктопе размеры Mantine не трогаем. */
+@media (hover: none) and (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}

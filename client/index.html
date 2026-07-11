@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // iOS Safari авто-зумит страницу при фокусе на полях ввода. maximum-scale=1
+      // отключает только этот авто-зум: ручной pinch-zoom на iOS ≥ 10 всё равно
+      // работает (Safari игнорирует ограничение для жестов пользователя).
+      // Android не трогаем — там maximum-scale реально блокирует pinch-zoom.
+      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        document
+          .querySelector('meta[name="viewport"]')
+          .setAttribute(
+            'content',
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0',
+          );
+      }
+    </script>
     <title>Barter Platform</title>
   </head>
   <body>

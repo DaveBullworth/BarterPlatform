@@ -56,6 +56,8 @@ export const useNavigation = () => {
           ? `${ROUTES.OFFERS}/${id}?asUser=${asUserId}`
           : `${ROUTES.OFFERS}/${id}`,
       ),
+    // Открыть страницу предложения сразу с развёрнутым чатом (?chat=1).
+    toOfferChat: (id: string) => navigate(`${ROUTES.OFFERS}/${id}?chat=1`),
     back: () => navigate(-1),
   };
 };
